@@ -43,14 +43,7 @@ class Account < ActiveRecord::Base
   store_accessor :properties, :bio, :gravatar_email_id, :url, :is_pseudo_account, :name, :location, :company, :image_url, :referral_code, :referred_by_account_id, :is_enterprise_organisation
   store_accessor :devis, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :confirmed_at, :current_sign_in_at, :remember_created_at
   
-  #ASSOCIATIONS
-  
-  #user has cerebros
-  has_one :cerebro_account, class_name: "Cerebro::Account", foreign_key: "account_id"
-  has_many :cerebro_socials, class_name: "Cerebro::Social", through: :cerebro_accounts
-  has_many :cerebro_works, class_name: "Cerebro::Social", through: :cerebro_accounts
-  has_many :cerebro_websites, class_name: "Cerebro::Social", through: :cerebro_accounts
-  
+  #ASSOCIATIONS  
   # if account is User
   has_many :permissions, class_name: "Core::Permission", foreign_key: :account_id
   has_many :accounts_u, -> {where "is_owner_team = true"}, class_name: "Core::Permission", foreign_key: :account_id
@@ -199,7 +192,6 @@ class Account < ActiveRecord::Base
   def after_create_set
     if self.is_user_account? and (self.sign_in_count == 0 or self.sign_in_count.blank?)
       Core::Permission.create!(account_id: self.id, organisation_id: self.id, role: Constants::ROLE_O, email: self.email, status: Constants::STATUS_A, is_owner_team: true)
-      Cerebro::Account.find_or_create(self.email, self.id)  if Rails.env.production?
       if self.referred_by_account_id.present?
         Core::Referral.create(email: self.email, referered_id: self.id, account_id: self.referred_by_account_id, is_eligible: false)
       end

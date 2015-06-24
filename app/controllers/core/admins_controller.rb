@@ -2,10 +2,6 @@ class Core::AdminsController < ApplicationController
   
   before_action :sudo_admin!
   
-  def accounts
-    @users = Account.joins(:cerebro_account).where(accountable_type: Constants::ACC_U).includes(:cerebro_account).order(:id).page params[:page]
-  end
-
   def organizations
     @users = Account.where(accountable_type: Constants::ACC_O).order(:id).page params[:page]
   end

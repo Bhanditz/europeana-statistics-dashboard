@@ -68,9 +68,6 @@ class Core::OrganisationsController < ApplicationController
     @accounts = Account.where(id: @account.accounts.where("account_id is not null").pluck(:account_id))
   end
   
-  def events
-  end
-  
   private
   
   def account_params

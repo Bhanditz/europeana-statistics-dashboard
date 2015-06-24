@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       get "map_files/:id/verify", to: "admins#verify_or_unverify_map_files",on: :member,as: "verify_or_unverify_map_files"
     end
     resources :organisations do
-      get "members", "events", "make_enterprise_account", on: :member
+      get "members", "make_enterprise_account", on: :member
       resources :team_projects do
         get "add", on: :collection
       end
@@ -41,7 +41,7 @@ Rails.application.routes.draw do
       resources :referral_gifts, only: [:update]
       resources :permissions
       resources :projects do
-        get "members", "events", on: :member
+        get "members", on: :member
         resources :custom_dashboards do
           get "pull", on: :member
         end
