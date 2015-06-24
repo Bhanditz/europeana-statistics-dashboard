@@ -15,8 +15,6 @@ class AccountsController < ApplicationController
     end
     if params[:content] == "projects"
       @core_projects = @account.core_projects.includes(:account).where(is_public: true)
-    elsif params[:content] == "maps"
-      @core_map_files = @account.core_map_files.where(is_public: true)
     end
   end
 

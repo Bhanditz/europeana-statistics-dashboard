@@ -40,9 +40,6 @@ window.onload = function () {
     case "scopejs_maps_show":
       Rumali.bangaloreGeo();
       break;
-    case "scopejs_map_files_show":
-      Rumali.showMapFile();
-      break;
     default:
   }
 };

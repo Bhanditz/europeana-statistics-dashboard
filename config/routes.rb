@@ -3,9 +3,8 @@ Rails.application.routes.draw do
 
   namespace :core do
     resources :admins do
-      get 'accounts', "organizations", "dictionaries", "map_files", on: :collection
+      get 'accounts', "organizations", "dictionaries", on: :collection
       get "dictionaries/:id/verify",to: "admins#verify_or_unverify_dictionaries",on: :member,as: "verify_or_unverify_dictionaries"
-      get "map_files/:id/verify", to: "admins#verify_or_unverify_map_files",on: :member,as: "verify_or_unverify_map_files"
     end
     resources :organisations do
       get "members", "make_enterprise_account", on: :member
@@ -33,9 +32,6 @@ Rails.application.routes.draw do
       resources :account_emails do
         get "confirmation", on: :member
         get "resend_confirmation", on: :member
-      end
-      resources :map_files, only: [:create,:show,:update,:destroy] do
-        get "download", on: :member
       end
       resources :permissions
       resources :projects do
@@ -87,10 +83,6 @@ Rails.application.routes.draw do
   get "/:account_id/dashboard", to: "accounts#dashboard", as: "dashboard"
   get "/:account_id/edit", to: "accounts#edit", as: "_edit_account"  
   get "/:account_id/digital-footprint", to: "accounts#digital_footprint", as: "digital_footprint"
-  get "/:account_id/mapfiles",to: "core/map_files#index", as: "_account_map_files"
-  get "/:account_id/mapfiles/:map_file_id",to: "core/map_files#show",as: "_account_map_file"
-  get "/:account_id/mapfiles/:map_file_id/edit", to: "core/map_files#edit",as: "_edit_account_map_file" 
-  
   #
   get "/:account_id/:project_id", to: "core/projects#show", as: "_account_project"
   get "/:account_id/:project_id/edit", to: "core/projects#edit", as: "_edit_account_project"

@@ -265,7 +265,6 @@ class Core::DataStoresController < ApplicationController
   def open_data
     @projects = []
     @data_stores = []
-    @core_map_files = []
     file_type = []
     file_type << 'GeoJson'  if params[:geojson]  and !params[:geojson].blank?
     file_type << 'TopoJson' if params[:topojson] and !params[:topojson].blank?
@@ -274,18 +273,10 @@ class Core::DataStoresController < ApplicationController
       if current_account.nil?
         if params[:content] == "datasets"
           @projects = Core::Project.where("is_public = true")
-        else
-          @core_map_files = Core::MapFile.where("properties -> 'cdn_published_url' <> 'NULL'").where("is_public = true AND lower(name) LIKE (?) ", "%#{params[:search].downcase}%")
         end
       else
         if params[:content] == "datasets"
           @projects = Core::Project.where("is_public = true OR id IN (?)", current_account.core_projects.pluck(:id).uniq)
-        else
-          if file_type.count > 0
-            @core_map_files = Core::MapFile.where("properties -> 'cdn_published_url' <> 'NULL'").where("is_public = true AND filetype IN (?) AND lower(name) LIKE (?)", file_type, "%#{params[:search].downcase}%")
-          else
-            @core_map_files = Core::MapFile.where("properties -> 'cdn_published_url' <> 'NULL'").where("is_public = true AND lower(name) LIKE (?) ", "%#{params[:search].downcase}%")
-          end
         end
       end
       if params[:content] == "datasets"

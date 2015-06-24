@@ -57,15 +57,6 @@
                         %b= link_to p.name, _account_project_path(p.account, p)
                       %p.gray= truncate(p.description, length: 200, omission: '...')
 
-              #maps.tab-pane{:role => "tabpanel", class: params[:content] == "maps" ? "active" : ""}
-                -if @core_map_files.nil?
-                  %p No public maps files yet!  
-                -else
-                  - @core_map_files.each do |p|
-                    .project-listing
-                      %h4
-                        =link_to "<b class='glyphicon glyphicon-download-alt'></b>".html_safe, p.cdn_published_url, style: "padding-right: 10px;"
-                        = link_to p.name, account_core_map_file_path(p.account, p)
 
     .col-sm-2
       %br

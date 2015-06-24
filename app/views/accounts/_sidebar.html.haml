@@ -6,7 +6,6 @@
     %li{class: controller_name == "registrations" ? "active" : nil}= link_to "Security", edit_account_registration_path(current_account)
     %li{class: (controller_name == "organisations" and action_name == "index") ? "active" : nil}= link_to "Organizations", core_organisations_path
     %li{class: controller_name == "account_emails" ? "active" : nil}= link_to "Emails", account_core_account_emails_path(current_account)
-    %li{class: (controller_name == "map_files" and @account.accountable_type != "Organisation") ? "active" : nil}= link_to "Map Files",_account_map_files_path(current_account)
 - if @organisations.present? and @organisations.first.present?
   %br
   .panel.panel-default

@@ -77,7 +77,6 @@ class ApplicationController < ActionController::Base
         @members_count = @account.accounts.pluck(:account_id).uniq.count
         @team_count = @account.core_teams.count
         @custom_theme_count = @account.custom_themes.count
-        @core_map_files_count = @account.core_map_files.count
       end
     end
     @organisations = current_account.organisations

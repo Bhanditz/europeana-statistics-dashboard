@@ -51,7 +51,6 @@ class Account < ActiveRecord::Base
                       class_name: "Core::Permission", foreign_key: :account_id
   has_many :core_tokens, class_name: "Core::Token"
   has_many :core_account_emails,class_name: "Core::AccountEmail" ,foreign_key: :account_id, dependent: :destroy #DONE
-  has_many :core_map_files,class_name: "Core::MapFile",foreign_key: :account_id
   
   def organisations
     Account.where(accountable_type: Constants::ACC_O, id: self.accounts_u.pluck(:organisation_id).uniq)
