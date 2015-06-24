@@ -12,7 +12,6 @@
 #  created_at       :datetime
 #  updated_at       :datetime
 #  core_viz_id      :integer
-#  core_map_file_id :integer
 #
 
 class Core::SessionImpl < ActiveRecord::Base
@@ -62,16 +61,6 @@ class Core::SessionImpl < ActiveRecord::Base
     a.ip         = _ip
     a.blurb      = blu
     a.core_viz_id = viz_id
-    a.save
-    return a.id
-  end
-
-  def self.log_map_file(aid, _ip, blu,core_map_file_id = nil)
-    a = Core::SessionImpl.new()
-    a.account_id = aid
-    a.ip         = _ip
-    a.blurb      = blu
-    a.core_map_file_id = core_map_file_id
     a.save
     return a.id
   end

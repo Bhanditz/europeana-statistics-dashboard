@@ -26,8 +26,4 @@ class CoreMailer < ActionMailer::Base
     mail(to: @core_account_email.email, subject: "Rumi.io Email Confirmation", tag: "new-email-confirmation-email").deliver
   end
   
-  def map_file_uploaded(user_slug,map_file_name)
-    mail(to: "support@pykih.com", subject: "[Rumi]: #{user_slug} ADDED a MAP FILE #{map_file_name} <EOM>", tag: "internal").deliver
-  end
-
 end

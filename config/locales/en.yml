@@ -76,5 +76,3 @@ en:
   recalibrate_metadata:
     s: "Successfully recalibrated metadata"
     f: "Recalibrating metadata failed"
-  mapfile:
-    no_file_added: "Please Upload a File"
