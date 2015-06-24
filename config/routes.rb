@@ -35,7 +35,6 @@ Rails.application.routes.draw do
         get "confirmation", on: :member
         get "resend_confirmation", on: :member
       end
-      resources :account_images, only: [:create,:update,:destroy]
       resources :map_files, only: [:create,:show,:update,:destroy] do
         get "download", on: :member
       end

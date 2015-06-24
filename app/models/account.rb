@@ -62,7 +62,6 @@ class Account < ActiveRecord::Base
   has_many :core_referral_gift, class_name: "Core::ReferralGift" 
   has_many :core_account_emails,class_name: "Core::AccountEmail" ,foreign_key: :account_id, dependent: :destroy #DONE
   has_many :core_map_files,class_name: "Core::MapFile",foreign_key: :account_id
-  has_one  :core_account_image,class_name: "Core::AccountImage",foreign_key: :account_id
   
   def organisations
     Account.where(accountable_type: Constants::ACC_O, id: self.accounts_u.pluck(:organisation_id).uniq)

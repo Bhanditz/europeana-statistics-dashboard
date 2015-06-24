@@ -22,7 +22,6 @@ class AccountsController < ApplicationController
 
   def edit
     @enable_express_tour = true
-    @core_account_image = @account.core_account_image.present? ? @account.core_account_image : Core::AccountImage.new
     @organisations = current_account.organisations
   end
 

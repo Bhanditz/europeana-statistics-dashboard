@@ -22,18 +22,5 @@
         %td Username
         %td :
         %td= @account.username
-    -if @account.core_account_image.present?
-      .pull-right
-        = link_to "<span class='glyphicon glyphicon-remove'></span>".html_safe, account_core_account_image_path(@account,@account.core_account_image),method: :delete
     %p= image_tag account_image(@account, 80), class: "col-sm-12", style: "margin-bottom: 20px;"
     %p.hint Profile image is coming from Gravatar
-    %br
-    -if @account.core_account_image.present?
-      - url = account_core_account_image_path(@account,@account.core_account_image)
-      - method = "put"
-      - upload_or_update = "Update"
-    -else
-      - url = account_core_account_images_path(@account,@core_account_image)
-      - method = "post"
-      - upload_or_update = "Upload"
-    = render partial: "core/account_images/form",locals: {uploader: @uploader, url: url,method: method,upload_or_update: upload_or_update}

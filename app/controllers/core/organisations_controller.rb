@@ -19,7 +19,6 @@ class Core::OrganisationsController < ApplicationController
   end
   
   def edit
-    @core_account_image = @account.core_account_image.present? ? @account.core_account_image : Core::AccountImage.new
   end
   
   # LOCKING this method. Do not change. 

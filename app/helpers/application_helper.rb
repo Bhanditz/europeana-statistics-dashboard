@@ -10,15 +10,7 @@ module ApplicationHelper
   end
   
   def account_image(a, size=20)
-    if a.core_account_image.present? and a.core_account_image.base_url.present? and a.core_account_image.marked_to_be_deleted != "true"
-      if [80,150].include?(size)
-        return a.core_account_image.dp_url
-      elsif [10,25].include?(size)
-        return a.core_account_image.thumb_url
-      end
-    else
-      dp(a.gravatar_email_id, size)
-    end
+    dp(a.gravatar_email_id, size)
   end
   
   def smart_date(i)
