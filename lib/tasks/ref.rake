@@ -54,10 +54,6 @@ namespace :ref do
       Core::Theme.create!({name: name, config: config,account_id: account_id, sort_order: sort_order, image_url: image_url})
     end
 
-    Core::Project.where("ref_plan_slug IN (?)",["enterprise","picasso_enterprise"]).each do |core_project|
-      core_project.update_attributes({ref_plan_slug: "_enterprise_picasso" })
-    end
-
     puts "----> Done"
   end
 

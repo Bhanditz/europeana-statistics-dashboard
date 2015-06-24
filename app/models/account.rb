@@ -3,18 +3,18 @@
 # Table name: accounts
 #
 #  id                     :integer          not null, primary key
-#  username               :string(255)
-#  email                  :string(255)      default(""), not null
-#  slug                   :string(255)
-#  accountable_type       :string(255)
+#  username               :string
+#  email                  :string           default(""), not null
+#  slug                   :string
+#  accountable_type       :string
 #  properties             :hstore
-#  encrypted_password     :string(255)      default(""), not null
-#  reset_password_token   :string(255)
-#  confirmation_token     :string(255)
-#  unconfirmed_email      :string(255)
+#  encrypted_password     :string           default(""), not null
+#  reset_password_token   :string
+#  confirmation_token     :string
+#  unconfirmed_email      :string
 #  created_at             :datetime
 #  updated_at             :datetime
-#  authentication_token   :string(255)
+#  authentication_token   :string
 #  devis                  :hstore
 #  sign_in_count          :integer
 #  confirmation_sent_at   :datetime

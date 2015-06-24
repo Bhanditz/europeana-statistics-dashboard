@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: core_projects
+#
+#  id         :integer          not null, primary key
+#  account_id :integer
+#  name       :string
+#  slug       :string
+#  properties :hstore
+#  is_public  :boolean
+#  created_at :datetime
+#  updated_at :datetime
+#  created_by :integer
+#  updated_by :integer
+#
+
   # == Schema Information
 #
 # Table name: core_projects

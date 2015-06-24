@@ -5,8 +5,8 @@
 #  id              :integer          not null, primary key
 #  account_id      :integer
 #  core_project_id :integer
-#  api_token       :string(255)
-#  name            :string(255)
+#  api_token       :string
+#  name            :string
 #  created_at      :datetime
 #  updated_at      :datetime
 #  created_by      :integer

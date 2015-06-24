@@ -4,13 +4,13 @@
 #
 #  id              :integer          not null, primary key
 #  organisation_id :integer
-#  name            :string(255)
+#  name            :string
 #  created_by      :integer
 #  updated_by      :integer
 #  description     :text
 #  created_at      :datetime
 #  updated_at      :datetime
-#  role            :string(255)
+#  role            :string
 #  is_owner_team   :boolean
 #
 

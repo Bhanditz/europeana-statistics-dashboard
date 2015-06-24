@@ -4,14 +4,14 @@
 #
 #  id                 :integer          not null, primary key
 #  account_id         :integer
-#  email              :string(255)
-#  confirmation_token :string(255)
+#  email              :string
+#  confirmation_token :string
 #  confirmed_at       :datetime
 #  is_primary         :boolean
-#  created_at         :datetime
-#  updated_at         :datetime
 #  created_by         :integer
 #  updated_by         :integer
+#  created_at         :datetime
+#  updated_at         :datetime
 #
 
 class Core::AccountEmail < ActiveRecord::Base

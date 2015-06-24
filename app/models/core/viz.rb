@@ -9,17 +9,17 @@
 #  pykquery_object            :json
 #  created_at                 :datetime
 #  updated_at                 :datetime
-#  name                       :string(255)
+#  name                       :string
 #  config                     :json
 #  created_by                 :integer
 #  updated_by                 :integer
-#  ref_chart_combination_code :string(255)
+#  ref_chart_combination_code :string
 #  refresh_freq_in_minutes    :integer
 #  output                     :text
 #  refreshed_at               :datetime
+#  datagram_identifier        :string
 #  is_static                  :boolean
 #  was_output_big             :boolean
-#  datagram_identifier        :string(255)
 #
 
 class Core::Viz < ActiveRecord::Base

@@ -3,7 +3,7 @@
 # Table name: core_sessions
 #
 #  id         :integer          not null, primary key
-#  session_id :string(255)      not null
+#  session_id :string           not null
 #  data       :text
 #  created_at :datetime
 #  updated_at :datetime

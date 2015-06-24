@@ -4,13 +4,13 @@
 #
 #  id              :integer          not null, primary key
 #  core_project_id :integer
-#  name            :string(255)
+#  name            :string
 #  properties      :hstore
 #  created_by      :integer
 #  updated_by      :integer
 #  created_at      :datetime
 #  updated_at      :datetime
-#  slug            :string(255)
+#  slug            :string
 #
 
 class Core::CustomDashboard < ActiveRecord::Base
