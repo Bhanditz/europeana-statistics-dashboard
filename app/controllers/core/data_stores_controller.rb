@@ -1,9 +1,9 @@
 class Core::DataStoresController < ApplicationController
 
-  before_action :sudo_project_member!, only: [:new, :upload, :update, :destroy, :publish, :empty_grid, :map,:mark_as_dictionary,:mark_as_dataset, :append_rows, :commit_append, :merge, :commit_merge]
+  before_action :sudo_project_member!, only: [:new, :upload, :update, :destroy, :publish, :empty_grid, :map, :append_rows, :commit_append, :merge, :commit_merge]
   before_action :sudo_public!, only: [:index, :show, :index_all, :csv,:open_data]
   before_action :sudo_account!, only: [:clone]
-  before_action :set_data_store, only: [:show, :edit, :update, :destroy, :csv, :publish, :clone, :map,:mark_as_dictionary,:mark_as_dataset, :append_rows, :commit_append, :recalibrate_metadata, :assign_metadata, :update_assign_metadata]
+  before_action :set_data_store, only: [:show, :edit, :update, :destroy, :csv, :publish, :clone, :map,:append_rows, :commit_append, :recalibrate_metadata, :assign_metadata, :update_assign_metadata]
   before_action :set_token, only: [:show, :edit, :upload, :destroy, :clone, :empty_grid,:csv,:publish, :map, :merge, :commit_merge, :commit_append, :recalibrate_metadata]
 
   #------------------------------------------------------------------------------------------------------------------
@@ -198,16 +198,6 @@ class Core::DataStoresController < ApplicationController
     @data_store.generate_file_in_tmp(s,@alknfalkfnalkfnadlfkna)
     send_data IO.read(s), :type => "application/vnd.ms-excel", :filename => "#{@data_store.slug}.csv", :stream => false
     File.delete(s)
-  end
-
-  def mark_as_dictionary
-    @data_store.update_attributes({genre_class: "dictionary"})
-    redirect_to _edit_account_project_data_store_path(@core_project.account, @core_project, @data_store), notice: t("dict.s")
-  end
-
-  def mark_as_dataset
-    @data_store.update_attributes({genre_class: "dataset"})
-    redirect_to _edit_account_project_data_store_path(@core_project.account, @core_project, @data_store),notice: t("dict.c")
   end
 
   def append_rows

@@ -38,11 +38,6 @@
                       %li{style: "padding: 0px 10px;"}
                         %a{href: "#", "data-target" => "#cloneModal", "data-toggle" => "modal"} Make a copy
                       %li{style: "padding: 0px 10px;"}= link_to "Download", _csv_account_project_data_store_path(@core_project.account, @core_project, @data_store), id: "download-data",data_store_name: @data_store.name
-                      - if @sudo[1]
-                        -if @data_store.genre_class == "dataset"
-                          %li{style: "padding: 0px 10px;"}= link_to "Mark it as Dictionary",mark_as_dictionary_account_core_project_data_store_path(@account, @core_project,@data_store)
-                        -else
-                          %li{style: "padding: 0px 10px;"}= link_to "Mark it as Dataset",mark_as_dataset_account_core_project_data_store_path(@account, @core_project,@data_store)
                       #flash_categorize_columns-save{style: "margin-top: 10px; color: black;"}
                   %li.dropdown
                     %a.black.m0p0#dLabel{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :role => "button", style: "padding: 5px 10px; font-size: 12px;"}

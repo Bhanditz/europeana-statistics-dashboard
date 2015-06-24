@@ -258,7 +258,6 @@ class Core::DataStore < ActiveRecord::Base
     self.cdn_published_error = ""
     self.table_name = (0...32).map { (65 + rand(26)).chr }.join.downcase! if self.table_name.blank?
     self.genre_class = "dataset"
-    self.is_verified_dictionary = false
     self.marked_to_be_deleted = "false"
     true
   end

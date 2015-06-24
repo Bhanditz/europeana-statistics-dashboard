@@ -3,8 +3,7 @@ Rails.application.routes.draw do
 
   namespace :core do
     resources :admins do
-      get 'accounts', "organizations", "dictionaries", on: :collection
-      get "dictionaries/:id/verify",to: "admins#verify_or_unverify_dictionaries",on: :member,as: "verify_or_unverify_dictionaries"
+      get 'accounts', "organizations", on: :collection
     end
     resources :organisations do
       get "members", "make_enterprise_account", on: :member
@@ -44,7 +43,7 @@ Rails.application.routes.draw do
           post "upload", "commit_merge", on: :collection
           get "empty_grid", "merge", on: :collection
           put "commit_append", "update_assign_metadata", on: :member
-          get "publish", "mark_as_dictionary", "mark_as_dataset", "append_rows", "recalibrate_metadata", "assign_metadata", on: :member
+          get "publish", "append_rows", "recalibrate_metadata", "assign_metadata", on: :member
           resources :vizs, only: [:create, :update, :destroy] do
             put "update_only_query", on: :member
           end

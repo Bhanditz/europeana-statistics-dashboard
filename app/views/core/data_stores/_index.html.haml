@@ -34,10 +34,7 @@
                 Cloned from
                 = link_to "#{parent.core_project.account.username}/#{parent.core_project.name}", _account_project_data_store_path(parent.account, parent.core_project, parent)
           %td.borderless
-            -if data_store.genre_class == "dictionary"
-              .hint{style: data_store.is_verified_dictionary ? "color: green; text-decoration: underline;" : nil} Dictionary
-            - else
-              .hint Spreadsheet
+            .hint Spreadsheet
           -if @sudo[1] and @can_publish_data_store and data_store.marked_to_be_deleted != "true"
             %td.borderless
               = link_to "Set metadata", assign_metadata_account_core_project_data_store_path(data_store.account, data_store.core_project, data_store), class: "hint u"
