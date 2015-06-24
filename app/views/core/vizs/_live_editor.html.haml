@@ -1,0 +1,1260 @@
+- @all_map_codes = []
+- if @visualization['genre'] == "Map Charts"
+  -@all_map_codes = ["canada", "china", "finland", "france", "germany", "greece", "italy", "india", "japan", "malaysia", "mexico", "nepal", "netherlands", "new_zealand", "north_america", "pakistan", "portugal", "south_africa", "south_america", "south_korea", "spain", "sri_lanka", "sweden", "switzerland", "united_arab_emirates", "united_kingdom-country", "united_states_of_america", "india-pc", "new_york", "united_kingdom-district", "andaman_and_nicobar", "andhra_pradesh", "arunachal_pradesh", "assam", "bihar", "chandigarh", "chhattisgarh", "dadra_and_nagar_haveli", "delhi", "daman_and_diu", "gujarat", "goa", "haryana", "himachal_pradesh", "jammu_and_kashmir", "jharkhand", "karnataka", "lakshadweep", "kerala", "maharashtra", "madhya_pradesh", "manipur", "meghalaya", "nagaland", "austria", "bhutan", "world", "africa", "asia", "antarctica", "europe", "world_with_antarctica", "andhra_pradesh-as", "arunachal_pradesh-as", "assam-as", "bihar-as", "chhattisgarh-as", "gujarat-as", "goa-as", "haryana-as", "himachal_pradesh-as", "jammu_and_kashmir-as", "jharkhand-as", "karnataka-as", "kerala-as", "maharashtra-as", "albania", "odisha", "puducherry", "punjab", "rajasthan", "sikkim", "tamil_nadu", "telangana", "tripura", "uttarakhand", "uttar_pradesh", "west_bengal", "madhya_pradesh-as", "manipur-as", "meghalaya-as", "mizoram-as", "nagaland-as", "odisha-as", "punjab-as", "rajasthan-as", "sikkim-as", "tamil_nadu-as", "tripura-as", "uttarakhand-as", "uttar_pradesh-as", "west_bengal-as", "brazil", "india-district", "mizoram", "afghanistan", "australia"]
+
+.col-sm-12
+  .move-down{style:"margin-top:-10px;margin-left:-3px;margin-bottom:10px"}
+    .pull-left#footer-should-not-change{style: "margin-top:20px"}
+      %span
+        %label.cstm-label{style: "font-size:1em;display:inline"}Width
+        %input.form-control.cstm-form-control.execute{:placeholder => "Width", :type => "number", :id => "chart_width", :value => @visualization['config']['chart_width'], style: "width:28% !important;display:inline;margin:5px" }
+
+        %label.cstm-label{style: "font-size:1em;display:inline"}Height
+        %input.form-control.cstm-form-control.execute{:placeholder => "Height", :type => "number", :id => "chart_height", :value => @visualization['config']['chart_height'],style: "width:28% !important;display:inline;margin:5px"}
+        %br
+        %a#expandCollapse{:href => "#"} Expand / Collapse all
+      
+.col-sm-12#configuration_panels_sidebar
+
+  %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#chart_title"}Title
+  #chart_title.collapse.panel-body.grey.indent
+    .col-sm-6{style: "display:none"}
+      %label.cstm-label Text
+      %input.form-control.cstm-form-control.execute{:placeholder => "Enter title here", :type => "text", :id => "title_text" , :value => @visualization['config']['title_text'] }
+
+
+    .col-sm-6
+      %label.cstm-label Size
+      .input-group
+        %input.form-control.cstm-form-control.execute{:placeholder => "Size", :type => "number", :id => "title_size" , :value => @visualization['config']['title_size']}
+        %span.input-group-addon vm
+
+    .col-sm-6
+      %label.cstm-label Weight
+      %select.cstm-form-control.form-control.execute{:placeholder => "Weight", id: 'title_weight', value: @visualization['config']['title_weight'], name: "title-weight"}
+        %option{:value => "bold"} Bold
+        %option{:value => "normal"} Normal
+
+    .col-sm-12
+      %label.cstm-label Font Family
+      %input.form-control.cstm-form-control.execute{:placeholder => "Font Family", :type => "textbox", :id => "title_family", :value => @visualization['config']['title_family']}
+    
+    %br
+    .col-sm-12
+      %label.cstm-label Title Color
+      .clearfix
+      .col-sm-2
+        .input-append.color#title_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#title_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :id => "title_color", :value => "",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#title_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#title_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"title_color",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#title_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#title_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"title_color",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#title_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#title_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"title_color",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#title_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#title_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"title_color",:checked => "checked",:reference=>"color1"}
+
+
+  %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#chart_subtitle"}Sub Title
+  #chart_subtitle.collapse.panel-body.grey.indent
+    .col-sm-6{style: "display:none"}
+      %label.cstm-label Subtitle Text
+      %input.form-control.cstm-form-control.execute{:placeholder => "Enter sub-title here", :type => "text", :id => "subtitle_text", :value => @visualization['config']['subtitle_text']}
+
+    .col-sm-6
+      %label.cstm-label Subtitle Size
+      .input-group
+        %input.form-control.cstm-form-control.execute{:placeholder => "Size", :type => "number", :id => "subtitle_size", :value => @visualization['config']['subtitle_size']}
+        %span.input-group-addon vm
+
+    .col-sm-6
+      %label.cstm-label Subtitle Weight
+      %select.cstm-form-control.form-control.execute{:placeholder => "Weight", id: 'subtitle_weight', value: @visualization['config']['subtitle_weight'], name: "subtitle-weight"}
+        %option{:value => "bold"} Bold
+        %option{:value => "normal", selected:"checked"} Normal
+
+    .col-sm-12
+      %label.cstm-label Subtitle Font Family
+      %input.form-control.cstm-form-control.execute{:placeholder => "Font Family", :type => "textbox", :id => "subtitle_family", :value => @visualization['config']['subtitle_family'] }
+    
+    %br
+    .col-sm-12
+      %label.cstm-label Subtitle Color
+      .clearfix
+      .col-sm-2
+        .input-append.color#subtitle_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#subtitle_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :id => "subtitle_color", :value => "",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#subtitle_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#subtitle_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"subtitle_color",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#subtitle_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#subtitle_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"subtitle_color",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#subtitle_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#subtitle_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"subtitle_color",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#subtitle_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#subtitle_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"subtitle_color",:checked => "checked",:reference=>"color1"}  
+
+  -if @visualization['genre'] =="Multi Dimensional Charts" || @visualization['genre'] =="One Dimensional Charts"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#mode_panel"}Chart Mode
+    #mode_panel.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label Choose Mode
+        %select.cstm-form-control.form-control.execute{:placeholder => "style", id: 'mode', value: @visualization['config']['mode'], name: "mode"}
+          %option{:value => "default"} Default
+          %option{:value => "infographics"} Infographics
+
+  -if @visualization['genre'] == "One Dimensional Charts"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#colormode"}Color Mode
+    #colormode.collapse.panel-body.grey
+      .col-sm-6.indent
+        %label.cstm-label Mode
+        %select.cstm-form-control.form-control.execute{:placeholder => "Mode", id: 'color_mode', value: "Shade", name: "color_mode","disableinputs1"=>"colorEnable"}
+          %option{:value => "color"} Color
+          %option{:value => "shade",selected:"checked"} Shade
+
+      .col-sm-6.indent
+        %label.cstm-label Shade Color
+        %input.form-control.cstm-form-control.execute.colorEnable{:type => "color", :id => "shade_color", :value => @visualization['config']['shade_color']}
+
+  -if @visualization['genre'] ==  "Multi Dimensional Charts"  && @chart_name != "Scatter" && @chart_name != "Pulse" && @chart_name != "Spider" && @chart_name != "Panel of Scatters" || @visualization['genre'] ==  "Map Charts"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#colormode"}Color Mode
+    #colormode.collapse.panel-body.grey
+      .col-sm-6.indent
+        %label.cstm-label Mode
+        %select.cstm-form-control.form-control.execute{:placeholder => "Mode", id: 'color_mode', value: @visualization['config']['color_mode'], name: "color_mode","disableinputs1"=>"colorEnable"}
+          %option{:value => "color"} Color
+          %option{:value => "saturation",selected:"checked"} Saturation
+
+      .col-sm-6.indent
+        %label.cstm-label Saturation Color
+        %input.form-control.cstm-form-control.execute.colorEnable{:type => "color", :id => "saturation_color", :value => @visualization['config']['saturation_color']}
+
+      -if @visualization['genre'] !=  "Multi Dimensional Charts"
+        .col-sm-12.indent
+          %label.cstm-label OR
+        .col-sm-6.indent
+          %label.cstm-label Color Palette
+          %select.cstm-form-control.form-control.execute.colorEnable{:placeholder => "Color palette", id: 'palette_color', value: @visualization['config']['palette_color'], name: "palette_color"}
+            %option{:value => "Green-3"} Multi Green Green
+            %option{:value => "Violet-2"} Multi Violet Blue
+            %option{:value => "Blue-2"} Multi Blue Green
+            %option{:value => "Orange-2"} Multi Red Orange
+            %option{:value => "Blue-3"} Multi Blue Blue
+            %option{:value => "Green-2"} Multi Green Blue
+            %option{:value => "Pink"} Multi Pink Pink
+            %option{:value => "Violet-1"} Multi Violet Pink
+            %option{:value => "Green-4"} Multi Green Yellow
+            %option{:value => "Blue-4"} Multi NavyBlue Blue
+            %option{:value => "Orange-3"} Multi Orange Orange
+            %option{:value => "Orange-4"} Multi Pink Orange
+            %option{:selected => "selected", :value => "Blue-1"} Blue
+            %option{:value => "Green-1"} Green
+            %option{:value => "Black"} Black
+            %option{:value => "Orange-1"} Orange
+            %option{:value => "Purple"} Purple
+            %option{:value => "Red"} Red
+        .col-sm-12.indent
+          %br
+          %label.cstm-label Total number of colors
+          %input.form-control.cstm-form-control.execute.colorEnable{:value => "#4682B4", :placeholder => "Total number of colors", :type => "number",id: 'total_no_of_colors', value: @visualization['config']['total_no_of_colors']}
+
+  -if @chart_name != 'Pictograph'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#chartcolor"}Chart Color
+    #chartcolor.collapse.panel-body.grey
+     
+      %input.cstm-form-control.execute2{:name => "chart_color_boolean", :type => "radio", :value => "",:id=>"chart_color_boolean0",       :checked =>"checked"}
+      %label.cstm-label{disabled: true} Array Mode
+      .col-sm-12
+        %input.form-control.cstm-form-control.execute.identity2{:placeholder => "Add Semicolon Separated Values", :type => "textbox", :id => "chart_color", :value => @visualization['config']['chart_color'],"id1"=>"array_text"}
+      %br
+        .clearfix
+
+      %input.cstm-form-control.execute2{:name => "chart_color_boolean", :type => "radio", :value => "",:id=>"chart_color_boolean1"}
+      %label.cstm-label{disabled: true} Swatch Mode
+      .clearfix
+      .col-sm-2
+        .input-append.color.identity1{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle.identity1{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute3.identity1{:type => "checkbox",:value => "",:id=>"chart_color", "name" => "chartcolor",:disabled=>true, :reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity1{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle.identity1{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute3.identity1{:type => "checkbox",:value => "",:id=>"chart_color", "name" => "chartcolor",:disabled=>true, :reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity1{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle.identity1{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute3.identity1{:type => "checkbox",:value => "",:id=>"chart_color", "name" => "chartcolor",:disabled=>true, :reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity1{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle.identity1{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute3.identity1{:type => "checkbox",:value => "",:id=>"chart_color", "name" => "chartcolor",:disabled=>true, :reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity1{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle.identity1{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute3.identity1{:type => "checkbox",:value => "",:id=>"chart_color", "name" => "chartcolor",:disabled=>true, :reference=>"color1"}
+
+  %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", href: "#background",style:"width:100%"} Background Color
+  #background.collapse.panel-body.grey
+    .col-sm-12.indent
+      %label.cstm-label  Choose Color
+      / %input.form-control.cstm-form-control.execute{:style => "min-width:30px;", :type => "color", :id => "background_color", :value => @visualization['config']['background_color']}
+    .col-sm-2
+      .input-append.color#background_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+        %span.add-on
+          %i.circle#background_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+        %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"background_color",:reference=>"color1"}
+    .col-sm-2
+      .input-append.color#background_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+        %span.add-on
+          %i.circle#background_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+        %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"background_color",:reference=>"color1"}
+    .col-sm-2
+      .input-append.color#background_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+        %span.add-on
+          %i.circle#background_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+        %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"background_color",:reference=>"color1"}
+    .col-sm-2
+      .input-append.color#background_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+        %span.add-on
+          %i.circle#background_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+        %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"background_color",:reference=>"color1"}
+    .col-sm-2
+      .input-append.color#background_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+        %span.add-on
+          %i.circle#background_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+        %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"background_color",:checked => "checked",:reference=>"color1"}
+
+  - if @visualization['genre'] == "One Dimensional Charts"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#units"}Units
+    #units.collapse.panel-body.grey
+      .col-sm-6.indent
+        %label.cstm-label Add Prefix
+        %input.form-control.cstm-form-control.execute{:placeholder => "eg: $", :type => "textbox", :id => "units_prefix", :value => @visualization['config']['units_prefix']}
+      .col-sm-6.indent
+        %label.cstm-label Add Suffix
+        %input.form-control.cstm-form-control.execute{:placeholder => "eg: /-", :type => "textbox", :id => "units_suffix", :value => @visualization['config']['units_suffix']}
+  
+  -if (@visualization['genre'] == "One Dimensional Charts" or @chart_name == "Multi-series Line" or @chart_name == "Line" or @chart_name == "Panel of Lines" or @chart_name == "Bar" or @chart_name == "Grouped Bar") and @chart_name != "1D Bubble"
+    %a.list-group-item.theme-editor.panel-title{"data-parent" => "#MainMenu", "data-toggle" => "collapse", :href => "#ticks"} Ticks (Outside Chart)
+    #ticks.collapse.panel-body.grey
+      -if @chart_name != "Bar" and @chart_name != "Grouped Bar" and @chart_name != "Panel of Lines"
+        .col-sm-12.indent
+          %label.cstm-label.checkbox-inline Allow ticks to Overflow
+          -checked = @visualization['config']['pointer_overflow_enable']  == "yes" ? "true" : "false"
+          %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['pointer_overflow_enable'], id:"pointer_overflow_enable", checked: checked}
+      .clearfix
+        %br
+
+      -if @chart_name != "Multi-series Line" and @chart_name != "Panel of Lines" and @chart_name != "Line" and @chart_name != "Bar" and @chart_name != "Grouped Bar"
+        .col-sm-6.indent
+          %label.cstm-label Line width
+          %input.form-control.cstm-form-control.execute{:placeholder => "Stroke Width", :type => "number",id: 'pointer_thickness', value: @visualization['config']['pointer_thickness']}
+
+      .col-sm-6.indent
+        %label.cstm-label Text Font
+        %input.form-control.cstm-form-control.execute{:placeholder => "Font family", :type => "textbox", id: 'pointer_family', value: @visualization['config']['pointer_family']}
+
+      .col-sm-6.indent
+        %label.cstm-label Text Size
+        .input-group
+          %input.form-control.cstm-form-control.execute{:placeholder => "Size", :type => "number",id: 'pointer_size', value: @visualization['config']['pointer_size']}
+          %span.input-group-addon px
+      .col-sm-6.indent
+        %label.cstm-label Text Style
+        %select.cstm-form-control.form-control.execute{:placeholder => "Weight", id: 'pointer_weight', value: @visualization['config']['pointer_weight'], name: "pointer_weight"}
+          %option{:value => "bold"} Bold
+          %option{:value => "normal", selected:"checked"} Normal
+      .clearfix
+        %br
+
+      -if @chart_name != "Panel of Lines" and @chart_name != "Line" and @chart_name != "Multi-series Line"
+        .col-sm-6.indent
+          %label.cstm-label Text Color
+        .clearfix
+        .col-sm-2
+          .input-append.color.identity#pointer_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+            %span.add-on
+              %i.circle#pointer_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+            %input.cstm-form-control.execute1{:name=> "pointercolor" ,:type => "radio",:value => "",:id=>"pointer_color","indentity"=>"chart_color0",:reference=>"color1"}
+        .col-sm-2
+          .input-append.color.identity#pointer_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+            %span.add-on
+              %i.circle#pointer_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+            %input.cstm-form-control.execute1{:name=> "pointercolor" ,:type => "radio",:value => "",:id=>"pointer_color","indentity"=>"chart_color1",:reference=>"color1"}
+        .col-sm-2
+          .input-append.color.identity#pointer_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+            %span.add-on
+              %i.circle#pointer_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+            %input.cstm-form-control.execute1{:name=> "pointercolor" ,:type => "radio",:value => "",:id=>"pointer_color","indentity"=>"chart_color2",:reference=>"color1"}
+        .col-sm-2
+          .input-append.color.identity#pointer_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+            %span.add-on
+              %i.circle#pointer_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+            %input.cstm-form-control.execute1{:name=> "pointercolor" ,:type => "radio",:value => "",:id=>"pointer_color","indentity"=>"chart_color3",:reference=>"color1"}
+        .col-sm-2
+          .input-append.color.identity#pointer_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+            %span.add-on
+              %i.circle#pointer_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+            %input.cstm-form-control.execute1{:name=> "pointercolor" ,:type => "radio",:value => "",:id=>"pointer_color","indentity"=>"chart_color4",:checked=>"checked",:reference=>"color1"}
+
+  -if @visualization['genre'] == "Multi Dimensional Charts"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#x_axis"}X Axis
+    #x_axis.collapse.panel-body.grey
+      -if @chart_name != "Spider"
+        .col-sm-12.indent
+          %label.cstm-label.checkbox-inline Enable X-Axis
+          -disabled=false
+          -checked = @visualization['config']['axis_x_enable'] == "yes" ? "true" : "false"
+          %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['axis_x_enable'], id:"axis_x_enable",checked:checked,"disableinputs"=>"xEnable"}
+        .clearfix
+        %br
+
+        -if @chart_name != "Scatter" && @chart_name != "Pulse"
+          .col-sm-12.indent
+            %label.cstm-label.checkbox-inline Highlight Axes on hover
+            -checked = @visualization['config']["axis_onhover_highlight_enable"]  == "yes" ? "true" : "false"
+            %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']["axis_onhover_highlight_enable"], id:"axis_onhover_highlight_enable",checked:checked}
+            .clearfix
+            %br
+
+        .col-sm-6.indent
+          %label.cstm-label Title
+          %input.form-control.cstm-form-control.execute.xEnable{:placeholder => "Enter Title", :type => "var",:id => "axis_x_title", :value => @visualization['config']['axis_x_title'],disabled:disabled}
+
+        .col-sm-6.indent
+          %label.cstm-label Axis Position
+          %select.cstm-form-control.form-control.execute.xEnable{:placeholder => "Position", id: 'axis_x_position', value: @visualization['config']['axis_x_position'], name: "optional_axis_x_position",disabled:disabled}
+            %option{:value => "bottom"} Bottom
+            %option{:value => "top"} Top
+
+        .col-sm-6.indent
+          %label.cstm-label Ticks Position
+          %select.cstm-form-control.form-control.execute.xEnable{:placeholder => "Orient", id: 'axis_x_pointer_position', value: @visualization['config']['axis_x_pointer_position'], name: "optional_axis_x_orient",disabled:disabled}
+            %option{:value => "bottom"} Bottom
+            %option{:value => "top"} Top
+
+        .col-sm-6.indent
+          %label.cstm-label Axis color
+          %input.form-control.cstm-form-control.execute.xEnable{:type => "color", :id => "axis_x_line_color", :value => @visualization['config']['axis_x_line_color'],disabled:disabled}
+
+
+      .col-sm-6.indent
+        %label.cstm-label Ticks size
+        .input-group
+          %input.form-control.cstm-form-control.execute.xEnable{:placeholder => "Tick size", :type => "number", :id => "axis_x_pointer_size", :value => @visualization['config']['axis_x_pointer_size'],disabled:disabled}
+          %span.input-group-addon px
+      .col-sm-6.indent
+        %label.cstm-label Ticks color
+        %input.form-control.cstm-form-control.execute.xEnable{:type => "color", :id => "axis_x_pointer_color", :value => @visualization['config']['axis_x_pointer_color'],disabled:disabled}
+
+      .col-sm-6.indent
+        %label.cstm-label Ticks family
+        %input.form-control.cstm-form-control.execute.labelEnable{:placeholder => "Font Family", :type => "textbox", :id => "axis_x_pointer_family", :value => @visualization['config']['axis_x_pointer_family']}
+
+      .col-sm-6.indent
+        %label.cstm-label Ticks weight
+        %select.cstm-form-control.form-control.execute.labelEnable{:placeholder => "Weight", id: 'axis_x_pointer_weight', value: @visualization['config']['axis_x_pointer_weight'], name: "axis_x_pointer_weight"}
+          %option{:value => "bold"} Bold
+          %option{:value => "normal"} Normal
+
+      .col-sm-6.indent
+        %label.cstm-label Ticks Padding
+        %input.form-control.cstm-form-control.execute.xEnable{:placeholder => "Ticks padding", :type => "number", :id => "axis_x_pointer_padding", :value => @visualization['config']['axis_x_pointer_padding'],disabled:disabled}
+
+      .col-sm-6.indent
+        %label.cstm-label Outer Tick Length
+        %input.form-control.cstm-form-control.execute.xEnable{:placeholder => "Outer tick size", :type => "number", :id => "axis_x_outer_pointer_length", :value => @visualization['config']['axis_x_outer_pointer_length'],disabled:disabled}
+      
+      .col-sm-6.indent
+        %label.cstm-label Always Show Ticks
+        %input.form-control.cstm-form-control.execute.xEnable{:placeholder => "red;green;blue", :type => "string", :id => "axis_x_pointer_values", :value => @visualization['config']['axis_x_pointer_values'],disabled:disabled}
+
+      .col-sm-6.indent
+        %label.cstm-label Datatype
+        %select.cstm-form-control.form-control.execute.xEnable{:placeholder => "Datatype", id: 'axis_x_time_value_datatype', value: @visualization['config']['axis_x_time_value_datatype'], name: "optional_axis_x_time_value_datatype",disabled:disabled}
+          %option{:value => "month"} Month
+          %option{:value => "date"} Date
+          %option{:value => "year"} Year
+          %option{:value => "hours"} Hours
+          %option{:value => "minutes"} Minutes
+
+      %br
+      .clearfix
+
+      .col-sm-6.indent
+        %label.cstm-label Interval
+        %input.form-control.cstm-form-control.execute.xEnable{:placeholder => "Interval", :type => "number", :id => "axis_x_time_value_interval", :value => @visualization['config']['axis_x_time_value_interval'],disabled:disabled}
+
+      -if @chart_name != "Column" or @chart_name != "Grouped Column"
+
+        .col-sm-6.indent
+          %label.cstm-label Number of Ticks
+          %input.form-control.cstm-form-control.execute.xEnable{:placeholder => "Number of ticks", :type => "number", :id => "axis_x_no_of_axis_value", :value => @visualization['config']['axis_x_no_of_axis_value'],disabled:disabled}
+
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#y_axis"}Y Axis
+    #y_axis.collapse.panel-body.grey
+      .col-sm-12
+      -if @chart_name != "Spider"
+        .col-sm-12.indent
+          %label.cstm-label.checkbox-inline Enable Y-Axis
+          -if @visualization['config']['axis_y_enable'] == "yes"
+            - disabled = false
+            - checked = true
+          -else 
+            - disabled = true
+            - checked = "false"
+
+          %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['axis_y_enable'], id:"axis_y_enable",checked:checked,"disableinputs"=>"yEnable"}
+        .clearfix
+        %br
+        .col-sm-6.indent
+          %label.cstm-label Axis Title
+          %input.form-control.cstm-form-control.execute.yEnable{:placeholder => "Axis Title", :type => "var",:id => "axis_y_title", :value => @visualization['config']['axis_y_title'],disabled:disabled}
+
+        .col-sm-6.indent
+          %label.cstm-label Axis Position
+          %select.cstm-form-control.form-control.execute.yEnable{:placeholder => "Position", id: 'axis_y_position', value: @visualization['config']['axis_y_position'],disabled:disabled}
+            %option{:value => "left"} Left
+            %option{:value => "right"} Right
+
+        .col-sm-6.indent
+          %label.cstm-label Ticks Position
+          %select.cstm-form-control.form-control.execute.yEnable{:placeholder => "Orient", id: 'axis_y_pointer_position', value: @visualization['config']['axis_y_pointer_position'],disabled:disabled}
+            %option{:value => "left"} Left
+            %option{:value => "right"} Right
+
+        .col-sm-6.indent
+          %label.cstm-label Axis color
+          %input.form-control.cstm-form-control.execute.yEnable{:type => "color", :id => "axis_y_line_color", :value => @visualization['config']['axis_y_line_color'],disabled:disabled}
+
+      .col-sm-6.indent
+        %label.cstm-label Ticks size
+        .input-group
+          %input.form-control.cstm-form-control.execute.yEnable{:placeholder => "Tick size", :type => "number", :id => "axis_y_pointer_size", :value => @visualization['config']['axis_y_pointer_size'],disabled:disabled}
+          %span.input-group-addon px
+      
+      .col-sm-6.indent
+        %label.cstm-label Ticks color
+        %input.form-control.cstm-form-control.execute.yEnable{:type => "color", :id => "axis_y_pointer_color", :value => @visualization['config']['axis_y_pointer_color'],disabled:disabled}
+
+      -if @chart_name != "Bar" && @chart_name != "Grouped Bar" && @chart_name != "Spider"
+
+        .col-sm-6.indent
+          %label.cstm-label Number of Ticks
+          %input.form-control.cstm-form-control.execute.yEnable{:placeholder => "Number of ticks", :type => "number", :id => "axis_y_no_of_axis_value", :value => @visualization['config']['axis_y_no_of_axis_value'],disabled:disabled}
+
+
+        .col-sm-6.indent
+          %label.cstm-label Ticks Padding
+          %input.form-control.cstm-form-control.execute.yEnable{:placeholder => "Ticks padding", :type => "number", :id => "axis_y_pointer_padding", :value => @visualization['config']['axis_y_pointer_padding'],disabled:disabled}
+
+        .col-sm-6.indent
+          %label.cstm-label Always Show Ticks
+          %input.form-control.cstm-form-control.execute.yEnable{:placeholder => "Add Semicolon Seperated Values", :type => "string", :id => "axis_y_pointer_values", :value => @visualization['config']['axis_y_pointer_values'],disabled:disabled}
+
+        .col-sm-6.indent
+          %label.cstm-label Outer Tick Length
+
+          %input.form-control.cstm-form-control.execute.yEnable{:placeholder => "Outer tick size", :type => "number", :id => "axis_y_outer_pointer_length", :value => @visualization['config']['axis_y_outer_pointer_length'],disabled:disabled}
+
+        %br
+        .clearfix
+
+        .col-sm-6.indent
+          %label.cstm-label Datatype
+          %select.cstm-form-control.form-control.execute.yEnable{:placeholder => "Datatype", id: 'axis_y_time_value_datatype', value: @visualization['config']['axis_y_time_value_datatype'], name: "optional_axis_y_time_value_datatype",disabled:disabled}
+            %option{:value => "month"} Month
+            %option{:value => "date"} Date
+            %option{:value => "year"} Year
+            %option{:value => "hours"} Hours
+            %option{:value => "minutes"} Minutes
+
+        .col-sm-6.indent
+          %label.cstm-label Interval
+          %input.form-control.cstm-form-control.execute.yEnable{:placeholder => "Interval", :type => "number", :id => "axis_y_time_value_interval", :value => @visualization['config']['axis_y_time_value_interval'],disabled:disabled}
+
+
+  -if @chart_name != "Pulse" && @chart_name != "Spider" && @chart_name != "Scatter" && @chart_name != "Line" && @chart_name != "Area" && @chart_name != "Pictograph"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#highlight_panel"}Highlight
+    #highlight_panel.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label Highlight Segment
+        %input.form-control.cstm-form-control.execute{:placeholder => "Segment Name", :type => "var", :id => "highlight", :value => @visualization['config']['highlight']}
+        %br
+      .clearfix
+      .col-sm-12.indent
+        %label.cstm-label Highlight Color
+      .clearfix
+      .col-sm-2
+        .input-append.color#highlight_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#highlight_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "highlightcolor", :type => "radio", :value => "",:id=>"highlight_color",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#highlight_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#highlight_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "highlightcolor", :type => "radio", :value => "",:id=>"highlight_color",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#highlight_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#highlight_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "highlightcolor", :type => "radio", :value => "",:id=>"highlight_color",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#highlight_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#highlight_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "highlightcolor", :type => "radio", :value => "",:id=>"highlight_color",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color#highlight_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#highlight_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name => "highlightcolor", :type => "radio", :value => "",:id=>"highlight_color",:checked=>"checked",:reference=>"color1"}
+
+
+  -if @visualization['genre'] == "Map Charts" or @visualization['genre'] == "One Dimensional Charts" or @chart_name == 'Scatter'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#label"}Labels (Inside Chart)
+    #label.collapse.panel-body.grey
+      -if @visualization['genre'] == "Map Charts"
+
+        .col-sm-12.indent
+          %label.cstm-label.checkbox-inline Turn On Label
+          -if @visualization['config']['label_enable'] == "yes"
+            - disabled = false
+            - checked = true
+          -else 
+            - disabled = true
+            - checked  = false
+          %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['label_enable'], id:"label_enable",checked:checked,"disableinputs"=>"labelEnable"}
+
+      -if @visualization['genre'] != "Map Charts"
+        .col-sm-6.indent
+          %label.cstm-label Text Size
+          .input-group
+            %input.form-control.cstm-form-control.execute.labelEnable{:placeholder => "Size", :type => "number", :id => "label_size", :value => @visualization['config']['label_size']}
+            %span.input-group-addon px
+        .col-sm-6.indent
+          %label.cstm-label Text Style
+          %select.cstm-form-control.form-control.execute.labelEnable{:placeholder => "Weight", id: 'label_weight', value: @visualization['config']['label_weight'], name: "label-weight"}
+            %option{:value => "bold"} Bold
+            %option{:value => "normal"} Normal
+        .col-sm-12.indent
+          %label.cstm-label Text Font
+          %input.form-control.cstm-form-control.execute.labelEnable{:placeholder => "Font Family", :type => "textbox", :id => "label_family", :value => @visualization['config']['label_family']}
+
+      %br
+      .clearfix
+      .col-sm-12.indent
+        %label.cstm-label Color
+      .clearfix
+      .col-sm-2
+        .input-append.color.identity#label_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#label_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name=> "color" ,:type => "radio",:value => "",:id=>"label_color","indentity"=>"chart_color0",:reference=>"color1",:checked=>true}
+      .col-sm-2
+        .input-append.color.identity#label_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#label_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name=> "color" ,:type => "radio",:value => "",:id=>"label_color","indentity"=>"chart_color0",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity#label_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex",:reference=>"color1"}
+          %span.add-on
+            %i.circle#label_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name=> "color" ,:type => "radio",:value => "",:id=>"label_color","indentity"=>"chart_color0",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity#label_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#label_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name=> "color" ,:type => "radio",:value => "",:id=>"label_color","indentity"=>"chart_color0",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity#label_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#label_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name=> "color" ,:type => "radio",:value => "",:id=>"label_color","indentity"=>"chart_color0",:reference=>"color1"}
+
+  -if @chart_name != "Timeline" 
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#realtimedata"} Live Data
+    #realtimedata.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label.checkbox-inline Enable  last updated at
+        -checked = @visualization['config']['real_time_charts_last_updated_at_enable'] == "yes" ? true : false
+        %input.cstm-form-control.execute{:type => "checkbox", id: 'real_time_charts_last_updated_at_enable', value: @visualization['config']['real_time_charts_last_updated_at_enable'], checked: checked}
+
+      .col-sm-6.indent
+        %label.cstm-label Set Refresh Frequency
+        %input.form-control.cstm-form-control.execute{:placeholder => "Frequency", :type => "number", :id => "real_time_charts_refresh_frequency", :value => @visualization['config']['real_time_charts_refresh_frequency'], min: 0}
+
+  -if @visualization['genre'] != "Map Charts" or @chart_name == "Spider"
+
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#transition"}Transition / Animation
+    #transition.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label Set Transition Duration
+      .col-sm-8.indent
+        .input-group
+          %input.form-control.cstm-form-control.execute{:placeholder => "Duration", :type => "number", :id => "transition_duration", :value => @visualization['config']['transition_duration'], min: 0,disabled:disabled}
+          %span.input-group-addon Sec
+
+  -if @chart_name != "1D Bubble" && @chart_name != "Treemap" && @chart_name != "Line" && @chart_name != "Pictograph" && @chart_name != "Panel of Lines" && @chart_name != "Multi-series Line" && @chart_name != "Area"
+
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#border"}Chart Border
+    #border.collapse.panel-body.grey
+
+      .col-sm-6.indent
+        %label.cstm-label Thickness
+        %input.form-control.cstm-form-control.execute{:placeholder => "Thickness", :type => "number",id: 'border_between_chart_elements_thickness', value: @visualization['config']['border_between_chart_elements_thickness']}
+
+      .col-sm-6.indent
+        %label.cstm-label Style
+        %select.cstm-form-control.form-control.execute{:placeholder => "style",id: 'border_between_chart_elements_style', value: @visualization['config']['border_between_chart_elements_style'], name: 'border_between_chart_elements_style'}
+          %option{:value => "solid"} Solid
+          %option{:value => "dotted"} Dotted
+          %option{:value => "dashed"} Dashed
+
+      .col-sm-12.indent
+        %label.cstm-label Color
+        .clearfix
+      .col-sm-2
+        .input-append.color.identity#border_between_chart_elements_color_input{"data-color" => "#FFFFFF", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#border_between_chart_elements_color_circle{:style => "background-color: #FFFFFF;"}
+          %input.cstm-form-control.execute1{:name=> "bordercolor" ,:type => "radio",:value => "#FFFFFF",:id=>"border_between_chart_elements_color","indentity"=>"chart_color0",:reference=>"color1",:checked=>"checked"}
+      .col-sm-2
+        .input-append.color.identity#border_between_chart_elements_color_input{"data-color" => "#ece7e7", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#border_between_chart_elements_color_circle{:style => "background-color: #ece7e7"}
+          %input.cstm-form-control.execute1{:name=> "bordercolor" ,:type => "radio",:value => "#ece7e7",:id=>"border_between_chart_elements_color","indentity"=>"chart_color1",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity#border_between_chart_elements_color_input{"data-color" => "#d9d3d3", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#border_between_chart_elements_color_circle{:style => "background-color: #d9d3d3"}
+          %input.cstm-form-control.execute1{:name=> "bordercolor" ,:type => "radio",:value => "#d9d3d3",:id=>"border_between_chart_elements_color","indentity"=>"chart_color2",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity#border_between_chart_elements_color_input{"data-color" => "#969191", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#border_between_chart_elements_color_circle{:style => "background-color: #969191"}
+          %input.cstm-form-control.execute1{:name=> "bordercolor" ,:type => "radio",:value => "#969191",:id=>"border_between_chart_elements_color","indentity"=>"chart_color3",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity#border_between_chart_elements_color_input{"data-color" => "#000000", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#border_between_chart_elements_color_circle{:style => "background-color: #000000"}
+          %input.cstm-form-control.execute1{:name=> "bordercolor" ,:type => "radio",:value => "#000000",:id=>"border_between_chart_elements_color","indentity"=>"chart_color4",:reference=>"color1"}
+
+
+  -if @visualization['genre'] == "One Dimensional Charts" && @chart_name != "Funnel"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#clubdata"}Group data
+    #clubdata.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label.checkbox-inline Turn On data grouping
+        - if @visualization['config']['clubdata_enable'] == "yes"
+          -disabled = false
+          -checked = true 
+        -else 
+          -disabled = true
+          -checked = false
+        %input.cstm-form-control.execute{:type => "checkbox", id: 'clubdata_enable', value: @visualization['config']['clubdata_enable'], checked: checked,"disableinputs"=>"club"}
+      .clearfix
+        %br
+      .col-sm-6.indent
+        %label.cstm-label Group Name
+        %input.form-control.cstm-form-control.execute.club{:placeholder => "Name", :type => "var",:id => "clubdata_text", :value => @visualization['config']['clubdata_text'],disabled:disabled}
+
+      .col-sm-6.indent
+        %label.cstm-label Maximum Segments
+        %input.form-control.cstm-form-control.execute.club{:placeholder => "Nodes", :type => "Number",:id => "clubdata_maximum_nodes", :value => @visualization['config']['clubdata_maximum_nodes'],disabled:disabled}
+
+      .col-sm-12.indent
+        %label.cstm-label Always include the segments below
+        %input.form-control.cstm-form-control.execute.club{:placeholder => "Add Semicolon Separated Values", :type => "var",:id => "clubdata_always_include_data_points",disabled:disabled}
+
+    
+  -if @visualization['genre'] == "Multi Dimensional Charts" && @chart_name != 'Spider'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#margin"}Chart Margins
+    #margin.collapse.panel-body.grey
+      .col-sm-6.indent
+        %label.cstm-label Left
+        %input.form-control.cstm-form-control.execute{:placeholder => "Left", :type => "number", :id => "chart_margin_left", :value => @visualization['config']['chart_margin_left']}
+          -# .input-group-addon px
+
+      .col-sm-6.indent
+        %label.cstm-label Right
+        %input.form-control.cstm-form-control.execute{:placeholder => "Right", :type => "number", :id => "chart_margin_right", :value => @visualization['config']['chart_margin_right']}
+          -# .input-group-addon px
+
+      .col-sm-6.indent
+        %label.cstm-label Top
+        %input.form-control.cstm-form.control.execute{:placeholder => "Top", :type => "number", :id => "chart_margin_top", :value => @visualization['config']['chart_margin_top']}
+
+      .col-sm-6.indent
+        %label.cstm-label Bottom
+        %input.form-control.cstm-form.control.execute{:placeholder => "Bottom", :type => "number", :id => "chart_margin_bottom", :value => @visualization['config']['chart_margin_bottom']}
+
+  -if @chart_name != 'Pictograph'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#hover"}On hover
+    #hover.collapse.panel-body
+      .col-sm-12
+        %label.cstm-label On hover
+        %label.cstm-label.checkbox-inline Enable
+        -if @visualization['config']['chart_onhover_highlight_enable']== 'yes'
+          %input.cstm-form-control.execute.tint{:type => "checkbox", :value => "yes", id: "chart_onhover_highlight_enable",checked: true, :onclick => "this.focus()"}
+        -else
+          %input.cstm-form-control.execute.tint{:type => "checkbox", :value => "no", id: "chart_onhover_highlight_enable",checked: false, :onclick => "this.focus()"}
+        -disabled=true
+        -if @visualization['genre'] == "Maps" || @visualization['genre'] == "Map Charts"
+          %select.cstm-form-control.form-control.execute{:placeholder => "hover", id: 'chart_onhover_effect', value: @visualization['config']['chart_onhover_effect'], name: "onhover"}
+            %option{:value => "shadow"} Shadow
+            %option{:value => "highlight_border"} Highlight Border
+            %option{:value => "color_saturation"} Color Saturation
+
+  -if @visualization['genre'] == "Map Charts"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#hover"}On hover
+    #hover.collapse.panel-body.grey
+      .col-sm-12
+        %label.cstm-label On hover
+        %select.cstm-form-control.form-control.execute{:placeholder => "hover", id: 'chart_onhover_effect', value: @visualization['config']['chart_onhover_effect'], name: "onhover"}
+          %option{:value => "none",:selected=>"selected" } None
+          %option{:value => "shadow"} Shadow
+          %option{:value => "highlight_border"} Highlight Border
+          %option{:value => "color_saturation"} Color Saturation
+
+  -if @chart_name == 'Line' || @chart_name == 'Multi-series Line' || @chart_name == 'Panel of Lines' || @chart_name == 'Area' || @chart_name == 'Stacked Area' || @chart_name == "Column" || @chart_name == "Grouped Column"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#chartgrid"}Chart Grid
+    #chartgrid.collapse.panel-body.grey
+      -if @chart_name != "Column" and @chart_name!= "Grouped Column"
+        .col-sm-12.indent
+          %label.cstm-label.checkbox-inline Chart Grid X Enable
+          -checked = @visualization['config']['chart_grid_x_enable'] == "yes" ? "true" : "false"
+          %input.cstm-form-control.execute{:type => "checkbox", id: 'chart_grid_x_enable', value: @visualization['config']['chart_grid_x_enable'], checked: checked}
+
+      .col-sm-12.indent
+        %label.cstm-label.checkbox-inline Chart Grid Y Enable
+        -checked = @visualization['config']['chart_grid_y_enable'] == "yes" ? "true" : "false"
+        %input.cstm-form-control.execute{:type => "checkbox", id: 'chart_grid_y_enable', value: @visualization['config']['chart_grid_y_enable'], checked: checked}
+        .clearfix
+        %br
+
+      .col-sm-6.indent
+        %label.cstm-label Chart Grid Color
+        %input.form-control.cstm-form-control.execute{:type => "color", :id => "chart_grid_color", :value => @visualization['config']['chart_grid_color']}
+
+  -if @chart_name == 'Pie' || @chart_name == 'Semi Pie'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#configurepie"}Configure Pie
+    #configurepie.collapse.panel-body.grey
+      .col-sm-6.indent
+        %label.cstm-label Radius percent
+        .input-group
+          %input.form-control.cstm-form-control.execute{:placeholder => "Radius Percent", :type => "number",id: 'pie_radius_percent', value: @visualization['config']['pie_radius_percent'],max:100}
+          %span.input-group-addon %
+
+  -if @chart_name != 'Pictograph'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#tooltip"}Tooltip
+    #tooltip.collapse.panel-body.grey
+      %label.cstm-label.checkbox-inline Turn On Tooltip
+      -if @visualization['config']['tooltip_enable'] == "yes"
+        -disabled = false
+        -checked = true
+      -else 
+        -diabled = true
+        -checked = false
+        
+      %input.cstm-form-control.execute.tint{:type => "checkbox", :value => @visualization['config']['tooltip_enable'], id: "tooltip_enable",checked: checked}
+      -if @chart_name == 'Line' || @chart_name == 'Panel of Lines' || @chart_name == 'Area' || @visualization['genre'] == "Map Charts"
+        .clearfix
+        %br
+        %label.cstm-label Mode
+        %select.cstm-form-control.form-control.execute{:placeholder => "style", id: 'tooltip_mode', value: @visualization['config']['tooltip_mode'], name: "optional_tooltip_mode","disableinputs1"=>"tooltipEnable"}
+          %option{:value => "fixed"} Fixed
+          %option{:value => "moving",selected:"checked"} Moving
+        -if  @visualization['config']['tooltip_mode']== 'fixed'
+          -disbaled=false
+        -if @visualization['genre'] == "Map Charts"
+          .col-sm-6.indent
+            %label.cstm-label Top
+            %input.form-control.cstm-form-control.execute.tooltipEnable{:placeholder => "top", :type => "number",id: 'tooltip_position_top', value: @visualization['config']['tooltip_position_top'],disabled:disabled}
+          .col-sm-6.indent
+            %label.cstm-label Left
+            %input.form-control.cstm-form-control.execute.tooltipEnable{:placeholder => "left", :type => "number",id: 'tooltip_position_left', value: @visualization['config']['tooltip_position_left'],disabled:disabled}
+
+
+  -if @chart_name == 'Donut' || @chart_name == 'Semi Donut'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#configuredonut"}Configure Donut
+    #configuredonut.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label Radius Percent
+        .input-group
+          %input.form-control.cstm-form-control.execute{:placeholder => "Radius Percent", :type => "number",id: 'donut_radius_percent', value: @visualization['config']['donut_radius_percent'],max:100,min:10}
+          %span.input-group-addon %
+
+      .col-sm-12.indent
+        %label.cstm-label Inner Radius Percent
+        .input-group
+          
+          %input.form-control.cstm-form-control.execute{:placeholder => "Inner Radius Percent", :type => "number",id: 'donut_inner_radius_percent', value: @visualization['config']['donut_inner_radius_percent'],max:99,min:1}
+          %span.input-group-addon %
+      .clearfix
+      %br
+
+      .col-sm-10.indent
+        %label.cstm-label.checkbox-inline Show total at the center
+        -checked = @visualization['config']['donut_show_total_at_center'] == "yes" ? "true" : "false"
+        %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['donut_show_total_at_center'], id:"donut_show_total_at_center",checked:checked}
+      .clearfix
+      %br
+      .col-sm-6.indent
+        %label.cstm-label Donut Show Total at Center Size
+        %input.form-control.cstm-form-control.execute{:placeholder => "donut show total at center size", :type => "number",id: 'donut_show_total_at_center_size', value: @visualization['config']['donut_show_total_at_center_size']}
+
+      .col-sm-6.indent
+        %label.cstm-label Donut Show Total at Center Color
+        %input.form-control.cstm-form-control.execute{:placeholder => "donut show total at center color", :type => "color",id: 'donut_show_total_at_center_color', value: @visualization['config']['donut_show_total_at_center_color']}
+      .col-sm-6.indent
+        %label.cstm-label Donut Show Total at Center Weight
+        %select.cstm-form-control.form-control.execute{:placeholder => "Weight", id: 'donut_show_total_at_center_weight', value: @visualization['config']['donut_show_total_at_center_weight'], name: "donut_show_total_at_center_weight"}
+          %option{:value => "normal"} Normal
+          %option{:value => "bold"} Bold
+
+      .col-sm-6.indent
+        %label.cstm-label Donut Show Total at Center Family
+        %input.form-control.cstm-form-control.execute{:placeholder => "Family", :type => "text",id: 'donut_show_total_at_center_family', value: @visualization['config']['donut_show_total_at_center_family']}
+
+
+  -if @chart_name == 'Funnel'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#configurefunnel"}Configure Funnel
+    #configurefunnel.collapse.panel-body.grey
+      .col-sm-6.indent
+        %label.cstm-label Rectangle width
+        %input.form-control.cstm-form-control.execute{:placeholder => "Rectangle Width", :type => "number",id: 'funnel_rect_width', value: @visualization['config']['funnel_rect_width']}
+
+      .col-sm-6.indent
+        %label.cstm-label Rectangle height
+        %input.form-control.cstm-form-control.execute{:placeholder => "Rectangle Height", :type => "number",id: 'funnel_rect_height', value: @visualization['config']['funnel_rect_height']}
+
+
+  -if @chart_name == 'Percentage Bar'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#percentbar"}Configure percentage Bar
+    #percentbar.collapse.panel-body.grey
+      .col-sm-8
+        %label.cstm-label  Rectangle height
+        .input-group
+          %input.form-control.cstm-form-control.execute{:placeholder => "height", :type => "number",id: 'percent_row_rect_height', value: @visualization['config']['percent_row_rect_height'],max:100,min:1}
+          %span.input-group-addon %
+
+  -if @chart_name == 'Percentage Column'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#percentcolumn"}Configure percentage column
+    #percentcolumn.collapse.panel-body.grey
+      .col-sm-8
+        %label.cstm-label  Rectangle width
+        .input-group
+          %input.form-control.cstm-form-control.execute{:placeholder => "width", :type => "number",id: 'percent_column_rect_width', value: @visualization['config']['percent_column_rect_width'],max:100,min:1}
+          %span.input-group-addon %
+
+  / -if @chart_name == "Line" || @chart_name == "Multi-series Line" || @chart_name == "Area" ||@chart_name =="Panel of Lines" || @chart_name == "Stacked Area"
+  /   %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#annotation"}Annotation
+  /   #annotation.collapse.panel-body.grey
+  /     .col-sm-12.indent
+  /       %label.cstm-label.checkbox-inline Enable
+  /       -if @visualization['config']['annotation_enable'] == 'yes'
+  /         -checked = true
+  /         -disabled = "false"
+  /       -else
+  /         -disabled=true
+  /         -checked = "false"
+
+  /       %input.cstm-form-control.execute{:type => "checkbox", id: 'annotation_enable', value: @visualization['config']['annotation_enable'], checked: checked,"disableinputs"=>"annotaionEnable"}
+  /       .clearfix
+  /       %br
+  /     .col-sm-6.indent
+  /       %label.cstm-label Background Color
+  /       %input.form-control.cstm-form-control.execute.annotaionEnable{:placeholder => "background color", :type => "color",id: 'annotation_background_color', value: @visualization['config']['annotation_background_color'],disabled: disabled}
+  /     .col-sm-6.indent
+  /       %label.cstm-label Font Color
+  /       %input.form-control.cstm-form-control.execute.annotaionEnable{:placeholder => "font color", :type => "color",id: 'annotation_font_color', value: @visualization['config']['annotation_font_color'],disabled: disabled}
+  /     .col-sm-6.indent
+  /       %label.cstm-label View Mode
+  /       %select.cstm-form-control.form-control.execute.annotaionEnable{:placeholder => "view mode", id: 'annotation_view_mode', value: @visualization['config']['annotation_view_mode'], name: "annotation_view_mode", disabled: disabled}
+  /         %option{:value => "onload"} On Load
+  /         %option{:value => "onclick"} On Click
+  -if  @chart_name == 'Stacked Area' || @chart_name == 'Scatter' || @chart_name == 'panel of Scatter' || @chart_name == 'Pulse' || @chart_name == 'Grouped Bar' || @chart_name == 'Grouped Column' || @visualization['genre'] == "Map Charts" || @chart_name == 'Spider'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#legends_config"}Legends
+    #legends_config.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label.checkbox-inline Enable legends
+        -if @visualization['config']['legends_enable'] == "yes"
+          -checked = true
+          -disabled=false
+        -else
+          -disbaled=true
+          -checked = "false"
+        %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['legends_enable'], id:"legends_enable",checked:checked,"disableinputs"=>"legendEnable"}
+      .clearfix
+      %br
+
+      .col-sm-6.indent
+        %label.cstm-label Display
+        %select.cstm-form-control.form-control.execute.legendEnable{:placeholder => "Display", id: 'legends_display', value: @visualization['config']['legends_display'], name: "optional_legends_display",disabled:disabled}
+          %option{:value => "horizontal"} Horizonal
+          %option{:value => "vertical"} Vertical
+
+      .col-sm-6.indent
+        %label.cstm-label Weight
+        %select.cstm-form-control.form-control.execute.legendEnable{:placeholder => "Weight", id: 'legends_text_weight', value: @visualization['config']['legends_text_weight'], name: "legends_text_weight",disabled: disabled}
+          %option{:value => "normal"} Normal
+          %option{:value => "bold"} Bold
+
+      .col-sm-12.indent
+        %label.cstm-label Family
+        %input.form-control.cstm-form-control.execute.legendEnable{:placeholder => "Font Family", :type => "textbox", :id => "legends_text_family", :value => @visualization['config']['legends_text_family'],disabled:disabled}
+      .clearfix
+        %br
+      .col-sm-6.indent
+        %label.cstm-label Color
+
+      .clearfix
+        %br
+      .col-sm-2
+        .input-append.color.identity#legends_text_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#legends_text_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name=> "legendscolor" ,:type => "radio",:value => "",:id=>"legends_text_color","indentity"=>"chart_color0",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity#legends_text_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#legends_text_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name=> "legendscolor" ,:type => "radio",:value => "",:id=>"legends_text_color","indentity"=>"chart_color0",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity#legends_text_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#legends_text_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name=> "legendscolor" ,:type => "radio",:value => "",:id=>"legends_text_color","indentity"=>"chart_color0",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity#legends_text_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#legends_text_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name=> "legendscolor" ,:type => "radio",:value => "",:id=>"legends_text_color","indentity"=>"chart_color0",:reference=>"color1"}
+      .col-sm-2
+        .input-append.color.identity#legends_text_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
+          %span.add-on
+            %i.circle#legends_text_color_circle{:style => "background-color: rgb(255, 146, 180)"}
+          %input.cstm-form-control.execute1{:name=> "legendscolor" ,:type => "radio",:value => "",:id=>"legends_text_color","indentity"=>"chart_color0",:reference=>"color1",:checked=>"checked"}
+
+
+  -if @chart_name == "Bar" || @chart_name == "Grouped Bar"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#datasort"}Data sort
+    #datasort.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label.checkbox-inline Enable
+        -if @visualization['config']['data_sort_enable'] == 'yes'
+          -disabled=false
+          -checked = true
+        -else
+          -disabled=true
+          -checked = "false"
+        %input.cstm-form-control.execute{:type => "checkbox", id: 'data_sort_enable', value: @visualization['config']['data_sort_enable'], checked: checked,"disableinputs"=>"sortEnable"}
+        .clearfix
+        %br
+      .col-sm-6.indent
+        %label.cstm-label Sort Type
+        -if @chart_name == "Bar"
+          %select.cstm-form-control.form-control.execute.sortEnable{:placeholder => "sort type", id: 'data_sort_type', value: @visualization['config']['data_sort_type'], name: "data_sort_type",disabled: disabled}
+            %option{:value => "alphabetically"} Alphabetically
+            %option{:value => "numerically"} Numerically
+        -else
+          %select.cstm-form-control.form-control.execute.sortEnable{:placeholder => "sort type", id: 'data_sort_type', value: @visualization['config']['data_sort_type'], name: "data_sort_type",disabled: disabled}
+            %option{:value => "alphabetically"} Alphabetically
+      .col-sm-6.indent
+        %label.cstm-label Sort Order
+        %select.cstm-form-control.form-control.execute.sortEnable{:placeholder => "sort order", id: 'data_sort_order', value: @visualization['config']['data_sort_order'], name: "data_sort_order",disabled: disabled}
+          %option{:value => "ascending"} Ascending
+          %option{:value => "descending"} Descending
+
+
+
+  -if @chart_name == 'Spider'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#configurespider"}Configure Spider
+    #configurespider.collapse.panel-body.grey
+      .col-sm-6.indent
+        %label.cstm-label Radius
+        %input.form-control.cstm-form-control.execute{:placeholder => "Radius", :type => "number",id: 'spiderweb_radius', value: @visualization['config']['spiderweb_radius']}
+
+      .col-sm-6.inden
+        %label.cstm-label Outer Radius
+        %input.form-control.cstm-form-control.execute{:placeholder => "Outer Radius", :type => "number",id: 'spiderweb_outer_radius_percent', value: @visualization['config']['spiderweb_outer_radius_percent'], max: 100}
+
+
+
+  -if @chart_name == 'Scatter'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#configurescatter"}Configure Scatter
+    #configurescatter.collapse.panel-body.grey
+
+      .col-sm-6.indent
+        %label.cstm-label Ticks
+        -checked =  @visualization['config']['scatterplot_pointer_enable'] == "yes" ? "true" : "false"
+        %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['scatterplot_pointer_enable'], id:"scatterplot_pointer_enable",checked:checked}
+      .clearfix
+      %br
+
+      .col-sm-6.indent
+        %label.cstm-label Radius
+        %input.form-control.cstm-form-control.execute{:placeholder => "Radius", :type => "number",id: 'scatterplot_radius', value: @visualization['config']['scatterplot_radius']}
+      
+
+  -if @chart_name == 'Pictograph'
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#pictograph"}Configure pictograph
+    #pictograph.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label.checkbox-inline Show all images
+        -checked =  @visualization['config']['pictograph_current_count_enable'] == "yes" ? "true" : "false"
+        %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['pictograph_show_all_images'], id:"pictograph_show_all_images",checked:checked}
+        .clearfix
+        %br
+
+        %label.cstm-label.checkbox-inline Show total
+        -checked = @visualization['config']['pictograph_total_count_enablel'] == "yes" ? "true" : "false"
+        %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['pictograph_total_count_enablel'], id:"pictograph_total_count_enable",checked:checked}
+        .clearfix
+
+        %label.cstm-label.checkbox-inline Current count
+        -checked =  @visualization['config']['pictograph_current_count_enable'] == "yes" ? "true" : "false"
+        %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['pictograph_current_count_enable'], id:"pictograph_current_count_enable",checked:checked}
+        .clearfix
+        %br
+
+      .col-sm-6.indent
+        %label.cstm-label Image Per Line
+        %input.form-control.cstm-form-control.execute{:placeholder => "Image Per Line", :type => "number",id: 'pictograph_image_per_line', value: @visualization['config']['pictograph_image_per_line']}
+
+      .col-sm-6.indent
+        %label.cstm-label Image Width
+        %input.form-control.cstm-form-control.execute{:placeholder => "Image Width", :type => "number",id: 'pictograph_image_width', value: @visualization['config']['pictograph_image_width']}
+
+      .col-sm-6.indent
+        %label.cstm-label Image Height
+        %input.form-control.cstm-form-control.execute{:placeholder => "Image Height", :type =>     "number",id: 'pictograph_image_height', value: @visualization['config']['pictograph_image_height']}
+
+
+
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#total"}Total Count
+    #total.collapse.panel-body.grey
+      .col-sm-6.indent
+        %label.cstm-label Text Size
+        %input.form-control.cstm-form-control.execute{:placeholder => "Size", :type => "number", :id => "pictograph_total_count_size", :value => @visualization['config']['pictograph_total_count_size']}
+
+      .col-sm-6.indent
+        %label.cstm-label Text Weight
+        %select.cstm-form-control.form-control.execute{:placeholder => "Weight", id: 'pictograph_total_count_weight', value: @visualization['config']['pictograph_total_count_weight'], name: "image_text-weight"}
+          %option{:value => "bold"} Bold
+          %option{:value => "normal", selected:"checked"} normal
+
+      .col-sm-6.indent
+        %label.cstm-label Font Family
+        %input.form-control.cstm-form-control.execute{:placeholder => "Font Family", :type => "textbox", :id => "pictograph_total_count_family", :value => @visualization['config']['pictograph_total_count_family']}
+      .col-sm-6.indent
+        %label.cstm-label Text Color
+        %input.form-control.cstm-addon-text.cstm-form-control.execute{:type => "color", :id => "pictograph_total_count_color", :value => @visualization['config']['pictograph_total_count_color']}
+
+
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#current"}Current Count
+    #current.collapse.panel-body.grey
+      .col-sm-6.indent
+        %label.cstm-label Text Size
+        %input.form-control.cstm-form-control.execute{:placeholder => "Size", :type => "number", :id => "pictograph_current_count_size", :value => @visualization['config']['pictograph_current_count_size']}
+      .col-sm-6.indent
+        %label.cstm-label Text Weight
+        %select.cstm-form-control.form-control.execute{:placeholder => "Weight", id: 'pictograph_current_count_weight', value: @visualization['config']['pictograph_current_count_weight'], name: "image_text-weight"}
+          %option{:value => "bold"} Bold
+          %option{:value => "normal", selected:"checked"} normal
+      .col-sm-6.indent
+        %label.cstm-label Font Family
+        %input.form-control.cstm-form-control.execute{:placeholder => "Font Family", :type => "textbox", :id => "pictograph_current_count_family", :value => @visualization['config']['pictograph_current_count_family']}
+
+      .col-sm-6.indent
+        %label.cstm-label Text Color
+        %input.form-control.cstm-addon-text.cstm-form-control.execute{:type => "color", :id => "pictograph_current_count_color", :value => @visualization['config']['pictograph_current_count_color']}
+
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#unitsperimage"}Units Per Image
+    #unitsperimage.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label Text
+        %input.form-control.cstm-form-control.execute{:placeholder => "Text", :type => "text", :id => "pictograph_units_per_image", :value => @visualization['config']['pictograph_units_per_image']}
+
+      .col-sm-6.indent
+        %label.cstm-label Text Size
+        %input.form-control.cstm-form-control.execute{:placeholder => "Size", :type => "number", :id => "pictograph_units_per_image_text_size", :value => @visualization['config']['pictograph_units_per_image_text_size']}
+      .col-sm-6.indent
+        %label.cstm-label Text Color
+        %input.form-control.cstm-addon-text.cstm-form-control.execute{:type => "color", :id => "pictograph_units_per_image_text_color", :value => @visualization['config']['pictograph_units_per_image_text_color']}
+      .col-sm-6.indent
+        %label.cstm-label Text Family
+        %input.form-control.cstm-form-control.execute{:placeholder => "Font Family", :type => "textbox", :id => "pictograph_units_per_image_text_family", :value => @visualization['config']['pictograph_units_per_image_text_family']}
+      .col-sm-6.indent
+        %label.cstm-label Text Weight
+        %select.cstm-form-control.form-control.execute{:placeholder => "Weight", id: 'pictograph_units_per_image_text_weight', value: @visualization['config']['pictograph_units_per_image_text_weight'], name: "image_text-weight"}
+          %option{:value => "bold"} Bold
+          %option{:value => "normal", selected:"checked"} normal
+
+  -if @visualization['genre'] == "Map Charts"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#mapcode"}Mapcode
+    #mapcode.collapse.panel-body.grey
+      %label Select Map
+      %select.cstm-form-control.form-control.execute{:placeholder => "Select Map", id: 'map_code', value: @visualization['config']['map_code'], name: "map_code"}
+        -@all_map_codes.each do |map|
+          %option{:value => "#{map}"}= "#{map.titleize}"
+  -if @chart_name == "Timeline"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#timelinemargin"}Timeline Margin
+    #timelinemargin.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label Timeline Duration
+        %input.form-control.cstm-form-control.execute{:placeholder => " Timeline Duration", :type => "number", :id => "timeline_duration", :value => @visualization['config']['timeline_duration'] }
+
+      .col-sm-6.indent
+        %label.cstm-label Top
+        %input.form-control.cstm-form-control.execute{:placeholder => "Top", :type => "number", :id => "timeline_margin_top", :value => @visualization['config']['timeline_margin_top'] }
+
+      .col-sm-6.indent
+        %label.cstm-label Right
+        %input.form-control.cstm-form-control.execute{:placeholder => "Right", :type => "number", :id => "timeline_margin_right", :value => @visualization['config']['timeline_margin_right'] }
+
+      .col-sm-6.indent
+        %label.cstm-label Bottom
+        %input.form-control.cstm-form-control.execute{:placeholder => "Bottom", :type => "number", :id => "timeline_margin_bottom", :value => @visualization['config']['timeline_margin_bottom'] }
+
+      .col-sm-6.indent
+        %label.cstm-label Left
+        %input.form-controlcstm.cstm-form-control.execute{:placeholder => "Left", :type => "number", :id => "timeline_margin_left", :value => @visualization['config']['timeline_margin_left'] }
+
+  -if @chart_name == "Line" || @chart_name == "Multi-series Line" || @chart_name == "Area" ||@chart_name =="Panel of Lines" || @chart_name == "Stacked Area" || @chart_name == "Scatter" || @chart_name == "Spider" || @chart_name == "Pulse"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#functionality"} Configure More
+    #functionality.collapse.panel-body.grey
+      -if @chart_name !="Scatter" && @chart_name != "Spider" && @chart_name != "Pulse"
+        .col-sm-12.indent
+          %label.cstm-label.checkbox-inline Enable Crosshair
+          -checked = @visualization['config']['crosshair_enable'] == 'yes' ? "true" : "false"
+          %input.cstm-form-control.execute{:type => "checkbox", id: 'crosshair_enable', value: @visualization['config']['crosshair_enable'], checked: checked}
+        .col-sm-12.indent
+          %label.cstm-label.checkbox-inline Enable Line Smoothening
+          -checked =  @visualization['config']['curvy_lines_enable'] == 'yes' ? "true" : "false"
+          %input.cstm-form-control.execute{:type => "checkbox", id: 'curvy_lines_enable', value: @visualization['config']['curvy_lines_enable'], checked: checked}
+
+      -else
+        .col-sm-12.indent
+          %label.cstm-label.checkbox-inline Enable Variable circle size
+          -checked =  @visualization['config']['variable_circle_size_enable'] == 'yes' ? "true" : "false"
+          %input.cstm-form-control.execute{:type => "checkbox", id: 'variable_circle_size_enable', value: @visualization['config']['variable_circle_size_enable'], checked: checked}
+    
+      -if @chart_name == "Line" || @chart_name == "Multi-series Line" || @chart_name == "Area" ||@chart_name =="Panel of Lines" || @chart_name == "Stacked Area" || @chart_name == "Scatter"
+        .col-sm-12.indent
+          %label.cstm-label.checkbox-inline Enable Zoom and Panning
+          -if @visualization['config']['zoom_enable'] == 'yes'
+            -disabled = false
+            -checked  = true
+          -else
+            -disabled = true
+            -checked = false
+          %input.cstm-form-control.execute{:type => "checkbox", id: 'zoom_enable', value: @visualization['config']['zoom_enable'], checked: checked}
+
+        .col-sm-8.indent
+        %label.cstm-label Zoom level
+        .input-group
+          %input.form-control.cstm-form-control.execute{:placeholder => "Zoom", :type => "number",:id => "zoom_level", :value => @visualization['config']['zoom_level'],min: 0, disabled: disabled}
+          %span.input-group-addon %
+
+  -if @visualization['genre'] == "Map Charts"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#functionality"}Functionality
+    #functionality.collapse.panel-body.grey
+      .col-sm-12.indent
+        %label.cstm-label.checkbox-inline Click Event Enable
+        -checked  = @visualization['config']['click_enable'] == 'yes' ? "true" : "false"
+        %input.cstm-form-control{:type => "checkbox", id: 'click_enable', value: @visualization['config']['click_enable'], checked: checked}
+        .clearfix
+        %br          
+
+      .col-sm-8.indent
+        %label.cstm-label Default zoom level
+        .input-group
+          %input.form-control.cstm-form-control.execute{:placeholder => "Zoom", :type => "number",:id => "default_zoom_level", :value => @visualization['config']['default_zoom_level']}
+          %span.input-group-addon %
+  %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#credits_and_datasource"}Credits & Data Source
+  #credits_and_datasource.collapse.panel-body.grey.indent
+    .col-sm-12
+      %label.cstm-label Credits
+      %br
+      .col-sm-6
+        %label.cstm-label Text
+        %input.form-control.cstm-form-control.execute{:placeholder => "Text", :type => "var",id: 'credit_my_site_name',value: @visualization['config']['credit_my_site_name']}
+
+      .col-sm-6
+        %label.cstm-label URL
+        %input.form-control.cstm-form-control.execute{:placeholder => "URL", :type => "var",id: 'credit_my_site_url',value: @visualization['config']['credit_my_site_url'] }
+
+    .col-sm-12
+      %label.cstm-label Data Source
+      %br
+      .col-sm-6
+        %label.cstm-label Text
+        %input.form-control.cstm-form-control.execute{:placeholder => "Text", :type => "var",id: 'data_source_name',value: @visualization['config']['data_source_name']}
+
+      .col-sm-6
+        %label.cstm-label URL
+        %input.form-control.cstm-form-control.execute{:placeholder => "URL", :type => "var",id: 'data_source_url',value: @visualization['config']['data_source_url'] }
+
+  -if @account.is_admin? and controller_name == "vizs"
+    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#advanced_settings"}Advanced Settings
+    #advanced_settings.collapse.panel-body.grey.indent
+      .col-sm-12
+        = f.input :refresh_freq_in_minutes, as: :integer, hint: "How frequently do you want to refresh the data in this query?", label: "Datacast Frequency", placeholder: "in minutes"
+        = f.input :is_static, as: :select, label: "Are you using PykQuery in Interactive Mode?", include_blank: false, selected: false
+- @visualization['config']['panels_enable'] = 'yes' if @chart_name == "Panel of Lines"
+-if @visualization['genre'] == "Map Charts"
+  -if !@map_code.present?
+    - @map_code = "world"
+-@data_file = "" if !@data_file.present?
+
+:javascript
+  var data = #{@visualization['config'].to_json}
+  , countgroup=1,obj
+  , colorRepetation=[]
+  , initializer = #{@initializer}
+  , data_file = "#{@data_file}"
+  , selector = "#chart_container"
+  , config_data = {}
+  , k
+  , chart_name = "#{@chart_name}"
+  , genre ="#{@visualization['genre']}"
+  , json_data
+  , map_code = "#{@map_code}"? "#{@map_code}" : "";
+  data["selector"] = selector;
+  data["data"] = data_file;

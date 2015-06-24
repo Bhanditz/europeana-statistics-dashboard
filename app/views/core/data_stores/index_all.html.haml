@@ -1,0 +1,46 @@
+.row
+  .col-sm-2
+  .col-sm-10
+    %h1.pagetitle Explore Data
+    - result_type = params[:search]    
+    - if !@data_stores.nil? and @data_stores.first.present? and (result_type == "data" or result_type.nil?)
+      - pagination = @data_stores
+      - @data_stores.each do |data_store|
+        %p
+          = link_to data_store.account.username, _account_path(data_store.account), class: "thin"
+          = "/"
+          = link_to data_store.core_project.name, _account_project_path(data_store.account, data_store.core_project), class: "thin"
+        %h4= link_to data_store.name, _account_project_data_store_path(data_store.account, data_store.core_project, data_store), class: "black"
+        .hint= data_store.properties['description']
+        %hr
+    -elsif !@core_projects.nil? and @core_projects.first.present? and result_type == "project"
+      %h5 Projects
+      %ul
+        -@core_projects.each do |project|
+          %li
+            = link_to project.account.username, _account_path(project.account), class: "thin"
+            = "/"
+            = link_to project.name, _account_project_path(project.account, project), class: "thin"
+      - pagination = @core_projects
+    -elsif !@accounts.nil? and @accounts.first.present? and result_type == "user"          
+      %h5 Accounts
+      %ul
+        -@accounts.each do |account|
+          %li
+            = link_to account.username, _account_path(account), class: "thin"
+            = "/ #{account.email}"          
+      - pagination = @accounts
+    -else  
+      %center
+        %h3 No record found
+    -if pagination.present? and !pagination.nil?
+      .text-center= paginate pagination
+  .col-sm-5
+
+:css
+  .bootstrap-select {
+    width: "56px";
+  }
+
+%script{:src => "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"}
+%script{:src => "/assets/data_stores.js"}

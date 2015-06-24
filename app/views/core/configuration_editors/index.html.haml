@@ -1,0 +1,24 @@
+- content_for :title do
+  Configuration Editors · #{@core_project.name}
+
+
+.previous-sheet
+  %h3= show_project_name(@core_project).html_safe
+  .panel.panel-default.sheet.sub
+    .panel-body
+      %h4
+        Configuration Editors
+        .pull-right= link_to "Add a Configuration", new_account_core_project_configuration_editor_path(@core_project.account, @core_project), class: "btn btn-sm btn-orange"
+      %p Dynamically define configurations e.g. color that can then be exported to the front-end in JSON format allowing developers to build configurable visualisations.
+      %hr
+      .row
+        .col-sm-12
+          = render partial: "core/configuration_editors/index", locals: {configuration_editors: @configuration_editors}
+
+#pubslishedModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-body
+        .row
+          .col-sm-12
+            #s3-published-url

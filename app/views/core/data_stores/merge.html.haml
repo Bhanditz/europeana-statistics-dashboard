@@ -1,0 +1,28 @@
+=include_gon
+.previous-sheet
+  %h3
+    %span{style: "margin-left: 30px;"}= link_to "Add a data set", _new_account_project_data_stores_path(@core_project.account, @core_project)
+    %span.thin= " / "
+    %span.thin Create a Joined DataSet
+  .panel.panel-default.sheet.sub
+    .panel-body
+      = simple_form_for(@data_store, url: commit_merge_account_core_project_data_stores_path(@core_project.account, @core_project) ,html: {class: "form-inline", method: "post"}) do |f|
+        = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
+        = f.input :name, as: :string, required: true, label: "DataStore Name"
+        %hr
+        .row
+          .col-sm-3
+            %br
+            %br
+            %br
+            %br
+            %ul.categorize_columns-droppable.sortable.ui-sortable.column_list{style: "border: 1px dashed gray" }
+              - @data_stores.each do |data_store|
+                %li= link_to data_store.name, _account_project_data_store_path(data_store.account, data_store.core_project, data_store), class: 'categorize_columns-draggable'
+              %br
+          .col-sm-9
+            = f.text_area :join_query, as: :string, required: true, label: "JSON CONFIG", rows: 10, cols: 120, placeholder: '{"alias":{"girish/mumbai-local-trains/stop_times-txt":"x","girish/mumbai-local-trains/stops-txt":"y","girish/mumbai-local-trains/trips-txt":"z"},"conditions":["(x,stop_id)|EQUALS|(y,stop_id)","(x,trip_id)|EQUALS|(z,trip_id)"]}'
+            %hr
+          
+        %br
+        = f.submit "Create"

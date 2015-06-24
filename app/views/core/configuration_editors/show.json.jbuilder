@@ -1,0 +1,1 @@
+json.extract! @configuration_editor, :id, :account_id, :core_project_id, :name, :slug, :to_publish, :last_published_at, :content, :created_at, :updated_at

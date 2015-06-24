@@ -1,0 +1,29 @@
+- content_for :title do
+  Admin · Users
+
+.row
+  .col-sm-2= render partial: "core/admins/sidebar"
+  .col-sm-10
+    = switch_user_select
+    %table.table.table-condensed.table-striped
+      %thead
+        %tr
+          %th User
+          %th Location
+          %th Gender
+          %th Age Range
+          %th Sign In
+          %th Last seen at
+      %tbody
+        - @users.each do |u|
+          %tr
+            %td= link_to "#{u.username} <span class='hint'>(#{u.email})</span>".html_safe, _account_path(u)
+            %td= u.cerebro_account.country_code
+            %td= u.cerebro_account.gender
+            %td= u.cerebro_account.age_range
+            %td= u.sign_in_count
+            %td
+              - if u.last_sign_in_at.present?
+                = time_ago_in_words(u.last_sign_in_at)
+                
+.text-center= paginate @users

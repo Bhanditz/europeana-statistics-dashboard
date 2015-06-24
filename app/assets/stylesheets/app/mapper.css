@@ -1,0 +1,63 @@
+.drop-option{
+    height: 20px;
+    width: 100%;
+    line-height: 18px;
+    padding: 0px 0px 0px 5px;
+    margin: 2px;
+    font-size: 14px;
+    font-weight: 300;
+    border: 1px lightgray solid;
+}
+
+.takes-drop{
+    height: 26px;
+    width: 136px;
+    background: #fff;
+    border: 1px dashed #aaa;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 0.688em;
+    line-height: 22px;
+    text-align: center;
+    color: #fff;
+}
+
+.active-drop{ background: #ddd;}
+.hover-drop{ box-shadow: 0 0 30px #666 inset;}
+
+#map-mapper h5{
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #ddd;
+}
+
+#get-pie{
+    float: right;
+    margin-top: 27px;
+}
+
+.droppable {
+  -webkit-box-shadow: -1px 2px 7px 1px rgba(0,0,0,0.75);
+  -moz-box-shadow: -1px 2px 7px 1px rgba(0,0,0,0.75);
+  box-shadow: -1px 2px 7px 1px rgba(0,0,0,0.75);
+}
+.active-drop:not(.dropped) {
+  cursor: pointer;
+}
+.clickable {
+  cursor: pointer;
+}
+.empty-drops, .reset {
+  display: none;
+  color: gray;
+  font-weight: 300;
+  cursor: pointer;
+}
+.reset {
+  display: inline;
+}
+.intro{
+  font-size: 1.3em;
+  color: green;
+}

@@ -1,0 +1,19 @@
+!!!
+%html
+  %head
+    %title= (yield(:title).empty? ? "Rumi · Pykih" : yield(:title))
+    :javascript
+      var rumi_api_endpoint = "#{REST_API_ENDPOINT}";
+      var data_store_action_name = "#{action_name}";
+    -if @chart.name == "Grid"
+      %link{href: "/assets/vendors/second/handsontable.full.css", media: "all",rel: "stylesheet"}
+      %script{src: "/assets/application/first/jquery.min.js"}
+      %script{src: "/assets/reusable_grid/handsontable.js"}
+    -else
+      %link{href: "/assets/vendors/second/pykcharts.1.0.0.css?body=1",media: "all",rel: "stylesheet"}
+      %script{src: "/assets/application/third/pykcharts.1.0.0.js"}
+    %script{:src => "/assets/embed.js"}
+    = csrf_meta_tags
+    = include_gon
+  %body{id: "scopejs_#{controller_name}_#{action_name}", style: "background: white;"}    
+    = yield

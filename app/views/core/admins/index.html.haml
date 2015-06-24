@@ -1,0 +1,49 @@
+- content_for :title do
+  Admin · Dashboard
+.admin
+  .row
+    .col-sm-2= render partial: "core/admins/sidebar"
+    .col-sm-10
+      .row
+        .col-sm-3.block
+          .well.text-center
+            %h3= "#{@accounts}:#{@organisations}"
+            Users:Organisations
+        .col-sm-3.block
+          .well.text-center
+            %h3= @projects
+            Projects
+        .col-sm-3.block
+          .well.text-center
+            %h3 304,0
+            Open Data Stores (Pykih:Users)
+        .col-sm-3.block
+          .well.text-center
+            %h3 304,0
+            Closed Data Stores
+      .row  
+        .col-sm-3.block
+          .well.text-center
+            %h3 304,0
+            Clones
+        .col-sm-3.block
+          .well.text-center
+            %h3 304,0
+            Data Stores (Published %)
+        .col-sm-3.block
+          .well.text-center
+            %h3 304,0
+            Datacasts
+        .col-sm-3.block
+          .well.text-center
+            %h3 304,0
+            Published Datacasts
+      .row
+        .col-sm-3.block
+          .well.text-center
+            %h3 304,0
+            Configuration Editors
+        .col-sm-3.block
+          .well.text-center
+            %h3 304,0
+            Published Configuration Editors

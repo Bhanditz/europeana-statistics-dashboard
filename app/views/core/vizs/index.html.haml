@@ -1,0 +1,15 @@
+- content_for :title do
+  Datacasts · #{@core_project.name}
+%script{:src => "/assets/vizs.js"}
+= include_gon
+.previous-sheet
+  %h3= show_project_name(@core_project).html_safe
+  .panel.panel-default.sheet.sub
+    .panel-body
+      %h4= "<span class='mega-octicon octicon-broadcast'></span> Datacasts".html_safe
+      %hr
+      %div{style: "color: #aa9c84; margin: 5px 0px 0px 0px;"} Datacasts are a great way to share charts or pre-defined query end-points behind a URL. Datacasts are best used to create dashboards and reports.
+      %hr
+      .row
+        .col-sm-12
+          =render partial: "index", locals: {viz: @vizs}

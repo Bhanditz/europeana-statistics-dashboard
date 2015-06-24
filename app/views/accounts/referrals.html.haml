@@ -1,0 +1,72 @@
+- content_for :title do
+  Referrals · #{current_account.username}
+%script{:src => "https://platform.twitter.com/widgets.js", :type => "text/javascript"}
+
+%script{:src => "/assets/accounts.js", :type => "text/javascript"}
+
+#fb-root
+-referral_url = "#{BASE_URL}/refer?r=#{current_account.referral_code}"
+.row
+  .col-sm-2= render partial: "accounts/sidebar"
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        .panel-title Share this link with your friends to get more space.
+      .panel-body
+        %p.lead= referral_url
+        %table
+          %tr
+            %td
+              .fb-share-button{"data-href" => "#{referral_url}", "data-layout" => "button"}
+            %td &nbsp;&nbsp;
+            %td= link_to "Share on Twitter","https://twitter.com/share", class: "twitter-share-button",id: "twitter_share_button", "data-text" => "Search, clean and visualize open data with @pykih Rumi DataHub! Sign up for free! #{referral_url}", "data-url"=> " ", "data-size" => "large", "data-counturl" => "none","data-count" => "none"
+            %td &nbsp;&nbsp;
+            %td{style: "vertical-align: bottom;"}
+              %p or share the link on IM or Email
+    = image_tag "help_referral.png"
+    .panel.panel-default
+      .panel-heading
+        .panel-title My Referrals
+      .panel-body
+        - if @core_referrals.first.blank?
+          .hint Currently, none of your friends have accepted your invite.
+        - else
+          %table.table.table-condensed
+            %thead
+              %tr
+                %th Bonus Type
+                %th Friend
+                %th Space Earned
+            - @core_referrals.each do |refer|
+              %tbody
+                %tr
+                  %td Referral
+                  %td= link_to refer.email, _account_path(refer.friend)
+                  
+                  - if refer.is_eligible
+                    %td   
+                      %strong.green Congratulations! You've received 50 MB extra.
+                      %br
+                      -core_referral_gift = refer.core_referral_gift
+                      - if core_referral_gift.project.present?
+                        Allocated to project:
+                        = core_referral_gift.project.account.to_s
+                        = " / "
+                        = link_to core_referral_gift.project.name, _account_project_path(core_referral_gift.project.account, core_referral_gift.project)
+                      -else
+                        .hint Allocate the 50 MB bonus to a project
+                        -if @core_referral_gift.present? and @core_referral_gift == core_referral_gift
+                          -core_referral_gift.errors[@core_referral_gift.errors.messages.keys.first] << @core_referral_gift.errors.messages.values.first
+                        = simple_form_for(core_referral_gift, url: account_core_referral_gift_path(@account.id, core_referral_gift.id),  html: {class: "form-inline", method: "put"}) do |f|
+                          = f.input :referral_id, as: :hidden
+                          = f.input :project_id, collection: @core_projects.map.each{|core_project| [ core_project.account.to_s+" / "+ core_project.name, core_project.id]},required: true,label: false, include_blank: false
+                          = f.button :submit, "Assign", class: "btn btn-xs btn-default"
+                  -else
+                    %td.red
+                      Waiting for Admin Approval
+  .col-sm-2
+    %p Earn extra space
+    %p.pykhelp You can get extra space by inviting your friends to try out Rumi. If a friend uses your invitation to sign up for an account, creates a data set and gets their first visualization up, then you will receive bonus space.
+    %hr
+    %p Validating a good referral
+    %p.pykhelp Currently we are manually validating if the referral is valid or not. Hence, it might take up to 3 working days to give you your extra space.

@@ -1,0 +1,46 @@
+- if current_account.blank? 
+  %div{style: "margin-bottom: 40px; margin-top: 40px;"}
+    .container
+      .row
+        .col-sm-12
+          %hr{style: "border-top: 1px lightgray solid;"}
+          = link_to image_tag("tw.png", style: "width: 20px;"), "https://twitter.com/pykih", target: "_blank"
+          &nbsp;
+          = link_to image_tag("fb.png", style: "width: 20px;"), "https://www.facebook.com/pykih", target: "_blank"
+          &nbsp;
+          = link_to image_tag("yt.png", style: "width: 20px;"), "https://www.youtube.com/user/pykih", target: "_blank"
+          &nbsp;
+          = link_to image_tag("google-plus-icon.png", style: "width: 20px;"), "https://plus.google.com/b/113872780156890470004/113872780156890470004", target: "_blank"
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          = link_to "Privacy", privacy_path
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          = link_to "Enterprise Security", security_path
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          - if 1 == 2
+            = link_to "Terms", terms_path
+- elsif @is_not_rumi
+  %div{style: "margin-bottom: 40px; margin-top: 40px;"}
+    .container
+      .row
+        .col-sm-12
+          %p.pykhelp.pull-right= link_to "Powered by Rumi #{Constants::RUMI_VERSION}", "https://rumi.io", target: "_blank"
+- else
+  %br
+  %br
+- if Rails.env.production?
+  :javascript
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-54449907-1', 'auto');
+    ga('send', 'pageview');

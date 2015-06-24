@@ -1,0 +1,90 @@
+= content_for :title do
+  Pricing · Rumi · Pykih
+.pricing
+  .container
+    .row
+      .col-sm-12
+        %h1.text-center.top-heading Pricing
+        %hr
+  .container
+    .row
+      .col-sm-3
+        %h4.text-center.category-headings Every one gets
+        %p.text-center.heading-line
+          %span.catagory-text-span Included out of the box
+          %br
+      .col-sm-6
+        %h4.text-center.category-headings Open Data Enthusiasts / Small Businesses
+        %p.text-center.heading-line
+          %span.catagory-text-span We price per project
+          %br
+      .col-sm-3
+        %h4.text-center.category-headings Enterprise
+        %p.text-center.heading-line
+          %span.catagory-text-span We price per account
+          %br
+    .row
+      .col-sm-3
+        %p 
+          %span.glyphicon.glyphicon-ok
+          1 personal account
+        %p 
+          %span.glyphicon.glyphicon-ok
+          Unlimited organisation accounts
+        %p 
+          %span.glyphicon.glyphicon-ok
+          Unlimited teams
+        %p 
+          %span.glyphicon.glyphicon-ok
+          Unlimited users
+        %p 
+          %span.glyphicon.glyphicon-ok
+          Unlimited data sets
+        %p 
+          %span.glyphicon.glyphicon-ok
+          All data cleaning features
+        %p 
+          %span.glyphicon.glyphicon-ok
+          All charts and maps
+        %p 
+          %span.glyphicon.glyphicon-ok
+          All pykih themes
+        %p 
+          %span.glyphicon.glyphicon-ok
+          Custom themes for organisations
+        %p 
+          %span.glyphicon.glyphicon-ok
+          Ability to publish visualization
+        %p 
+          %span.glyphicon.glyphicon-ok
+          Download visualizations for print
+        %p 
+          %span.glyphicon.glyphicon-ok
+          Standard Security
+        %p
+          %span.glyphicon.glyphicon-heart
+          Earn more free space with referrals
+      -@ref_plans.each do |ref_plan|
+        .col-sm-3
+          .well.pricing-well.all_ref_plans{style: "padding-top: 0px;"}
+            %h2.text-center.plan-text= ref_plan.target_customer
+            %hr
+            .hint
+              = ref_plan.name
+              =ref_plan.description
+            %h3.text-center.plan-text= "$#{ref_plan.price_per_month} a month"
+            %table.table.table-condensed
+              %tr
+                %td.text-center= "#{ref_plan.storage_space} MB free space"
+              = ref_plan.other_text.html_safe
+      .col-sm-3
+        .well.pricing-well.all_ref_plans{style: "padding-top: 0px;"}
+          %h2.text-center.plan-text Enterprise Account
+          %hr
+          .hint Nalanda in India, Bayt al-Hikma in Baghdad and Library of Alexandria in Egypt were major libraries of knowledge in the past.
+          %h3.text-center.plan-text Starts at $3K a month
+          %table.table.table-condensed
+            %tr
+              %td.text-center 1GB per month
+            %tr= @enterprise_plan.other_text.html_safe
+            

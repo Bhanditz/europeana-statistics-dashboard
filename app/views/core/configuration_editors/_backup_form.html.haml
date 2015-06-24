@@ -1,0 +1,142 @@
+.row
+  = form_for(@configuration_editor, url: url, :html => { role: "form", class: "form-horizontal", method: method }) do |f|
+    .col-sm-12
+      = f.hidden_field :core_project_id, value: @core_project.id
+      = f.hidden_field :account_id, value: @account.id
+      = f.hidden_field :content, value: "", id: "content", hidden: true
+      %h1.pagetitle{style: "height: 50px;"}= f.text_field :name, required: true, autofocus: true,placeholder: "Configuration File Name", class: "col-sm-8"
+      #edit-form-elements.container
+      #display-form-elements.form-inline
+      .well{style: "background: #ffffd9; height: 400px;"}
+        %h4.m0p0.text-center.thin Add a configuration item
+        .col-sm-8
+          #labelDiv.form-group
+            %label.control-label *What is the Question?
+            %br
+            %input#labeltext.col-sm-11.form-control{:required => "", :type => "text"}
+          .form-group
+            %label.control-label Help Text
+            %br
+            %input#helpText.form-control{:type => "text"}
+          #optionTextDiv.form-group{:style => "display:none"}
+            %label.control-label Text
+            %br
+            %input#optiontext.form-control{:type => "text"}
+          #optionValueDiv.form-group{:style => "display:none"}
+            %label.control-label Value
+            %br
+            %input#optionvalue.form-control{:type => "text"}
+          #textDiv.form-group{:style => "display:none"}
+            %label.control-label Text
+            %br
+            %input#booleantext.form-control{:type => "text"}
+          #valueDiv.form-group{:style => "display:none"}
+            %label.control-label Value
+            %br
+            %input#booleanvalue.form-control{:type => "text"}
+          #noOfRowsDiv.form-group{:style => "display:none"}
+            %label.control-label Rows
+            %br
+            %input#noOfRows.form-control{:min => "1", :type => "number"}
+          #noOfColsDiv.form-group{:style => "display:none"}
+            %label.control-label Columns
+            %br
+            %input#noOfCols.form-control{:min => "1", :type => "number"}
+          #idBtnGroup{:style => "margin:20px 0px 0px 190px;"}
+            %input#save.btn.btn-primary{:style => "left:5px;position:relative;", :type => "button", :value => "Done"}
+
+            
+          #data1.PykAce-valid{:style => "red;margin:20px 0px 0px 190px;"}
+          .form-group
+            %label.col-sm-1.control-label
+              = #%button.btn.btn-info#save{:type => "button"} Add more
+              %input#btnAddElement.btn.btn-primary{:style => "margin:20px 0px 0px 190px", :type => "button", :value => "Add Element"}
+        .col-sm-4
+          .col-sm-12
+            .col-sm-12
+              #slugDiv.form-group
+                %label.control-label JSON variable name (for developers)
+                %br
+                %input#slugValue.form-control{:min => "1", :type => "text"}
+            .col-sm-6
+              .form-group
+                %label.control-label Type
+                %br
+                %select#select1.form-control
+                  %option{:selected => "selected", :value => "text"} Text
+                  %option{:value => "textarea"} Paragraph Text
+                  %option{:value => "boolean"} Yes / No
+                  %option{:value => "option"} Select one from dropdown
+              #minLenDiv.form-group
+                %label.control-label Minimum Length
+                %br
+                %input#minimum.form-control{:min => "1", :type => "number"}
+            .col-sm-6
+              .form-group
+                %label.control-label Validation
+                %br
+                %select#textproperty.form-control
+                  %option{:value => "string"} String
+                  %option{:value => "number"} Number
+                  %option{:value => "email"} Email
+                  %option{:value => "password"} Password
+                  %option{:value => "url"} Url
+                  %option{:value => "color"} Color
+                  %option{:value => "float"} Float
+                  %option{:value => "date"} Date
+                  %option{:value => "datetime"} DateTime
+              #maxLenDiv.form-group
+                %label.control-label Maximum Length
+                %br
+                %input#maximum.form-control{:min => "1", :type => "number"}
+            .col-sm-12
+              %table.m0p0
+                %tr.m0p0
+                  %td.m0p0{style: "vertical-align: top;"}
+                    %input#chkReqd{:name => "req", :type => "checkbox", :value => "true"}
+                    &nbsp;
+                  %td.m0p0 
+                    %label{:style => "width: 200px;"} Required Element
+              .form-group
+                %label.control-label Default Text
+                %br
+                %input#default.form-control{:type => "text"}
+      .col-sm-12
+        %br
+        = f.submit "Save", id: "submit", class: "btn btn-primary"
+        %br
+        %br
+        %br
+        
+
+          
+ 
+    
+    
+    #data1    
+      = @configuration_editor.content
+
+:javascript
+  $(document).ready(function () {      
+    window.data = #{@configuration_editor.content.to_json}
+
+    var create = new PykAce.element();
+    create.execute();
+    
+    var display = new PykAce.ace();
+    display.execute();
+    $("#btnAddElement").click();
+
+    $("#save").click(function(){
+      display.execute();
+    });
+
+    $("#submit").click(function() {
+        $("#content").val(JSON.stringify(window.data));    
+        console.log($("#content").val(),"==============================")
+    });
+    display.execute();
+
+  });
+///////////////////////////////////
+

@@ -1,0 +1,75 @@
+- content_for :title do
+  Edit Profile · #{current_account.username}
+.row
+  .col-sm-2= render partial: "accounts/sidebar"
+  .col-sm-8
+    .panel.panel-default
+      .panel-heading
+        -if @account.accountable_type == "Organisation"
+          = render partial: "core/organisations/topbar"
+        - else
+          .panel-title Upload a new Map File
+      .panel-body
+        .row
+          .col-sm-12
+            %br
+            = simple_form_for(@core_map_file, url: account_core_map_files_path(@account), method: :post) do |f|
+              .col-sm-10
+                = f.input :account_id, as: :hidden, input_html: {value: @account.id}
+                .col-sm-5{style: "margin-top:-10px"}
+                  = f.input :name,required: true
+                .col-sm-5
+                  = f.file_field :file,required: true
+                .col-sm-2
+                  %input{:checked => true, :name => "is_public", :type => "checkbox"} &nbsp; Make it public
+              .col-sm-2
+                = f.button :submit, "Add",id: "core_map_file_submit"
+    -if @core_map_files.present?
+      .panel.panel-default
+        .panel-heading
+          .panel-title My Map Files
+        .panel-body
+          .row
+            .col-sm-12
+              %table.table.table-condensed{"table-layout" => "fixed"}
+                %thead
+                  %tr
+                    %th.col-sm-8="Name <span class='hint' style='font-weight:normal;font-size:0.7em'> (Click on the name to edit)</span>".html_safe
+                    %th Public
+                    %th Size
+                    %th
+                    %th Downloads
+                    %th 
+                    %th
+                %tbody
+                  -@core_map_files.each do |map_file|
+                    %tr
+                      %td
+                        =best_in_place map_file, :name, {path:  account_core_map_file_path(map_file.account,map_file),type: :input}
+                        -if map_file.is_verified
+                          = image_tag "map_file_verified.png"
+                      %td=best_in_place map_file, :is_public,{path: account_core_map_file_path(map_file.account,map_file),type: :checkbox,collection: [raw("<input type='checkbox' value='false'></input>"), raw("<input type='checkbox' checked value='true'></input>")]}
+                      %td.hint{style: "width:15%"}= "#{map_file.size} KB"
+                      - if map_file.cdn_published_url.present?
+                        %td= link_to "Preview", account_core_map_file_path(@account,map_file), class: "hint"
+                        %td= map_file.downloads.count
+                        %td= link_to "<b class='glyphicon glyphicon-download-alt'></b>".html_safe, download_account_core_map_file_path(map_file.account,map_file), target: "_blank"
+                        %td= icon_del(account_core_map_file_path(@account,map_file))
+                      -elsif map_file.cdn_published_error.present?
+                        %td{style: "width:65%"}= map_file.cdn_published_error
+                        %td
+                        %td{style: "width:5%"}= icon_del(account_core_map_file_path(@account,map_file))
+                      -else
+                        %td{style: "width:65%"}= "<p style='color:orangered'>Uploading..</p>".html_safe
+                        %td
+                        %td
+  .col-sm-2
+    %p Do I need this?
+    %p.pykhelp Are you planning to use Heat Maps in your Map Dashboards? If so, you might require map files.
+    %hr
+    %p File Types Allowed
+    %p.pykhelp Upload GeoJSON (.geojson) or TopoJson (.topojson) files only.
+    %hr
+    %p Contribute to Open Data Community
+    %p.pykhelp The GeoJSON or TopoJson file you upload will be available to others unless uncheck the "Make it public" check box.
+    %p.pykhelp Once uploaded, the admin verifies the file and makes it searchable.

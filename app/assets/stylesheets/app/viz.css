@@ -1,0 +1,48 @@
+.viz{
+    padding: 10px;
+    cursor: pointer;
+}
+
+.viz span.glyphicon{
+    display: block;
+    float: right;
+    font-size: 30px;
+    margin-top: 20px;
+}
+
+.form-control{
+    width:100% !important;
+}
+
+#select_different_chart {
+  cursor:pointer;
+}
+
+#all_charts{
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+#viz-types{
+  margin-left:15px !important;
+}
+#chart_to_select{
+  margin-left:15px;
+}
+
+#chart_selector_list > .disabled{
+  filter: url(filters.svg#grayscale); /* Firefox 3.5+ */
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(1);
+  cursor:default;
+}
+#chart_container {
+  min-height: 475px;
+}
+
+#scopejs_vizs_data_stores .true,#scopejs_vizs_index  .true{
+  padding-top: 18px !important;
+}
+
+#embed-code-display, #broadcast-code-display{font-family: monospace; display: block; overflow:auto; height:100%; width:100%; background:#292929; color:#fff; margin-top:30px;}
+
+#chart_container_display{font-family: monospace; overflow:auto; height:500px;width: 95%;background:#292929; color:#fff;padding: 20px;margin-top:20px;}

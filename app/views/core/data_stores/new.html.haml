@@ -1,0 +1,102 @@
+=include_gon
+.previous-sheet
+  %h3= show_project_name(@core_project).html_safe
+  .panel.panel-default.sheet.sub
+    .panel-body
+      %h4 Add new Data Set
+      %hr
+      .row#hide_this_once_we_add_empty_spreadsheet
+        .col-sm-3
+          %a{href: empty_grid_account_core_project_data_stores_path(@core_project.account, @core_project), class: "black"}
+            .well.s#new-step
+              %br
+              %h2.text-center.thin.black= "<span class='mega-octicon octicon-file-text'></span>".html_safe
+              %p.text-center 
+                %span.black 
+                  %strong Empty spreadsheet
+                %br
+                %br
+              %br
+        .col-sm-3
+          %a{href: "#", class: "black"}
+            .well.s#upload-step
+              %br
+              %h2.text-center.thin.black= "<b class='mega-octicon octicon-cloud-upload'></b>".html_safe
+              %p.text-center 
+                %span.black 
+                  %strong Upload from desktop
+                %br
+                (File with size less than 15 MB)
+              %br
+        .col-sm-3
+          %a{href: "#", class: "black"}
+            .well.s#upload_through_ftp
+              %br
+              %h2.text-center.thin.black= "<b class='mega-octicon octicon-link'></b>".html_safe
+              %p.text-center 
+                %span.black 
+                  %strong Upload from WEB Address (URL)
+                %br
+                (File with size more than 15 MB)
+              %br
+        .col-sm-3
+          - if Rails.env.development? and 1 == 2
+            %a{href: merge_account_core_project_data_stores_path(@core_project.account, @core_project), class: "black"}
+              .well.s
+                %br
+                %h2.text-center.thin.black= "<b class='mega-octicon octicon-git-compare'></b>".html_safe
+                %p.text-center 
+                  %span.black 
+                    %strong Join DataSets
+                  %br
+                  %br
+                %br
+          - else
+            %a{href: merge_account_core_project_data_stores_path(@core_project.account, @core_project), class: "white"} .
+      .row#data-menu{:style => "display:none"}
+        .col-sm-12#upload-box
+          = form_for(@data_store, url: upload_account_core_project_data_stores_path(@core_project.account, @core_project), method: "post", :html => {:multipart => true}) do |f|  
+            %p
+            = f.file_field :file,required: true,class: "form-control"
+            %p
+              %strong File types:
+              %span.gray Comma Separated Files (CSV), Tab Separated Files (TSV), Pipe Separated Files (PSV), Semicolon Separated Files (SSV)
+            %br
+            %input{:checked => true, :name => "first_row_header", :type => "checkbox"}
+              First Row Header
+              %br
+            .row#row-header-checkbox
+              %br
+              = f.hidden_field :core_project_id, value: @core_project.id
+              = f.submit "Upload CSV file", class: "btn btn-lg"
+            .spinner{:style => "display:none"}
+              = image_tag "ajax-loader.gif"
+
+      .row#upload_through_ftp-box{style: 'display:none'}
+        .col-sm-12
+          = simple_form_for(@data_store_pull, url: account_core_project_data_store_pulls_path(@core_project.account, @core_project), method: "post") do |f|
+            = f.input :file_url, required: true, label: "File URL", input_html: {style: "height: 30px;"}
+            %p
+              %strong File types:
+              %span.gray Comma Separated Files (CSV), Tab Separated Files (TSV), Pipe Separated Files (PSV), Semicolon Separated Files (SSV)
+            %br
+            %input{:checked => true, :name => "first_row_header", :type => "checkbox"}
+              First Row Header
+              %br
+            .row#row-header-checkbox
+              %br
+              = f.input :core_project_id, as: :hidden,input_html: {value: @core_project.id}
+              = f.submit "Upload CSV file", class: "btn btn-lg"
+            .spinner{:style => "display:none"}
+              = image_tag "ajax-loader.gif"
+      %br
+      %br
+      - if @validator.present? and @validator 
+        = render partial:  "csv_lint_error_messages"
+      - else
+        %p{style: "background: green; color: white; font-weight: 400; width: 360px;"} &nbsp; Help: Which kind of data is Rumi best built for?
+        = image_tag "help-vertical-data.png"
+
+
+%script{:src => "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"}
+%script{:src => "/assets/data_stores.js"}

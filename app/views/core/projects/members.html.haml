@@ -1,0 +1,98 @@
+- content_for :title do
+  Collaborators · #{@core_project.name}
+
+.previous-sheet
+  %h3= show_project_name(@core_project).html_safe
+  .panel.panel-default.sheet.sub
+    .panel-body
+      .row
+        .col-sm-2= render partial: "core/projects/sidebar"
+        .col-sm-10
+          - if @sudo[1]
+            .panel.panel-default
+              .panel-heading
+                .panel-title Who's in the team?
+              .panel-body
+                - if @core_project.account.is_user_account?
+                  %br
+                  %div
+                    = form_for @permission, url: account_core_permissions_path(@account), method: :post do |f|
+                      = f.hidden_field :organisation_id, value: @account.id
+                      = f.hidden_field :core_team_id, value: @core_team.id
+                      = f.hidden_field :role, value: Constants::ROLE_C
+                      = f.hidden_field :status, value: "Invited"
+                      - if @permission.errors.any?
+                        #error_explanation
+                          %h2= "#{pluralize(@permission.errors.count, "error")} prohibited this permission from being saved:"
+                          %ul
+                            - @permission.errors.full_messages.each do |msg|
+                              %li= msg
+                      %table.table.table-condensed.table-striped
+                        %thead
+                          %tr
+                            %th User
+                            %th Role
+                            %th 
+                        %tbody
+                          -if @sudo[0]
+                            %tr
+                              %td= f.text_field :email, placeholder: "Email ID"
+                              %td Collaborator
+                              %td= f.submit 'Invite', class: "btn btn-sm btn-primary"
+                          - if @permissions.first.present?
+                            - @permissions.each do |permission|
+                              %tr
+                                %td
+                                  - if permission.account_id.present?
+                                    = link_to permission.account.username, _account_path(permission.account)
+                                  - else
+                                    = permission.email
+                                %td= "Is #{permission.role}"
+                                - if ((@can_remove_owner and permission.role == Constants::ROLE_O) or permission.role == Constants::ROLE_C) and @sudo[0]
+                                  %td= icon_del(account_core_permission_path(permission.organisation, permission))
+                  - if @permissions.count == 1
+                    = image_tag "members.png"
+                - else
+                  - if @core_team_projects.first.present?
+                    - if @core_teams.first.present?
+                      .col-sm-6
+                        %h4.text-center 
+                          %strong Not in the team
+                        %table.table.table-condensed
+                          %tbody
+                            - @core_teams.each do |core_team|
+                              %tr
+                                %td= link_to core_team.name, core_organisation_team_path(@account, core_team)
+                                %td= core_team.role
+                                %td= link_to "Add to the team >", add_core_organisation_team_projects_path(@account, p: @core_project.id, c: core_team.id), class: "btn btn-primary btn-xs"
+                    .col-sm-6{style: "border-left: 1px lightgray solid;"}
+                      %h4.text-center 
+                        %strong In the team
+                      %table.table.table-condensed
+                        %tbody
+                          - @core_team_projects.each do |core_team_project|
+                            %tr
+                              %td= link_to core_team_project.core_team.name, core_organisation_team_path(@account, core_team_project.core_team)
+                              %td= core_team_project.core_team.role
+                              %td
+                                - if !core_team_project.core_team.is_owner_team
+                                  = icon_del(core_organisation_team_project_path(@account, core_team_project))
+                
+   
+          - if (@sudo[1] and !@core_project.account.is_user_account?) or (@sudo[1] and @core_project.account.is_user_account? and !@sudo[0])
+            - if !@core_project.account.is_user_account?
+              - if @permissions.first.present?
+                .panel.panel-default
+                  .panel-heading
+                    %h3.panel-title Team Mates
+                  .panel-body
+                    %table.table.table-condensed
+                      %tbody
+                        - @permissions.each do |permission|
+                          %tr
+                            %td
+                              - if permission.account_id.present?
+                                = link_to permission.account.username, _account_path(permission.account)
+                              - else
+                                = permission.email
+                            %td= "Is #{permission.role}"

@@ -1,0 +1,78 @@
+- content_for :title do
+  #{@core_team.name} Team · #{@account.username}
+.row
+  .col-sm-2= render partial: "accounts/sidebar"
+  .col-sm-10
+    .previous-sheet
+      %h3{style: "padding-left: 30px;"}
+        = link_to @account.username, _account_path(@account), class: "thin"
+        %span.thin= " / "
+        %b= link_to "Teams", core_organisation_teams_path(@account)
+      .panel.panel-default.sheet.sub
+        .panel-body
+          %h4= @core_team.to_s
+          %hr
+          .row
+            .col-sm-6
+              %h5.text-center.m0p0{style: "font-weight: 800;"} Not in the team 
+              %br
+              - if @not_in_team_1.first.blank? and @not_in_team_2.first.blank?
+                .hint No other team mates.
+              - else
+                %table.table.table-condensed
+                  %tbody
+                    - @not_in_team_1.each do |account|
+                      %tr
+                        %td= link_to account.username, _account_path(account)
+                        %td= link_to ">>", in_core_organisation_team_path(@account, @core_team, u: account.slug), class: "btn btn-success"
+                    - @not_in_team_2.each do |email|
+                      %tr
+                        %td= email
+                        %td= link_to ">>", in_core_organisation_team_path(@account, @core_team, e: email), class: "btn btn-success"
+            .col-sm-6{style: "border-left: 1px black solid;"}
+              %h5.text-center.m0p0{style: "font-weight: 800;"} In the team
+              %br
+              %table.table.table-condensed
+                %tbody
+                  = form_for @permission, url: account_core_permissions_path(@account), method: :post do |f|
+                    = f.hidden_field :organisation_id, value: @account.id
+                    = f.hidden_field :core_team_id, value: @core_team.id
+                    = f.hidden_field :status, value: "Invited"
+                    = f.hidden_field :role, value: @core_team.role
+                    - if @permission.errors.any?
+                      #error_explanation
+                        %h2= "#{pluralize(@permission.errors.count, "error")} prohibited this permission from being saved:"
+                        %ul
+                          - @permission.errors.full_messages.each do |msg|
+                            %li= msg
+                    %tr
+                      %td= f.text_field :email, placeholder: "Email ID"
+                      %td= f.submit 'Invite', class: "btn btn-sm btn-primary"
+                  - if @in_team.first.present?
+                    - @in_team.each do |in_team|
+                      %tr
+                        %td
+                          - if in_team.account_id.present?
+                            = link_to in_team.account.username, _account_path(in_team.account)
+                          - else
+                            = in_team.email
+                        %td
+                          - if !@core_team.is_owner_team or (@core_team.is_owner_team and @in_team.count > 1)
+                            = link_to "<<", account_core_permission_path(@account, in_team.id), :method => :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "btn btn-danger", style: "color: white;"
+              - if @in_team.first.blank?
+                = image_tag "members.png", class: "col-sm-12"
+          .row
+            .col-sm-12 
+              %hr
+              %h5{style: "font-weight: 800;"} Projects
+              - if @core_team_projects.first.present?
+                %table.table.table-condensed
+                  %tbody
+                    - @core_team_projects.each do |core_team_project|
+                      %tr
+                        %td= link_to core_team_project.core_project.name, _account_project_path(core_team_project.core_project.account, core_team_project.core_project)
+                        %td
+                          - if 1 == 1
+                            = icon_del(core_organisation_team_project_path(@account, core_team_project))
+              - else
+                %p.hint.black No projects added to this team yet

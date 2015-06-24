@@ -1,0 +1,33 @@
+- if @configuration_editors.first.present?
+  %table.table.table-condensed.borderless
+    %thead
+      %tr
+        %th.col-sm-9 Name
+        %th 
+        %th            
+        %th Date Modified
+        %th
+    %tbody
+      - @configuration_editors.each do |config_editor|
+        %tr
+          %td.borderless= link_to config_editor.name, account_core_project_configuration_editor_path(config_editor.account, config_editor.core_project, config_editor), class: "u black", style: (config_editor.marked_to_be_deleted == "true" ? "text-decoration: line-through; color: gray;" : nil)
+          - if config_editor.marked_to_be_deleted != "true"
+            -if @sudo[1]
+              %td.borderless
+                - publish_label = "Publish"
+                - if config_editor.cdn_published_url.present?
+                  = link_to publish, "#", "data-toggle"=>"modal", "data-target"=>"#pubslishedModal", "s3-url" => config_editor.cdn_published_url, class: "s3-publish-details"
+                  - publish_label = "Re-Publish"
+                = link_to publish_label, publish_account_core_project_configuration_editor_path(@core_project.account, @core_project,config_editor), class: "hint u"
+            -else
+              %td.borderless
+            %td.borderless= link_to "Edit", edit_account_core_project_configuration_editor_path(config_editor.account, config_editor.core_project, config_editor)
+            %td.borderless.hint= time_ago_in_words(config_editor.updated_at)
+            %td.borderless.pull-right= icon_del(account_core_project_configuration_editor_path(config_editor.account, config_editor.core_project, config_editor))
+          -else
+            %td.borderless
+            %td.borderless
+            %td.borderless.hint= time_ago_in_words(config_editor.updated_at)
+            %td.borderless
+- if controller_name != "projects"
+  .text-center= paginate @configuration_editors

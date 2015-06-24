@@ -1,0 +1,20 @@
+- content_for :title do
+  #{@core_project.name} · #{@account.username}
+= include_gon
+
+.previous-sheet
+  %h3= show_project_name(@core_project).html_safe
+  .panel.panel-default.sheet.sub
+    .panel-body
+      %h4= link_to @data_store.name, _account_project_data_store_path(@data_store.account, @data_store.core_project, @data_store), class: "black"
+      %hr{style: "margin-bottom: 5px; border-top-color: lightgray;"}
+      .row
+        .col-sm-12
+          = form_tag(update_assign_metadata_account_core_project_data_store_path(@account, @core_project, @data_store), {:method => :put}) do
+            %strong Source URL
+            =text_area_tag :source_url, @data_store.source_url, rows: 1, style: "width:100%;"
+            %br
+            %br
+            %strong Describe the data set
+            =text_area_tag :meta_description, @data_store.meta_description, rows: 10, style: "width:100%;"
+            =submit_tag "Save", class: "btn btn-orange"

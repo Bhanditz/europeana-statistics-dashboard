@@ -1,0 +1,59 @@
+- content_for :title do
+  Admin · Referrals
+
+.row
+  .col-sm-2= render partial: "core/admins/sidebar"
+  .col-sm-10
+    .panel.panel-default
+      .panel-body
+        -if @referrals.count > 0
+          %table.table.table-condensed
+            %thead
+              %th Referrer
+              %th Friend
+              %th Counts
+              %th Sign in
+              %th
+            %tbody
+              -@referrals.each do |referral|
+                -referrer = referral.referrer
+                -friend   = referral.friend
+                %tr
+                  %td   
+                    = referrer.username
+                    .hint= referrer.email
+                  %td
+                    = friend.username
+                    .hint= friend.email
+                  %td
+                    Org:
+                    = friend.organisations.count
+                    %br
+                    Pro:
+                    = friend.core_projects.count
+                    %br
+                    Act:
+                    = friend.session_actions_u.count
+                  %td
+                    Count: 
+                    = friend.sign_in_count
+                    .hint
+                      Last at: 
+                      - if friend.last_sign_in_at.present?
+                        = time_ago_in_words(friend.last_sign_in_at)
+                    .hint
+                      Last IP: 
+                      = friend.last_sign_in_ip
+                    .hint
+                      Curr at: 
+                      - if friend.current_sign_in_at.present?
+                        = time_ago_in_words(friend.current_sign_in_at)
+                    .hint
+                      Curr IP: 
+                      = friend.current_sign_in_ip
+                  %td
+                    = link_to "Approve", approve_referral_core_admin_path(referral)
+        -else
+          %h2
+            No Pending Referral Approvals 
+        

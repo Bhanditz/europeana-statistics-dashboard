@@ -1,0 +1,45 @@
+- content_for :title do
+  Admin · Map Files
+
+.row
+  .col-sm-2= render partial: "core/admins/sidebar"
+  .col-sm-10
+    .panel.panel-default
+      .panel-body
+        -if @map_files_to_approve.present? && @map_files_to_approve.count > 0
+          %table.table.table-condensed
+            %thead
+              %th Account
+              %th= "Name <span class='hint' style='font-weight:normal;font-size:0.7em'> (Click on the name to edit)</span>".html_safe
+              %th Size
+              %th Preview
+              %th Downloads
+              %th
+              %th
+            %tbody
+              - @map_files_to_approve.each do |core_map_file|
+                %tr
+                  %td= core_map_file.account.username
+                  %td
+                    = icon_lock if !core_map_file.is_public
+                    =best_in_place core_map_file, :name, {path:  account_core_map_file_path(core_map_file.account,core_map_file),type: :input}
+                    -if core_map_file.is_verified
+                      -is_verified_map_file =  "<span class='red'>Unverify</span>"
+                      = image_tag "map_file_verified.png"
+                    -else
+                      -is_verified_map_file = "<span class='green'>Verify</span>"
+                  
+                  %td.hint= "#{core_map_file.size} KB"
+                  %td
+                    -if core_map_file.is_public
+                      =link_to "Preview", account_core_map_file_path(core_map_file.account,core_map_file), class: "hint"
+                    -else
+                      = "No Preview Available"
+                  %td= core_map_file.downloads.count
+                  %td== link_to "<b class='glyphicon glyphicon-download-alt'></b>".html_safe, download_account_core_map_file_path(core_map_file.account,core_map_file), target: "_blank"
+                  %td= link_to "#{is_verified_map_file}".html_safe,  verify_or_unverify_map_files_core_admin_path(core_map_file.id)
+          %center
+            = paginate @map_files_to_approve
+        -else
+          %h2
+            No Pending Dictionary Approvals

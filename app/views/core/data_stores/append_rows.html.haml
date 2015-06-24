@@ -1,0 +1,54 @@
+.previous-sheet
+  %h3
+    = show_project_name(@core_project).html_safe
+    %span.thin= " / "
+    = link_to @data_store.name, _account_project_data_store_path(@data_store.account, @data_store.core_project, @data_store)
+  .panel.panel-default.sheet.sub
+    .panel-body
+      %h4 Append DataSets to add multiple rows
+      %hr
+      .row
+        .col-sm-12
+          %p
+            Take all rows from DataSet 1, add them at the bottom of DataSet
+            %x = @errors
+            %u= @data_store.name
+            and delete DataSet 1.
+            For this operation to work, both datasets show have exactly same columns.
+          - if @data_stores and @data_stores.first.blank?
+            %p.red.lead Please first create / upload a dataset with new data points that you want to append.
+          - else
+            = simple_form_for(@data_store, url: commit_append_account_core_project_data_store_path(@core_project.account, @core_project, @data_store), html: {class: "form-horizontal", method: "put"}) do |f|
+              .col-sm-3
+                %p.lead= f.input :append_data_store_id, as: :select, collection: @data_stores.map{|z| [z.name, z.id]}, include_blank: false, label: false
+                = f.button :submit, "Append", id: "rumali_append_dataset"
+              .col-sm-9
+                %br
+                %p.lead
+                  = " ----------->>>> "
+                  = @data_store.name
+        .col-sm-12
+          %br
+          #rumali_append_rows_error
+- if @errors
+  :javascript
+    var error = "#{@errors['error']}"
+      , mismatch_column_name = JSON.parse('#{@errors["mismatch_column_name"]}')
+      , mismatch_column_type = JSON.parse('#{@errors["mismatch_column_type"]}')
+      , extra_columns = JSON.parse('#{@errors["extra_columns"]}')
+      , error_message_to_display = "<strong>" + error + "</strong>"
+      , error_count = 1;
+
+    if (mismatch_column_name.length > 0) {
+      error_message_to_display += "<br/>" + error_count + ". The target table has the following extra columns.<br/>&nbsp;&nbsp;&nbsp;&nbsp;" + mismatch_column_name;
+      error_count++;
+    }
+    if (extra_columns.length > 0) {
+      error_message_to_display += "<br/>" + error_count + ". The source table has the following extra columns.<br/>&nbsp;&nbsp;&nbsp;&nbsp;" + extra_columns;
+      error_count++;
+    }
+    if (mismatch_column_type.length > 0) {
+      error_message_to_display += "<br/>" + error_count + ". The following columns have different datatypes in source and target tables.<br/>&nbsp;&nbsp;&nbsp;&nbsp;" + mismatch_column_type;
+      error_count++;
+    }
+    document.getElementById("rumali_append_rows_error").innerHTML = error_message_to_display;

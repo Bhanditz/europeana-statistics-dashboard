@@ -1,0 +1,103 @@
+%script{:src => "/assets/core_projects.js"}
+%script{:src => "https://platform.twitter.com/widgets.js", :type => "text/javascript"}
+-referral_url = "#{BASE_URL}/refer?r=#{current_account.referral_code}"
+- content_for :title do
+  Project Profile · #{@core_project.name}
+- disabled = true
+-if @sudo[0]
+  - disabled = false
+
+.previous-sheet
+  %h3= show_project_name(@core_project).html_safe
+  .panel.panel-default.sheet.sub
+    .panel-body
+      .row
+        .col-sm-2= render partial: "core/projects/sidebar"
+        .col-sm-7
+          .panel.panel-default
+            .panel-heading
+              .panel-title What other's see?
+            .panel-body
+              = simple_form_for(@core_project, url: account_core_project_path(@core_project.account, @core_project), html: {class: "form-inline", method: "put"}) do |f|
+                = f.input :name, required: true, disabled: true
+                %br
+                %br
+                = f.input :license, collection: ["Not specified", "Creative Commons Attribution", "Creative Commons Attribution Share-Alike", "Creative Commons Non-Commercial (Any)", "Creative Commons CCZero", "Other (Not Open)", "GNU Free Documentation License", "Open Data Commons Attribution License", "UK Open Government License (OGL)", "Other (Public Domain)", "Open Data Commons Public Domain Dedication and License (PDDL)", "Open Data Commons Open Database License (ODbL)"], :include_blank => false, selected: "Creative Commons Non-Commercial (Any)", required: true, disabled: disabled
+                %br
+                %br
+                -if !disabled
+                  = f.button :submit, "Save"
+              
+          .panel.panel-default
+            .panel-heading
+              .panel-tile Earn extra space
+            .panel-body
+              %p Share this link with your friends to get more space.
+              %p= link_to referral_url, referral_url
+              %br
+              - if @core_referral_gifts.first.present?
+                %table.table.table-condensed
+                  %thead
+                    %tr
+                      %th Bonus Type
+                      %th Friend
+                      %th Space Earned
+                  - @core_referral_gifts.each do |gift|
+                    - refer = gift.core_refferal
+                    %tbody
+                      %tr
+                        %td Referral
+                        %td= link_to refer.email, _account_path(refer.friend)
+                        %td   
+                          %strong.green Congratulations! You've received 50 MB extra.
+      
+          - if @can_use_apis
+            .panel.panel-default
+              .panel-heading
+                .panel-title API Tokens
+              .panel-body
+                %p.gray If you are planning to query your datasets directly from the front-end using PykQuery.js, then create a token and use it when calling the API.
+                %br
+                -if @core_tokens.count > 0
+                  %table.table.table-condensed
+                    %thead
+                      %tr
+                        %th Name
+                        %th API Token
+                        %th Created by
+                        %th
+                    %tbody
+                      -@core_tokens.each do |token|
+                        %tr
+                          -created_by = token.account.username
+                          %td= token.name
+                          -if created_by == current_account.username
+                            %td= token.api_token
+                          -else
+                            %td= "XXX Hidden XXX"
+                          %td= created_by
+                          -if @sudo[0] or current_account.username == created_by
+                            %td= icon_del(account_core_project_token_path(token.account_id,token.core_project_id, token))
+                %br
+                .col-sm-6
+                  = simple_form_for(@core_token,url: account_core_project_tokens_path(@core_project.account, @core_project),html: {method: "post"}) do |f|
+                    = f.input :name, required: true, hint: "E.g. GitHub"
+                    = f.input :account_id, as: :hidden, input_html: {value: current_account.id}
+                    = f.input :core_project_id, as: :hidden,  input_html: {value: @core_project.id}
+                    = f.button :submit, "Generate New Token"
+          -if !disabled
+            .panel.panel-danger
+              .panel-heading
+                .panel-title Danger Zone
+              .panel-body
+                %p Warning: This is not a reversible or repairable action.
+                %br
+                = link_to "Delete this project", [@core_project.account, @core_project], :method => :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "btn btn-danger", style: "color: white; font-size: 1em;"
+        .col-sm-3
+          - ref_plan = @core_project.ref_plan
+          .well.pricing.all_ref_plans.active
+            %h2.text-center{style: "font-weight: 100; margin-top: 0px;"}= ref_plan.target_customer
+            %p.pykhelp
+              = ref_plan.name
+              =ref_plan.description
+            %h3.text-center{style: "font-weight: 100;"}= "$#{ref_plan.price_per_month} a month"

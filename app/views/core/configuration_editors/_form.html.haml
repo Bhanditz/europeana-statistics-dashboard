@@ -1,0 +1,138 @@
+%script{:src => "/assets/configuration_editor.js"}
+
+.row
+  .col-sm-9
+    = form_for(@configuration_editor, url: url, :html => { role: "form", class: "form-horizontal", method: method }) do |f|
+      = f.hidden_field :core_project_id, value: @core_project.id
+      = f.hidden_field :account_id, value: @account.id
+      = f.hidden_field :content, value: "", id: "content", hidden: true
+      - if @configuration_editor.id.blank?
+        %h4.m0p0= f.text_field :name, required: true, autofocus: true,placeholder: "File Name", class: "col-sm-12"
+        %br
+        %br
+        %br
+        %br
+      %div#all-form-elements.col-sm-12    
+        .form-vertical#display-form-elements
+      %br
+      %br
+      = f.submit "Save", id: "submit", class: "btn btn-primary"
+  .col-sm-3.well{"data-intro" => "Add in configurations here as simple questions, link them to your data variable names, data types and get them working!","data-position"=> "left"}
+    %h4 Add / Edit configurations
+    %hr
+    %form#ace-form
+      .container#edit-form-elements{style: "width:100%"}
+        %div
+          %div
+            .form-vertical
+              .form-group#labelDiv
+                %label.control-label What is the Question?
+                %br
+                %input#labeltext.form-control{:required => "", :type => "text"}
+              .form-group
+                %label.control-label Hint
+                %br
+                %input#helpText.form-control{:type => "text"}
+              .form-group#slugDiv
+                %label.control-label Variable Name
+                %br
+                %input.form-control#slugValue{:type => "text", :min => "1"}
+              .form-group
+                %label.control-label Data Type
+                %br
+                %select#select1.form-control
+                  %option{:selected => "selected", :value => "text"} Text
+                  %option{:value => "textarea"} Paragraph Text
+                  %option{:value => "boolean"} Yes / No
+                  = #%option{:value => "option"} Select one from dropdown
+                %br
+                .form-group
+                  %label.control-label Validation
+                  %br
+                  %select#textproperty.form-control
+                    %option{:value=> "string"} String
+                    %option{:value =>"number"} Number
+                    %option{:value =>"email"} Email
+                    %option{:value =>"password"} Password
+                    %option{:value =>"url"} Url
+                    %option{:value =>"color"} Color
+                    %option{:value =>"float"} Float
+                    %option{:value =>"date"} Date
+                    %option{:value =>"datetime"} DateTime
+                .form-group#yesNoDiv{:style => "display:none"}
+                  %label.control-label Default value
+                  %br
+                  %select#yesnovalue.form-control
+                    %option{:value=> "yes"} Yes
+                    %option{:value =>"no"} No    
+                .form-group#optionTextDiv{:style => "display:none"}
+                  %label.control-label Text
+                  %br
+                  %input.form-control#optiontext{:type => "text"}
+                .form-group#optionValueDiv{:style => "display:none"}
+                  %label.control-label Value
+                  %br
+                  %input.form-control#optionvalue{:type => "text"}
+                .form-group#textDiv{:style => "display:none"}
+                  %label.control-label Text
+                  %br
+                  %input.form-control#booleantext{:type => "text"}
+                .form-group#valueDiv{:style => "display:none"}
+                  %label.control-label Value
+                  %br
+                  %input.form-control#booleanvalue{:type => "text"}
+                .form-group#noOfRowsDiv{:style => "display:none"}
+                  %label.control-label Rows
+                  %br
+                  %input.form-control#noOfRows{:type => "number", :min => "1"}                               
+                %div#noOfColsDiv.form-group{:style => "display:none"} 
+                  %label.control-label Columns
+                  %br
+                  %input.form-control#noOfCols{:type => "number",:min => "1"}
+                .form-group#defaultTextDiv
+                  %label.control-label Default Text
+                  %br
+                  %input.form-control#default{:type => "text"} 
+                %table
+                  %tr.m0p0
+                    %td.m0p0.col-sm-6
+                      .form-group#minLenDiv.m0p0
+                        %label.control-label.m0p0 Min. Length
+                        %br
+                        %input.form-control.m0p0#minimum{:type => "number", :min=>"1", style: "width: 40%;"}
+                    %td.m0p0.col-sm-6
+                      .form-group#maxLenDiv.m0p0
+                        %label.control-label.m0p0 Max. Length
+                        %br
+                        %input.form-control.m0p0#maximum{:type => "number",:min => "1", style: "width: 40%;"}
+                %div#idBtnGroup{:style => "margin:20px 0px 0px 0px;"}
+                  %table
+                    %tr
+                      %td
+                        %input#chkReqd{:name => "req", :type => "checkbox", :value => "true"}
+                      %td &nbsp;&nbsp;&nbsp;&nbsp;
+                      %td
+                        %label{:style => "width: 200px;"} Required Element
+                  %br
+                  %input#save.btn.btn-orange{:type => "button",:style => "left:5px;position:relative;display:block", :value => "Add"}
+                  %input#edit.btn.btn-orange{:type => "button",:style => "left:5px;position:relative;display:none", :value => "Done"}
+                %div#data1.PykAce-valid{:style => "red;margin:20px 0px 0px 100px;"}
+-content = @configuration_editor.content.to_json
+
+:javascript
+  $(document).ready(function () {
+    if (#{content} === null || #{content} === "null" ) {
+      window.data = [];
+    }
+    else {
+      window.data = #{content}
+
+    }
+    $("#displaystring").html(JSON.stringify(window.data));
+    var create = new PykAce.element();
+    create.execute();
+    $("#submit").click(function() {
+      $("#content").val(JSON.stringify(window.data));
+      display.submitForm();
+    });
+  });

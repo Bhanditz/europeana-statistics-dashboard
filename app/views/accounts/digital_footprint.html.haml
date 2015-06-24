@@ -1,0 +1,11 @@
+- content_for :title do
+  My Digital Footprint · #{current_account.username}
+
+.row
+  .col-sm-2= render partial: "accounts/sidebar"
+  .col-sm-10
+    .panel.panel-default
+      .panel-heading
+        .panel-title My Digital Footprint
+      .panel-body
+        

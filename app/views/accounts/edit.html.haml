@@ -1,0 +1,36 @@
+- content_for :title do
+  Edit Profile · #{current_account.username}
+.row
+  .col-sm-2= render partial: "accounts/sidebar"
+  .col-sm-8#page
+    .panel.panel-default
+      .panel-body
+        .col-sm-9
+          = simple_form_for(@account, url: account_path(@account), html: {class: "form-horizontal", method: "put"}) do |f|
+            = f.input :name, as: :string, hint: "Please use real names", autofocus: true
+            = f.input :gravatar_email_id, as: :email, required: true, hint: "(Public Email ID)"
+            = f.input :company, as: :string, hint: "Where do you work?"
+            = f.input :location, as: :string, hint: "E.g. Mumbai, India"
+            = f.input :bio, as: :text, input_html: { autocomplete: "off"}
+            = f.input :url, as: :url, label: "Website", hint: "E.g. http://myblog.com"
+            = f.button :submit, "Save"
+  .col-sm-2            
+    %table.table.table-condensed
+      %tr
+        %td Username
+        %td :
+        %td= @account.username
+    -if @account.core_account_image.present? and @account.core_account_image.base_url.present? and @account.core_account_image.marked_to_be_deleted != "true"
+      - url = account_core_account_image_path(@account,@account.core_account_image)
+      - method = "put"
+      - upload_or_update = "Update"
+      .pull-right
+        = link_to "<span class='glyphicon glyphicon-remove'></span>".html_safe, account_core_account_image_path(@account,@account.core_account_image),method: :delete
+    %p= image_tag account_image(@account, 80), class: "col-sm-12", style: "margin-bottom: 20px;"
+    -unless @account.core_account_image.present? and @account.core_account_image.base_url.present? and @account.core_account_image.marked_to_be_deleted != "true"
+      %p.hint Profile image is coming from Gravatar
+      %br
+      - url = account_core_account_images_path(@account,@core_account_image)
+      - method = "post"
+      - upload_or_update = "Upload"
+    = render partial: "core/account_images/form",locals: {uploader: @uploader, url: url,method: method,upload_or_update: upload_or_update}

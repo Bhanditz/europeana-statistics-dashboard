@@ -1,0 +1,15 @@
+- content_for :title do
+  New Configuration Editor · #{@core_project.name}
+
+
+.previous-sheet
+  %h3
+    = show_project_name(@core_project).html_safe
+    %span.thin= " / "
+    = link_to "Configuration Editors", _account_project_config_editors_path(@core_project.account, @core_project)
+  .panel.panel-default.sheet.sub
+    .panel-body
+      %h4 Add new Configuration Editor
+      %hr
+      - url = account_core_project_configuration_editors_path(@account,@core_project)    
+      = render partial: "form", locals: {url: url, method: :post}

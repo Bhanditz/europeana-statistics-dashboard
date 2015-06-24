@@ -1,0 +1,89 @@
+= content_for :title do
+  Case Studies · Rumi · Pykih
+
+.row
+  .col-sm-8.float_to_center
+    %br
+    %h1.pagetitle.m0p0.text-center{id: "top"} Case Studies
+.row
+  .col-sm-8.float_to_center      
+    .col-sm-4
+      .well.s
+        %a{href: "#firstpost"}
+          %br
+          = image_tag "https://s3-ap-southeast-1.amazonaws.com/pykih-public-docs/marketing-collateral/works/budget_small.png", class: "col-sm-12", style: "margin-bottom: 10px;"
+          %p Budget 2014 app for FirstPost.com
+    .col-sm-4
+      .well.s
+        %a{href: "#microsoft"}
+          %br
+          = image_tag "https://s3-ap-southeast-1.amazonaws.com/pykih-public-docs/marketing-collateral/works/microsoft_small.png", class: "col-sm-12", style: "margin-bottom: 10px;"
+          %p Twitter dashboard for Microsoft
+    - if 1 == 1      
+      .col-sm-4
+        .well.s
+          %a{href: "#narendramodi.in"}
+            %br
+            = image_tag "https://s3-ap-southeast-1.amazonaws.com/pykih-public-docs/marketing-collateral/works/election-rally-tracker-small.png", class: "col-sm-12", style: "margin-bottom: 10px;"
+            %p Rally Tracker for NarendraModi.in
+.row
+  .col-sm-8.float_to_center
+    %br
+    %br
+    %hr
+    %h3.text-center{id: "firstpost"} 
+      %span.gray.thin FirstPost: 
+      Budget 2014 visualization
+    %br
+    %h4.thin.serif{style: "line-height: 1.4em;"} 
+      FirstPost.com is a news website owned by the Network18 Group. Pykih was given the task of coming up with a visualization that would help layman readers judge the reaction of others to the much hyped budget of the Modi government. We built a page which has a Live TV embed that showed the Honorable Finance Minister, Arun Jaitley, deliver his Budget speech and simultaneously, we built a vizulisation that  show cased the real-time reaction of the stock market and the sentiment of people. Needless to say, but we are one of the first one's in India to build a data vizulisation of this manner in India.
+      %br
+      %br
+      = image_tag "https://s3-ap-southeast-1.amazonaws.com/pykih-public-docs/marketing-collateral/works/budget_firstpost-monitoring-twitter-1.png", class: "col-sm-12", style: "margin-bottom: 40px;"
+      %br
+      %br
+      Apart from the visualization, the big question was how to query the APIs (Stock Market APIs and Twitter APIs), clean the data, do a sentiment analysis on it, model and push it to the front-end every 5 minutes. All this was possible only because of we had a robust back-end as Rumi.
+      
+      = link_to "Read about this project in detail", "https://www.pykih.com/data-journalism/india-budget-2014", target: "_blank"
+      %br
+      .pull-right= link_to "Back to top", "#top", class: "thin"
+      %br
+      
+    %hr
+    %h3.text-center{id: "microsoft"} 
+      %span.gray.thin Microsoft: 
+      Social Hub Wall
+    %br
+    %h4.thin.serif{style: "line-height: 1.4em;"} 
+      = link_to "World Partner Conference", "http://www.digitalwpc.com", target: "_blank"
+      is one of Microsoft's biggest annual events with 15,000 attendees from 134 countries. Pykih was tasked with designing, building and hosting a visually impactful, real-time dashboard that would showcase social conversations around the event. It was branded as the "Social Hub". Social Hub became the venue for multiple presentations, a muscial performance and an award ceremony among other events.
+      %br
+      %br
+      = image_tag "https://s3-ap-southeast-1.amazonaws.com/ap-southeast-1.datahub.pykih/assets/images/microsoft-social-hub.png", class: "col-sm-12", style: "margin-bottom: 40px;"
+      %br
+      %br
+      Rumi allowed us to query Twitter API for multiple hashtags and handles and model the data every 1 minute. It also allowed us to make multiple elements of the visualization configurable so the Microsoft team could keep the dashboard relevant as the conference progressed. Finally, Rumi was able to scale up and handle unexpected spikes in the number of tweets. 
+      = link_to "Read about this project in detail.", "http://www.pykih.com/conference-dashboards", target: "_blank"
+      %br
+      .pull-right= link_to "Back to top", "#top", class: "thin"
+      %br
+    -if 1 == 1
+      %hr
+      %h3.text-center{id: "narendramodi.in"} 
+        %span.gray.thin NarendraModi.in: 
+        Election Rally Tracker 
+      %br
+      %h4.thin.serif{style: "line-height: 1.4em;"} 
+        When the Honorable Prime Minister of India, Narendra Modi, the then Chief Minister of Gujarat was campaigning for the post of Prime Minister of India, he was conducting 4-5 campaign rallies every day. Pykih was tasked with designing, building and hosting a 
+        %u very simple visualization 
+        that supporters from second-tier towns would use to understand what happened in past rallies and where are the upcoming rallies.
+        %br
+        %br
+        = image_tag "https://s3-ap-southeast-1.amazonaws.com/pykih-public-docs/marketing-collateral/works/nm1.jpg", class: "col-sm-12", style: "margin-bottom: 40px;"
+        %br
+        %br
+        With a hard deadline, Rumi allowed us to focus on the visualization with-out having to create tables and back-end CMS to manage the complex data set e.g. rallies, timings, speeches, photos, videos, districts, highlights, etc. Also, the visualization was hosted on Rumi and shown on the homepage of narendramodi.in from April 4 till May 15, 2014. Rumi was able to handle massive traffic spikes.
+        = link_to "Read about this project in detail", "http://www.pykih.com/data-journalism/election-rally-tracker", target: "_blank"
+        %br
+        .pull-right= link_to "Back to top", "#top", class: "thin"
+        %br

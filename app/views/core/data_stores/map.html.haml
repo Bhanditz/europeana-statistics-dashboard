@@ -1,0 +1,22 @@
+= include_gon
+-if @clonned_msg.nil?
+  #data-paste{style: "display:block;"}
+    = form_for(@data_store, url: account_core_project_data_store_path(@core_project.account, @core_project, @data_store), :html => { role: "form", method: :put }) do |f|
+      %input{value: "", id: "content", name: "content", type: "hidden"}
+      %input{value: "", id: "content-col-head", name: "content-col-head", type: "hidden"}
+      %input{value: "", id: "changed-content-col-head", name: "changed-content-col-head", type: "hidden"}
+      %input{value: "", id: "deleted-content-col-head", name: "deleted-content-col-head", type: "hidden"}
+      %input{value: "", id: "new-content-col-head", name: "new-content-col-head", type: "hidden"} 
+      %input{value: "", id: "description-content", name: "description-content", type: "hidden"}
+      .right-inner-addon
+      = f.submit "Save", id: "submit", class: "btn btn-primary", style: "margin-top: 5px;display:none"
+  %div{style: "width:100%; height:150px; "}
+    #grid_show{style: "width:100%; height:150px;overflow:scroll;"}
+  #grid_columns
+  %div{style: "width:100%; height:450px;"}
+    #grid_map{style: "width:100%; height: 400px;"}
+  %span.glyphicon.glyphicon-trash#delete-button{style: "font-size:0.7em;margin-Left:-10px;margin-Top:10px;visibility:hidden;color:red;"}
+-else
+  %br
+  %br
+  .alert.alert-info=@clonned_msg

@@ -1,0 +1,77 @@
+.well.pricing.all_ref_plans{
+  background: white;
+  border: 0px;
+  cursor: pointer;
+  border: 1px lightgray solid;
+}
+
+.well.pricing:hover, .well.pricing.active{
+  background: #FFE3BF;
+}
+
+.wrapper::-webkit-scrollbar {
+  height: 7px;
+}
+.wrapper::-webkit-scrollbar-button:start:decrement,
+.wrapper::-webkit-scrollbar-button:end:increment
+.wrapper::-webkit-scrollbar-track-piece  {
+  background-color: white;
+  -webkit-border-radius: 0px;
+}
+.wrapper::-webkit-scrollbar-thumb:horizontal {
+  -webkit-border-radius: 5px;
+  margin-top:10px;
+  background: rgb(236, 236, 236);
+}
+#title{
+  display: inline !important;
+}
+#sub-title{
+  width: auto !important;
+}
+.theme-editor.panel-title{
+  background: #DCDCDC !important;
+  height: 25px;
+  font-size: 1em;
+  padding-top: 2px;
+  padding-left: 10px;
+  border-color: white;
+}
+
+.input-group-addon {
+  padding: 6px 6px;
+}
+#scopejs_themes_new #chart_container{
+  width: 575px !important;
+  min-height: 400px;
+}
+.indent{
+  padding-left: 0px;
+}
+.input-group[class*="col-"] {
+  float: left;
+}
+.cstm-label {
+  font-size: 11px;
+  color: gray;
+}
+.tint{
+  background-color: #43c72f;
+}
+.panel-body.grey{
+  background-color: #FAFAFA;
+}
+.circle {
+  border: 1px solid black;
+}
+#configuration_panels_sidebar{
+  overflow-y:scroll; 
+  height:400px;
+}
+div.no_pointer_for_themes img{
+  cursor:default !important;
+}
+
+body[id*="scopejs_themes_"] #title,body[id*="scopejs_themes_"] #sub-title,body[id*="scopejs_themes_"] a[href='#configurepie'],body[id*="scopejs_themes_"] a[href='#chart_subtitle'],body[id*="scopejs_themes_"] a[href='#chart_title'],body[id*="scopejs_themes_"] #chart_title{
+  display: none !important;
+}

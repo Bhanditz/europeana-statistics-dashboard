@@ -1,0 +1,11 @@
+- inst_var_lists = [@data_store, @viz,@core_map_file,@core_account_image]
+- validation_errors = []
+- inst_var_lists.each do |inst_var_list|
+  -unless inst_var_list.nil?
+    -unless inst_var_list.errors.nil?
+      -inst_var_list.errors.each do |name,msg|
+        -validation_errors << "#{name.to_s.titleize} #{msg}"
+:javascript
+  var validations_error_list = #{validation_errors}, notice = #{config.to_json};
+  if (notice.notify) generate_notify(notice);
+  if (validations_error_list.length > 0)showAllValidationErrors(validations_error_list);

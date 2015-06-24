@@ -1,0 +1,104 @@
+= content_for :title do
+  Data Journalism · Rumi · Pykih
+.row
+  .col-sm-8.float_to_center
+    %br
+    %h1.pagetitle.m0p0.text-center{id: "top"} I want my journalists to use data in their stories
+    %h3.thin.serif{style: "line-height: 1.4em;"} The easiest way to get your editorial team to use data daily is to make it simple enough for them to use it. Currently, leveraging open data and visualizations is just too tough.
+    %hr
+    %h3.thin.text-center Formats
+    %br
+    %h4.thin.serif{style: "line-height: 1.4em;"} 
+      There are two high-level formats in data-driven journalism:
+      %br
+      %br
+      a)
+      %u Data-driven stories
+      are generally narrative-heavy, short-shelf life articles that leverage data to substantiate the story. Newsrooms lack time and people. They need to get stories out in-time since news is a perishable commodity. Hence, they need timely access to authentic data and should be able to visualize data appropriately within minutes.
+      %br
+      %br
+      b)
+      %u Visualization apps
+      are much larger projects typically used for events like Budgets, Elections, Wars, Sporting events, etc. These are beautiful and impactful and act as traffic multipliers since they explain concept events lucidly. Read more about 
+      = link_to "visualization apps here.", "/use-cases/visualizations", target: "_blank"
+    
+    %hr
+    %h3.thin.text-center Challenges
+    %br
+    = image_tag "https://s3-ap-southeast-1.amazonaws.com/pykih-public-docs/marketing-collateral/steps-of-data-journalism.png", class: "col-sm-8"
+    %h4.thin.serif{style: "line-height: 1.4em;"} Developer(s) and designers are an integral part of data journalism team. 
+    %br
+    %h4.thin.serif{style: "line-height: 1.4em;"} However, for daily data-driven stories, developers cannot be involved. Journalists should be able to do most of these steps themselves.
+    %br
+    %br
+    %hr
+    %h3.thin.text-center Shouldn't your team be focusing on the story?
+    %br
+    %h4.thin.serif{style: "line-height: 1.4em;"} 
+      %u 
+        %strong Data Collection:
+      %br
+      %br
+      Typically a journalist will start with searching data on Open Data Initiative portals like
+      = link_to "data.gov.in,", "http://data.gov.in/", target: "_blank"
+      World Bank, RBI, 
+      = link_to "National Crime Records Bureau,", "http://ncrb.gov.in/", target: "_blank"
+      etc. It takes time to visit these multiple data sites. Your journalists might not even know which sources to visit. Once there, they need to use the (relatively poor) searching mechanism on these portals to search through 100s of data sets to find the exact one that matches their needs. Then they will download a data set to check if it meets their need. Once downloaded, if the data set does not meet their requirements then they go through the same process again.
+      %br
+      %br
+      The only other alternative is to use the pre-modelled and cleaned data on 
+      = link_to "Knoema.", "http://knoema.com/", target: "_blank"
+      However, in our discussions, journalists often do not want to trust the veracity of their story on Knoema as a source and instead prefer the original source.
+      %br
+      %br
+      %u 
+        %strong Data Cleaning:
+      %br
+      %br
+      Once the data set has been downloaded, to clean the data. The best data cleaning tool out there in the market is 
+      = link_to "Open Refine,", "http://openrefine.org/", target: "_blank"
+      a free-to-use, desktop application. The journalist needs to use a combination of Open Refine, Excel and manual work. All your journalists need to download, install and learn Open Refine. Being a desktop application, Open Refine cannot be integrated right into the work flow. 
+      %br
+      %br
+      %u 
+        %strong Lost opportunity for investing in an reusable, in-house Data Room:
+      %br
+      %br
+      Considering the speed at which the media industry works, the journalist will typically download the data set, clean it in Open Refine and then start directly modifying it for analysis and visualization to get the story out as quickly as possible. In this process, the media organization has lost the precious data collection and cleaning done by the journalist. Few days, if another journalist requires the same data set, he will end up spending time finding it and cleaning it.
+      %br
+      %br
+      %u 
+        %strong Visualization
+      %br
+      %br
+      There are a plethora of wonderful, free-to-use or low-cost visualization tools out there in the market. Each one has their respective strengths. 
+      = link_to "DataWrapper", "https://datawrapper.de/", target: "_blank"
+      is an extremely simple, beautiful, free to use, visualization tool built for journalists. 
+      = link_to "Knoema", "http://knoema.com/", target: "_blank" 
+      has good quality maps. However, the design of its other visualization are relatively poor and the UI/UX, a bit complex.
+      = link_to "Tableau Public", "http://www.tableausoftware.com/public/", target: "_blank"
+      is extremely powerful visualization tool however it is complex enough to require a "certification" course. Other tools include 
+      = link_to "Infoactive,", "https://infoactive.co/", target: "_blank"
+      = link_to "InfoGram,", "http://infogr.am", target: "_blank"
+      = link_to "Piktochart,", "http://piktochart.com/", target: "_blank"
+      = link_to "Plot.ly,", "https://plot.ly/", target: "_blank"
+      = link_to "Easel.ly,", "http://www.easel.ly/", target: "_blank"
+      = link_to "OpenHeatMap", "http://www.openheatmap.com/", target: "_blank"
+      and
+      = link_to "CartoDB", "http://cartodb.com/", target: "_blank"
+      %br
+      %br
+      None of these tools are directly connected to your work-flow. Hence, the journalist needs to choose the right tool, upload his data there, choose chart, configure it and then export an embed code that they can place in their website. Moreover, the design and theme of each of these tools is different. They may not adhere to your newspaper's brand look and feel. Professional newspapers like The Economist have a consistent theme around their visualizations. Finally, if these free tools shut down then your news archieve loses it's charts.
+      %br
+      %br
+    %h3.thin.serif.text-center 
+      Now imagine, your journalist had to do all this while also writing the article and meeting the  deadline. Break through the clutter of fancy tools and move towards processes. Trivialize the tools to such an extent so that your journalists can 
+      %u focus 
+      on the story and deeper investigation.
+    %hr
+    %h3.thin.serif.text-center.purple-background{style: "line-height: 1.4em; padding: 10px 5px;"} Journalists will actively use data only if it is simple enough for them to use it. 
+    %hr
+    %h3.thin.serif.text-center Rumi allows you to do the same.
+    %br
+.row
+  .col-sm-8.float_to_center.text-center= link_to "Take a Tour", "/tour", class: "btn btn-lg btn-primary"    

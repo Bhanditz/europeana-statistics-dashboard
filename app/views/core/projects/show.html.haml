@@ -1,0 +1,121 @@
+- content_for :title do
+  #{@core_project.name} · #{@account.username}
+= include_gon
+.panel.panel-default.sheet{"data-intro" => "See all your data sets in your current project here", "data-position" => "bottom"}
+  .panel-body
+    .row
+      .col-sm-12
+        %h1.pagetitle{style: "margin-bottom: 0px;"}
+          - if @core_project and !@core_project.nil?    
+            - if !@core_project.is_public
+              = icon_lock
+            = link_to @account.username, _account_path(@account), class: "thin"
+            %span.thin= " / "
+            %b= link_to @core_project.name, _account_project_path(@core_project.account, @core_project), class: "black"
+            -if @sudo[1]
+              .pull-right
+                - if @sudo[0] or @sudo[1]
+                  = link_to "Project Settings", _edit_account_project_path(@core_project.account, @core_project), style: "font-size: 0.5em; font-weight: normal; border-bottom: 1px dotted gray;", class: "black"
+                  = link_to 'Add a Data Set', _new_account_project_data_stores_path(@core_project.account, @core_project), class: "btn btn-sm btn-orange"
+        - if !@sudo[0]
+          - if @core_project.description.present?
+            %p.lead.gray{style: "border-bottom: 1px dotted gray;"}= @core_project.description
+          - else
+            %br
+        - else
+          %div{style: "color: #aa9c84; margin: 5px 0px 0px 0px;"}= best_in_place @core_project, :description, {path: account_core_project_path(@core_project.account, @core_project), type: :input, html_attrs: {style: "width:100%"}, place_holder: "Add a description"}
+    %hr{style: "margin-bottom: 5px; border-top-color: lightgray;"}
+    - if @somethings_added
+      - if @not_first_data_store
+        %b= "#{@data_stores_count} data sets"
+      - if @can_visualize_data and @not_first_viz
+        &nbsp;
+        &nbsp;
+        %b= link_to "#{@vizs_count} <span class='octicon octicon-broadcast'></span> datacasts".html_safe, _account_project_vizs_path(@core_project.account, @core_project), class: "u"
+      - if @sudo[1]
+        - if @can_configuration_edit and @not_first_config_editor
+          &nbsp;
+          &nbsp;
+          %b= link_to "#{@config_editors_count} configuration editors", _account_project_config_editors_path(@core_project.account, @core_project), class: "u"
+        - if @can_host_custom_dashboard and @not_first_custom_dashboard
+          &nbsp;
+          &nbsp;
+          %b= link_to "#{@custom_dashboards_count} custom dashboards", account_core_project_custom_dashboards_path(@core_project.account, @core_project), class: "u"
+    - if @somethings_not_added and @sudo[1]
+      %span.gray{style: "font-size: 11px;"} 
+        - if @somethings_added
+          &nbsp; 
+          &nbsp;
+          | 
+          &nbsp; 
+          &nbsp;
+        Add the first:
+      - if !@not_first_data_store
+        &nbsp;
+        &nbsp;
+        = link_to "Data Set", _new_account_project_data_stores_path(@core_project.account, @core_project)
+      - if @sudo[1]
+        - if @can_configuration_edit and !@not_first_config_editor
+          &nbsp;
+          &nbsp;
+          = link_to "Configuration Editor", new_account_core_project_configuration_editor_path(@core_project.account, @core_project)
+        - if @can_host_custom_dashboard and !@not_first_custom_dashboard
+          &nbsp;
+          &nbsp;
+          = link_to "Host Custom Dashboard", account_core_project_custom_dashboards_path(@core_project.account, @core_project)
+    %hr{style: "margin-top: 5px; border-top-color: lightgray;"}
+    - if !@somethings_added
+      .row
+        .col-sm-12= image_tag "new_project3.png"
+        %br
+        %br
+        %br
+        %br
+        %br
+        %br
+    .row
+      .col-sm-12
+        - if @account.is_pseudo_account
+          .alert.alert-warning
+            Please note this is NOT an official account of 
+            = @account.slug + ", "
+            but is a pseudo account created by Rumi to distribute unmodified copies of open data available at 
+            = @account.slug + "."
+            The data belongs to 
+            = @account.slug + "."
+          %br
+        - if !@our_actions.first.blank? and 1 == 2
+          %h4.thin.red{style: "margin-bottom: 20px;"} Latest Updates
+          = render partial: "core/session_actions/index", locals: {our_actions: @our_actions}          
+        - if @not_first_data_store
+          = render partial: "core/data_stores/index", locals: {our_actions: @data_stores}
+        -if @pending_data_store_pulls.present? and current_account.present? and @sudo[1]
+          %hr
+          = render partial: "core/data_store_pulls/index", locals: {pending_data_store_pulls: @pending_data_store_pulls}
+%br
+%br
+%br
+%br
+#pubslishedModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-body
+        .row
+          .col-sm-12
+            #s3-published-url
+-if @data_store.present?
+  #dependentDestroyModal.modal{"aria-hidden" => "false", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+    .modal-dialog
+      .modal-content
+        .modal-body
+          .row
+            .col-sm-12
+              #d_destroy
+                .alert.alert-danger
+                  - if @url.present? and @dependent_to_destroy.present?
+                    %p=t("dependent.d",dependent_to_destroy: @dependent_to_destroy,url: @url).html_safe
+            
+%script{:src => "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"}
+%script{:src => "/assets/data_stores.js"}
+:javascript
+  if ($('#dependentDestroyModal').length > 0) $('#dependentDestroyModal').modal('show');

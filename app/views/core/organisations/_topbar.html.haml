@@ -1,0 +1,35 @@
+.row
+  .col-sm-12
+    %h1.pagetitle
+      = link_to @account.username, _account_path(@account), class: "thin"
+      %span.thin= " / "
+      - if action_name == "edit"
+        %b Manage your Identity
+      - elsif action_name == "members" or controller_name == "permissions"
+        %b Here’s who’s in this organisation
+      - elsif (controller_name == "teams" or controller_name == "team_projects")
+        %b Organize your colleagues in to teams
+      - elsif action_name == "events"
+        %b What happened while you were away? 
+      - elsif controller_name == "themes"
+        %b Design themes as per your brand
+        -if action_name  != "new" and action_name != "edit" 
+          %span.pull-right= link_to "Custom design a theme", new_core_organisation_theme_path(@account), class: "btn btn-orange"
+      -elsif controller_name == "map_files"
+        %b Map Files for your organisation
+    %b= link_to "Profile", edit_core_organisation_path(@account), class: action_name == "edit" ? "orange" : "u"
+    &nbsp;
+    &nbsp;
+    %b= link_to "#{@team_count} teams", core_organisation_teams_path(@account), class: (controller_name == "teams" or controller_name == "team_projects") ? "orange" : "u"
+    &nbsp;
+    &nbsp;
+    %b= link_to "#{@custom_theme_count} custom themes", core_organisation_themes_path(@account), class: (controller_name == "themes") ? "orange" : "u"
+    &nbsp;
+    &nbsp;
+    %b= link_to "#{@core_map_files_count} map files", _account_map_files_path(@account),class: (controller_name == "map_files") ? "orange" : "u"
+    &nbsp;
+    &nbsp;
+    %b= link_to "#{@members_count} people", members_core_organisation_path(@account), class: action_name == "members" ? "orange" : "u"
+    &nbsp;
+    &nbsp;
+    %b= link_to "Events Log", events_core_organisation_path(@account), class: action_name == "events" ? "orange" : "u"

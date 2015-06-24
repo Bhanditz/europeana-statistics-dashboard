@@ -1,0 +1,16 @@
+%link{:href => "/one-time-use-assets/jqEasyPanel/jqeasypanel.css", :rel => "stylesheet", :type => "text/css"}
+%script{:src => "/one-time-use-assets/jqEasyPanel/jquery.jqEasyPanel.min.js", :type => "text/javascript"}
+.search-table-outer.wrapper#jqeasypanel{style: "height:auto !important"}
+  %table.search-table.inner.panelbuttons
+    -@all_core_themes.each do |theme|
+      -theme_url = @chart_slug.present? ? "https://s3-ap-southeast-1.amazonaws.com/charts.pykih.com/themes/#{@chart_slug}-#{theme.name.gsub(" ","_")}.png" : theme.image_url
+      -theme_url = theme.image_url if theme.account_id.present?
+      %td.theme_configuration{config: "#{theme.config.to_json}"}
+        %img.theme_image{src: "#{theme_url}" ,style: 'cursor:pointer;'}
+
+        %br
+        %span=theme.name
+
+:javascript
+  $('#jqeasypanel').jqEasyPanel();
+  

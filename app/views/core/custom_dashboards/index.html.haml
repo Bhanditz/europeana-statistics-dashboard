@@ -1,0 +1,56 @@
+- content_for :title do
+  Custom Dashboards · #{@core_project.name}
+
+.previous-sheet
+  %h3= show_project_name(@core_project).html_safe
+  .panel.panel-default.sheet.sub
+    .panel-body
+      %h4 
+        Host Custom Dashboards
+        .pull-right= link_to "New custom dashboard", "#", class: "btn btn-orange btn-sm", "data-toggle"=>"modal", "data-target"=>"#newHostDashboard"
+      %p You can host your front-end only static visualisation projects using Rumi and then embed the visualization into your site.
+      %hr
+      = render partial: "core/custom_dashboards/index", locals: {core_custom_dashboards: @core_custom_dashboards}
+        
+    
+#pubslishedModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-body
+        .row
+          .col-sm-12
+            #s3-published-url
+#newHostDashboard.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-body
+        .row
+          .col-sm-12
+            %h4.orange Host a custom dashboard
+            %hr
+            %strong Rules:
+            %br
+            %br
+            .hint
+              %p 
+                Only
+                = Constants::CUSTOM_DASHBOARD_ALLOWED_FILETYPES_TO_S
+                files will be uploaded.
+              %p The GIT url must be public.
+              %p Cloning the GIT repo takes a while.
+              %p Default page should be index.html.
+            %hr
+            .col-sm-8
+              = simple_form_for(@core_custom_dashboard, url: account_core_project_custom_dashboards_path(@core_project.account, @core_project), html: {class: "form-horizontal", method: "post"}) do |f|
+                = f.error_notification
+                = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
+                = f.input :name, as: :string, autofocus: true, hint: "Can include only characters, numbers and dot (.). No space, no special characters allowed."
+                = f.input :git_url, as: :string, hint: "Must be a public GIT url.", placeholder: "git@domain.com:user/project.git"
+                = f.file_field :ssh_private_key
+                .hint Must include private ssh key
+                /= f.input :ssh_private_key,as: :text
+                %br
+                = f.button :submit, "Clone"
+-if action_name == "create"
+  :javascript
+    $("#newHostDashboard").modal("show");

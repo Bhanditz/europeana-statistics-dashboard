@@ -1,0 +1,7 @@
+= simple_form_for(@core_account_image,url: url,:html => {:multipart => true},method: method) do |f|
+  = f.input :account_id,as: :hidden, input_html: {value: @account.id}
+  = f.file_field :image_url
+  %br
+  %p.hint Only images with extension .jpg, .jpeg or .png are allowed
+  %p.hint Only images with size less than 200 KB are allowed
+  = f.submit upload_or_update,class: "btn"

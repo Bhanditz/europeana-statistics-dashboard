@@ -1,0 +1,57 @@
+.panel.panel-default
+  .panel-body{style: "padding: 10px;"}
+    - i = 0
+    - old_user_id = nil
+    - old_project_id = nil
+    - old_organisation_id = nil
+    - margin = "10px"
+    - @our_actions.each do |e|
+      - if !(old_user_id == e.account_id.to_s and old_organisation_id == e.organisation_id.to_s and old_project_id == e.project_id.to_s)
+        - old_user_id = e.account_id.to_s
+        - old_organisation_id = e.organisation_id.to_s
+        - old_project_id = e.project_id.to_s
+        - flag = true
+
+
+      - if flag
+        -display = "block"
+        -if i == 0
+          -display = "none"
+          - i += 1
+        %hr{style: "margin:10px 0px 20px 0px;display:#{display}; border-top: 1px lightgray solid;"}
+        %span
+          = image_tag account_image(e.account, 10), style: "width: 20px;display:inline"
+          &nbsp
+          %h4.m0p0{style: "margin-bottom: 10px; font-weight: 400; color: #333; font-size: 1em; line-height: 1.428571429;display:inline"}
+            = link_to e.account.username, _account_path(e.account)
+            -if controller_name == "organisations" || controller_name == "accounts" && e.organisation.present?
+              -if e.organisation.username != @account.username
+                -if !(controller_name == "projects" || controller_name == "accounts" && e.project.present?)
+                  %span edited organisation
+                  = link_to e.organisation.username, _account_path(e.organisation)
+            -if controller_name == "projects" || controller_name == "accounts" && e.project.present?
+              %span edited project
+              - if e.organisation.username != @account.username
+                = link_to e.organisation.username, _account_path(e.organisation)
+                = " / "
+              = link_to e.project.name, _account_project_path(e.organisation, e.project)
+            %span.pull-right{style: "border: 0px; font-size: 12px;  margin-bottom: 2px; color: #666;","data-toggle" => "tooltip",title: e.created_at.strftime("%b %d, %Y %H:%M")}
+              = "#{time_ago_in_words(e.created_at)} ago"
+      %p{style: "margin-top:#{margin}; margin-left: 33px; font-size: 0.9em;"}
+        -margin = "10px"
+        - objectable_type = e.objectable_type.split("::")[1].present? ? e.objectable_type.split("::")[1] :e.objectable_type.split("::")[0]
+        - link = convert_to_link(e).html_safe != "" ? convert_to_link(e) : "<strong> #{e.message} </strong>".html_safe
+        -if  objectable_type != "Permission"
+          = objectable_type.titleize == "Viz"? "Visualisation": objectable_type.titleize
+          = link
+          = "was #{e.action}"
+        -else
+          -if e.objectable.present? and e.objectable.core_team.present?
+            = link
+            = e.action == "joined" ? "#{e.action}" : "was #{e.action} from"
+            = link_to "team #{e.objectable.core_team.name}",core_organisation_team_path(e.objectable.organisation_id,e.objectable.core_team_id)
+          -else
+            ="#{e.message}".html_safe
+            -margin = "0px" if e.message.nil?
+
+    = paginate @our_actions

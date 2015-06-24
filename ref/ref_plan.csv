@@ -1,0 +1,6 @@
+name,slug,can_private_public,can_configuration_edit,can_host_custom_dashboard,can_publish_data_store,can_visualize_data,can_publish_visualizations,can_remove_branding,storage_space,price_per_month,description,sort_order,target_customer,genre,can_use_apis
+Brahmagupta,brahmagupta,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,50,0,was an Indian mathematician (598–c.670 CE) who first documented rules of using ZERO,1,Publish Open Data,consumer,FALSE
+Picasso,picasso,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,50,20,"was an influential painter of the 20th century, known for co-founding the Cubist movement",2,Host custom visualization,consumer,FALSE
+Brahmagupta,_enterprise_brahmagupta,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,FALSE,50,0,was an Indian mathematician (598–c.670 CE) who first documented rules of using ZERO,1,Publish Open Data,enterprise,FALSE
+Picasso,_enterprise_picasso,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,50,20,"was an influential painter of the 20th century, known for co-founding the Cubist movement",2,Host custom visualization,enterprise,FALSE
+Ultimate,_enterprise_ultimate,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,50,20,"was an influential painter of the 20th century, known for co-founding the Cubist movement",3,Ultimate Project,enterprise,TRUE
