@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150624125256) do
+ActiveRecord::Schema.define(version: 20150624163643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,7 +22,6 @@ ActiveRecord::Schema.define(version: 20150624125256) do
     t.string   "username"
     t.string   "email",                  default: "", null: false
     t.string   "slug"
-    t.string   "accountable_type"
     t.hstore   "properties"
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -103,17 +102,16 @@ ActiveRecord::Schema.define(version: 20150624125256) do
 
   create_table "core_permissions", force: :cascade do |t|
     t.integer  "account_id"
-    t.integer  "organisation_id"
     t.string   "role"
     t.string   "email"
     t.string   "status"
     t.datetime "invited_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "core_team_id"
     t.boolean  "is_owner_team"
     t.integer  "created_by"
     t.integer  "updated_by"
+    t.integer  "core_project_id"
   end
 
   add_index "core_permissions", ["email"], name: "index_core_permissions_on_email", using: :btree
@@ -157,27 +155,6 @@ ActiveRecord::Schema.define(version: 20150624125256) do
 
   add_index "core_sessions", ["session_id"], name: "index_core_sessions_on_session_id", unique: true, using: :btree
   add_index "core_sessions", ["updated_at"], name: "index_core_sessions_on_updated_at", using: :btree
-
-  create_table "core_team_projects", force: :cascade do |t|
-    t.integer  "core_team_id"
-    t.integer  "core_project_id"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "core_teams", force: :cascade do |t|
-    t.integer  "organisation_id"
-    t.string   "name"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "role"
-    t.boolean  "is_owner_team"
-  end
 
   create_table "core_themes", force: :cascade do |t|
     t.integer  "account_id"

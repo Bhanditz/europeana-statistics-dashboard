@@ -6,7 +6,6 @@
 #  username               :string
 #  email                  :string           default(""), not null
 #  slug                   :string
-#  accountable_type       :string
 #  properties             :hstore
 #  encrypted_password     :string           default(""), not null
 #  reset_password_token   :string

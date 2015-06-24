@@ -4,17 +4,16 @@
 #
 #  id              :integer          not null, primary key
 #  account_id      :integer
-#  organisation_id :integer
 #  role            :string
 #  email           :string
 #  status          :string
 #  invited_at      :datetime
 #  created_at      :datetime
 #  updated_at      :datetime
-#  core_team_id    :integer
 #  is_owner_team   :boolean
 #  created_by      :integer
 #  updated_by      :integer
+#  core_project_id :integer
 #
 
 # LOCKING this class. Do not change. 
