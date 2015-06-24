@@ -38,11 +38,6 @@ class ApplicationController < ActionController::Base
             @core_project = @account.core_projects.where(account_id: @account.id, slug: params[:core_project_id]).first
             raise "no project found" if @core_project.nil?
           end
-          if @core_project.present?
-            if current_account
-              set_ref_plan_tokens
-            end
-          end
         rescue
           redirect_to root_url, alert: t("set_universal_objects.no_such_project")
         end
@@ -157,23 +152,7 @@ class ApplicationController < ActionController::Base
   #------------------------------------------------------------------------------------------------------------------
   
   def set_ref_plan_tokens
-    r = @core_project.ref_plan
-    @rumi_weblayer_api = @core_project.core_tokens.where(name: "rumi-weblayer-api").first.api_token
-    if r.present?
-      @can_publish_data_store         = r.can_publish_data_store == "TRUE"
-      @can_visualize_data             = r.can_visualize_data == "TRUE"
-      @can_use_apis                   = r.can_use_apis == "TRUE"
-      @can_host_custom_dashboard      = r.can_host_custom_dashboard == "TRUE"
-    else
-      @can_publish_data_store         = false
-      @can_visualize_data             = false
-      @can_use_apis                   = false
-      @can_host_custom_dashboard      = false
-    end
-    redirect_to root_url, alert: t("pd.sudo_project_owner!") if !@can_publish_data_store and controller_name == "data_stores" and action_name == "publish"
-    #redirect_to root_url, alert: t("pd.sudo_project_owner!") if !@can_visualize_data and controller_name == "vizs"
-    redirect_to root_url, alert: t("pd.sudo_project_owner!") if !@can_use_apis and controller_name == "tokens"
-    redirect_to root_url, alert: t("pd.sudo_project_owner!") if !@can_host_custom_dashboard and controller_name == "custom_dashboards"
+    @can_host_custom_dashboard      = current_account.is_admin?
     true
   end
   

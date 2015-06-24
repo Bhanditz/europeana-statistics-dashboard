@@ -34,8 +34,6 @@ class StaticPagesController < ApplicationController
   end
   
   def pricing
-    @ref_plans    = Ref::Plan.where("properties -> 'genre' = ?", "consumer")
-    @enterprise_plan = Ref::Plan.where("properties -> 'genre' = ?", "enterprise").first
   end
   
   def security

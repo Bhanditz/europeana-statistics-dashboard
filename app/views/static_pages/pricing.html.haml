@@ -64,19 +64,6 @@
         %p
           %span.glyphicon.glyphicon-heart
           Earn more free space with referrals
-      -@ref_plans.each do |ref_plan|
-        .col-sm-3
-          .well.pricing-well.all_ref_plans{style: "padding-top: 0px;"}
-            %h2.text-center.plan-text= ref_plan.target_customer
-            %hr
-            .hint
-              = ref_plan.name
-              =ref_plan.description
-            %h3.text-center.plan-text= "$#{ref_plan.price_per_month} a month"
-            %table.table.table-condensed
-              %tr
-                %td.text-center= "#{ref_plan.storage_space} MB free space"
-              = ref_plan.other_text.html_safe
       .col-sm-3
         .well.pricing-well.all_ref_plans{style: "padding-top: 0px;"}
           %h2.text-center.plan-text Enterprise Account
@@ -86,5 +73,4 @@
           %table.table.table-condensed
             %tr
               %td.text-center 1GB per month
-            %tr= @enterprise_plan.other_text.html_safe
             

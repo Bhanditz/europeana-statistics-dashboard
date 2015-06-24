@@ -1,14 +1,3 @@
-.well.pricing.all_ref_plans{
-  background: white;
-  border: 0px;
-  cursor: pointer;
-  border: 1px lightgray solid;
-}
-
-.well.pricing:hover, .well.pricing.active{
-  background: #FFE3BF;
-}
-
 .wrapper::-webkit-scrollbar {
   height: 7px;
 }

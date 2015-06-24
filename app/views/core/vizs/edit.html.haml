@@ -40,7 +40,7 @@
           %p.thin Click on a theme to customize the chart
           = render partial: "core/themes/core_themes"
 
-        -if @core_project.ref_plan.can_publish_visualizations == "TRUE"
+        -if true
           %h4 Datacast EndPoint
           %textarea#broadcast-code-display{:readonly => "",rows: 4}
             = "curl -X POST \"#{REST_API_ENDPOINT}data/#{@viz.datagram_identifier}/q\" --data \"account_slug=#{current_account.slug}&token=<<TOKEN>>\""

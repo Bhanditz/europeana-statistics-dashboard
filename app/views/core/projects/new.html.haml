@@ -8,8 +8,6 @@
     %p.thin Organise data files and visualisations into projects.
     .panel.panel-default
       .panel-body
-        .all_ref_plans.enterprise{style: "display: none;"}
-          .pull-right.label.label-primary Enterprise Account
         %br
         = simple_form_for(@core_project, url: account_core_projects_path(@account, @core_project), method: :post, html: {class: "form-inline"}) do |f|
           %table
@@ -17,31 +15,7 @@
               %td= f.input :account_id, collection: @my_accounts.map.each{|z| [z.organisation.username, z.organisation.id, {:is_enterprise_organisation =>z.organisation.is_enterprise_organisation}]}, label: "Account", include_blank: false
               %td{style: "vertical-align: bottom;"} &nbsp;&nbsp; / &nbsp;&nbsp;
               %td= f.input :name, label: "Project name", input_html: {size: 40},required: true
-            = f.input :ref_plan_slug, as: :hidden, id: "ref_plan_slug"
           .gray Great repository names are short and memorable. 
-          .clearfix
-          .row
-            .col-sm-12
-              %br
-              %h5{style: "margin-left: 0px; font-weight: bold;"} Choose a plan
-              %table.table.table-condensed
-                %tbody                
-                  -@ref_plans.each do |ref_plan|
-                    -display = ""
-                    - if @core_project.account.present? and @core_project.account.is_enterprise_organisation == "true"
-                      - display = "none" if ref_plan.genre == "consumer"
-                    -else
-                      - if @my_accounts.first.organisation.is_enterprise_organisation == "true"
-                        -display = "none" if ref_plan.genre == 'consumer'
-                      -else
-                        -display = "none" if ref_plan.genre == 'enterprise'
-                    %tr.ref_plan_container.pricing.all_ref_plans{class: "#{ref_plan.genre} #{ref_plan.sort_order.to_i == 1 ? 'selected' : ''}",style: "display:#{display};",slug: "#{ref_plan.slug}"}
-                      %td
-                        = icon_lock if ref_plan.can_private_public == "TRUE"
-                        = ref_plan.target_customer
-                      %td
-                        - button_text = ref_plan.genre == "enterprise" ? "Select" : "$#{ref_plan.price_per_month} a month"
-                        .pull-right.btn.btn-sm.btn-default= button_text
           .clearfix
           = f.input :license, collection: ["Not specified", "Creative Commons Attribution", "Creative Commons Attribution Share-Alike", "Creative Commons Non-Commercial (Any)", "Creative Commons CCZero", "Other (Not Open)", "GNU Free Documentation License", "Open Data Commons Attribution License", "UK Open Government License (OGL)", "Other (Public Domain)", "Open Data Commons Public Domain Dedication and License (PDDL)", "Open Data Commons Open Database License (ODbL)"], :include_blank => false, selected: "Creative Commons Non-Commercial (Any)", required: true
           %br

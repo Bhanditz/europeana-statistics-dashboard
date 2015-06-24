@@ -28,7 +28,7 @@
     - if @somethings_added
       - if @not_first_data_store
         %b= "#{@data_stores_count} data sets"
-      - if @can_visualize_data and @not_first_viz
+      - if @not_first_viz
         &nbsp;
         &nbsp;
         %b= link_to "#{@vizs_count} <span class='octicon octicon-broadcast'></span> datacasts".html_safe, _account_project_vizs_path(@core_project.account, @core_project), class: "u"

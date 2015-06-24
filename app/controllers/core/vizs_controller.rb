@@ -115,9 +115,6 @@ class Core::VizsController < ApplicationController
   end
 
   def embed
-    if @core_project.ref_plan.can_publish_visualizations != "TRUE"
-      redirect_to _visualization_account_project_data_store_path(@account, @data_store.core_project, @data_store,@viz), alert: t("pd.sudo_embed!")
-    else
       begin
         data = Nestful.post "#{REST_API_ENDPOINT}/data/#{@viz.datagram_identifier}/q", account_slug: @account.slug,token: @alknfalkfnalkfnadlfkna
         gon.data_file = JSON.parse(data.body)["data"]
@@ -128,7 +125,7 @@ class Core::VizsController < ApplicationController
       @data_format = @viz.pykquery_object["dataformat"]
       gon.dataformat = @data_format
       render layout: "embed"
-    end
+
   end
 
   private

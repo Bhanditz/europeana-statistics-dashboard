@@ -27,7 +27,7 @@
                 -if !disabled
                   = f.button :submit, "Save"
                     
-          - if @can_use_apis
+          - if true
             .panel.panel-default
               .panel-heading
                 .panel-title API Tokens
@@ -69,11 +69,3 @@
                 %p Warning: This is not a reversible or repairable action.
                 %br
                 = link_to "Delete this project", [@core_project.account, @core_project], :method => :delete, data: { confirm: 'Are you sure you want to delete?' }, class: "btn btn-danger", style: "color: white; font-size: 1em;"
-        .col-sm-3
-          - ref_plan = @core_project.ref_plan
-          .well.pricing.all_ref_plans.active
-            %h2.text-center{style: "font-weight: 100; margin-top: 0px;"}= ref_plan.target_customer
-            %p.pykhelp
-              = ref_plan.name
-              =ref_plan.description
-            %h3.text-center{style: "font-weight: 100;"}= "$#{ref_plan.price_per_month} a month"

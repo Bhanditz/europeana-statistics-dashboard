@@ -12,7 +12,6 @@
 #  updated_at    :datetime
 #  created_by    :integer
 #  updated_by    :integer
-#  ref_plan_slug :string(255)
 #
 
 class Core::Project < ActiveRecord::Base
@@ -30,7 +29,6 @@ class Core::Project < ActiveRecord::Base
   
   #ASSOCIATIONS
   belongs_to :account
-  belongs_to :ref_plan, foreign_key: "ref_plan_slug", class_name: "Ref::Plan", primary_key: "slug"
   has_many :data_stores, foreign_key: "core_project_id"
   has_many :custom_dashboards, class_name: "Core::CustomDashboard", foreign_key: "core_project_id"
   has_many :vizs, foreign_key: "core_project_id"
@@ -44,7 +42,6 @@ class Core::Project < ActiveRecord::Base
   validates :name, presence: true, uniqueness: {scope: :account_id}
   validates :account_id, presence: true
   validates :license, presence: true
-  validates :ref_plan_slug, presence: true
   
   #CALLBACKS
   before_create :before_create_set
@@ -69,7 +66,7 @@ class Core::Project < ActiveRecord::Base
   def before_create_set
     self.properties = "{}" if self.properties.blank?
     self.properties["license"] = "Not Specified" if self.properties["license"].blank?
-    self.is_public  = self.ref_plan.can_private_public == "FALSE" ? true : false
+    self.is_public  = true
     self.cdn_source = "softlayer"
     true
   end

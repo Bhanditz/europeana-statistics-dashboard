@@ -227,9 +227,6 @@ h2.pagetitle a{
   text-align: center;
 }
 
-tr.ref_plan_container.selected{
-  background-color: #EFE4A9 !important;
-}
 .navbar-nav {
   cursor: pointer;
 }

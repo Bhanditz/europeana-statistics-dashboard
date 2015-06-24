@@ -12,7 +12,6 @@ class Core::ProjectsController < ApplicationController
   def new
     @core_project = Core::Project.new
     @my_accounts  = current_account.owners.includes(:organisation)
-    @ref_plans    = Ref::Plan.all
   end
   
   def show
@@ -20,7 +19,7 @@ class Core::ProjectsController < ApplicationController
     @data_stores = @core_project.data_stores.includes(:core_project).includes(:clone_parent).includes(:account).where(parent_id: nil).page params[:page]
     @data_stores_count = @core_project.data_stores.count
     @not_first_data_store = @data_stores_count != 0
-    if @can_visualize_data
+    if true
       @vizs_count = @core_project.vizs.count
       @not_first_viz = @vizs_count != 0
     end
@@ -30,7 +29,7 @@ class Core::ProjectsController < ApplicationController
         @not_first_custom_dashboard = @custom_dashboards_count != 0
       end
     end
-    @somethings_added = (@not_first_data_store or (@not_first_viz and @can_visualize_data) or (@not_first_config_editor and (@not_first_custom_dashboard and @can_host_custom_dashboard))
+    @somethings_added = (@not_first_data_store or (@not_first_viz and true) or (@not_first_config_editor and (@not_first_custom_dashboard and @can_host_custom_dashboard))
     @somethings_not_added = (!@not_first_data_store or (!@not_first_config_editor and (!@not_first_custom_dashboard and @can_host_custom_dashboard))
     @pending_data_store_pulls = @core_project.core_data_store_pulls
     if params[:d].present? and params[:d_id].present?
@@ -44,7 +43,6 @@ class Core::ProjectsController < ApplicationController
     @enable_express_tour = true
     @core_token  = Core::Token.new
     @core_tokens = @core_project.core_tokens.where.not(name: "rumi-weblayer-api").includes(:account)
-    @core_project_ref_plan = @core_project.ref_plan
   end
 
   def create
@@ -53,7 +51,6 @@ class Core::ProjectsController < ApplicationController
       redirect_to _account_project_path(@core_project.account, @core_project), notice: t("c.s")
     else
       @my_accounts = current_account.owners.includes(:organisation)
-      @ref_plans    = Ref::Plan.all
       flash.now.alert = t("c.f")
       render :new
     end
@@ -69,7 +66,6 @@ class Core::ProjectsController < ApplicationController
         format.html { 
           @core_token  = Core::Token.new
           @core_tokens = @core_project.core_tokens.includes(:account)
-          @core_project_ref_plan = @core_project.ref_plan
           flash.now.alert = t("u.f")
           render :edit
         }
@@ -118,7 +114,7 @@ class Core::ProjectsController < ApplicationController
 
   def core_project_params
     params.require(:core_project).permit(:account_id, :name, :is_public, 
-                                    :description, :license, :ref_plan_slug) #hstore - properties
+                                    :description, :license) #hstore - properties
   end
   
 end
