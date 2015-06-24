@@ -34,7 +34,7 @@ class Account < ActiveRecord::Base
   
   #ATTRIBUTES
   #ACCESSORS
-  store_accessor :properties, :bio, :gravatar_email_id, :url, :is_pseudo_account, :name, :location, :company, :image_url, :is_enterprise_organisation
+  store_accessor :properties, :bio, :gravatar_email_id, :url, :is_pseudo_account, :name, :location, :company, :image_url
   store_accessor :devis, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :confirmed_at, :current_sign_in_at, :remember_created_at
   
   #ASSOCIATIONS  
@@ -59,7 +59,7 @@ class Account < ActiveRecord::Base
   # Author: Ritvvij Parrikh
     
   def core_projects
-    Core::Project.where(id: Core::Permission.where("core_permissions.account_id = ? OR core_permissions.organisation_id = ?", self.id, self.id).where(role: [Constants::ROLE_C, Constants::ROLE_O]).joins(:core_team_projects).pluck("core_team_projects.core_project_id").uniq)
+    Core::Project.where(id: Core::Permission.where("core_permissions.account_id = ? OR core_permissions.organisation_id = ?", self.id, self.id).where(role: [Constants::ROLE_C, Constants::ROLE_O]).pluck("core_permissions.core_project_id").uniq)
   end
     
   #VALIDATIONS
@@ -86,8 +86,8 @@ class Account < ActiveRecord::Base
   # Module: Access-Control
   # Author: Ritvvij Parrikh
   
-  def sudo_project_owner(o, p) #always run off current_user
-    self.permissions.joins(:core_team_projects).where("core_team_projects.core_project_id = ?", p).where(organisation_id: o.id, role: Constants::ROLE_O).first.blank?
+  def sudo_project_owner(p) #always run off current_user
+    self.permissions.where("core_permissions.core_project_id = ?", p).where(role: Constants::ROLE_O).first.blank?
   end  
   
   # LOCKING this method. Do not change. 
@@ -95,7 +95,7 @@ class Account < ActiveRecord::Base
   # Author: Ritvvij Parrikh
     
   def sudo_project_member(o, p) #always run off current_user
-    c = self.permissions.joins(:core_team_projects).where("core_team_projects.core_project_id = ?", p).where(organisation_id: o.id, role: [Constants::ROLE_C, Constants::ROLE_O]).first
+    c = self.permissions.where("core_permissions.core_project_id = ?", p).where(role: [Constants::ROLE_C, Constants::ROLE_O]).first
     return nil                  if c.blank?
     return Constants::SUDO_011  if c.role == Constants::ROLE_C
     return Constants::SUDO_111  if c.role == Constants::ROLE_O
@@ -139,7 +139,6 @@ class Account < ActiveRecord::Base
     self.properties                       = {} if self.properties.blank?
     self.properties["gravatar_email_id"]  = self.email
     self.authentication_token = SecureRandom.hex(24)
-    self.is_enterprise_organisation = false
     true
   end
   

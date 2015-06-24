@@ -12,7 +12,7 @@
         = simple_form_for(@core_project, url: account_core_projects_path(@account, @core_project), method: :post, html: {class: "form-inline"}) do |f|
           %table
             %tr
-              %td= f.input :account_id, collection: @my_accounts.map.each{|z| [z.organisation.username, z.organisation.id, {:is_enterprise_organisation =>z.organisation.is_enterprise_organisation}]}, label: "Account", include_blank: false
+              %td= f.input :account_id, collection: [current_account.id, current_account.id], label: "Account", include_blank: false
               %td{style: "vertical-align: bottom;"} &nbsp;&nbsp; / &nbsp;&nbsp;
               %td= f.input :name, label: "Project name", input_html: {size: 40},required: true
           .gray Great repository names are short and memorable. 

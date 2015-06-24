@@ -40,7 +40,7 @@ class Core::PermissionsController < ApplicationController
   end
 
   def core_permission_params
-    params.require(:core_permission).permit(:account_id, :role, :email, :status, :invited_at, :organisation_id, :core_team_id)
+    params.require(:core_permission).permit(:account_id, :role, :email, :status, :invited_at)
   end
   
 end

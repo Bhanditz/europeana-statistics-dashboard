@@ -1,6 +1,6 @@
 class Core::ThemesController < ApplicationController
     
-  before_action :sudo_organisation_owner!, :organisation_counts
+  before_action :sudo_organisation_owner!
   before_action :set_core_theme, only: [:show, :edit, :update, :destroy]
   before_action :set_admin_core_themes, only: [:new,:edit, :index, :create,:update]
 

@@ -11,7 +11,6 @@ class Core::ProjectsController < ApplicationController
 
   def new
     @core_project = Core::Project.new
-    @my_accounts  = current_account.owners.includes(:organisation)
   end
   
   def show
@@ -50,7 +49,6 @@ class Core::ProjectsController < ApplicationController
     if @core_project.save
       redirect_to _account_project_path(@core_project.account, @core_project), notice: t("c.s")
     else
-      @my_accounts = current_account.owners.includes(:organisation)
       flash.now.alert = t("c.f")
       render :new
     end

@@ -2,12 +2,6 @@ class CoreMailer < ActionMailer::Base
   
   default from: "Rumi.io DataHub <rumi@pykih.com>", reply_to: "Rumi.io DataHub <rumi@pykih.com>"
   
-  def invite_into_organisation(invitor, invited_email, account)
-    @invitor = invitor
-    @account = account
-    mail(to: invited_email, subject: "Invitation to collaborate on account: #{@account.slug}", tag: "organisation-invite-email")
-  end
-  
   def invite_into_project(invitor, invited_email, project)
     @invitor = invitor
     @project = project
