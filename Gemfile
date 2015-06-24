@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 source "https://257ae126:45e60663@gems.contribsys.com/"
 
-ruby '2.1.5'
+ruby '2.2.2'
 
 #Base
-gem 'rails',        '4.1.2'
+gem 'rails',        '4.2.1'
 gem 'pg'
 gem 'bson_ext'
 gem 'redis'

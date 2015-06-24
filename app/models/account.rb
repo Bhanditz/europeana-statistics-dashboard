@@ -107,8 +107,8 @@ class Account < ActiveRecord::Base
   validates :gravatar_email_id, format: {with: Constants::EMAIL}, presence: true, on: :update
   validate :email_unique_from_core_account_email, on: :create
   #SCOPES
-  scope :o, where(accountable_type: Constants::ACC_O)
-  scope :u, where(accountable_type: Constants::ACC_U)
+  scope :o, -> { where(accountable_type: Constants::ACC_O) }
+  scope :u, -> { where(accountable_type: Constants::ACC_U) }
   
   #CUSTOM SCOPES
   #FUNCTIONS

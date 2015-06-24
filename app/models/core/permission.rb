@@ -50,10 +50,10 @@ class Core::Permission < ActiveRecord::Base
   before_create :before_create_set
   
   #SCOPES
-  scope :owners, where(role: Constants::ROLE_O)
-  scope :collaborators, where(role: Constants::ROLE_C)
-  scope :invited, where("account_id IS NULL")
-  scope :accepted, where("account_id IS NOT NULL")
+  scope :owners, -> { where(role: Constants::ROLE_O) }
+  scope :collaborators, -> { where(role: Constants::ROLE_C) }
+  scope :invited, -> { where("account_id IS NULL") }
+  scope :accepted, -> { where("account_id IS NOT NULL") }
   
   #CUSTOM SCOPES
   
