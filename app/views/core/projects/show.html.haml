@@ -84,9 +84,6 @@
             The data belongs to 
             = @account.slug + "."
           %br
-        - if !@our_actions.first.blank? and 1 == 2
-          %h4.thin.red{style: "margin-bottom: 20px;"} Latest Updates
-          = render partial: "core/session_actions/index", locals: {our_actions: @our_actions}          
         - if @not_first_data_store
           = render partial: "core/data_stores/index", locals: {our_actions: @data_stores}
         -if @pending_data_store_pulls.present? and current_account.present? and @sudo[1]

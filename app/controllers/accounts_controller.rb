@@ -60,7 +60,6 @@ class AccountsController < ApplicationController
     @core_projects   = @account.core_projects.includes(:account).page(params[:page_projects]).per(30)
     organisation_ids = @account.organisations.pluck(:id).uniq
     core_project_ids = @account.core_projects.pluck(:id).uniq
-    @our_actions      = Core::SessionAction.where('organisation_id IN (?) OR project_id IN (?)', organisation_ids, core_project_ids).includes(:account).includes(:organisation).includes(:project).includes(:objectable).page(params[:page]).per(24)
   end
   
   private

@@ -30,10 +30,3 @@
             = paginate @core_projects, :param_name => "page_projects"
 
       .col-sm-7
-        - if @our_actions.first.blank?
-          .hint No events have occured yet
-        - else
-          %h4 
-            Catch up:
-            %span.thin What happened while you were away? 
-          %div{style: "margin-top: 2px;", "data-intro" => "Every action inside of Rumi related to any of the projects you participate in creates an event log. This helps you keep up-to-date with all that is happening.", "data-position" => "left"}= render partial: "core/session_actions/index", locals: {our_actions: @our_actions}

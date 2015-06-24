@@ -17,7 +17,6 @@ class Core::ProjectsController < ApplicationController
   
   def show
     @enable_express_tour=true
-    @our_actions = @core_project.session_actions_p.includes(:account).includes(:project).page(1).per(6)
     @data_stores = @core_project.data_stores.includes(:core_project).includes(:clone_parent).includes(:account).where(parent_id: nil).page params[:page]
     @data_stores_count = @core_project.data_stores.count
     @not_first_data_store = @data_stores_count != 0

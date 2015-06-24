@@ -20,8 +20,8 @@ class Core::TeamProject < ActiveRecord::Base
   #GEMS
   self.table_name = "core_team_projects"
   include WhoDidIt
-  include WhoDidItOrganisation
-  include WhoDidItProject
+   
+   
 
   #CONSTANTS
   #ATTRIBUTES

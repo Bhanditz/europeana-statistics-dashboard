@@ -23,7 +23,7 @@ class Core::Team < ActiveRecord::Base
   #GEMS
   self.table_name = "core_teams"
   include WhoDidIt
-  include WhoDidItOrganisation
+   
   
   #CONSTANTS
   #ATTRIBUTES

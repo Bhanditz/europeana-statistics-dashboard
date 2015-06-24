@@ -26,7 +26,7 @@ class Core::DataStore < ActiveRecord::Base
   friendly_id :name, use: [:slugged, :scoped], scope: :core_project
   self.table_name = "core_data_stores"
   include WhoDidIt
-  include WhoDidItProject
+   
   
   include PgSearch
   pg_search_scope :search, against: [:name, :properties],using: {tsearch: {dictionary: "english"}}, ignoring: :accents  

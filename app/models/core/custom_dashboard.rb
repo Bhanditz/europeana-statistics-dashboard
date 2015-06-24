@@ -20,7 +20,7 @@ class Core::CustomDashboard < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: [:slugged, :scoped], scope: :core_project
   include WhoDidIt
-  include WhoDidItProject
+   
   
   #CONSTANTS
   #ATTRIBUTES

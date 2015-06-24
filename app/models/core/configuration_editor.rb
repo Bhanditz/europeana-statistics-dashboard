@@ -24,7 +24,7 @@ class Core::ConfigurationEditor < ActiveRecord::Base
   friendly_id :name, use: [:slugged, :scoped], scope: :account
   self.table_name = "core_configuration_editors"
   include WhoDidIt
-  include WhoDidItProject
+   
   
   #CONSTANTS
   #ATTRIBUTES

@@ -19,7 +19,7 @@ class Core::Theme < ActiveRecord::Base
   #GEMS
   self.table_name = "core_themes"
   include WhoDidIt
-  include WhoDidItOrganisation
+   
   
   #CONSTANTS
   #ATTRIBUTES

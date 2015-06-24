@@ -32,7 +32,7 @@ class Account < ActiveRecord::Base
   include PgSearch
   pg_search_scope :search, against: [:username, :email, :properties],using: {tsearch: {dictionary: "english"}}, ignoring: :accents    
   
-  include WhoDidItOrganisation
+   
 
   #CONSTANTS
   before_create :before_create_set
@@ -52,7 +52,6 @@ class Account < ActiveRecord::Base
   has_many :cerebro_websites, class_name: "Cerebro::Social", through: :cerebro_accounts
   
   # if account is User
-  has_many :session_actions_u, class_name: "Core::SessionAction", foreign_key: "account_id"
   has_many :permissions, class_name: "Core::Permission", foreign_key: :account_id
   has_many :accounts_u, -> {where "is_owner_team = true"}, class_name: "Core::Permission", foreign_key: :account_id
   has_many :owners_u, -> {where "is_owner_team = true", role: Constants::ROLE_O}, 
@@ -68,7 +67,6 @@ class Account < ActiveRecord::Base
   end
   
   # if account is Organisation
-  has_many :session_actions_o, class_name: "Core::SessionAction", foreign_key: "organisation_id"
   has_many :accounts_o, -> {where "is_owner_team = true"}, class_name: "Core::Permission", foreign_key: :organisation_id
   has_many :owners_o, -> {where "is_owner_team = true", role: Constants::ROLE_O}, 
                       class_name: "Core::Permission", foreign_key: :organisation_id
@@ -92,11 +90,7 @@ class Account < ActiveRecord::Base
   def core_projects
     Core::Project.where(id: Core::Permission.where("core_permissions.account_id = ? OR core_permissions.organisation_id = ?", self.id, self.id).where(role: [Constants::ROLE_C, Constants::ROLE_O]).joins(:core_team_projects).pluck("core_team_projects.core_project_id").uniq)
   end
-  
-  def session_actions
-    self.accountable_type == Constants::ACC_U ? self.session_actions_u : self.session_actions_o
-  end
-  
+    
   #VALIDATIONS
   validates :username, presence: true, :uniqueness => { :case_sensitive => false }, length: { minimum: 5 }
   validates :username, exclusion: {in: Constants::STUPID_USERNAMES, message: "%{value} is reversed."}

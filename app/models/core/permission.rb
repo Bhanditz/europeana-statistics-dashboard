@@ -26,8 +26,8 @@ class Core::Permission < ActiveRecord::Base
   #GEMS
   self.table_name = "core_permissions"
   include WhoDidIt
-  include WhoDidItOrganisation
-  include WhoDidItProject
+   
+   
   
   #CONSTANTS  
   #ATTRIBUTES

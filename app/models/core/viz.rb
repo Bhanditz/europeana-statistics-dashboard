@@ -26,7 +26,7 @@ class Core::Viz < ActiveRecord::Base
   #GEMS
   self.table_name = "core_vizs"
   include WhoDidIt
-  include WhoDidItProject
+   
 
   #CONSTANTS
   #ATTRIBUTES

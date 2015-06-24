@@ -21,7 +21,7 @@ class Core::Project < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: [:slugged, :scoped], scope: :account
   include WhoDidIt
-  include WhoDidItProject
+   
 
   self.table_name = "core_projects"
   
@@ -44,7 +44,6 @@ class Core::Project < ActiveRecord::Base
   has_many :core_team_projects, class_name: "Core::TeamProject", foreign_key: "core_project_id" #DONE
   has_many :core_teams, class_name: "Core::Team", through: :core_team_projects
   has_many :core_tokens, class_name: "Core::Token", foreign_key: "core_project_id"
-  has_many :session_actions_p, class_name: "Core::SessionAction", foreign_key: "project_id"
   has_many :core_referral_gifts, class_name: "Core::ReferralGift", foreign_key: "project_id" #dependent: :destroy NOT REQUIRED
   has_many :core_data_store_pulls, class_name: "Core::DataStorePull", foreign_key: "core_project_id", dependent: :destroy
   has_many :core_project_oauths, class_name: "Core::ProjectOauth", foreign_key: "core_project_id" , dependent: :destroy #Done

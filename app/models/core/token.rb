@@ -17,7 +17,7 @@ class Core::Token < ActiveRecord::Base
   #Gems
   self.table_name = "core_tokens"
   include WhoDidIt
-  include WhoDidItProject
+   
   
   #CONSTANTS  
   #ATTRIBUTES

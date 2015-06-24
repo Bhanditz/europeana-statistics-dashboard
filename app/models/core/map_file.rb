@@ -20,7 +20,7 @@ class Core::MapFile < ActiveRecord::Base
   #GEMS
   self.table_name = "core_map_files"
   include WhoDidIt
-  include WhoDidItProject
+   
   
   #CONSTANTS
   #ATTRIBUTES

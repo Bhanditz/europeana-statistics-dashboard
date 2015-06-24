@@ -6,8 +6,3 @@
   .col-sm-10
     .panel.panel-default
       .panel-heading= render partial: "core/organisations/topbar"
-      .panel-body
-        - if @our_actions.first.blank?
-          .hint No events have occured yet
-        - else
-          = render partial: "core/session_actions/index", locals: {our_actions: @our_actions}

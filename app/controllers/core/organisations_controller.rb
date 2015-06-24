@@ -69,7 +69,6 @@ class Core::OrganisationsController < ApplicationController
   end
   
   def events
-    @our_actions = @account.session_actions_o.includes(:account).includes(:organisation).page params[:page]#.includes(:obj)
   end
   
   private

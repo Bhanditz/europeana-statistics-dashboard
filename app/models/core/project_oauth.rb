@@ -18,7 +18,7 @@ class Core::ProjectOauth < ActiveRecord::Base
   #GEMS
   self.table_name = "core_project_oauths"
   include WhoDidIt
-  include WhoDidItProject
+   
   
   #CONSTANTS
   #ATTRIBUTES
