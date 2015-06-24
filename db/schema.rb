@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140825100847) do
+ActiveRecord::Schema.define(version: 20150624125256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,54 +45,6 @@ ActiveRecord::Schema.define(version: 20140825100847) do
   add_index "accounts", ["slug"], name: "index_accounts_on_slug", unique: true, using: :btree
   add_index "accounts", ["username"], name: "index_accounts_on_username", unique: true, using: :btree
 
-  create_table "cerebro_accounts", force: :cascade do |t|
-    t.string   "email"
-    t.integer  "account_id"
-    t.hstore   "properties"
-    t.json     "response"
-    t.datetime "request_sent_at"
-    t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "cerebro_socials", force: :cascade do |t|
-    t.integer  "cerebro_account_id"
-    t.string   "source"
-    t.string   "source_name"
-    t.text     "photo_url"
-    t.text     "bio"
-    t.text     "url"
-    t.string   "identifier"
-    t.string   "username"
-    t.string   "followers"
-    t.string   "following"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "cerebro_websites", force: :cascade do |t|
-    t.integer  "cerebro_account_id"
-    t.text     "url"
-    t.string   "genre"
-    t.string   "handle"
-    t.string   "client"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "cerebro_works", force: :cascade do |t|
-    t.integer  "cerebro_account_id"
-    t.string   "start_date"
-    t.string   "end_date"
-    t.string   "title"
-    t.string   "is_primary"
-    t.string   "name"
-    t.string   "is_current"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "core_account_emails", force: :cascade do |t|
     t.integer  "account_id"
     t.string   "email"
@@ -103,33 +55,6 @@ ActiveRecord::Schema.define(version: 20140825100847) do
     t.integer  "updated_by"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "core_account_images", force: :cascade do |t|
-    t.integer  "account_id"
-    t.string   "filetype"
-    t.text     "image_url"
-    t.string   "filesize"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.hstore   "properties"
-  end
-
-  create_table "core_configuration_editors", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "core_project_id"
-    t.string   "name"
-    t.string   "slug"
-    t.boolean  "to_publish"
-    t.datetime "last_published_at"
-    t.json     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.hstore   "properties"
-    t.integer  "created_by"
-    t.integer  "updated_by"
   end
 
   create_table "core_custom_dashboards", force: :cascade do |t|
@@ -168,7 +93,6 @@ ActiveRecord::Schema.define(version: 20140825100847) do
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "genre_class"
-    t.boolean  "is_verified_dictionary"
     t.json     "join_query"
     t.text     "meta_description"
   end
@@ -176,20 +100,6 @@ ActiveRecord::Schema.define(version: 20140825100847) do
   add_index "core_data_stores", ["properties"], name: "core_metadata_data_store_columns_properties", using: :gin
   add_index "core_data_stores", ["properties"], name: "data_stores_properties", using: :gin
   add_index "core_data_stores", ["slug"], name: "index_core_data_stores_on_slug", using: :btree
-
-  create_table "core_map_files", force: :cascade do |t|
-    t.integer  "account_id"
-    t.boolean  "is_public"
-    t.string   "name"
-    t.string   "size"
-    t.string   "filetype"
-    t.hstore   "properties"
-    t.boolean  "is_verified"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "core_permissions", force: :cascade do |t|
     t.integer  "account_id"
@@ -208,17 +118,6 @@ ActiveRecord::Schema.define(version: 20140825100847) do
 
   add_index "core_permissions", ["email"], name: "index_core_permissions_on_email", using: :btree
 
-  create_table "core_project_oauths", force: :cascade do |t|
-    t.integer  "core_project_id"
-    t.string   "unique_id"
-    t.string   "provider"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.json     "properties"
-  end
-
   create_table "core_projects", force: :cascade do |t|
     t.integer  "account_id"
     t.string   "name"
@@ -229,47 +128,10 @@ ActiveRecord::Schema.define(version: 20140825100847) do
     t.datetime "updated_at"
     t.integer  "created_by"
     t.integer  "updated_by"
-    t.string   "ref_plan_slug"
   end
 
   add_index "core_projects", ["properties"], name: "projects_properties", using: :gin
   add_index "core_projects", ["slug"], name: "index_core_projects_on_slug", using: :btree
-
-  create_table "core_referral_gifts", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "project_id"
-    t.integer  "referral_id"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "core_referrals", force: :cascade do |t|
-    t.string   "email"
-    t.integer  "account_id"
-    t.integer  "referered_id"
-    t.boolean  "is_eligible"
-    t.text     "notes"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "core_session_actions", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "core_session_impl_id"
-    t.string   "genre"
-    t.integer  "organisation_id"
-    t.integer  "project_id"
-    t.string   "objectable_type"
-    t.integer  "objectable_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "message"
-    t.integer  "count"
-  end
 
   create_table "core_session_impls", force: :cascade do |t|
     t.string   "session_id"
@@ -281,7 +143,6 @@ ActiveRecord::Schema.define(version: 20140825100847) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "core_viz_id"
-    t.integer  "core_map_file_id"
   end
 
   add_index "core_session_impls", ["account_id"], name: "index_core_session_impls_on_account_id", using: :btree
@@ -393,16 +254,6 @@ ActiveRecord::Schema.define(version: 20140825100847) do
     t.string  "source"
     t.string  "file_path"
     t.integer "sort_order"
-  end
-
-  create_table "ref_plans", force: :cascade do |t|
-    t.string   "name"
-    t.string   "slug"
-    t.hstore   "properties"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
 end

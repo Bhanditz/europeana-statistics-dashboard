@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/Casecommons/pg_search.git
-  revision: 1eed83d510beb028b1cfbf550742bab108214dc3
-  specs:
-    pg_search (1.0.4)
-      activerecord (>= 3.1)
-      activesupport (>= 3.1)
-      arel
-
-GIT
   remote: https://github.com/bernat/best_in_place.git
   revision: 1ea07d3f362d63a938eb3b8f2c6c0f2037f86f0f
   specs:
@@ -93,9 +84,6 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bson (1.12.3)
-    bson_ext (1.12.3)
-      bson (~> 1.12.3)
     builder (3.2.2)
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
@@ -257,7 +245,6 @@ GEM
       haml (>= 4.0.6, < 5.0)
       html2haml (>= 1.0.1)
       railties (>= 4.0.1)
-    hashie (3.4.2)
     hike (1.2.3)
     hitimes (1.2.2)
     html2haml (2.0.0)
@@ -281,7 +268,6 @@ GEM
       sass (>= 3.2)
     json (1.8.3)
     json_pure (1.8.2)
-    jwt (1.5.1)
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -295,7 +281,6 @@ GEM
     mini_portile (0.6.2)
     minitest (5.7.0)
     multi_json (1.11.1)
-    multi_xml (0.5.5)
     multipart-post (2.0.0)
     nestful (1.0.7)
     net-scp (1.2.1)
@@ -305,28 +290,6 @@ GEM
     newrelic_rpm (3.12.0.288)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
-    oauth (0.4.7)
-    oauth2 (1.0.0)
-      faraday (>= 0.8, < 0.10)
-      jwt (~> 1.0)
-      multi_json (~> 1.3)
-      multi_xml (~> 0.5)
-      rack (~> 1.2)
-    omniauth (1.2.2)
-      hashie (>= 1.2, < 4)
-      rack (~> 1.0)
-    omniauth-google-oauth2 (0.2.6)
-      omniauth (> 1.0)
-      omniauth-oauth2 (~> 1.1)
-    omniauth-oauth (1.1.0)
-      oauth
-      omniauth (~> 1.0)
-    omniauth-oauth2 (1.3.1)
-      oauth2 (~> 1.0)
-      omniauth (~> 1.2)
-    omniauth-twitter (1.2.0)
-      json (~> 1.3)
-      omniauth-oauth (~> 1.1)
     open4 (1.3.4)
     open_uri_redirections (0.2.1)
     orm_adapter (0.5.0)
@@ -381,7 +344,6 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rmagick (2.13.4)
     ruby-graphviz (1.2.2)
     ruby_parser (3.7.0)
       sexp_processor (~> 4.1)
@@ -458,7 +420,6 @@ DEPENDENCIES
   best_in_place!
   better_errors
   binding_of_caller
-  bson_ext
   carrierwave
   carrierwave_direct
   chronic
@@ -476,17 +437,13 @@ DEPENDENCIES
   kaminari
   nestful
   newrelic_rpm
-  omniauth-google-oauth2
-  omniauth-twitter
   open4
   pg
-  pg_search!
   punkt-segmenter
   rails (= 4.2.1)
   rails-erd
   redis
   rest-client
-  rmagick (= 2.13.4)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   sentry-raven!
