@@ -4,8 +4,6 @@
       .navbar-header.page-scroll
         = link_to image_tag("https://s3-ap-southeast-1.amazonaws.com/ap-southeast-1.datahub.pykih/assets/images/rumi-logo.png", style: "margin-top: 10px;"), root_url
       %ul.nav.navbar-nav.navbar-right
-        - if @enable_express_tour
-          %li= link_to "<span class='octicon octicon-light-bulb'></span> Hint".html_safe, "javascript:void(0)", onclick: "javascript:triggerPykHelp();", style: "color: gray; font-size: 11px;"
         %li= link_to image_tag(account_image(current_account, 25), style: "display:inline"), _account_path(current_account, "projects"), "data-toggle"=>"tooltip", "data-placement"=>"bottom", title: "My Profile"
         %li= link_to "<b class='glyphicon glyphicon-cog'></b>".html_safe, _edit_account_path(current_account), style: "color: black;", "data-intro" => "Manage your profile & org. accounts from here.", "data-position" => "left"
         %li= link_to "<b class='glyphicon glyphicon-off'></b>".html_safe, destroy_account_session_path, style: "color: black;", "data-toggle"=>"tooltip", "data-placement"=>"bottom", title: "Sign Out"

@@ -22,7 +22,6 @@ class Core::RegistrationsController < Devise::RegistrationsController
   end
 
   def edit
-    @enable_express_tour = true
     super
   end
   

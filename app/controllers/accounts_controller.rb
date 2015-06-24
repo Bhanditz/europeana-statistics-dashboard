@@ -7,14 +7,12 @@ class AccountsController < ApplicationController
   # CRUD
 
   def show
-    @enable_express_tour = true
     if params[:content] == "projects"
       @core_projects = @account.core_projects.includes(:account).where(is_public: true)
     end
   end
 
   def edit
-    @enable_express_tour = true
   end
 
   def update
@@ -39,7 +37,6 @@ class AccountsController < ApplicationController
   end
 
   def dashboard
-    @enable_express_tour = true
     @core_projects   = @account.core_projects.includes(:account).page(params[:page_projects]).per(30)
     core_project_ids = @account.core_projects.pluck(:id).uniq
   end

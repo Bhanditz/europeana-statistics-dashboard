@@ -14,7 +14,6 @@ class Core::ProjectsController < ApplicationController
   end
   
   def show
-    @enable_express_tour=true
     @data_stores = @core_project.data_stores.includes(:core_project).includes(:clone_parent).includes(:account).where(parent_id: nil).page params[:page]
     @data_stores_count = @core_project.data_stores.count
     @not_first_data_store = @data_stores_count != 0
@@ -39,7 +38,6 @@ class Core::ProjectsController < ApplicationController
   end
 
   def edit
-    @enable_express_tour = true
     @core_token  = Core::Token.new
     @core_tokens = @core_project.core_tokens.where.not(name: "rumi-weblayer-api").includes(:account)
   end
@@ -89,11 +87,8 @@ class Core::ProjectsController < ApplicationController
   # Author: Ritvvij Parrikh
   
   def members
-    @enable_express_tour = true
-
-      @permission = Core::Permission.new
-      @permissions = @core_project.core_permissions.includes(:account)
-
+    @permission = Core::Permission.new
+    @permissions = @core_project.core_permissions.includes(:account)
   end
     
   #------------------------------------------------------------------------------------------------------------------
