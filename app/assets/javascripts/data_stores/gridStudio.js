@@ -2,8 +2,8 @@ $(document).ready(function() {
 
   Rumali.gridoperation = new Rumali.gridOperation();
   Rumali.pykqueryInit();
-  Rumali.gridtopbar = new Rumali.gridTopMenu();
-  Rumali.gridsidebar = new Rumali.sidebarDatatype();
+  // Rumali.gridtopbar = new Rumali.gridTopMenu();
+  // Rumali.gridsidebar = new Rumali.sidebarDatatype();
   Rumali.plugin = new Rumali.plugins();
   Rumali.sidebar_unique = Rumali.sidebarUnique();
   Rumali.api = new Rumali.gridApiCall();
@@ -61,7 +61,7 @@ $(document).ready(function() {
     console.log("----create Grid----");
     self.column_datatype  = Rumali.gridoperation.changeToColumnsType(column_data);
     self.editor_types = Rumali.gridoperation.getAllEditorTypes();
-    Rumali.pykgrid.appendGrid(column_operation,row_operation);
+    Rumali.pykgrid.appendGrid();
     var inst =$("#grid_show").handsontable("getInstance");
     columns =Rumali.gridoperation.getColumnsWithType(self.column_datatype);
     inst.updateSettings({columns:columns});
@@ -74,89 +74,8 @@ $(document).ready(function() {
       both_flag = 0;
     }
   }
-
-  var row_operation = {
-      items: {
-        "row_above": {
-          disabled: function () {
-            //if first row, disable this option
-            return ($("#grid_show").handsontable('getSelected')[0] <= 0);
-          },
-        },
-        "row_below": {},
-        "remove_row": {
-          disabled: function () {
-            //if first row, disable this option
-            return ($("#grid_show").handsontable('getSelected')[0] == 0);
-          },
-        },
-      },
-    };
-
-    var column_operation = {
-      items: {
-        "Add_column": {
-          name: 'Insert 1 left',
-          callback: function() {
-            Rumali.gridoperation.addColumnData("left");
-          },
-        },
-        "Add_column_right": {
-          name: 'Insert 1 right',
-          callback: function() {
-            Rumali.gridoperation.addColumnData("right");
-          },
-        },
-        "deleat_column": {
-          name: 'Delete Column',
-          callback: function() {
-            Rumali.gridoperation.deleteColumnData();
-          },
-        },
-        "sort_ascending": {
-          name: 'Sort sheet A -> Z',
-          callback: function() {
-            Rumali.gridoperation.sortColumnData('asc');
-          },
-        },
-        "sort_descending": {
-          name: 'Sort sheet Z -> A',
-          callback: function() {
-            Rumali.gridoperation.sortColumnData('desc');
-          },
-        }
-      },
-    };
-
-  $("#explore_on_map_button").on("click",function(e){
-    //console.log(rumi_api_endpoint + PYKMODEL.restEndPoint(),"clicked");
-    checklatlng(self.validation_for_map);
-    e.preventDefault();
-    //return false;
-  });
-
-  // $("#save-trigger-btn").click(function() {
-  //   $("#submit").trigger("click");
-  // });
-
-  // $('#addNewRow').unbind('click').click(function(){
-  //   grid.addNewRow();
-  // });
-  // $('#addNewColumn').unbind('click').click(function(){
-  //   grid.addNewColumn();
-  // });
-  // $('#deleteRow').unbind('click').click(function(){
-  //   dataView.deleteItems(selectedRowIds);
-  // });
-  // $('#deleteColumn').unbind('click').click(function(){
-  //   grid.deleteColumn();
-  // });
-  // $('#editColumn').unbind('click').click(function(){
-  //   grid.editColumn();
-  // });
-
-    var metrix_and_dimension = new Rumali.categorizeColumns();
-    metrix_and_dimension.init();
+  var metrix_and_dimension = new Rumali.categorizeColumns();
+  metrix_and_dimension.init();
 });
 
 Rumali.executeAfterFilter = function() {

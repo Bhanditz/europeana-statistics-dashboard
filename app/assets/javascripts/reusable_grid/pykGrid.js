@@ -18,7 +18,7 @@ Rumali.pykGrid = function () {
       rowHeaders: true,
       colHeaders: true,
       fixedRowsTop: 1,
-      readOnly:read_only_flag,
+      readOnly: true,
       manualColumnMove: true,
       stretchH: 'all',
       outsideClickDeselects: false,

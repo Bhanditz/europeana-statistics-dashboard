@@ -108,11 +108,11 @@ Rumali.gridOperation = function(){
             $('#histogram_min_max').hide();
             Rumali.countUniqueValues(data_distribution);
           }
-          Rumali.showStatistics(col_name, datatype);
+          // Rumali.showStatistics(col_name, datatype);
           that.resetFilterElements();
           that.toggleReplaceButton();
           console.log()
-          Rumali.gridtopbar.showformatterAsperDataType(self.column_datatype[column_index+1]);
+          // Rumali.gridtopbar.showformatterAsperDataType(self.column_datatype[column_index+1]);
         }
         try {
           grid_unique_values.dataformat = 'json'
@@ -211,14 +211,14 @@ Rumali.gridOperation = function(){
 
   this.columnHeaderSelected = function (column_id) {
     Rumali.pykgrid['column_selected_flag'] = true;
-    Rumali.gridtopbar.manuallyCloseTopmenuDropdown();
+    // Rumali.gridtopbar.manuallyCloseTopmenuDropdown();
     $("#histogram_min_max").hide();
     $("#input-col-cancel").hide();
     $("#col-info-panel").hide();
     $("#grid-count").show();
     that.editColumn(column_id);
-    Rumali.gridtopbar.showformatterAsperDataType(self.column_datatype[column_id+1]);
-    Rumali.gridsidebar.getDatatypeDistribution();
+    // Rumali.gridtopbar.showformatterAsperDataType(self.column_datatype[column_id+1]);
+    // Rumali.gridsidebar.getDatatypeDistribution();
     $("#column").addClass("active")
     $("#column2").removeClass("active")
     $("#table").removeClass("active")
@@ -268,7 +268,7 @@ Rumali.gridOperation = function(){
   this.showPagination = function (count) {
     var limit = grid_show.limit
       , page = Math.ceil(count/limit);
-    Rumali.renderStatistics({"count": count}, ""); //datatype = blank or string to show only count
+    // Rumali.renderStatistics({"count": count}, ""); //datatype = blank or string to show only count
     $("#page-count").empty();
     if ( count > limit) {
       $("#page-count").pagination({
@@ -460,7 +460,7 @@ Rumali.gridOperation = function(){
     if (display_list) {
       $("#column-list").show();
       $("#grid-column-form").hide();
-      document.getElementById("input-col-form").reset();
+      // document.getElementById("input-col-form").reset();
     } else {
       $("#column-list").hide();
       $("#grid-column-form").show();

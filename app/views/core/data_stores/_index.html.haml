@@ -4,49 +4,16 @@
     %thead
       %tr
         %th.col-sm-8 Name
-        %th
         %th Kind
-        %th
-        %th
         %th Date Modified
         %th
     %tbody
       - @data_stores.each do |data_store|
-        - parent = data_store.clone_parent
         %tr
           %td.borderless
-            - if parent.present?
-              = clone
-
-            -if action_name == "open_data"
-              = link_to "#{data_store.account.slug}", _account_path(data_store.account)
-              = " / "
-              = link_to "#{data_store.core_project.name}", _account_project_path(data_store.account, data_store.core_project)
-              = " / "
-              = link_to "#{data_store.name}",_account_project_data_store_path(data_store.account, data_store.core_project, data_store)
-            -else
-              = link_to data_store.name, _account_project_data_store_path(data_store.account, data_store.core_project, data_store), class: "u black", style: (data_store.marked_to_be_deleted == "true" ? "text-decoration: line-through; color: gray;" : nil)
-            - if action_name == "open_data"
-              .hint= data_store.meta_description
-          %td.borderless
-            - if parent.present?
-              .hint
-                Cloned from
-                = link_to "#{parent.core_project.account.username}/#{parent.core_project.name}", _account_project_data_store_path(parent.account, parent.core_project, parent)
+            = link_to data_store.name, _account_project_data_store_path(data_store.account, data_store.core_project, data_store), class: "u black", style: (data_store.marked_to_be_deleted == "true" ? "text-decoration: line-through; color: gray;" : nil)
           %td.borderless
             .hint Spreadsheet
-          -if @sudo[1] and data_store.marked_to_be_deleted != "true"
-            %td.borderless
-              = link_to "Set metadata", assign_metadata_account_core_project_data_store_path(data_store.account, data_store.core_project, data_store), class: "hint u"
-            %td.borderless
-              - publish_label = "Publish"
-              - if data_store.cdn_published_url.present?
-                = link_to publish, "#", "data-toggle"=>"modal", "data-target"=>"#pubslishedModal", "s3-url" => data_store.cdn_published_url, class: "s3-publish-details"
-                - publish_label = "Re-Publish"
-              = link_to publish_label, publish_account_core_project_data_store_path(@core_project.account, @core_project,data_store), class: "hint u"
-          - else
-            %td.borderless
-            %td.borderless
           %td.borderless
             %span.hint= time_ago_in_words(data_store.updated_at) + " ago"
           -if @sudo[1] and data_store.marked_to_be_deleted != "true"
