@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
       rescue
         redirect_to root_url, alert: t("set_universal_objects.no_such_account_1")
       end
-    elsif (controller_name == "accounts" or controller_name == "organisations") and params[:id].present?
+    elsif (controller_name == "accounts" or controller_name == "params") and params[:id].present?
       begin
         @account = Account.friendly.find(params[:id])
       rescue
@@ -157,7 +157,7 @@ class ApplicationController < ActionController::Base
     
   # Enable DEVISE forms to accept username.
   def configure_devise_params
-    devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:username, :email, :password, :accountable_type, :referred_by_account_id)} 
+    devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:username, :email, :password, :referred_by_account_id)} 
     devise_parameter_sanitizer.for(:sign_in) {|u| u.permit(:username, :password)}
     devise_parameter_sanitizer.for(:account_update) {|u| u.permit(:password, :current_password)}
   end

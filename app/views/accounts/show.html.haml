@@ -68,11 +68,6 @@
           = @account.slug + "."
           The data belongs to 
           = @account.slug + "."
-      - if @has_organisation_accounts and @account.accountable_type == Constants::ACC_U
-        %h5 My organisations
-        - @organisations.each do |o|
-          - if o.organisation.accountable_type != Constants::ACC_U
-            = link_to image_tag(dp(o.organisation.gravatar_email_id, 40)), _account_path(o.organisation,"projects"), title: o.organisation.username
 
 
 :javascript

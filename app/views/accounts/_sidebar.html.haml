@@ -2,20 +2,6 @@
   .panel-heading
     .panel-title= current_account.username
   %ul.nav.nav-pills.nav-stacked
-    %li{class: (action_name == "edit" and controller_name == "accounts" and @account.accountable_type == Constants::ACC_U) ? "active" : nil}= link_to "Profile", _edit_account_path(current_account)
+    %li{class: (action_name == "edit" and controller_name == "accounts") ? "active" : nil}= link_to "Profile", _edit_account_path(current_account)
     %li{class: controller_name == "registrations" ? "active" : nil}= link_to "Security", edit_account_registration_path(current_account)
-    %li{class: (controller_name == "organisations" and action_name == "index") ? "active" : nil}= link_to "Organizations", core_organisations_path
     %li{class: controller_name == "account_emails" ? "active" : nil}= link_to "Emails", account_core_account_emails_path(current_account)
-- if @organisations.present? and @organisations.first.present?
-  %br
-  .panel.panel-default
-    .panel-heading
-      .panel-title My Organisations
-    .panel-body.m0p0
-      %ul.nav.nav-pills.nav-stacked
-        - if @account.blank?
-          - @organisations.each do |o|
-            %li= link_to o.username, edit_core_organisation_path(o)
-        - else
-          - @organisations.each do |o|
-            %li{class: @account.username == o.username ? "active" : nil}= link_to o.username, edit_core_organisation_path(o)

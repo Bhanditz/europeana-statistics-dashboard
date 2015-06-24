@@ -13,7 +13,7 @@
               .panel-heading
                 .panel-title Who's in the team?
               .panel-body
-                - if @core_project.account.is_user_account?
+                - if 1 == 1
                   %br
                   %div
                     = form_for @permission, url: account_core_permissions_path(@account), method: :post do |f|

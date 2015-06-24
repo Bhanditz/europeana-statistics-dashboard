@@ -47,7 +47,7 @@ class AccountsController < ApplicationController
   private
 
   def account_params
-    params.require(:account).permit(:username, :accountable_type, :email, :authentication_token,
+    params.require(:account).permit(:username, :email, :authentication_token,
       :bio, :gravatar_email_id, :url, :is_pseudo_account, :name, :location, :company, :confirmation_sent_at) #hstore - properties  
   end
 

@@ -5,7 +5,7 @@ SwitchUser.setup do |config|
   # available_users is a hash,
   # key is the model name of user (:user, :admin, or any name you use),
   # value is a block that return the users that can be switched.
-  config.available_users = { :account => lambda { Account.where(accountable_type: Constants::ACC_U) } }
+  config.available_users = { :account => lambda { Account.all } }
 
   # available_users_identifiers is a hash,
   # keys in this hash should match a key in the available_users hash

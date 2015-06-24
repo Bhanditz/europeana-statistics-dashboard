@@ -71,9 +71,6 @@ class Account < ActiveRecord::Base
   validates :gravatar_email_id, format: {with: Constants::EMAIL}, presence: true, on: :update
   validate :email_unique_from_core_account_email, on: :create
   #SCOPES
-
-  scope :u, -> { where(accountable_type: Constants::ACC_U) }
-  
   #CUSTOM SCOPES
   #FUNCTIONS
   
@@ -125,10 +122,6 @@ class Account < ActiveRecord::Base
     self.email.index("@pykih.com").present? and self.confirmation_token.blank?
   end
   
-  def is_user_account? #IF
-    self.accountable_type == Constants::ACC_U
-  end
-  
   def email_unique_from_core_account_email
     core_account_email_count = Core::AccountEmail.where(email: self.email).count
     if core_account_email_count > 0
@@ -155,11 +148,9 @@ class Account < ActiveRecord::Base
   # Author: Ritvvij Parrikh
   
   def after_create_set
-    if self.is_user_account? and (self.sign_in_count == 0 or self.sign_in_count.blank?)
+    if self.sign_in_count == 0 or self.sign_in_count.blank?
       Core::Permission.create!(account_id: self.id, organisation_id: self.id, role: Constants::ROLE_O, email: self.email, status: Constants::STATUS_A, is_owner_team: true)
-      if self.accountable_type == "User"
-        Core::AccountEmail.create(email: self.email,account_id: self.id, is_primary: true)
-      end
+      Core::AccountEmail.create(email: self.email,account_id: self.id, is_primary: true)
     end
     true
   end
