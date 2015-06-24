@@ -53,15 +53,6 @@ class Core::DataStoresController < ApplicationController
     end
   end
 
-  def map
-    if @sudo[1]
-      gon.mode = true
-      render layout: "data_stores"
-    else
-      redirect_to _account_project_data_store_path(@core_project.account, @core_project, @data_store)
-    end
-  end
-
   def edit
     sudo_project_member!(true)
     if @sudo.present? and @sudo[1]
@@ -152,79 +143,11 @@ class Core::DataStoresController < ApplicationController
     end
   end
 
-  def publish #PUBLISH TO CDN Functionality
-    Core::S3File::UploadWorker.perform_async("DataStore", @data_store.id,@alknfalkfnalkfnadlfkna)
-    redirect_to _account_project_path(@account,@core_project), notice: t("publish")
-  end
-
-  def clone
-    begin
-      new_table_name = Nestful.post REST_API_ENDPOINT + "#{@account.slug}/#{@core_project.slug}/#{@data_store.slug}/grid/clone", {:token => @alknfalkfnalkfnadlfkna}, :format => :json
-      @data_store.increase_clone_count
-      d = @data_store.create_clone(new_table_name["table_name"], params[:core_data_store][:clone_to_core_project_id])
-      redirect_to _account_project_data_store_path(d.account, d.core_project, d), notice: t("clone.s")
-    rescue
-      redirect_to :back, alert: t("clone.f")
-    end
-  end
-
   def csv
     s = "/tmp/#{SecureRandom.hex(24)}.csv"
     @data_store.generate_file_in_tmp(s,@alknfalkfnalkfnadlfkna)
     send_data IO.read(s), :type => "application/vnd.ms-excel", :filename => "#{@data_store.slug}.csv", :stream => false
     File.delete(s)
-  end
-
-  def append_rows
-    @data_stores = @core_project.data_stores.where("id != ?", @data_store.id)
-  end
-
-  def commit_append
-    data_store_id = params["core_data_store"]["append_data_store_id"]
-    append_table_name = Core::DataStore.select(:table_name).where(:id => data_store_id)
-    append_table_name = append_table_name.to_a[0].table_name
-    if append_table_name
-      begin
-        response = Nestful.post REST_API_ENDPOINT + "#{@account.slug}/#{@core_project.slug}/#{@data_store.slug}/grid/append_dataset", {:token => @alknfalkfnalkfnadlfkna, :source_table_name => append_table_name}
-      rescue Exception => e
-        e = JSON.parse(e.response.body)
-        error = e["error"]
-      end
-    else
-      error = "No dataset to append."
-    end
-    if !error
-      redirect_to _edit_account_project_data_store_path(@core_project.account, @core_project, @data_store), notice: "Rows Appended."
-    else
-      @data_stores = @core_project.data_stores.where("id != ?", @data_store.id)
-      @errors = e
-      render :append_rows, alert: error
-    end
-  end
-
-  def assign_metadata
-  end
-
-  def update_assign_metadata
-    if @data_store.update_attributes(meta_description: params[:meta_description], source_url: params[:source_url])
-      redirect_to _account_project_path(@core_project.account, @core_project), notice: t("u.s")
-    else
-      render :assign_metadata, alert: t("u.f")
-    end
-  end
-
-  def recalibrate_metadata
-    begin
-      Nestful.get REST_API_ENDPOINT + "#{@core_project.account.slug}/#{@core_project.slug}/#{@data_store.slug}/grid/analyse_datatypes", {:token => @alknfalkfnalkfnadlfkna}, :format => :json 
-      is_success = true
-    rescue
-      is_success = false
-    end
-    if is_success
-      redirect_to _edit_account_project_data_store_path(@core_project.account, @core_project, @data_store), notice: t("recalibrate_metadata.s")
-    else
-      redirect_to _edit_account_project_data_store_path(@core_project.account, @core_project, @data_store), alert: t("recalibrate_metadata.f")
-    end
   end
   #------------------------------------------------------------------------------------------------------------------
 

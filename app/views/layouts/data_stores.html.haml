@@ -8,8 +8,6 @@
     = stylesheet_link_tag    'application', media: 'all'
     = javascript_include_tag 'application'
     %script{:src => "/assets/data_stores.js"}
-    - if action_name == "map"
-      %script{:src => "/assets/maps.js"}
     = csrf_meta_tags
   %body{id: "scopejs_#{controller_name}_#{action_name}", style: "background: white;"}
     #divg1
@@ -35,59 +33,8 @@
                     %a.black.m0p0#dLabel{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :role => "button", style: "padding: 5px 10px 5px 0px; font-size: 12px;"}
                       File
                     %ul.dropdown-menu{"aria-labelledby" => "dLabel", :role => "menu"}
-                      %li{style: "padding: 0px 10px;"}
-                        %a{href: "#", "data-target" => "#cloneModal", "data-toggle" => "modal"} Make a copy
                       %li{style: "padding: 0px 10px;"}= link_to "Download", _csv_account_project_data_store_path(@core_project.account, @core_project, @data_store), id: "download-data",data_store_name: @data_store.name
-                      #flash_categorize_columns-save{style: "margin-top: 10px; color: black;"}
-                  %li.dropdown
-                    %a.black.m0p0#dLabel{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :role => "button", style: "padding: 5px 10px; font-size: 12px;"}
-                      View
-                    %ul.dropdown-menu{"aria-labelledby" => "dLabel", :role => "menu"}
-                      %li{style: "padding: 0px 10px;"}
-                        %a{id: "highlight-cell", href: "#",class:"highlight-cell", style: "padding-left: 10px;"} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Blanks
-                      %li{style: "padding: 0px 10px;"}
-                        %a{id: "highlight-row", href: "#",class:"highlight-row", style: "padding-left: 10px;"} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alternate rows
-                      %li.dropdown-submenu
-                        %a{:href => "#", :tabindex => "-1"} 
-                          = image_tag "freeze_rows.png"
-                          Freeze Rows
-                        %ul.dropdown-menu
-                          %li
-                            .btn-group#freeze-row{"data-toggle" => "buttons"}
-                              %button{type: "button", class: "btn btn-sm btn-default btn-primary", value: '0'} 0
-                              %button{type: "button", class: "btn btn-sm btn-default", value: '1'} 1
-                              %button{type: "button", class: "btn btn-sm btn-default", value: '2'} 2
-                      %li.dropdown-submenu
-                        %a{:href => "#", :tabindex => "-1"} 
-                          = image_tag "freeze_columns.png"
-                          Freeze Columns
-                        %ul.dropdown-menu
-                          %li
-                            .btn-group#freeze-column{"data-toggle" => "buttons"}
-                              %button{type: "button", class: "btn btn-sm btn-default btn-primary", value: '0'} 0
-                              %button{type: "button", class: "btn btn-sm btn-default", value: '1'} 1
-                              %button{type: "button", class: "btn btn-sm btn-default", value: '2'} 2
-                  - if @sudo[1]
-                    %li.dropdown#show_when_column_is_selected_2{}
-                      %a.black.m0p0#dLabel.clean_column{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :role => "button", style: "padding: 5px 10px;  font-size: 12px;"} Format
-                      %ul#convert-button.dropdown-menu{"aria-labelledby" => "dropdownMenu1", role: "menu"}
-                        %li.dropdown.format-menu{ style: "padding: 3px 20px;"} 
-                          %h5{ style: "color :red"} Hey!
-                          %p To open format options in this menu please first select a column!
-                        %li.dropdown-submenu.format-submenu{ style: "padding: 3px 20px;"}
-                          %a{:href => "#", :tabindex => "-1", style: "padding: 5px 20px 5px 0px;"} Assign Datatype
-                          %ul.dropdown-menu{ id: "column_data_type","aria-labelledby" => "dropdownMenu1", role: "menu"}
-                            %li= link_to "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text", "#", id: "string_data_type",class: "column-data-type" ,value: "string"
-                            %li= link_to "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number <span class='gray small'>(3)</span>".html_safe, "#", id: "integer_data_type", class: "column-data-type" ,value: "integer"
-                            %li= link_to "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Decimal <span class='gray small'>(3.14)</span>".html_safe, "#", id: "double_data_type",class: "column-data-type" , value: "double"
-                            %li= link_to "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;True / False <span class='gray small'>(Boolean)</span>".html_safe, "#", id: "boolean_data_type",class: "column-data-type" , value: "boolean"
-                            %li= link_to "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date  <span class='gray small'>(dd-mm-yyyy)</span>".html_safe, "#", id: "date_data_type",class: "column-data-type" , value: "date"
-                        %li.dropdown-submenu.format-submenu{style: "padding: 3px 20px;"}
-                          %a{:href => "#", :tabindex => "-1", style: "padding: 5px 20px 5px 0px;"} Assign Meta
-                          %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", role: "menu"}
-                            %li= link_to "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;None", "#", id: "nil_sub_datatype",class: "sub-data-type", value: "none"
-                            %li= link_to "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Latitude <span class='gray small'>(19.075984)</span>".html_safe, "#",id: "latitude_sub_datatype", class: "sub-data-type", value: "latitude"
-                            %li= link_to "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Longitude <span class='gray small'>(72.877656)</span>".html_safe, "#",id: "longitude_sub_datatype", class: "sub-data-type", value: "longitude"      
+                      #flash_categorize_columns-save{style: "margin-top: 10px; color: black;"}  
                         
           #myModal.modal.in.outer_cstm_modal{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1",style: "display: none"}
             .modal-dialog
@@ -109,7 +56,6 @@
         .col-sm-3
           %br
           = link_to "Data View", _account_project_data_store_path(@data_store.account, @data_store.core_project, @data_store), class: (action_name == "edit" or action_name == "show") ? "btn btn-orange btn-sm active" : "btn btn-default btn-sm"
-          = link_to "Explore on Map", _map_account_project_data_store_path(@data_store.account, @data_store.core_project, @data_store), class: (action_name == "map") ? "btn btn-orange btn-sm active" : "btn btn-default btn-sm",id: "explore_on_map_button"
           = link_to "<span class='octicon octicon-broadcast'></span> Datacast".html_safe, _visualizations_account_project_data_store_path(@account, @data_store.core_project, @data_store), class: "btn btn-default btn-sm"
           %br
           %br
@@ -125,29 +71,3 @@
               %li#grid-count{style: "height: 33px; "}
             %ul.nav.navbar-nav.pull-right
               %li#pyk_statistics{style: "height: 33px; margin-right:22px; "}
-  
-- if (current_account.present? and action_name != "new" and @sudo[1]) or  1 == 1
-  #cloneModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
-    .modal-dialog
-      .modal-content
-        .modal-header
-          %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-          %h4#myModalLabel.modal-title Clone Data Set
-        .modal-body
-          - if @core_projects.nil? or @core_projects.first.blank?
-            %p.lead
-              Please
-              - if current_account.blank?
-                = link_to "sign in", "/accounts/sign_in", target: "_blank"
-              - else
-                = link_to "create a project", "/new", target: "_blank"
-          - else
-            %h4.thin Select a project you want to clone the dataset to:
-            = form_for @data_store, url: _clone_account_project_data_store_path(@core_project.account, @core_project, @data_store), method: :put do |f|
-              - current_project = params[:project_id]
-              = f.select(:clone_to_core_project_id, @core_projects.map{|p|  ["#{p.account.username} / #{p.name}", p.id]}, include_blank: false, required: true)
-              %br
-              %br
-              = f.submit 'Clone', class: "btn btn-sm btn-primary", style: "color: white;"
-            %h5.thin= link_to "Or create a new project", "/new", target: "_blank"
-            .hint Once created, refresh this page and clone again.
