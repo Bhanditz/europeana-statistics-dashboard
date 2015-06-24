@@ -8,11 +8,6 @@ class AccountsController < ApplicationController
 
   def show
     @enable_express_tour = true
-    @organisations = @account.accounts.includes(:organisation)
-    @has_organisation_accounts = @organisations.count > 1 ? true : false
-    if @account.accountable_type == Constants::ACC_O
-      @members = @account.accounts
-    end
     if params[:content] == "projects"
       @core_projects = @account.core_projects.includes(:account).where(is_public: true)
     end
@@ -20,14 +15,12 @@ class AccountsController < ApplicationController
 
   def edit
     @enable_express_tour = true
-    @organisations = current_account.organisations
   end
 
   def update
     if @account.update(account_params)
       redirect_to _edit_account_path(@account), notice: t("u.s")
     else
-      @organisations = current_account.organisations
       flash.now.alert = t("u.f")
       render :edit
     end
@@ -43,13 +36,11 @@ class AccountsController < ApplicationController
   end
   
   def digital_footprint
-    @organisations = current_account.organisations
   end
 
   def dashboard
     @enable_express_tour = true
     @core_projects   = @account.core_projects.includes(:account).page(params[:page_projects]).per(30)
-    organisation_ids = @account.organisations.pluck(:id).uniq
     core_project_ids = @account.core_projects.pluck(:id).uniq
   end
   

@@ -37,9 +37,6 @@ window.onload = function () {
         (gon.dataformat == "csv") ? Rumali.showAndEditGridPage() : Rumali.JsonDataPage();
       }
       break;
-    case "scopejs_maps_show":
-      Rumali.bangaloreGeo();
-      break;
     default:
   }
 };

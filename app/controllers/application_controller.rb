@@ -66,21 +66,6 @@ class ApplicationController < ActionController::Base
   # Module: Access-Control
   # Author: Ritvvij Parrikh
   
-  def organisation_counts
-    if @account.present?
-      if @account.accountable_type == Constants::ACC_O
-        @members_count = @account.accounts.pluck(:account_id).uniq.count
-        @team_count = @account.core_teams.count
-        @custom_theme_count = @account.custom_themes.count
-      end
-    end
-    @organisations = current_account.organisations
-  end
-  
-  # LOCKING this method. Do not change. 
-  # Module: Access-Control
-  # Author: Ritvvij Parrikh
-  
   def sudo_account!
     authenticate_account!
   end

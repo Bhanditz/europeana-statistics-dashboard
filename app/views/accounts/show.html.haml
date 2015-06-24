@@ -73,11 +73,7 @@
         - @organisations.each do |o|
           - if o.organisation.accountable_type != Constants::ACC_U
             = link_to image_tag(dp(o.organisation.gravatar_email_id, 40)), _account_path(o.organisation,"projects"), title: o.organisation.username
-      - if @account.accountable_type == Constants::ACC_O
-        - if @members.first.present?
-          %h4 Our team
-          - @members.each do |o|
-            = link_to image_tag(dp(o.account.gravatar_email_id, 40)), _account_path(o.account, "projects"), title: o.account.username
+
 
 :javascript
 

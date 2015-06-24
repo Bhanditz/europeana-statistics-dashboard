@@ -3,17 +3,7 @@ Rails.application.routes.draw do
 
   namespace :core do
     resources :admins do
-      get 'accounts', "organizations", on: :collection
-    end
-    resources :organisations do
-      get "members", "make_enterprise_account", on: :member
-      resources :team_projects do
-        get "add", on: :collection
-      end
-      resources :themes
-      resources :teams do
-        get "in", on: :member
-      end
+      get 'accounts', on: :collection
     end
   end
   

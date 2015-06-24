@@ -8,7 +8,6 @@ class Core::AccountEmailsController < ApplicationController
     @enable_express_tour = true
     @core_account_emails = @account.core_account_emails
     @core_account_email  = Core::AccountEmail.new()
-    @organisations = current_account.organisations
   end
 
   def create

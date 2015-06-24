@@ -34,7 +34,6 @@
         .col-sm-3
           %br
           = link_to "Data View", _account_project_data_store_path(@data_store.account, @data_store.core_project, @data_store), class: "btn btn-default btn-sm"
-          = link_to "Explore on Map", _map_account_project_data_store_path(@data_store.account, @data_store.core_project, @data_store), class: "btn btn-default btn-sm",id: "explore_on_map_button"
           = link_to "<span class='octicon octicon-broadcast'></span> Datacasts".html_safe, _visualizations_account_project_data_store_path(@account, @data_store.core_project, @data_store), class: "btn btn-orange btn-sm active"
     = yield
     = render partial: "layouts/validations_errors", locals: {config: config}

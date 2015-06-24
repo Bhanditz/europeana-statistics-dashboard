@@ -48,8 +48,7 @@ class Core::Project < ActiveRecord::Base
   has_many :data_stores, foreign_key: "core_project_id"
   has_many :custom_dashboards, class_name: "Core::CustomDashboard", foreign_key: "core_project_id"
   has_many :vizs, foreign_key: "core_project_id"
-  has_many :core_team_projects, class_name: "Core::TeamProject", foreign_key: "core_project_id" #DONE
-  has_many :core_teams, class_name: "Core::Team", through: :core_team_projects
+#DONE
   has_many :core_tokens, class_name: "Core::Token", foreign_key: "core_project_id"
   has_many :core_data_store_pulls, class_name: "Core::DataStorePull", foreign_key: "core_project_id", dependent: :destroy
   
@@ -91,14 +90,10 @@ class Core::Project < ActiveRecord::Base
   # Author: Ritvvij Parrikh
   
   def after_create_set
-    if self.account.is_user_account?
       team = Core::Team.new(organisation_id: self.account_id, name: self.name, created_by: self.account_id, role: Constants::ROLE_C)
       team.save
       Core::TeamProject.create(core_project_id: self.id, core_team_id: team.id)
       Core::Permission.create(account_id: self.account_id, organisation_id: self.account_id, role: Constants::ROLE_O, email: self.account.email, status: Constants::STATUS_A, core_team_id: team.id)
-    else
-      Core::TeamProject.create(core_team_id: self.account.owner_team.id, core_project_id: self.id)
-    end
     Core::Token.create(account_id: self.account_id, core_project_id: self.id, api_token: SecureRandom.hex(24), name: "rumi-weblayer-api")
     true
   end
@@ -128,14 +123,11 @@ class Core::Project < ActiveRecord::Base
         end
       end
       self.core_tokens.destroy_all
-      if self.account.is_user_account?
+
         Core::Team.where(id: self.core_team_projects.pluck(:core_team_id)).delete_all
         self.core_team_projects.destroy_all
         self.core_permissions.destroy_all
-      else
-        self.core_team_projects.destroy_all
-      end
-      true
+        true
     rescue Exception => e
       errors.add(:name,e.to_s)
       false

@@ -1,7 +1,6 @@
 class Constants
   
   #Accounts
-  ACC_O = "Organisation" #Constants::ACC_O
   ACC_U = "User" #Constants::ACC_U
   
   #Regex

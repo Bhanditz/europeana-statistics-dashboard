@@ -92,16 +92,10 @@ class Core::ProjectsController < ApplicationController
   
   def members
     @enable_express_tour = true
-    if @core_project.account.is_user_account?
+
       @permission = Core::Permission.new
       @permissions = @core_project.core_permissions.includes(:account)
-      @core_team = @core_project.core_teams.first
-    else
-      @core_team_projects = @core_project.core_team_projects
-      @core_teams = @core_project.account.core_teams.where("id NOT IN (?)", @core_team_projects.pluck(:core_team_id))
-      @core_team_project = Core::TeamProject.new
-      @permissions = @core_project.core_permissions.includes(:account)
-    end
+
   end
     
   #------------------------------------------------------------------------------------------------------------------

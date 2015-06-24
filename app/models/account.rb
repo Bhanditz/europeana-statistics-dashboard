@@ -46,26 +46,13 @@ class Account < ActiveRecord::Base
                       class_name: "Core::Permission", foreign_key: :account_id
   has_many :core_tokens, class_name: "Core::Token"
   has_many :core_account_emails,class_name: "Core::AccountEmail" ,foreign_key: :account_id, dependent: :destroy #DONE
-  
-  def organisations
-    Account.where(accountable_type: Constants::ACC_O, id: self.accounts_u.pluck(:organisation_id).uniq)
-  end
-  
-  # if account is Organisation
-  has_many :accounts_o, -> {where "is_owner_team = true"}, class_name: "Core::Permission", foreign_key: :organisation_id
-  has_many :owners_o, -> {where "is_owner_team = true", role: Constants::ROLE_O}, 
-                      class_name: "Core::Permission", foreign_key: :organisation_id
-  has_many :core_teams, class_name: "Core::Team", foreign_key: "organisation_id" # dependent: :destroy
-  has_one :owner_team, -> {where "is_owner_team = true"}, class_name: "Core::Team", foreign_key: "organisation_id"
-  has_many :custom_themes, class_name: "Core::Theme", foreign_key: "account_id", dependent: :destroy #DONE
-  
-
+    
   def accounts
-    self.accountable_type == Constants::ACC_U ? self.accounts_u.joins(:account) : self.accounts_o
+    self.accounts_u.joins(:account)
   end
   
   def owners
-    self.accountable_type == Constants::ACC_U ? self.owners_u.joins(:account) : self.owners_o.joins(:account)
+    self.owners_u.joins(:account)
   end
   
   # LOCKING this method. Do not change. 
@@ -85,7 +72,7 @@ class Account < ActiveRecord::Base
   validates :gravatar_email_id, format: {with: Constants::EMAIL}, presence: true, on: :update
   validate :email_unique_from_core_account_email, on: :create
   #SCOPES
-  scope :o, -> { where(accountable_type: Constants::ACC_O) }
+
   scope :u, -> { where(accountable_type: Constants::ACC_U) }
   
   #CUSTOM SCOPES
@@ -96,11 +83,7 @@ class Account < ActiveRecord::Base
   # Author: Ritvvij Parrikh
   
   def sudo_organisation_owner(o) #always run off current_user
-    if o.accountable_type == Constants::ACC_O
-      return self.permissions.where(organisation_id: o.id, core_team_id: o.owner_team.id, role: Constants::ROLE_O).first.blank?
-    else
-      return self.id == o.id ? false : true
-    end
+    self.id == o.id ? false : true
   end
   
   # LOCKING this method. Do not change. 
