@@ -17,8 +17,6 @@
                   %br
                   %div
                     = form_for @permission, url: account_core_permissions_path(@account), method: :post do |f|
-                      = f.hidden_field :organisation_id, value: @account.id
-                      = f.hidden_field :core_team_id, value: @core_team.id
                       = f.hidden_field :role, value: Constants::ROLE_C
                       = f.hidden_field :status, value: "Invited"
                       - if @permission.errors.any?

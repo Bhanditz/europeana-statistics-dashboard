@@ -59,7 +59,7 @@ class Account < ActiveRecord::Base
   # Author: Ritvvij Parrikh
     
   def core_projects
-    Core::Project.where(id: Core::Permission.where("core_permissions.account_id = ? OR core_permissions.organisation_id = ?", self.id, self.id).where(role: [Constants::ROLE_C, Constants::ROLE_O]).pluck("core_permissions.core_project_id").uniq)
+    Core::Project.where(id: Core::Permission.where("core_permissions.account_id = ?", self.id).where(role: [Constants::ROLE_C, Constants::ROLE_O]).pluck("core_permissions.core_project_id").uniq)
   end
     
   #VALIDATIONS
@@ -107,7 +107,7 @@ class Account < ActiveRecord::Base
   end
   
   def is_not_collaborator?(cid)
-    Core::Permission.where(account_id: cid, organisation_id: self.id).first.blank? ? true : false
+    Core::Permission.where(account_id: cid).first.blank? ? true : false
   end
   
   def is_online
@@ -148,7 +148,7 @@ class Account < ActiveRecord::Base
   
   def after_create_set
     if self.sign_in_count == 0 or self.sign_in_count.blank?
-      Core::Permission.create!(account_id: self.id, organisation_id: self.id, role: Constants::ROLE_O, email: self.email, status: Constants::STATUS_A, is_owner_team: true)
+      Core::Permission.create!(account_id: self.id, role: Constants::ROLE_O, email: self.email, status: Constants::STATUS_A, is_owner_team: true)
       Core::AccountEmail.create(email: self.email,account_id: self.id, is_primary: true)
     end
     true

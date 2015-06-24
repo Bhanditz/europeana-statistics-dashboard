@@ -50,12 +50,6 @@ class ApplicationController < ActionController::Base
       rescue
         redirect_to root_url, alert: t("set_universal_objects.no_such_account_2")
       end
-    elsif params[:organisation_id].present? and (controller_name.to_s.index("team").present? or controller_name == "themes")
-      begin
-        @account = Account.friendly.find(params[:organisation_id])
-      rescue
-        redirect_to root_url, alert: t("set_universal_objects.no_such_account_3")
-      end
     end
     if @account.blank? 
       @account = current_account  if controller_name == "projects" and action_name == "new" or controller_name == "account_emails"

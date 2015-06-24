@@ -25,22 +25,18 @@ class Core::Permission < ActiveRecord::Base
   #GEMS
   self.table_name = "core_permissions"
   include WhoDidIt
-   
-   
   
   #CONSTANTS  
   #ATTRIBUTES
   #ACCESSORS
   #ASSOCIATIONS
   belongs_to :account
-  belongs_to :organisation, class_name: "Account", foreign_key: "organisation_id"
   belongs_to :core_account_email,class_name: "Core::AccountEmail", foreign_key: "email",primary_key: "email"
   has_many :core_projects, class_name: "Core::Project", through: :permissions
   
   #VALIDATIONS
   validates :email, presence: true, format: {with: Constants::EMAIL}
   validates :role, presence: true
-  validates :organisation_id, presence: true
   validates :account_id, presence: true, on: :update
   
   #CALLBACKS
