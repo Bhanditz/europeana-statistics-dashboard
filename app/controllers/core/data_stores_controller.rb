@@ -1,7 +1,7 @@
 class Core::DataStoresController < ApplicationController
 
   before_action :sudo_project_member!, only: [:new, :upload, :update, :destroy, :publish, :empty_grid, :map, :append_rows, :commit_append, :merge, :commit_merge]
-  before_action :sudo_public!, only: [:index, :show, :index_all, :csv,:open_data]
+  before_action :sudo_public!, only: [:index, :show, :index_all, :csv]
   before_action :sudo_account!, only: [:clone]
   before_action :set_data_store, only: [:show, :edit, :update, :destroy, :csv, :publish, :clone, :map,:append_rows, :commit_append, :recalibrate_metadata, :assign_metadata, :update_assign_metadata]
   before_action :set_token, only: [:show, :edit, :upload, :destroy, :clone, :empty_grid,:csv,:publish, :map, :merge, :commit_merge, :commit_append, :recalibrate_metadata]
@@ -168,31 +168,6 @@ class Core::DataStoresController < ApplicationController
     end
   end
 
-  def index_all
-    condition = "is_public = true"
-    if account_signed_in?
-      acc_id = current_user.accounts.pluck(:parent_id).to_s.gsub("[", "(").gsub("]", ")")
-      if acc_id.present?
-        condition += " OR account_id IN #{acc_id}"
-      end
-    end
-    projects = Core::Project.where(condition)
-    @selected_value = ""
-    if params[:q].present? and params[:search].present?
-      search_type = params[:search]
-      @selected_value = search_type
-      if search_type == "data"
-        @data_stores = Core::DataStore.where(core_project_id: projects.pluck(:id) ).includes(:core_project).includes(:account).text_search(params[:q]).page params[:page]
-      elsif search_type == "project"
-        @core_projects = projects.text_search(params[:q]).page params[:page]
-      elsif search_type == "user"
-        @accounts = Core::Account.text_search(params[:q]).page params[:page]
-      end
-    else
-      @data_stores = Core::DataStore.where(core_project_id: projects.pluck(:id)).includes(:core_project).includes(:account).page params[:page]
-    end
-  end
-
   def csv
     s = "/tmp/#{SecureRandom.hex(24)}.csv"
     @data_store.generate_file_in_tmp(s,@alknfalkfnalkfnadlfkna)
@@ -251,30 +226,6 @@ class Core::DataStoresController < ApplicationController
       redirect_to _edit_account_project_data_store_path(@core_project.account, @core_project, @data_store), alert: t("recalibrate_metadata.f")
     end
   end
-
-  def open_data
-    @projects = []
-    @data_stores = []
-    file_type = []
-    file_type << 'GeoJson'  if params[:geojson]  and !params[:geojson].blank?
-    file_type << 'TopoJson' if params[:topojson] and !params[:topojson].blank?
-
-    unless params[:search].nil? or params[:search].blank?
-      if current_account.nil?
-        if params[:content] == "datasets"
-          @projects = Core::Project.where("is_public = true")
-        end
-      else
-        if params[:content] == "datasets"
-          @projects = Core::Project.where("is_public = true OR id IN (?)", current_account.core_projects.pluck(:id).uniq)
-        end
-      end
-      if params[:content] == "datasets"
-        @data_stores = Core::DataStore.where(core_project_id: @projects.pluck(:id)).where("name LIKE ? OR meta_description LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%").page params[:page] unless @projects.nil?
-      end
-    end
-  end
-
   #------------------------------------------------------------------------------------------------------------------
 
   private

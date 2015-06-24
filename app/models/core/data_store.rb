@@ -28,8 +28,7 @@ class Core::DataStore < ActiveRecord::Base
   include WhoDidIt
    
   
-  include PgSearch
-  pg_search_scope :search, against: [:name, :properties],using: {tsearch: {dictionary: "english"}}, ignoring: :accents  
+   
 
   #CONSTANTS
   #ATTRIBUTES  
@@ -164,14 +163,6 @@ class Core::DataStore < ActiveRecord::Base
   
   def clone_countz
     self.properties["clone_count"].blank? ? 0 : self.properties["clone_count"]
-  end
-  
-  def self.text_search(q)
-    if q.present?
-      search(q)
-    else
-      where("name IS NOT NULL")
-    end
   end
   
   #----------------- PUBLISH TO CDN Functionality ------------------------------

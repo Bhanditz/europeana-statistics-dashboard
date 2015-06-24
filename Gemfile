@@ -24,7 +24,6 @@ gem "aws-sdk-core"
 gem "git"
 gem "switch_user"
 #gem "aws-s3", :require => "aws/s3"
-gem 'pg_search', git: "https://github.com/Casecommons/pg_search.git"
 gem "jquery-fileupload-rails"
 gem "rmagick", "2.13.4"
 gem 'carrierwave'

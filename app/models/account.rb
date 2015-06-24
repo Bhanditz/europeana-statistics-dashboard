@@ -29,11 +29,6 @@ class Account < ActiveRecord::Base
   extend FriendlyId
   friendly_id :username, use: :slugged
 
-  include PgSearch
-  pg_search_scope :search, against: [:username, :email, :properties],using: {tsearch: {dictionary: "english"}}, ignoring: :accents    
-  
-   
-
   #CONSTANTS
   before_create :before_create_set
   after_create :after_create_set
@@ -126,14 +121,6 @@ class Account < ActiveRecord::Base
     return Constants::SUDO_011  if c.role == Constants::ROLE_C
     return Constants::SUDO_111  if c.role == Constants::ROLE_O
     FAIL
-  end
-  
-  def self.text_search(q)
-    if q.present?
-      search(q)
-    else
-      where("username IS NOT NULL")
-    end
   end
   
   def to_s

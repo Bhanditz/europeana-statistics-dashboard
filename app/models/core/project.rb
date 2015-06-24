@@ -21,13 +21,7 @@ class Core::Project < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: [:slugged, :scoped], scope: :account
   include WhoDidIt
-   
-
   self.table_name = "core_projects"
-  
-  include PgSearch
-  pg_search_scope :search, against: [:name, :properties],using: {tsearch: {dictionary: "english"}}, ignoring: :accents  
-  # project.name, project.description,
   
   #CONSTANTS
   #ATTRIBUTES
@@ -63,14 +57,6 @@ class Core::Project < ActiveRecord::Base
   
   def core_permissions
     Core::Permission.where(core_team_id: self.core_team_projects.pluck(:core_team_id).uniq)
-  end
-  
-  def self.text_search(q)
-    if q.present?
-      search(q)
-    else
-      where("name IS NOT NULL")
-    end
   end
   
   def to_s

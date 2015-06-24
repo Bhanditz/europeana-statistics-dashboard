@@ -56,7 +56,7 @@ Rails.application.routes.draw do
   #CUSTOM PUBLIC URLs --------------------------------------------------------------
 
   get "/refer", to: "static_pages#refer", as: "refer"
-  get "/open-data", to: "static_pages#open", as: "open_data"
+
   get "/roadmap", to: "static_pages#roadmap", as: "roadmap"
   get "/enterprise", to: "static_pages#enterprise", as: "enterprise"
   get "/privacy", to: "static_pages#privacy", as: "privacy"
@@ -68,14 +68,14 @@ Rails.application.routes.draw do
   get "/use-cases/data-journalism", to: "static_pages#data_journalism", as: "_use_cases_data_journalism"
   get "/use-cases/visualizations", to: "static_pages#visualizations", as: "_use_cases_visualizations"
   get "/use-cases/publish-open-data", to: "static_pages#publish_open_data", as: "_use_cases_publish_open_data"
-  get "/search/data", to: "core/data_stores#open_data", as: "search_open_data"
+
 
   #CUSTOM PUBLIC URLs --------------------------------------------------------------
   
   get 'switch_user' => 'switch_user#set_current_user'
   get 'approve/account/:id' => "accounts#change_approval"  
   get "/new", to: "core/projects#new", as: "_new_project"
-  get "/data", to: "core/data_stores#index_all", as: "_data_stores"
+
   #
   get "/:account_id/projects", to: "accounts#show", as: "_account", :defaults => { :content => "projects" }
   get "/:account_id/maps", to: "accounts#show", as: "_account_maps", :defaults => { :content => "maps" }
