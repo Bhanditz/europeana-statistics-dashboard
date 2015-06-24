@@ -40,7 +40,6 @@ class Core::Project < ActiveRecord::Base
   has_many :data_stores, foreign_key: "core_project_id"
   has_many :custom_dashboards, class_name: "Core::CustomDashboard", foreign_key: "core_project_id"
   has_many :vizs, foreign_key: "core_project_id"
-  has_many :configuration_editors, class_name: "Core::ConfigurationEditor", foreign_key: "core_project_id"
   has_many :core_team_projects, class_name: "Core::TeamProject", foreign_key: "core_project_id" #DONE
   has_many :core_teams, class_name: "Core::Team", through: :core_team_projects
   has_many :core_tokens, class_name: "Core::Token", foreign_key: "core_project_id"
@@ -114,14 +113,6 @@ class Core::Project < ActiveRecord::Base
     begin
       self.vizs.each do |core_viz|
         core_viz.destroy
-      end
-      self.configuration_editors.each do |c_editor|
-        if c_editor.cdn_published_url.present?
-          c_editor.update_attributes(marked_to_be_deleted: "true")
-          Core::S3File::DestroyWorker.perform_async("ConfigurationEditor", c_editor.id)
-        else
-          c_editor.destroy
-        end
       end
 
       self.custom_dashboards.each do |c_dashboard|

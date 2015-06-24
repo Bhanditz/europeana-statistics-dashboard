@@ -33,10 +33,6 @@
         &nbsp;
         %b= link_to "#{@vizs_count} <span class='octicon octicon-broadcast'></span> datacasts".html_safe, _account_project_vizs_path(@core_project.account, @core_project), class: "u"
       - if @sudo[1]
-        - if @can_configuration_edit and @not_first_config_editor
-          &nbsp;
-          &nbsp;
-          %b= link_to "#{@config_editors_count} configuration editors", _account_project_config_editors_path(@core_project.account, @core_project), class: "u"
         - if @can_host_custom_dashboard and @not_first_custom_dashboard
           &nbsp;
           &nbsp;
@@ -55,10 +51,6 @@
         &nbsp;
         = link_to "Data Set", _new_account_project_data_stores_path(@core_project.account, @core_project)
       - if @sudo[1]
-        - if @can_configuration_edit and !@not_first_config_editor
-          &nbsp;
-          &nbsp;
-          = link_to "Configuration Editor", new_account_core_project_configuration_editor_path(@core_project.account, @core_project)
         - if @can_host_custom_dashboard and !@not_first_custom_dashboard
           &nbsp;
           &nbsp;

@@ -54,9 +54,6 @@ Rails.application.routes.draw do
           end
         end
         resources :data_store_pulls,only: [:create,:destroy,:edit,:update]
-        resources :configuration_editors do
-          get "publish", on: :member
-        end
       end
     end
   end
@@ -112,9 +109,7 @@ Rails.application.routes.draw do
   get "/:account_id/:project_id/data/:data_id/charts/:id/embed", to: "core/vizs#embed", as: "_embed_visualization_account_project_data_store"
   #
   get "/:account_id/:project_id/charts", to: "core/vizs#index", as: "_account_project_vizs"
-  #
-  get "/:account_id/:project_id/configuration-editors", to: "core/configuration_editors#index", as: "_account_project_config_editors"
-  
+  #  
   #Social callbacks and url (Auth integrations)---------------------------
   get "/:account_id/:project_id/oauth/", to: "core/project_oauths#index", as: "oauth_account_core_project"
   get "/:account_id/:project_id/oauth/:provider", to: "core/project_oauths#create_sessions", as: "create_session_oauth_account_core_project"

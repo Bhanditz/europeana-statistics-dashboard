@@ -8,9 +8,6 @@ class Core::S3File::UploadWorker
     if object_type == "DataStore"
       obj = Core::DataStore.find(object_id)
       obj.generate_file_in_tmp(s,api_token)
-    elsif object_type == "ConfigurationEditor"
-      obj = Core::ConfigurationEditor.find(object_id)
-      obj.generate_file_in_tmp(s)
     end
     new_count = obj.cdn_published_count.blank? ? 1 : (obj.cdn_published_count.to_i + 1)
     begin

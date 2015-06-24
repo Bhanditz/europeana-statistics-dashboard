@@ -6,8 +6,6 @@ class Core::S3File::DestroyWorker
   def perform(object_type, object_id)
     if object_type == "DataStore"
       obj = Core::DataStore.find(object_id)
-    elsif object_type == "ConfigurationEditor"
-      obj = Core::ConfigurationEditor.find(object_id)
     end
     begin
       if obj.core_project.cdn_source == "s3"

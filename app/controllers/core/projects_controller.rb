@@ -25,17 +25,13 @@ class Core::ProjectsController < ApplicationController
       @not_first_viz = @vizs_count != 0
     end
     if @sudo[1]
-      if @can_configuration_edit
-        @config_editors_count = @core_project.configuration_editors.count
-        @not_first_config_editor = @config_editors_count != 0
-      end
       if @can_host_custom_dashboard
         @custom_dashboards_count = @core_project.custom_dashboards.count
         @not_first_custom_dashboard = @custom_dashboards_count != 0
       end
     end
-    @somethings_added = (@not_first_data_store or (@not_first_viz and @can_visualize_data) or (@not_first_config_editor and @can_configuration_edit) or (@not_first_custom_dashboard and @can_host_custom_dashboard))
-    @somethings_not_added = (!@not_first_data_store or (!@not_first_config_editor and @can_configuration_edit) or (!@not_first_custom_dashboard and @can_host_custom_dashboard))
+    @somethings_added = (@not_first_data_store or (@not_first_viz and @can_visualize_data) or (@not_first_config_editor and (@not_first_custom_dashboard and @can_host_custom_dashboard))
+    @somethings_not_added = (!@not_first_data_store or (!@not_first_config_editor and (!@not_first_custom_dashboard and @can_host_custom_dashboard))
     @pending_data_store_pulls = @core_project.core_data_store_pulls
     if params[:d].present? and params[:d_id].present?
       @dependent_to_destroy = params[:d]

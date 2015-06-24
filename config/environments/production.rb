@@ -59,7 +59,7 @@ Rails.application.configure do
 
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-  config.assets.precompile += ['accounts.js', 'configuration_editor.js', 'core_projects.js', 
+  config.assets.precompile += ['accounts.js', 'core_projects.js', 
                                'core_themes.js', 'data_stores.js', 'vizs.js', 'maps.js','embed.js']
   
   # Ignore bad email addresses and do not raise email delivery errors.

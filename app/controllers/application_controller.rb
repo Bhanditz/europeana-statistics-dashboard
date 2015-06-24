@@ -163,19 +163,16 @@ class ApplicationController < ActionController::Base
     if r.present?
       @can_publish_data_store         = r.can_publish_data_store == "TRUE"
       @can_visualize_data             = r.can_visualize_data == "TRUE"
-      @can_configuration_edit         = r.can_configuration_edit == "TRUE"
       @can_use_apis                   = r.can_use_apis == "TRUE"
       @can_host_custom_dashboard      = r.can_host_custom_dashboard == "TRUE"
     else
       @can_publish_data_store         = false
       @can_visualize_data             = false
-      @can_configuration_edit         = false
       @can_use_apis                   = false
       @can_host_custom_dashboard      = false
     end
     redirect_to root_url, alert: t("pd.sudo_project_owner!") if !@can_publish_data_store and controller_name == "data_stores" and action_name == "publish"
     #redirect_to root_url, alert: t("pd.sudo_project_owner!") if !@can_visualize_data and controller_name == "vizs"
-    redirect_to root_url, alert: t("pd.sudo_project_owner!") if !@can_configuration_edit and controller_name == "configuration_editors"
     redirect_to root_url, alert: t("pd.sudo_project_owner!") if !@can_use_apis and controller_name == "tokens"
     redirect_to root_url, alert: t("pd.sudo_project_owner!") if !@can_host_custom_dashboard and controller_name == "custom_dashboards"
     true

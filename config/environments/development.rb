@@ -31,7 +31,7 @@ Rails.application.configure do
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
-  config.assets.precompile += ['accounts.js', 'configuration_editor.js', 'core_projects.js', 
+  config.assets.precompile += ['accounts.js', 'core_projects.js', 
                                'core_themes.js', 'data_stores.js', 'vizs.js', 'maps.js']
 
   # Raises error for missing translations
