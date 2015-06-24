@@ -29,8 +29,8 @@ class Core::ProjectsController < ApplicationController
         @not_first_custom_dashboard = @custom_dashboards_count != 0
       end
     end
-    @somethings_added = (@not_first_data_store or (@not_first_viz and true) or (@not_first_config_editor and (@not_first_custom_dashboard and @can_host_custom_dashboard))
-    @somethings_not_added = (!@not_first_data_store or (!@not_first_config_editor and (!@not_first_custom_dashboard and @can_host_custom_dashboard))
+    @somethings_added = (@not_first_data_store or @not_first_viz or (@not_first_config_editor and (@not_first_custom_dashboard and @can_host_custom_dashboard)))
+    @somethings_not_added = (!@not_first_data_store or (!@not_first_config_editor and (!@not_first_custom_dashboard and @can_host_custom_dashboard)))
     @pending_data_store_pulls = @core_project.core_data_store_pulls
     if params[:d].present? and params[:d_id].present?
       @dependent_to_destroy = params[:d]
