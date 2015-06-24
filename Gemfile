@@ -6,7 +6,6 @@ ruby '2.2.2'
 #Base
 gem 'rails',        '4.2.1'
 gem 'pg'
-gem 'bson_ext'
 gem 'redis'
 gem 'jbuilder',     '~> 2.0' # Build JSON APIs with ease.
 gem 'unicorn'
@@ -25,7 +24,6 @@ gem "git"
 gem "switch_user"
 #gem "aws-s3", :require => "aws/s3"
 gem "jquery-fileupload-rails"
-gem "rmagick", "2.13.4"
 gem 'carrierwave'
 gem 'carrierwave_direct'
 gem 'csvlint'
@@ -48,8 +46,6 @@ gem 'uglifier',     '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 
 #external APIs
-gem 'omniauth-twitter'
-gem "omniauth-google-oauth2"
 gem "rest-client"
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer',  platforms: :ruby

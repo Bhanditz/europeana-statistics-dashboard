@@ -101,13 +101,6 @@ Rails.application.routes.draw do
   #
   get "/:account_id/:project_id/charts", to: "core/vizs#index", as: "_account_project_vizs"
   #  
-  #Social callbacks and url (Auth integrations)---------------------------
-  get "/:account_id/:project_id/oauth/", to: "core/project_oauths#index", as: "oauth_account_core_project"
-  get "/:account_id/:project_id/oauth/:provider", to: "core/project_oauths#create_sessions", as: "create_session_oauth_account_core_project"
-  get "/auth/:provider/callback", to: "core/project_oauths#callback", as: "callback_oauth_account_core_project"
-  get "/:project_id/auth/:provider/refresh_token", to: "core/project_oauths#refresh_token", as: "refresh_token_oauth_core_project"
-  delete "/:account_id/:project_id/oauth/delete/:oauth_id", to: "core/project_oauths#destroy", as: "destroy_token_oauth_account_core_project"
-
   #ROOT URL --------------------------------------------------------------
   root "static_pages#index"
 
