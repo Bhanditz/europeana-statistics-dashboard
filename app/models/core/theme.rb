@@ -4,7 +4,7 @@
 #
 #  id         :integer          not null, primary key
 #  account_id :integer
-#  name       :string(255)
+#  name       :string
 #  sort_order :integer
 #  config     :json
 #  image_url  :text

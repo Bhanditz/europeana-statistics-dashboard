@@ -2,22 +2,21 @@
 #
 # Table name: core_data_stores
 #
-#  id                     :integer          not null, primary key
-#  core_project_id        :integer
-#  name                   :string(255)
-#  slug                   :string(255)
-#  properties             :hstore
-#  created_at             :datetime
-#  updated_at             :datetime
-#  parent_id              :integer
-#  clone_parent_id        :integer
-#  table_name             :string(255)
-#  created_by             :integer
-#  updated_by             :integer
-#  genre_class            :string(255)
-#  is_verified_dictionary :boolean
-#  join_query             :json
-#  meta_description       :text
+#  id               :integer          not null, primary key
+#  core_project_id  :integer
+#  name             :string
+#  slug             :string
+#  properties       :hstore
+#  created_at       :datetime
+#  updated_at       :datetime
+#  parent_id        :integer
+#  clone_parent_id  :integer
+#  table_name       :string
+#  created_by       :integer
+#  updated_by       :integer
+#  genre_class      :string
+#  join_query       :json
+#  meta_description :text
 #
 
 class Core::DataStore < ActiveRecord::Base

@@ -3,19 +3,19 @@
 # Table name: ref_charts
 #
 #  id               :integer          not null, primary key
-#  name             :string(255)
+#  name             :string
 #  description      :text
 #  img_small        :text
-#  genre            :string(255)
+#  genre            :string
 #  map              :text
 #  api              :text
 #  created_by       :integer
 #  updated_by       :integer
-#  img_data_mapping :string(255)
-#  slug             :string(255)
+#  img_data_mapping :string
+#  slug             :string
 #  combination_code :string(6)
-#  source           :string(255)
-#  file_path        :string(255)
+#  source           :string
+#  file_path        :string
 #  sort_order       :integer
 #
 

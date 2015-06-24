@@ -5,9 +5,9 @@
 #  id              :integer          not null, primary key
 #  account_id      :integer
 #  organisation_id :integer
-#  role            :string(255)
-#  email           :string(255)
-#  status          :string(255)
+#  role            :string
+#  email           :string
+#  status          :string
 #  invited_at      :datetime
 #  created_at      :datetime
 #  updated_at      :datetime

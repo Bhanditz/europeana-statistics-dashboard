@@ -2,16 +2,16 @@
 #
 # Table name: core_session_impls
 #
-#  id               :integer          not null, primary key
-#  session_id       :string(255)
-#  account_id       :integer
-#  ip               :string(255)
-#  device           :string(255)
-#  browser          :string(255)
-#  blurb            :text
-#  created_at       :datetime
-#  updated_at       :datetime
-#  core_viz_id      :integer
+#  id          :integer          not null, primary key
+#  session_id  :string
+#  account_id  :integer
+#  ip          :string
+#  device      :string
+#  browser     :string
+#  blurb       :text
+#  created_at  :datetime
+#  updated_at  :datetime
+#  core_viz_id :integer
 #
 
 class Core::SessionImpl < ActiveRecord::Base

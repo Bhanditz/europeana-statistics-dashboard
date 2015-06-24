@@ -6,7 +6,7 @@
 #  core_project_id  :integer
 #  file_url         :text
 #  first_row_header :boolean
-#  status           :string(255)
+#  status           :string
 #  error_messages   :text
 #  created_by       :integer
 #  updated_by       :integer
