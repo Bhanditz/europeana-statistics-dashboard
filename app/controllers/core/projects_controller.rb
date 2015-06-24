@@ -49,7 +49,6 @@ class Core::ProjectsController < ApplicationController
     @core_token  = Core::Token.new
     @core_tokens = @core_project.core_tokens.where.not(name: "rumi-weblayer-api").includes(:account)
     @core_project_ref_plan = @core_project.ref_plan
-    @core_referral_gifts = @core_project.core_referral_gifts
   end
 
   def create

@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
 
-  before_action :sudo_organisation_owner!, only: [:dashboard, :edit, :update, :digital_footprint, :revoke_session, :referrals]
+  before_action :sudo_organisation_owner!, only: [:dashboard, :edit, :update, :digital_footprint, :revoke_session]
   before_action :sudo_public!, only: [:show]
   
   #------------------------------------------------------------------------------------------------------------------
@@ -42,13 +42,6 @@ class AccountsController < ApplicationController
     c = Core::Session.where(session_id: params[:s]).first
     c.destroy
     redirect_to edit_account_registration_path(current_account), notice: t("d.s")
-  end
-  
-  def referrals
-    @enable_express_tour = true
-    @organisations  = current_account.organisations
-    @core_referrals = current_account.core_referrals.includes(:friend).includes(:core_referral_gift)
-    @core_projects  = current_account.core_projects.includes(:account)
   end
   
   def digital_footprint

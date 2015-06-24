@@ -19,12 +19,6 @@ class CoreMailer < ActionMailer::Base
     mail(to: "support@pykih.com", subject: "[Rumi Signup]: #{@new_user_email} <EOM>", tag: "internal").deliver
 	end
 
-  def new_referral_account(reffered_account, new_account)
-    @reffered_account = reffered_account
-    @new_account      = new_account
-    mail(to: @reffered_account.email, subject: "#{new_account.username} referred to you", tag: "referenced-account-email").deliver
-  end
-
   def send_account_email_confirmation(core_account_email, account)
     @core_account_email = core_account_email
     @account = account

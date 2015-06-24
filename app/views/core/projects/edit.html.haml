@@ -1,6 +1,5 @@
 %script{:src => "/assets/core_projects.js"}
 %script{:src => "https://platform.twitter.com/widgets.js", :type => "text/javascript"}
--referral_url = "#{BASE_URL}/refer?r=#{current_account.referral_code}"
 - content_for :title do
   Project Profile · #{@core_project.name}
 - disabled = true
@@ -27,30 +26,7 @@
                 %br
                 -if !disabled
                   = f.button :submit, "Save"
-              
-          .panel.panel-default
-            .panel-heading
-              .panel-tile Earn extra space
-            .panel-body
-              %p Share this link with your friends to get more space.
-              %p= link_to referral_url, referral_url
-              %br
-              - if @core_referral_gifts.first.present?
-                %table.table.table-condensed
-                  %thead
-                    %tr
-                      %th Bonus Type
-                      %th Friend
-                      %th Space Earned
-                  - @core_referral_gifts.each do |gift|
-                    - refer = gift.core_refferal
-                    %tbody
-                      %tr
-                        %td Referral
-                        %td= link_to refer.email, _account_path(refer.friend)
-                        %td   
-                          %strong.green Congratulations! You've received 50 MB extra.
-      
+                    
           - if @can_use_apis
             .panel.panel-default
               .panel-heading

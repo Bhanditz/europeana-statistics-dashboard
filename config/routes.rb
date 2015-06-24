@@ -3,8 +3,7 @@ Rails.application.routes.draw do
 
   namespace :core do
     resources :admins do
-      get 'accounts', "organizations", "referrals", "dictionaries", "map_files", on: :collection
-      get "referrals/:id/approve", to: "admins#approve_referral", on: :member, as: "approve_referral"
+      get 'accounts', "organizations", "dictionaries", "map_files", on: :collection
       get "dictionaries/:id/verify",to: "admins#verify_or_unverify_dictionaries",on: :member,as: "verify_or_unverify_dictionaries"
       get "map_files/:id/verify", to: "admins#verify_or_unverify_map_files",on: :member,as: "verify_or_unverify_map_files"
     end
@@ -38,7 +37,6 @@ Rails.application.routes.draw do
       resources :map_files, only: [:create,:show,:update,:destroy] do
         get "download", on: :member
       end
-      resources :referral_gifts, only: [:update]
       resources :permissions
       resources :projects do
         get "members", on: :member
@@ -84,7 +82,6 @@ Rails.application.routes.draw do
   
   get 'switch_user' => 'switch_user#set_current_user'
   get 'approve/account/:id' => "accounts#change_approval"  
-  get "/referrals", to: "accounts#referrals", as: "_referrals"
   get "/new", to: "core/projects#new", as: "_new_project"
   get "/data", to: "core/data_stores#index_all", as: "_data_stores"
   #

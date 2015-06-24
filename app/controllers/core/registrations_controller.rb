@@ -4,12 +4,6 @@ class Core::RegistrationsController < Devise::RegistrationsController
   before_action :set_sessions, only: [:edit, :update]
   
   def new
-    if params[:r].present?
-      g = Account.where("properties -> 'referral_code' = ?", params[:r]).first
-      if g.present? 
-        @r = g.id
-      end
-    end
     super
   end
   
@@ -21,10 +15,6 @@ class Core::RegistrationsController < Devise::RegistrationsController
     super
     unless resource.id.nil?
       Core::Permission.where(email: resource.email).update_all(account_id: resource.id, status:  Constants::STATUS_A)
-      if resource.referred_by_account_id.present?
-        referred_account = Account.find(resource.referred_by_account_id)
-        CoreMailer.new_referral_account(referred_account, resource)
-      end
       if Rails.env.production?
         CoreMailer.signup_notification(resource.email)
       end

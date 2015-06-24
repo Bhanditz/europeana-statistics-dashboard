@@ -40,7 +40,7 @@ class Account < ActiveRecord::Base
   
   #ATTRIBUTES
   #ACCESSORS
-  store_accessor :properties, :bio, :gravatar_email_id, :url, :is_pseudo_account, :name, :location, :company, :image_url, :referral_code, :referred_by_account_id, :is_enterprise_organisation
+  store_accessor :properties, :bio, :gravatar_email_id, :url, :is_pseudo_account, :name, :location, :company, :image_url, :is_enterprise_organisation
   store_accessor :devis, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :confirmed_at, :current_sign_in_at, :remember_created_at
   
   #ASSOCIATIONS  
@@ -50,8 +50,6 @@ class Account < ActiveRecord::Base
   has_many :owners_u, -> {where "is_owner_team = true", role: Constants::ROLE_O}, 
                       class_name: "Core::Permission", foreign_key: :account_id
   has_many :core_tokens, class_name: "Core::Token"
-  has_many :core_referrals, class_name: "Core::Referral", foreign_key: "account_id"
-  has_many :core_referral_gift, class_name: "Core::ReferralGift" 
   has_many :core_account_emails,class_name: "Core::AccountEmail" ,foreign_key: :account_id, dependent: :destroy #DONE
   has_many :core_map_files,class_name: "Core::MapFile",foreign_key: :account_id
   
@@ -180,7 +178,6 @@ class Account < ActiveRecord::Base
     self.properties                       = {} if self.properties.blank?
     self.properties["gravatar_email_id"]  = self.email
     self.authentication_token = SecureRandom.hex(24)
-    self.referral_code = SecureRandom.hex(6)   if self.is_user_account?
     self.is_enterprise_organisation = false
     true
   end
@@ -192,9 +189,6 @@ class Account < ActiveRecord::Base
   def after_create_set
     if self.is_user_account? and (self.sign_in_count == 0 or self.sign_in_count.blank?)
       Core::Permission.create!(account_id: self.id, organisation_id: self.id, role: Constants::ROLE_O, email: self.email, status: Constants::STATUS_A, is_owner_team: true)
-      if self.referred_by_account_id.present?
-        Core::Referral.create(email: self.email, referered_id: self.id, account_id: self.referred_by_account_id, is_eligible: false)
-      end
       if self.accountable_type == "User"
         Core::AccountEmail.create(email: self.email,account_id: self.id, is_primary: true)
       end
