@@ -33,7 +33,6 @@ class Core::RegistrationsController < Devise::RegistrationsController
   private
 
   def set_sessions
-    @organisations = current_account.organisations
     @sessions = Core::SessionImpl.logged_in_from_multiple_sources(current_account.id)
     @logged_in_from_multiple_sources = @sessions.count
   end

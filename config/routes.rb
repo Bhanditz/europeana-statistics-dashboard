@@ -1,11 +1,5 @@
 require 'sidekiq/pro/web'
 Rails.application.routes.draw do
-
-  namespace :core do
-    resources :admins do
-      get 'accounts', on: :collection
-    end
-  end
   
   authenticate :account, lambda { |u| u.is_admin? } do
     mount Sidekiq::Web, at: '/workers.engine'
