@@ -10,14 +10,12 @@
       .panel-body
         %br
         = simple_form_for(@core_project, url: account_core_projects_path(@account, @core_project), method: :post, html: {class: "form-inline"}) do |f|
+          = f.input :account_id, as: :hidden, input_html: {value: current_account.id}
           %table
             %tr
-              %td= f.input :account_id, collection: [current_account.id, current_account.id], label: "Account", include_blank: false
-              %td{style: "vertical-align: bottom;"} &nbsp;&nbsp; / &nbsp;&nbsp;
               %td= f.input :name, label: "Project name", input_html: {size: 40},required: true
           .gray Great repository names are short and memorable. 
           .clearfix
-          = f.input :license, collection: ["Not specified", "Creative Commons Attribution", "Creative Commons Attribution Share-Alike", "Creative Commons Non-Commercial (Any)", "Creative Commons CCZero", "Other (Not Open)", "GNU Free Documentation License", "Open Data Commons Attribution License", "UK Open Government License (OGL)", "Other (Public Domain)", "Open Data Commons Public Domain Dedication and License (PDDL)", "Open Data Commons Open Database License (ODbL)"], :include_blank => false, selected: "Creative Commons Non-Commercial (Any)", required: true
           %br
           %br
           = f.button :submit, "Add new project", id: "new_project_submit"

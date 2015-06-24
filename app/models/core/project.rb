@@ -41,7 +41,7 @@ class Core::Project < ActiveRecord::Base
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
-  store_accessor :properties, :license, :description, :cdn_source
+  store_accessor :properties, :description
   
   #ASSOCIATIONS
   belongs_to :account
@@ -56,7 +56,6 @@ class Core::Project < ActiveRecord::Base
   #VALIDATIONS
   validates :name, presence: true, uniqueness: {scope: :account_id}
   validates :account_id, presence: true
-  validates :license, presence: true
   
   #CALLBACKS
   before_create :before_create_set
@@ -76,9 +75,7 @@ class Core::Project < ActiveRecord::Base
   
   def before_create_set
     self.properties = "{}" if self.properties.blank?
-    self.properties["license"] = "Not Specified" if self.properties["license"].blank?
     self.is_public  = true
-    self.cdn_source = "softlayer"
     true
   end
   

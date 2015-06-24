@@ -21,9 +21,6 @@
                 = f.input :name, required: true, disabled: true
                 %br
                 %br
-                = f.input :license, collection: ["Not specified", "Creative Commons Attribution", "Creative Commons Attribution Share-Alike", "Creative Commons Non-Commercial (Any)", "Creative Commons CCZero", "Other (Not Open)", "GNU Free Documentation License", "Open Data Commons Attribution License", "UK Open Government License (OGL)", "Other (Public Domain)", "Open Data Commons Public Domain Dedication and License (PDDL)", "Open Data Commons Open Database License (ODbL)"], :include_blank => false, selected: "Creative Commons Non-Commercial (Any)", required: true, disabled: disabled
-                %br
-                %br
                 -if !disabled
                   = f.button :submit, "Save"
                     
