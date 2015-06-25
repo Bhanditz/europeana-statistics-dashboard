@@ -55,6 +55,10 @@
           &nbsp;
           &nbsp;
           = link_to "Host Custom Dashboard", account_core_project_custom_dashboards_path(@core_project.account, @core_project)
+    .pull-right
+      = link_to "Datacasts", account_core_project_datacasts_path(@account, @core_project)
+      &nbsp;
+      &nbsp;
     %hr{style: "margin-top: 5px; border-top-color: lightgray;"}
     - if !@somethings_added
       .row

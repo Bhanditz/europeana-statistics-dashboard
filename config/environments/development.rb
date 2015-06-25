@@ -32,7 +32,7 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
   config.assets.precompile += ['accounts.js', 'core_projects.js', 
-                               'core_themes.js', 'data_stores.js', 'vizs.js', 'maps.js']
+                               'core_themes.js', 'data_stores.js', 'vizs.js', 'maps.js',"datacast.js"]
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

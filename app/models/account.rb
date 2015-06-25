@@ -45,7 +45,7 @@ class Account < ActiveRecord::Base
                       class_name: "Core::Permission", foreign_key: :account_id
   has_many :core_tokens, class_name: "Core::Token"
   has_many :core_account_emails,class_name: "Core::AccountEmail" ,foreign_key: :account_id, dependent: :destroy #DONE
-    
+
   def accounts
     self.accounts_u.joins(:account)
   end
@@ -59,7 +59,7 @@ class Account < ActiveRecord::Base
   # Author: Ritvvij Parrikh
     
   def core_projects
-    Core::Project.where(id: Core::Permission.where("core_permissions.account_id = ?", self.id).where(role: [Constants::ROLE_C, Constants::ROLE_O]).pluck("core_permissions.core_project_id").uniq)
+    Core::Project.where(id: Core::Permission.where(account_id: self.id).where(role: [Constants::ROLE_C, Constants::ROLE_O]).pluck(:core_project_id).uniq)
   end
     
   #VALIDATIONS

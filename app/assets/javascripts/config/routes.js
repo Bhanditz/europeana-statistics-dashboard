@@ -37,6 +37,15 @@ window.onload = function () {
         (gon.dataformat == "csv") ? Rumali.showAndEditGridPage() : Rumali.JsonDataPage();
       }
       break;
+    case "scopejs_datacasts_new":
+    case "scopejs_datacasts_create":
+      Rumali.dataCastNewPage();
+      break;
+    case "scopejs_datacasts_edit":
+    case "scopejs_datacasts_update":
+      Rumali.dataCastNewPage();
+      Rumali.initDataCastGrid();
+      break;
     default:
   }
 };
