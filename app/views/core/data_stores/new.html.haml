@@ -28,20 +28,6 @@
                 %br
                 (File with size more than 15 MB)
               %br
-        .col-sm-3
-          - if Rails.env.development? and 1 == 2
-            %a{href: merge_account_core_project_data_stores_path(@core_project.account, @core_project), class: "black"}
-              .well.s
-                %br
-                %h2.text-center.thin.black= "<b class='mega-octicon octicon-git-compare'></b>".html_safe
-                %p.text-center 
-                  %span.black 
-                    %strong Join DataSets
-                  %br
-                  %br
-                %br
-          - else
-            %a{href: merge_account_core_project_data_stores_path(@core_project.account, @core_project), class: "white"} .
       .row#data-menu{:style => "display:none"}
         .col-sm-12#upload-box
           = form_for(@data_store, url: upload_account_core_project_data_stores_path(@core_project.account, @core_project), method: "post", :html => {:multipart => true}) do |f|  

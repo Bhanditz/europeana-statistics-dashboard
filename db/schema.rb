@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150624164808) do
+ActiveRecord::Schema.define(version: 20150625062504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,27 +78,6 @@ ActiveRecord::Schema.define(version: 20150624164808) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "core_data_stores", force: :cascade do |t|
-    t.integer  "core_project_id"
-    t.string   "name"
-    t.string   "slug"
-    t.hstore   "properties"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "parent_id"
-    t.integer  "clone_parent_id"
-    t.string   "table_name"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.string   "genre_class"
-    t.json     "join_query"
-    t.text     "meta_description"
-  end
-
-  add_index "core_data_stores", ["properties"], name: "core_metadata_data_store_columns_properties", using: :gin
-  add_index "core_data_stores", ["properties"], name: "data_stores_properties", using: :gin
-  add_index "core_data_stores", ["slug"], name: "index_core_data_stores_on_slug", using: :btree
 
   create_table "core_datacasts", force: :cascade do |t|
     t.integer  "core_project_id"
@@ -207,7 +186,6 @@ ActiveRecord::Schema.define(version: 20150624164808) do
 
   create_table "core_vizs", force: :cascade do |t|
     t.integer  "core_project_id"
-    t.integer  "core_data_store_id"
     t.hstore   "properties"
     t.json     "pykquery_object"
     t.datetime "created_at"

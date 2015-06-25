@@ -27,8 +27,7 @@ Rails.application.routes.draw do
         end
         resources :tokens
         resources :data_stores do
-          post "upload", "commit_merge", on: :collection
-          get "merge", on: :collection
+          post "upload", on: :collection
           get "publish", on: :member
           resources :vizs, only: [:create, :update, :destroy] do
             put "update_only_query", on: :member
