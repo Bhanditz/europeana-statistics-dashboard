@@ -32,7 +32,7 @@ class Core::Permission < ActiveRecord::Base
   #ASSOCIATIONS
   belongs_to :account
   belongs_to :core_account_email,class_name: "Core::AccountEmail", foreign_key: "email",primary_key: "email"
-  has_many :core_projects, class_name: "Core::Project"
+  belongs_to :core_project, class_name: "Core::Project", foreign_key: "core_project_id"
   
   #VALIDATIONS
   validates :email, presence: true, format: {with: Constants::EMAIL}

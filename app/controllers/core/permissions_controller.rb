@@ -14,15 +14,15 @@ class Core::PermissionsController < ApplicationController
     @permission = Core::Permission.new(core_permission_params)
     @permission.set_account_id_if_email_found
     if @permission.save
-      CoreMailer.invite_into_project(current_account, @permission.email, @permission.core_projects.first).deliver
-      redirect_to members_account_core_project_path(@permission.account, @permission.core_projects.first)
+      CoreMailer.invite_into_project(current_account, @permission.email, @permission.core_project).deliver
+      redirect_to members_account_core_project_path(@permission.account, @permission.core_project)
     else
       redirect_to :back, alert: t("c.f") #RP_TO_IMPROVE LATER
     end
   end
   
   def destroy
-    project = @permission.core_projects.first 
+    project = @permission.core_project
     @permission.destroy
     redirect_to members_account_core_project_path(project.account, project), notice: t("d.s")
   end
