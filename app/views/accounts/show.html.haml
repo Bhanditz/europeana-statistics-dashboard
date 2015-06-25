@@ -35,27 +35,17 @@
       %br
       .panel.panel-default{"data-intro" => "Your public projects will be displayed here. You can create a project from your dashboard page", "data-position" => "bottom"}
         .panel-body
-          %div{:role => "tabpanel"}
-            / Nav tabs
-            %ul#tab-page-load.nav.nav-tabs{:role => "tablist"}
-              %li.active{:role => "presentation"}
-                %a{"aria-controls" => "project", "data-toggle" => "tab", :href => "#projects", :role => "tab", :content => "projects"} Project
-              %li{:role => "presentation"}
-                %a{"aria-controls" => "maps", "data-toggle" => "tab", :href => "#maps", :role => "tab", :content => "maps"} Maps
-            / Tab panes
-            .tab-content
-              #projects.tab-pane{:role => "tabpanel", class: params[:content] == "projects" ? "active" : ""}
-                - if @core_projects.nil?
-                  %p No public projects yet!  
-                - else
-                  - @core_projects.each do |p|
-                    .project-listing
-                      %h4
-                        = icon_lock unless p.is_public                    
-                        = link_to p.account.username, _account_path(p.account, "projects"), class: "thin"
-                        %span.thin= " / "
-                        %b= link_to p.name, _account_project_path(p.account, p)
-                      %p.gray= truncate(p.description, length: 200, omission: '...')
+          - if @core_projects.nil?
+            %p No public projects yet!  
+          - else
+            - @core_projects.each do |p|
+              .project-listing
+                %h4
+                  = icon_lock unless p.is_public                    
+                  = link_to p.account.username, _account_path(p.account, "projects"), class: "thin"
+                  %span.thin= " / "
+                  %b= link_to p.name, _account_project_path(p.account, p)
+                %p.gray= truncate(p.description, length: 200, omission: '...')
 
 
     .col-sm-2
@@ -68,15 +58,3 @@
           = @account.slug + "."
           The data belongs to 
           = @account.slug + "."
-
-
-:javascript
-
-  $('#tab-page-load a').click(function (e) {    
-    e.preventDefault();
-    var href = $(this).attr("content");
-    window.location = href;    
-    return false;
-  });
-  var params = "#{params[:content]}";
-  $('#tab-page-load a[href='+ "#"+params +']').tab('show');

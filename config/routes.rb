@@ -62,7 +62,6 @@ Rails.application.routes.draw do
 
   #
   get "/:account_id/projects", to: "accounts#show", as: "_account", :defaults => { :content => "projects" }
-  get "/:account_id/maps", to: "accounts#show", as: "_account_maps", :defaults => { :content => "maps" }
   get "/:account_id/dashboard", to: "accounts#dashboard", as: "dashboard"
   get "/:account_id/edit", to: "accounts#edit", as: "_edit_account"  
   get "/:account_id/digital-footprint", to: "accounts#digital_footprint", as: "digital_footprint"

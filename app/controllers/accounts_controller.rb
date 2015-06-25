@@ -7,9 +7,7 @@ class AccountsController < ApplicationController
   # CRUD
 
   def show
-    if params[:content] == "projects"
-      @core_projects = @account.core_projects.includes(:account).where(is_public: true)
-    end
+    @core_projects = @account.core_projects.includes(:account).where(is_public: true)
   end
 
   def edit
