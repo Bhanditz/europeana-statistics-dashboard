@@ -15,7 +15,7 @@ class Core::PermissionsController < ApplicationController
     @permission.set_account_id_if_email_found
     if @permission.save
       CoreMailer.invite_into_project(current_account, @permission.email, @permission.core_project).deliver
-      redirect_to members_account_core_project_path(@permission.account, @permission.core_project)
+      redirect_to members_account_core_project_path(@account, @permission.core_project)
     else
       redirect_to :back, alert: t("c.f") #RP_TO_IMPROVE LATER
     end
