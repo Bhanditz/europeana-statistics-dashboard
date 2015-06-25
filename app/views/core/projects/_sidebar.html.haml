@@ -1,3 +1,4 @@
 %ul.nav.nav-pills.nav-stacked{"data-intro" => "Modify your Project settings, add new collaborators and add new integrations", "data-position" => "bottom"}
   %li{class: (action_name == "edit") ? "active" : nil}= link_to "Profile", _edit_account_project_path(@core_project.account, @core_project)
   %li{class: (action_name == "members" or controller_name == "permissions") ? "active" : nil}= link_to "Collaborators", members_account_core_project_path(@core_project.account, @core_project)
+  %li{class: (action_name == "index" and controller_name == "db_connections") ? "active" : nil}= link_to "DB Connections",account_core_project_db_connections_path(@account,@core_project)

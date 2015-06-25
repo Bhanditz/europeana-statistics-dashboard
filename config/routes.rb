@@ -21,6 +21,10 @@ Rails.application.routes.draw do
         resources :custom_dashboards do
           get "pull", on: :member
         end
+        resources :db_connections, except: [:show]
+        resources :datacasts do 
+          post "preview", on: :collection
+        end
         resources :tokens
         resources :data_stores do
           post "upload", "commit_merge", on: :collection

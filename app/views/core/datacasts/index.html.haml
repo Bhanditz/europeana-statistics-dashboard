@@ -1,0 +1,33 @@
+.previous-sheet
+  %h3= show_project_name(@core_project).html_safe
+  .panel.panel-default.sheet.sub
+    .panel-body
+      %h4 
+        Data Casts
+        .pull-right
+          .dropdown
+            = link_to "Cast new data <span class='caret'></span>".html_safe, "#", id: "dLabel", type: "button", "data-toggle"=>"dropdown", "aria-haspopup"=>"true", "aria-expanded"=>"false", class: "btn btn-orange btn-sm"
+            %ul.dropdown-menu{role: "menu", "aria-labelledby"=>"dLabel"}
+              - @core_db_connections.each do |db|
+                %li= link_to db.name, new_account_core_project_datacast_path(@account, @core_project, db: db.id)
+
+      %p Lorem Epsum
+      %hr
+        %table.table.table-condensed
+          %thead
+            %tr
+              %th Name
+              %th Identifier
+              %th
+              %th
+              %th
+              
+          %tbody
+            - @core_datacasts.each do |core_datacast|
+              %tr
+                %td= core_datacast.name
+                %td= core_datacast.identifier
+                %td= link_to 'Show', account_core_project_datacast_path(@account, @core_project,  core_datacast)
+                %td= link_to 'Edit', edit_account_core_project_datacast_path(@account, @core_project,  core_datacast)
+                %td= link_to icon_del(account_core_project_datacast_path(@account, @core_project, core_datacast))
+
