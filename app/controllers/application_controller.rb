@@ -93,7 +93,7 @@ class ApplicationController < ActionController::Base
   def sudo_project_owner!
     authenticate_account!
     if @core_project.present?
-      redirect_to root_url, alert: t("pd.sudo_project_owner!")  if current_account.sudo_project_owner(@core_project.account, @core_project.id)
+      redirect_to root_url, alert: t("pd.sudo_project_owner!")  if current_account.sudo_project_owner(@core_project.id)
       @sudo = Constants::SUDO_111
     end
   end
