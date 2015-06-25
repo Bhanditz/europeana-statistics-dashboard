@@ -6,7 +6,7 @@ class Core::ProjectsController < ApplicationController
   before_action :sudo_organisation_owner!, only: [:new, :create]
   before_action :set_project, only: [:edit, :update, :destroy, :members]
   
-  #------------------------------------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------------------
   # CRUD
 
   def new
@@ -79,7 +79,7 @@ class Core::ProjectsController < ApplicationController
     end
   end
   
-  #------------------------------------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------------------
   # OTHER
   
   # LOCKING this method. Do not change. 
@@ -91,7 +91,7 @@ class Core::ProjectsController < ApplicationController
     @permissions = @core_project.core_permissions.includes(:account)
   end
     
-  #------------------------------------------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------------------------
 
   private
   

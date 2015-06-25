@@ -1,32 +1,16 @@
 class Core::DataStoresController < ApplicationController
 
-  before_action :sudo_project_member!, only: [:new, :upload, :update, :destroy, :publish, :empty_grid, :map, :append_rows, :commit_append, :merge, :commit_merge]
+  before_action :sudo_project_member!, only: [:new, :upload, :update, :destroy, :publish, :map, :append_rows, :commit_append, :merge, :commit_merge]
   before_action :sudo_public!, only: [:index, :show, :index_all, :csv]
   before_action :sudo_account!, only: [:clone]
   before_action :set_data_store, only: [:show, :edit, :update, :destroy, :csv, :publish, :clone, :map,:append_rows, :commit_append, :recalibrate_metadata, :assign_metadata, :update_assign_metadata]
-  before_action :set_token, only: [:show, :edit, :upload, :destroy, :clone, :empty_grid,:csv,:publish, :map, :merge, :commit_merge, :commit_append, :recalibrate_metadata]
+  before_action :set_token, only: [:show, :edit, :upload, :destroy, :clone,:csv,:publish, :map, :merge, :commit_merge, :commit_append, :recalibrate_metadata]
 
   #------------------------------------------------------------------------------------------------------------------
   # CRUD
 
   def index
     redirect_to _account_project_path(@core_project.account, @core_project)
-  end
-
-  def empty_grid
-    @data_store = Core::DataStore.new(name: "Untitled Grid #{rand(100).to_s}", core_project_id: @core_project.id)
-    if @data_store.save
-      grid_data = [["Alphabet Name", "Column1", "Column2", "Column3", "Column4"], ['Alpha','','','',''], ['Beta','','','',''], ['Gamma','','','',''], ['Delta','','','',''],
-                    ['Epsilon','','','',''], ['Zeta','','','',''], ['Eta','','','',''], ['Theta','','','',''], ['Iota','','','','']]
-      if Core::DataStore.create_grid(@core_project.slug, @core_project.account.slug, @data_store.slug, @alknfalkfnalkfnadlfkna, grid_data, true)
-        m = t("c.s")
-      else
-        m = "Failed to created Data Store"
-      end
-    else
-      m = t("c.f")
-    end
-    redirect_to _edit_account_project_data_store_path(@core_project.account, @core_project, @data_store), notice: m
   end
 
   def show

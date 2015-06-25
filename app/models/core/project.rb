@@ -51,7 +51,7 @@ class Core::Project < ActiveRecord::Base
 #DONE
   has_many :core_tokens, class_name: "Core::Token", foreign_key: "core_project_id"
   has_many :core_data_store_pulls, class_name: "Core::DataStorePull", foreign_key: "core_project_id", dependent: :destroy
-  has_many :core_permissions, class_name: "Core::Permission"
+  has_many :core_permissions, class_name: "Core::Permission", foreign_key: "core_project_id"
   
   #VALIDATIONS
   validates :name, presence: true, uniqueness: {scope: :account_id}
@@ -84,7 +84,7 @@ class Core::Project < ActiveRecord::Base
   # Author: Ritvvij Parrikh
   
   def after_create_set
-      Core::Permission.create(account_id: self.account_id, role: Constants::ROLE_O, email: self.account.email, status: Constants::STATUS_A, core_team_id: team.id)
+    Core::Permission.create(account_id: self.account_id, role: Constants::ROLE_O, email: self.account.email, status: Constants::STATUS_A, core_project_id: self.id)
     Core::Token.create(account_id: self.account_id, core_project_id: self.id, api_token: SecureRandom.hex(24), name: "rumi-weblayer-api")
     true
   end

@@ -39,7 +39,7 @@ class Core::DataStorePull < ActiveRecord::Base
   #FUNCTIONS
   
   def to_s
-    self.core_team.to_s
+    ""
   end
   
   def self.account_id

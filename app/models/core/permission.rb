@@ -32,7 +32,7 @@ class Core::Permission < ActiveRecord::Base
   #ASSOCIATIONS
   belongs_to :account
   belongs_to :core_account_email,class_name: "Core::AccountEmail", foreign_key: "email",primary_key: "email"
-  has_many :core_projects, class_name: "Core::Project", through: :permissions
+  has_many :core_projects, class_name: "Core::Project"
   
   #VALIDATIONS
   validates :email, presence: true, format: {with: Constants::EMAIL}
@@ -75,9 +75,6 @@ class Core::Permission < ActiveRecord::Base
     self.role = Constants::ROLE_C   if self.role.blank?
     self.status =  Constants::STATUS_A if self.status.blank?
     self.invited_at = Time.now
-    if self.core_team.present? and self.is_owner_team.blank?
-      self.is_owner_team = self.core_team.is_owner_team
-    end
     true
   end
     

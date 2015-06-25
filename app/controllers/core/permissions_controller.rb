@@ -22,10 +22,9 @@ class Core::PermissionsController < ApplicationController
   end
   
   def destroy
-
-      project = @permission.core_projects.first 
-      @permission.destroy
-      redirect_to members_account_core_project_path(project.account, project), notice: t("d.s")
+    project = @permission.core_projects.first 
+    @permission.destroy
+    redirect_to members_account_core_project_path(project.account, project), notice: t("d.s")
   end
   
   #------------------------------------------------------------------------------------------------------------------

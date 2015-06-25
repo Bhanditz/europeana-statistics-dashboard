@@ -25,7 +25,7 @@ Rails.application.routes.draw do
         resources :tokens
         resources :data_stores do
           post "upload", "commit_merge", on: :collection
-          get "empty_grid", "merge", on: :collection
+          get "merge", on: :collection
           put "commit_append", "update_assign_metadata", on: :member
           get "publish", "append_rows", "recalibrate_metadata", "assign_metadata", on: :member
           resources :vizs, only: [:create, :update, :destroy] do
