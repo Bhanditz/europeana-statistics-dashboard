@@ -28,7 +28,6 @@ Rails.application.routes.draw do
         resources :tokens
         resources :data_stores do
           post "upload", on: :collection
-          get "publish", on: :member
           resources :vizs, only: [:create, :update, :destroy] do
             put "update_only_query", on: :member
           end
@@ -69,13 +68,7 @@ Rails.application.routes.draw do
   get "/:account_id/:project_id", to: "core/projects#show", as: "_account_project"
   get "/:account_id/:project_id/edit", to: "core/projects#edit", as: "_edit_account_project"
   #
-  get "/:account_id/:project_id/data", to: "core/data_stores#index", as: "_account_project_data_stores"
   get "/:account_id/:project_id/data/new", to: "core/data_stores#new", as: "_new_account_project_data_stores"
-  get "/:account_id/:project_id/data/:data_id", to: "core/data_stores#show", as: "_account_project_data_store"
-  put "/:account_id/:project_id/data/:data_id/clone", to: "core/data_stores#clone", as: "_clone_account_project_data_store"
-  get "/:account_id/:project_id/data/:data_id/csv", to: "core/data_stores#csv", as: "_csv_account_project_data_store"
-  get "/:account_id/:project_id/data/:data_id/edit", to: "core/data_stores#edit", as: "_edit_account_project_data_store"
-  get "/:account_id/:project_id/data/:data_id/map", to: "core/data_stores#map", as: "_map_account_project_data_store"
   get "/:account_id/:project_id/data/:data_id/charts", to: "core/vizs#data_stores", as: "_visualizations_account_project_data_store"
   get "/:account_id/:project_id/data/:data_id/charts/new", to: "core/vizs#new", as: "_new_visualizations_account_project_data_store"
   get "/:account_id/:project_id/data/:data_id/charts/:id/edit", to: "core/vizs#edit", as: "_edit_visualization_account_project_data_store"

@@ -25,63 +25,16 @@
         - else
           %div{style: "color: #aa9c84; margin: 5px 0px 0px 0px;"}= best_in_place @core_project, :description, {path: account_core_project_path(@core_project.account, @core_project), type: :input, html_attrs: {style: "width:100%"}, place_holder: "Add a description"}
     %hr{style: "margin-bottom: 5px; border-top-color: lightgray;"}
-    - if @somethings_added
-      - if @not_first_data_store
-        %b= "#{@data_stores_count} data sets"
-      - if @not_first_viz
-        &nbsp;
-        &nbsp;
-        %b= link_to "#{@vizs_count} <span class='octicon octicon-broadcast'></span> datacasts".html_safe, _account_project_vizs_path(@core_project.account, @core_project), class: "u"
-      - if @sudo[1]
-        - if @can_host_custom_dashboard and @not_first_custom_dashboard
-          &nbsp;
-          &nbsp;
-          %b= link_to "#{@custom_dashboards_count} custom dashboards", account_core_project_custom_dashboards_path(@core_project.account, @core_project), class: "u"
-    - if @somethings_not_added and @sudo[1]
-      %span.gray{style: "font-size: 11px;"} 
-        - if @somethings_added
-          &nbsp; 
-          &nbsp;
-          | 
-          &nbsp; 
-          &nbsp;
-        Add the first:
-      - if !@not_first_data_store
-        &nbsp;
-        &nbsp;
-        = link_to "Data Set", _new_account_project_data_stores_path(@core_project.account, @core_project)
-      - if @sudo[1]
-        - if @can_host_custom_dashboard and !@not_first_custom_dashboard
-          &nbsp;
-          &nbsp;
-          = link_to "Host Custom Dashboard", account_core_project_custom_dashboards_path(@core_project.account, @core_project)
     .pull-right
+      = link_to "Host Custom Dashboard", account_core_project_custom_dashboards_path(@core_project.account, @core_project)
+      &nbsp;
+      &nbsp;
       = link_to "Datacasts", account_core_project_datacasts_path(@account, @core_project)
       &nbsp;
       &nbsp;
     %hr{style: "margin-top: 5px; border-top-color: lightgray;"}
-    - if !@somethings_added
-      .row
-        .col-sm-12= image_tag "new_project3.png"
-        %br
-        %br
-        %br
-        %br
-        %br
-        %br
     .row
       .col-sm-12
-        - if @account.is_pseudo_account
-          .alert.alert-warning
-            Please note this is NOT an official account of 
-            = @account.slug + ", "
-            but is a pseudo account created by Rumi to distribute unmodified copies of open data available at 
-            = @account.slug + "."
-            The data belongs to 
-            = @account.slug + "."
-          %br
-        - if @not_first_data_store
-          = render partial: "core/data_stores/index", locals: {our_actions: @data_stores}
         -if @pending_data_store_pulls.present? and current_account.present? and @sudo[1]
           %hr
           = render partial: "core/data_store_pulls/index", locals: {pending_data_store_pulls: @pending_data_store_pulls}
