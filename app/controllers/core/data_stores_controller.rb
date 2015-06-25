@@ -1,10 +1,10 @@
 class Core::DataStoresController < ApplicationController
 
-  before_action :sudo_project_member!, only: [:new, :upload, :update, :destroy, :publish, :map, :append_rows, :commit_append, :merge, :commit_merge]
+  before_action :sudo_project_member!, only: [:new, :upload, :update, :destroy, :publish, :map, :merge, :commit_merge]
   before_action :sudo_public!, only: [:index, :show, :index_all, :csv]
   before_action :sudo_account!, only: [:clone]
-  before_action :set_data_store, only: [:show, :edit, :update, :destroy, :csv, :publish, :clone, :map,:append_rows, :commit_append, :recalibrate_metadata, :assign_metadata, :update_assign_metadata]
-  before_action :set_token, only: [:show, :edit, :upload, :destroy, :clone,:csv,:publish, :map, :merge, :commit_merge, :commit_append, :recalibrate_metadata]
+  before_action :set_data_store, only: [:show, :edit, :update, :destroy, :csv, :map]
+  before_action :set_token, only: [:show, :edit, :upload, :destroy,:csv, :map, :merge, :commit_merge]
 
   #------------------------------------------------------------------------------------------------------------------
   # CRUD

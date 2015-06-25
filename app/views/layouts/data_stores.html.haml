@@ -65,7 +65,6 @@
         .row-fluid
           #bs-example-navbar-collapse-1.collapse.navbar-collapse
             %ul.nav.navbar-nav
-              %li{style: "height: 33px; margin-right: 30px;"}= link_to "Append Data", append_rows_account_core_project_data_store_path(@core_project.account, @core_project, @data_store), class: "btn btn-orange", style: "padding: 3px 10px; background: gray;", "data-toggle"=>"tooltip", "data-placement"=>"top", title: "Append many rows from another data set."
               %li#page-count{style: "height: 33px; "}
             %ul.nav.navbar-nav.pull-right
               %li#grid-count{style: "height: 33px; "}

@@ -13,8 +13,7 @@ Rails.application.routes.draw do
     get "revoke_session", on: :member
     namespace :core do
       resources :account_emails do
-        get "confirmation", on: :member
-        get "resend_confirmation", on: :member
+        get "confirmation", "resend_confirmation", on: :member
       end
       resources :permissions
       resources :projects do
@@ -26,8 +25,7 @@ Rails.application.routes.draw do
         resources :data_stores do
           post "upload", "commit_merge", on: :collection
           get "merge", on: :collection
-          put "commit_append", "update_assign_metadata", on: :member
-          get "publish", "append_rows", "recalibrate_metadata", "assign_metadata", on: :member
+          get "publish", on: :member
           resources :vizs, only: [:create, :update, :destroy] do
             put "update_only_query", on: :member
           end
@@ -63,8 +61,7 @@ Rails.application.routes.draw do
   #
   get "/:account_id/projects", to: "accounts#show", as: "_account", :defaults => { :content => "projects" }
   get "/:account_id/dashboard", to: "accounts#dashboard", as: "dashboard"
-  get "/:account_id/edit", to: "accounts#edit", as: "_edit_account"  
-  get "/:account_id/digital-footprint", to: "accounts#digital_footprint", as: "digital_footprint"
+  get "/:account_id/edit", to: "accounts#edit", as: "_edit_account"
   #
   get "/:account_id/:project_id", to: "core/projects#show", as: "_account_project"
   get "/:account_id/:project_id/edit", to: "core/projects#edit", as: "_edit_account_project"

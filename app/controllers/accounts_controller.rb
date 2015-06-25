@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
 
-  before_action :sudo_organisation_owner!, only: [:dashboard, :edit, :update, :digital_footprint, :revoke_session]
+  before_action :sudo_organisation_owner!, only: [:dashboard, :edit, :update, :revoke_session]
   before_action :sudo_public!, only: [:show]
   
   #------------------------------------------------------------------------------------------------------------------
@@ -31,9 +31,6 @@ class AccountsController < ApplicationController
     redirect_to edit_account_registration_path(current_account), notice: t("d.s")
   end
   
-  def digital_footprint
-  end
-
   def dashboard
     @core_projects   = @account.core_projects.includes(:account).page(params[:page_projects]).per(30)
     core_project_ids = @account.core_projects.pluck(:id).uniq
