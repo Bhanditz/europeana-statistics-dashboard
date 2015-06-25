@@ -48,6 +48,6 @@
                                     = permission.email
                                 %td= "Is #{permission.role}"
                                 - if ((@can_remove_owner and permission.role == Constants::ROLE_O) or permission.role == Constants::ROLE_C) and @sudo[0]
-                                  %td= icon_del(account_core_permission_path(permission.organisation, permission))
+                                  %td= icon_del(account_core_permission_path(permission.account, permission))
                   - if @permissions.count == 1
                     = image_tag "members.png"
