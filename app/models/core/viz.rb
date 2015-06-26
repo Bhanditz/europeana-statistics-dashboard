@@ -35,7 +35,6 @@ class Core::Viz < ActiveRecord::Base
   attr_accessor :dataformat
   #ASSOCIATIONS
   belongs_to :core_project, class_name: "Core::Project", foreign_key: "core_project_id"
-  belongs_to :data_store, class_name: "Core::DataStore", foreign_key: "core_data_store_id"
   belongs_to :ref_chart,class_name: "Ref::Chart",foreign_key: "ref_chart_combination_code", primary_key: "combination_code"
   has_many :views, class_name: "Core::SessionImpl",foreign_key: "core_viz_id", dependent: :destroy
 

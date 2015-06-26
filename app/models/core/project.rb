@@ -45,7 +45,6 @@ class Core::Project < ActiveRecord::Base
   
   #ASSOCIATIONS
   belongs_to :account
-  has_many :data_stores, foreign_key: "core_project_id"
   has_many :custom_dashboards, class_name: "Core::CustomDashboard", foreign_key: "core_project_id"
   has_many :vizs, foreign_key: "core_project_id"
 #DONE

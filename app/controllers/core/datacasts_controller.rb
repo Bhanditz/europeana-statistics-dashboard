@@ -84,6 +84,36 @@ class Core::DatacastsController < ApplicationController
       }
     end
   end
+  
+  def csv
+    #s = "/tmp/#{SecureRandom.hex(24)}.csv"
+    #@data_store.generate_file_in_tmp(s,@alknfalkfnalkfnadlfkna)
+    #send_data IO.read(s), :type => "application/vnd.ms-excel", :filename => "#{@data_store.slug}.csv", :stream => false
+    #File.delete(s)
+  end
+  
+  
+  def destroy
+    #is_deletable = @data_store.check_dependent_destroy?
+    #if is_deletable[:is_deletable]
+      #begin
+        #Nestful.post REST_API_ENDPOINT + "#{@account.slug}/#{@core_project.slug}/#{@data_store.slug}/grid/delete", {:token => @alknfalkfnalkfnadlfkna}, :format => :json
+        #if @data_store.cdn_published_url.present? #PUBLISH TO CDN Functionality
+          #@data_store.update_attributes(marked_to_be_deleted: "true")
+          #Core::S3File::DestroyWorker.perform_async("DataStore", @data_store.id)
+          #notice = t("d.m")
+        #else
+          #@data_store.destroy
+          #notice = t("d.s")
+        #end
+        #redirect_to _account_project_path(@core_project.account, @core_project), notice: notice
+      #rescue => e
+        #redirect_to _account_project_path(@core_project.account, @core_project), alert: e.to_s
+      #end
+    #else
+      #redirect_to _account_project_path(@core_project.account, @core_project,d: is_deletable[:dependent_to_destroy],d_id: @data_store.id)
+      #end
+  end
 
   private
   

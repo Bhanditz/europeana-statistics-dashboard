@@ -14,27 +14,6 @@ class Core::ProjectsController < ApplicationController
   end
   
   def show
-    @data_stores = @core_project.data_stores.includes(:core_project).includes(:clone_parent).includes(:account).where(parent_id: nil).page params[:page]
-    @data_stores_count = @core_project.data_stores.count
-    @not_first_data_store = @data_stores_count != 0
-    if true
-      @vizs_count = @core_project.vizs.count
-      @not_first_viz = @vizs_count != 0
-    end
-    if @sudo[1]
-      if @can_host_custom_dashboard
-        @custom_dashboards_count = @core_project.custom_dashboards.count
-        @not_first_custom_dashboard = @custom_dashboards_count != 0
-      end
-    end
-    @somethings_added = (@not_first_data_store or @not_first_viz or (@not_first_config_editor and (@not_first_custom_dashboard and @can_host_custom_dashboard)))
-    @somethings_not_added = (!@not_first_data_store or (!@not_first_config_editor and (!@not_first_custom_dashboard and @can_host_custom_dashboard)))
-    @pending_data_store_pulls = @core_project.core_data_store_pulls
-    if params[:d].present? and params[:d_id].present?
-      @dependent_to_destroy = params[:d]
-      @data_store = @core_project.data_stores.find(params[:d_id])
-      @url =  @dependent_to_destroy == "visualizations" ? _visualizations_account_project_data_store_url(@account,@core_project,@data_store) : "here,the url for maps will come"
-    end
   end
 
   def edit
