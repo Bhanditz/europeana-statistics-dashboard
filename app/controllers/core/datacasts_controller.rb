@@ -122,12 +122,7 @@ class Core::DatacastsController < ApplicationController
   end
 
   def core_datacast_params
-    params.require(:core_datacast).permit(:core_project_id, :core_db_connection_id, :name, :identifier, :properties, :created_by, :updated_by, :query, :method, :refresh_frequency, :caching_method, :error, :fingerprint, :count_of_queries, :last_execution_time, :average_execution_time, :size)
-    #  last_run_at            :datetime
-    #  last_data_changed_at   :datetime
-    #  count_of_queries       :integer
-    #  average_execution_time :float
-    #  size                   :float
+    params.require(:core_datacast).permit(:core_project_id, :core_db_connection_id, :name, :identifier, :properties, :created_by, :updated_by, :query, :method, :refresh_frequency, :error, :fingerprint, :last_execution_time, :average_execution_time, :size,:last_run_at,:last_data_changed_at, :format,:params_object,:column_properties)
   end
   
 end
