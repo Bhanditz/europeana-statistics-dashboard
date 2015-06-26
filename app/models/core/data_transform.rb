@@ -40,5 +40,24 @@ class Core::DataTransform
     return final_data
   end
 
+  def self.pg(db)
+    require 'pg'
+    connection = PG.connect(dbname: db.db_name, user: db.username, password: db.password, port: db.port, host: db.host)
+    query = "SELECT table_name as name
+             FROM information_schema.tables
+             WHERE table_schema != 'pg_catalog' AND table_schema != 'information_schema';"
+    result = connection.exec(query)
+    connection.close
+    return result
+  end
+
+  def self.get_column_types(db, table_name)
+    require 'pg'
+    connection = PG.connect(dbname: db.db_name, user: db.username, password: db.password, port: db.port, host: db.host)
+    query = "SELECT column_name, data_type from information_schema.columns where table_name='#{table_name}';"
+    result = connection.exec(query)
+    connection.close
+    return result
+  end
 
 end

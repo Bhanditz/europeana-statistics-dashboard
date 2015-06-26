@@ -19,6 +19,7 @@ class Core::DbConnectionsController < ApplicationController
   def create
     @core_db_connection = Core::DbConnection.new(core_db_connection_params)
     if @core_db_connection.save
+      Core::DbConnections::SyncWorker.perform_async(@core_db_connection.id)
       redirect_to account_core_project_db_connections_path(@account,@core_project)
     else
       @core_db_connections = @core_project.core_db_connections

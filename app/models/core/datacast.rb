@@ -13,6 +13,7 @@
 #  created_at            :datetime
 #  updated_at            :datetime
 #  params_object         :json             default({})
+#  column_properties     :json             default({})
 #
 
 class Core::Datacast < ActiveRecord::Base
@@ -38,17 +39,31 @@ class Core::Datacast < ActiveRecord::Base
 
   #CALLBACKS
   before_create :before_create_set
+  #after_create :after_create_set
   
   #SCOPES
   #CUSTOM SCOPES
   #OTHER
   #FUNCTIONS
+  def self.create_or_update_by(q,core_project_id,db_connection_id,table_name,column_properties)
+    a = where(name: table_name, core_project_id: core_project_id, core_db_connection_id: db_connection_id).first
+    if a.blank?
+      create({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, column_properties: column_properties})
+    else
+      a.update_attributes(query: q)
+    end
+    a
+  end
   #PRIVATE
   
   private
   
   def before_create_set
     self.identifier = SecureRandom.hex(33)
+    true
+  end
+
+  def after_create_set
     true
   end
 

@@ -64,4 +64,17 @@ namespace :ref do
     end
     puts "----> Done"
   end
+
+  task :create_default_db_connection => :environment do |t, args|
+    puts "----> Creating Default DB connection"
+    name = "Default Database"
+    db_name = Rails.env.production? ? "rumi" : "datastory"
+    host = Rails.env.production? ? "10.64.147.66" : "localhost"
+    port = "5432"
+    adapter = "postgresql"
+    username = Rails.env.production? ? "rumidbuser" : "developer"
+    password = Rails.env.production? ? "eimGevheurovyur" : "developer"
+    db_connection = Core::DbConnection.new({name: name, db_name: db_name, host: host, port: port,adapter: adapter, username: username, password: password})
+    db_connection.save!
+  end
 end
