@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150625062504) do
+ActiveRecord::Schema.define(version: 20150626094940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,17 @@ ActiveRecord::Schema.define(version: 20150625062504) do
     t.datetime "updated_at"
   end
 
+  create_table "core_datacast_outputs", force: :cascade do |t|
+    t.string   "datacast_identifier", null: false
+    t.integer  "core_datacast_id",    null: false
+    t.text     "output"
+    t.text     "fingerprint"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "core_datacast_outputs", ["datacast_identifier"], name: "index_core_datacast_outputs_on_datacast_identifier", unique: true, using: :btree
+
   create_table "core_datacasts", force: :cascade do |t|
     t.integer  "core_project_id"
     t.integer  "core_db_connection_id"
@@ -89,8 +100,13 @@ ActiveRecord::Schema.define(version: 20150625062504) do
     t.integer  "updated_by"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.json     "params_object",         default: {}
-    t.json     "column_properties",     default: {}
+    t.json     "params_object",          default: {}
+    t.json     "column_properties",      default: {}
+    t.datetime "last_run_at"
+    t.datetime "last_data_changed_at"
+    t.integer  "count_of_queries"
+    t.float    "average_execution_time"
+    t.float    "size"
   end
 
   create_table "core_db_connections", force: :cascade do |t|

@@ -2,18 +2,23 @@
 #
 # Table name: core_datacasts
 #
-#  id                    :integer          not null, primary key
-#  core_project_id       :integer
-#  core_db_connection_id :integer
-#  name                  :string
-#  identifier            :string
-#  properties            :hstore
-#  created_by            :integer
-#  updated_by            :integer
-#  created_at            :datetime
-#  updated_at            :datetime
-#  params_object         :json             default({})
-#  column_properties     :json             default({})
+#  id                     :integer          not null, primary key
+#  core_project_id        :integer
+#  core_db_connection_id  :integer
+#  name                   :string
+#  identifier             :string
+#  properties             :hstore
+#  created_by             :integer
+#  updated_by             :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#  params_object          :json             default({})
+#  column_properties      :json             default({})
+#  last_run_at            :datetime
+#  last_data_changed_at   :datetime
+#  count_of_queries       :integer
+#  average_execution_time :float
+#  size                   :float
 #
 
 class Core::Datacast < ActiveRecord::Base
@@ -25,7 +30,7 @@ class Core::Datacast < ActiveRecord::Base
   #CONSTANTS
   #ATTRIBUTES  
   #ACCESSORS
-  store_accessor :properties, :query, :method, :refresh_frequency, :caching_method, :error, :fingerprint, :count_of_queries, :last_execution_time, :average_execution_time, :size, :cdn_source, :cdn_published_url, :format
+  store_accessor :properties, :query, :method, :refresh_frequency, :error, :fingerprint, :format
 
   #ASSOCIATIONS
   belongs_to :core_project, class_name: "Core::Project", foreign_key: "core_project_id"
@@ -36,6 +41,7 @@ class Core::Datacast < ActiveRecord::Base
   validates :core_project_id, presence: true
   validates :core_db_connection_id, presence: true
   validates :query,presence: true
+  validates :identifier, presence: true, uniqueness: true
 
   #CALLBACKS
   before_create :before_create_set
