@@ -18,9 +18,6 @@ Rails.application.routes.draw do
       resources :permissions
       resources :projects do
         get "members", on: :member
-        resources :custom_dashboards do
-          get "pull", on: :member
-        end
         resources :db_connections, except: [:show]
         resources :datacasts do 
           post "preview", on: :collection

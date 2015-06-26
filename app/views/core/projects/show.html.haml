@@ -26,9 +26,6 @@
           %div{style: "color: #aa9c84; margin: 5px 0px 0px 0px;"}= best_in_place @core_project, :description, {path: account_core_project_path(@core_project.account, @core_project), type: :input, html_attrs: {style: "width:100%"}, place_holder: "Add a description"}
     %hr{style: "margin-bottom: 5px; border-top-color: lightgray;"}
     .pull-right
-      = link_to "Host Custom Dashboard", account_core_project_custom_dashboards_path(@core_project.account, @core_project)
-      &nbsp;
-      &nbsp;
       = link_to "Datacasts", account_core_project_datacasts_path(@account, @core_project)
       &nbsp;
       &nbsp;

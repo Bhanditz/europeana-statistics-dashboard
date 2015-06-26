@@ -131,7 +131,6 @@ class ApplicationController < ActionController::Base
   #------------------------------------------------------------------------------------------------------------------
   
   def set_ref_plan_tokens
-    @can_host_custom_dashboard      = current_account.is_admin?
     true
   end
   

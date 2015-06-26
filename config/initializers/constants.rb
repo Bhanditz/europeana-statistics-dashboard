@@ -23,11 +23,7 @@ class Constants
   
   #VERSION
   RUMI_VERSION = "1.0"
-  
-  CUSTOM_DASHBOARD_ALLOWED_FILETYPES = ["png", "jpeg", "jpg", "csv", "js", "json", "css", "html", "gif", "xml", "map", "eot", "svg", "ttf", "woff"]
-  
-  CUSTOM_DASHBOARD_ALLOWED_FILETYPES_TO_S = "IMAGES (png, jpeg, jpg, gif), DATA (csv, json, xml), FRONTEND (html, css, js), FONTS (eot, woff, ttf, map), HTML5 (svg)"
-  
+    
   #AWS--------
   AMAZON_ACCESS_KEY_ID = "AKIAJ6TV5ZTM2GRYGOWA"
   AMAZON_SECRET_ACCESS_KEY = "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"
