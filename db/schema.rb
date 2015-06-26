@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150626094940) do
+ActiveRecord::Schema.define(version: 20150626100044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,17 +54,6 @@ ActiveRecord::Schema.define(version: 20150626094940) do
     t.integer  "updated_by"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "core_custom_dashboards", force: :cascade do |t|
-    t.integer  "core_project_id"
-    t.string   "name"
-    t.hstore   "properties"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "slug"
   end
 
   create_table "core_data_store_pulls", force: :cascade do |t|
