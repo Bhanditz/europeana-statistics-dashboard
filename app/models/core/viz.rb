@@ -4,7 +4,6 @@
 #
 #  id                         :integer          not null, primary key
 #  core_project_id            :integer
-#  core_data_store_id         :integer
 #  properties                 :hstore
 #  pykquery_object            :json
 #  created_at                 :datetime

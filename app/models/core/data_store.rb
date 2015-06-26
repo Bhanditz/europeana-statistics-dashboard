@@ -6,16 +6,8 @@ class Core::DataStore
   attr_accessor :core_project_id, :name, :table_name, :account_id, :db_connection_id
 
   #ASSOCIATIONS
-  belongs_to :core_project, class_name: "Core::Project", foreign_key: "core_project_id"
-  has_one :account, through: :core_project
-  
   #VALIDATIONS
-  validates :name, presence: true
-  validates :core_project_id, presence: true
-  
   #CALLBACKS
-  before_create :before_create_set
-  
   #SCOPES
   #CUSTOM SCOPES
   #OTHER
