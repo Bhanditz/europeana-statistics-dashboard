@@ -50,7 +50,7 @@ class Core::Datacast < ActiveRecord::Base
     if a.blank?
       create({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, column_properties: column_properties})
     else
-      a.update_attributes(query: q)
+      a.update_attributes(query: q, column_properties: column_properties)
     end
     a
   end
