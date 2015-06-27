@@ -16,18 +16,24 @@ class Core::Adapters::Pg
       connection.close
       response["number_of_columns"] = data.nfields
       data = data.first(limit) unless limit.nil?
-      response["number_of_rows"] = data.count
-      response["query_output"] = format == "2darray" ? Core::DataTransform.twod_array_generate(data) 
-                               : format == "json"    ? Core::DataTransform.json_generate(data) 
-                               : format == "xml"     ? Core::DataTransform.json_generate(data, true) 
+      response["number_of_rows"] = data.count 
+      response["query_output"] = format == "2darray" ? Core::Adapter::Transform.twod_array_generate(data) 
+                               : format == "json"    ? Core::Adapter::Transform.json_generate(data) 
+                               : format == "xml"     ? Core::Adapter::Transform.json_generate(data, true) 
                                : format == "raw"     ? data
-                                                     : Core::DataTransform.csv_generate(data)
+                                                     : Core::Adapter::Transform.csv_generate(data)
       response["execute_flag"] = true
     rescue => e
       response["query_output"] = e.to_s
       response["execute_flag"] = false
     end
     return response
+  end
+  
+  def self.get_column_meta
+  end
+  
+  def self.get_output_column_meta
   end
   
 end
