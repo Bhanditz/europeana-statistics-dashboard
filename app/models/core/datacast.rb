@@ -96,6 +96,7 @@ class Core::Datacast < ActiveRecord::Base
 
   def after_create_set
     Core::DatacastOutput.create(datacast_identifier: self.identifier, core_datacast_id: self.id)
+    Core::Datacast::RunWorker.perform_async(self.id)
     true
   end
 
