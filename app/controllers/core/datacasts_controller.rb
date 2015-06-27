@@ -11,23 +11,13 @@ class Core::DatacastsController < ApplicationController
   end
 
   def new
-    @core_db_connections = @core_project.core_db_connections
+    @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
     @core_datacast = Core::Datacast.new
   end
 
   def edit
-    core_db_connection = @core_datacast.core_db_connection
-    begin
-      connection = PG.connect(dbname: core_db_connection.db_name, 
-                                  user: core_db_connection.username, 
-                                  password: core_db_connection.password, 
-                                  port: core_db_connection.port, 
-                                  host: core_db_connection.host)
-      @preview_data = Core::DataTransform.twod_array_generate(connection.exec(@core_datacast.query).first(500))
-      gon.preview_data = @preview_data
-    rescue => e
-      @preview_data = e.to_s
-    end
+    @preview_data = Core::Adapters::Db.run(@core_datacast.core_db_connection, @core_datacast.query,"2darray", 500)
+    gon.query_output = @preview_data["query_output"]
   end
 
   def create
@@ -61,22 +51,12 @@ class Core::DatacastsController < ApplicationController
   def preview
     respond_to do |format|
       format.json { 
-        begin
-          response = {}
-          query =  params["query"]
-          core_db_connection =  @core_project.core_db_connections.find(params["core_db_connection_id"])
-          connection = PG.connect(dbname: core_db_connection.db_name, 
-                                  user: core_db_connection.username, 
-                                  password: core_db_connection.password, 
-                                  port: core_db_connection.port, 
-                                  host: core_db_connection.host)
-          data = connection.exec(query).first(500)
-          response["query_output"] = Core::DataTransform.twod_array_generate(data)
-          response["execute_flag"] = true
+        query =  params["query"] || ""
+        core_db_connection = @core_project.core_db_connections.find(params["core_db_connection_id"])
+        response = Core::Adapters::Db.run(core_db_connection, query,"2darray", 500)
+        if response['execute_flag']
           render json: response
-        rescue => e
-          response["query_output"] = e.to_s
-          response["execute_flag"] = false
+        else
           render json: response, status: :unprocessable_entity
         end
       }

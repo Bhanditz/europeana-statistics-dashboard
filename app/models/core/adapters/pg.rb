@@ -8,14 +8,15 @@ class Core::Adapters::Pg
     "SELECT column_name, data_type from information_schema.columns where table_name='#{table_name}';"
   end
   
-  def self.run(db, query, format)
+  def self.run(db, query, format, limit)
     response = {}
     begin
       connection = PG.connect(dbname: db.db_name, user: db.username, password: db.password, port: db.port, host: db.host)
       data = connection.exec(query)
       connection.close
-      response["number_of_rows"] = data.ntuples
       response["number_of_columns"] = data.nfields
+      data = data.first(limit) unless limit.nil?
+      response["number_of_rows"] = data.count
       response["query_output"] = format == "2darray" ? Core::DataTransform.twod_array_generate(data) 
                                : format == "json"    ? Core::DataTransform.json_generate(data) 
                                : format == "xml"     ? Core::DataTransform.json_generate(data, true) 

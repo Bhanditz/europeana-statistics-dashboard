@@ -63,7 +63,7 @@ class Core::Datacast < ActiveRecord::Base
   end
   
   def run
-    Core::Adapters::DB.run(self.core_db_connection, self.query, self.format, "pg")
+    Core::Adapters::Db.run(self.core_db_connection, self.query, self.format)
   end
   
   #PRIVATE
