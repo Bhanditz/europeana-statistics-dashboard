@@ -5,11 +5,14 @@ class Core::DbConnections::SyncWorker
 
   def perform(core_db_connection_id)
     db = Core::DbConnection.find(core_db_connection_id)
-    db = Core::DbConnection.last
-    response = Core::DataTransform.pg(db)
+    query = Core::Adapters::DB.query_get_all_tables("pg")
+    response = Core::Adapters::DB.run(db, query, "raw", "pg")
+    response = response["query_output"]
     response.each do |table_name|
       query = "Select * from #{table_name['name']}"
-      column_with_type = Core::DataTransform.get_column_types(db, table_name['name'])
+      query_get_all_columns = Core::Adapters::DB.query_get_all_columns(table_name['name'], "pg")
+      column_with_type = Core::Adapters::DB.run(db, query_get_all_columns, "raw", "pg")
+      column_with_type = column_with_type["query_output"]
       col = {}
       column_with_type.each do |c|
         col_name, col_data_type = c["column_name"], c["data_type"]

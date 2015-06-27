@@ -63,24 +63,7 @@ class Core::Datacast < ActiveRecord::Base
   end
   
   def run
-    response = {}
-    begin
-      db = self.core_db_connection
-      connection = PG.connect(dbname: db.db_name, user: db.username, password: db.password, port: db.port, host: db.host)
-      data = connection.exec(self.query)
-      connection.close
-      response["number_of_rows"] = data.ntuples
-      response["number_of_columns"] = data.nfields
-      response["query_output"] = self.format == "2darray" ? Core::DataTransform.twod_array_generate(data) 
-                               : self.format == "json"    ? Core::DataTransform.json_generate(data) 
-                               : self.format == "xml"     ? Core::DataTransform.json_generate(data, true) 
-                                                          : Core::DataTransform.csv_generate(data)
-      response["execute_flag"] = true
-    rescue => e
-      response["query_output"] = e.to_s
-      response["execute_flag"] = false
-    end
-    return response
+    Core::Adapters::DB.run(self.core_db_connection, self.query, self.format, "pg")
   end
   
   #PRIVATE
