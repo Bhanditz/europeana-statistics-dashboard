@@ -30,11 +30,12 @@ class Core::Datacast < ActiveRecord::Base
   #CONSTANTS
   #ATTRIBUTES  
   #ACCESSORS
-  store_accessor :properties, :query, :method, :refresh_frequency, :error, :fingerprint, :format
+  store_accessor :properties, :query, :method, :refresh_frequency, :error, :fingerprint, :format, :number_of_rows, :number_of_columns
 
   #ASSOCIATIONS
   belongs_to :core_project, class_name: "Core::Project", foreign_key: "core_project_id"
   belongs_to :core_db_connection, class_name: "Core::DbConnection", foreign_key: "core_db_connection_id"
+  has_one :core_datacast_output, class_name: "Core::DatacastOutput", foreign_key: "identifier"
   
   #VALIDATIONS
   validates :name, presence: true, uniqueness: {scope: :core_project_id}
@@ -45,7 +46,7 @@ class Core::Datacast < ActiveRecord::Base
 
   #CALLBACKS
   before_create :before_create_set
-  #after_create :after_create_set
+  after_create :after_create_set
   
   #SCOPES
   #CUSTOM SCOPES
@@ -60,16 +61,41 @@ class Core::Datacast < ActiveRecord::Base
     end
     a
   end
+  
+  def run
+    response = {}
+    begin
+      db = self.core_db_connection
+      connection = PG.connect(dbname: db.db_name, user: db.username, password: db.password, port: db.port, host: db.host)
+      data = connection.exec(self.query)
+      connection.close
+      response["number_of_rows"] = data.ntuples
+      response["number_of_columns"] = data.nfields
+      response["query_output"] = self.format == "2darray" ? Core::DataTransform.twod_array_generate(data) 
+                               : self.format == "json"    ? Core::DataTransform.json_generate(data) 
+                               : self.format == "xml"     ? Core::DataTransform.json_generate(data, true) 
+                                                          : Core::DataTransform.csv_generate(data)
+      response["execute_flag"] = true
+    rescue => e
+      response["query_output"] = e.to_s
+      response["execute_flag"] = false
+    end
+    return response
+  end
+  
   #PRIVATE
   
   private
   
   def before_create_set
     self.identifier = SecureRandom.hex(33)
+    self.number_of_rows = 0
+    self.error = ""
     true
   end
 
   def after_create_set
+    Core::DatacastOutput.create(datacast_identifier: self.identifier, core_datacast_id: self.id)
     true
   end
 

@@ -46,17 +46,17 @@ class Core::DbConnection < ActiveRecord::Base
   end
   #OTHER
   #FUNCTIONS
-
+  
   def self.create_or_update(name,adapter,host,port,db_name,username,password,validate= false)
     c = Core::DbConnection.where(name: name, adapter: adapter).first
     if c.blank?
       c = Core::DbConnection.new({name: name,
-                                adapter: adapter,
-                                host: host,
-                                port: port,
-                                db_name: db_name,
-                                username: username,
-                                password: password,
+                                  adapter: adapter,
+                                  host: host,
+                                  port: port,
+                                  db_name: db_name,
+                                  username: username,
+                                  password: password,
                                 })
       c.save(validate: validate)
     else

@@ -1,5 +1,5 @@
 class Core::DataTransform
-
+  
   def self.twod_array_generate(object)
     # Convert PG::Result object to 2d array
     final_data = []
@@ -14,15 +14,15 @@ class Core::DataTransform
     return final_data
   end
 
-  def self.json_generate(object)
-    # Convert PG::Result object to JSON
+  def self.json_generate(object, dont_want_json=false)
+    # Convert PG::Result object to JSON or XML
     final_data = []
     object.each do |row|
       final_data << row
     end
-    return final_data.to_json
+    return dont_want_json ? final_data.to_xml : final_data.to_json
   end
-
+  
   def self.csv_generate(object)
     # Convert PG::Result object to CSV
     final_data = ""

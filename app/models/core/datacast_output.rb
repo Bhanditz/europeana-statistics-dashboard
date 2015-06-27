@@ -21,7 +21,7 @@ class Core::DatacastOutput < ActiveRecord::Base
   #ATTRIBUTES  
   #ACCESSORS
   #ASSOCIATIONS
-  #belongs_to :core_datacast, class_name: "Core::Datacast", foreign_key: "core_datacast_id"
+  belongs_to :core_datacast, class_name: "Core::Datacast", foreign_key: "core_datacast_id"
   
   #VALIDATIONS
   #CALLBACKS  

@@ -69,7 +69,7 @@ class Core::Viz < ActiveRecord::Base
   private
   
   def after_create_set
-    Core::Viz::DatagramWorker.perform_async(self.id)
+    #Core::Viz::DatagramWorker.perform_async(self.id)
     true
   end
 
