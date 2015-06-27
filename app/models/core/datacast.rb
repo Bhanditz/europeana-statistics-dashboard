@@ -35,7 +35,7 @@ class Core::Datacast < ActiveRecord::Base
   #ASSOCIATIONS
   belongs_to :core_project, class_name: "Core::Project", foreign_key: "core_project_id"
   belongs_to :core_db_connection, class_name: "Core::DbConnection", foreign_key: "core_db_connection_id"
-  has_one :core_datacast_output, class_name: "Core::DatacastOutput", foreign_key: "identifier"
+  has_one :core_datacast_output, class_name: "Core::DatacastOutput", foreign_key: "datacast_identifier", primary_key: "identifier"
   
   #VALIDATIONS
   validates :name, presence: true, uniqueness: {scope: :core_project_id}
@@ -88,7 +88,6 @@ class Core::Datacast < ActiveRecord::Base
   private
   
   def before_create_set
-    self.identifier = SecureRandom.hex(33)
     self.number_of_rows = 0
     self.error = ""
     true

@@ -32,10 +32,8 @@ class Core::DatacastsController < ApplicationController
 
   def create
     @core_datacast = Core::Datacast.new(core_datacast_params)
+    @core_datacast.identifier = SecureRandom.hex(33)
     if @core_datacast.save
-      # if @core_datacast.params_object.present?
-      #   Core::Datacast::QueryOutputUploadWorker.perform_async(@core_datacast.id)
-      # end
       redirect_to account_core_project_datacasts_path(@account, @core_project), notice: t('c.s')
     else
       flash.now.alert = t('c.f')
