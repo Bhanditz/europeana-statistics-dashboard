@@ -55,7 +55,7 @@ class Core::Datacast < ActiveRecord::Base
   def self.create_or_update_by(q,core_project_id,db_connection_id,table_name,column_properties)
     a = where(name: table_name, core_project_id: core_project_id, core_db_connection_id: db_connection_id).first
     if a.blank?
-      create({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, column_properties: column_properties})
+      a = create({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, column_properties: column_properties, identifier: SecureRandom.hex(33)})
     else
       a.update_attributes(query: q, column_properties: column_properties)
     end

@@ -31,9 +31,6 @@ en:
     s: "Successfully deleted."
     m: "Queued for deletion. Pls. refresh your page!"
     f: "Failed to delete."
-  clone:
-    s: "Successfully cloned."
-    f: "Failed to clone."
   pd:
     sudo_organisation_owner!: "Permission Denied. (2)"
     sudo_project_member!: "Permission Denied. (3)"
@@ -67,12 +64,8 @@ en:
   dict:
     s: "Dataset set as dictionary. Wait for admin's approval."
     c: "Dictionary converted back to dataset."
-  map_file:
-    used: "This map file has been used in map dashboards. Hence, you cannot delete it."
   dependent:
     d: "You cannot delete this data set until you delete all dependent %{dependent_to_destroy}. Click here to delete all %{dependent_to_destroy}: <a href=%{url}>%{url}</a>"
-  account_image:
-    uploading: "Image will be uploaded in a few moments"
   recalibrate_metadata:
     s: "Successfully recalibrated metadata"
     f: "Recalibrating metadata failed"
