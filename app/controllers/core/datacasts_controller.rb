@@ -5,13 +5,13 @@ class Core::DatacastsController < ApplicationController
 
   def index
     @core_datacasts = @core_project.core_datacasts
-    @core_db_connections = @core_project.core_db_connections
   end
 
   def show
   end
 
   def new
+    @core_db_connections = @core_project.core_db_connections
     @core_datacast = Core::Datacast.new
   end
 
@@ -23,7 +23,7 @@ class Core::DatacastsController < ApplicationController
                                   password: core_db_connection.password, 
                                   port: core_db_connection.port, 
                                   host: core_db_connection.host)
-      @preview_data = Core::DataTransform.twod_array_generate(connection.exec(@core_datacast.query))
+      @preview_data = Core::DataTransform.twod_array_generate(connection.exec(@core_datacast.query).first(500))
       gon.preview_data = @preview_data
     rescue => e
       @preview_data = e.to_s
@@ -72,7 +72,7 @@ class Core::DatacastsController < ApplicationController
                                   password: core_db_connection.password, 
                                   port: core_db_connection.port, 
                                   host: core_db_connection.host)
-          data = connection.exec(query)
+          data = connection.exec(query).first(500)
           response["query_output"] = Core::DataTransform.twod_array_generate(data)
           response["execute_flag"] = true
           render json: response

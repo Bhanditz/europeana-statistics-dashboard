@@ -238,3 +238,12 @@ h2.pagetitle a{
 #chart_eligibility {
   color: red;
 }
+.col-without-padding{padding:0;}
+
+body#scopejs_datacasts_new #preview_output_error {
+  color: red;
+}
+
+body#scopejs_datacasts_edit #preview_output_error {
+  color: red;
+}

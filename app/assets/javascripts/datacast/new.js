@@ -8,6 +8,7 @@ var config_data = {
   "contextMenu": false
 }
 Rumali.dataCastNewPage = function(){
+  Rumali.plugin = new Rumali.plugins();
   $("#core_datacast_preview").click(function( ) {
     var query = $("#core_datacast_query").val(),
     core_db_connection_id = $("#core_datacast_core_db_connection_id").val()
@@ -25,6 +26,7 @@ Rumali.dataCastNewPage = function(){
       data: obj,
       dataType: "json",
       success: function (data) {
+        // $("#datacast_preview_loader").hide();
         execute_flag = data.execute_flag;
         $("#preview_output_error").hide();
         $("#preview_output_grid").show();
@@ -34,12 +36,14 @@ Rumali.dataCastNewPage = function(){
         $("#core_datacast_submit").prop("disabled", false);
       },
       error: function (data, textStatus, errorThrown) {
+        // $("#datacast_preview_loader").hide();
         execute_flag = data.execute_flag;
         $("#preview_output_grid").hide();
         $("#preview_output_error").show();
         $("#preview_output_error").val(JSON.parse(data.responseText).query_output);
         $("#core_datacast_submit").addClass("grey-disabled");
         $("#core_datacast_submit").prop("disabled", true);
+
       }
     });
   });
