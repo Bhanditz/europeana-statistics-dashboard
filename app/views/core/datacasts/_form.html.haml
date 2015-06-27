@@ -1,10 +1,13 @@
 = simple_form_for(@core_datacast, url: url,method: method) do |f|
   = f.error_notification
   .form-inputs
-    = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
-    = f.input :core_db_connection_id, as: :hidden, input_html: {value: core_db_connection_id}, id: "core_db_connection_id"
-    = f.input :name
-    = f.input :query, as: :text, id: 'query', hint: "Query should be a valid SQL query. We do not support queries other than Select queries",input_html: {rows: 4}
+    .col-sm-12
+      = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
+      .col-sm-4.col-without-padding
+        = f.input :core_db_connection_id,collection: @core_db_connections, id: "core_db_connection_id", include_blank: false, input_html: {style: "width:50%"}
+      .clearfix
+      = f.input :name
+      = f.input :query, as: :text, id: 'query', hint: "Query should be a valid SQL query. We do not support queries other than Select queries",input_html: {rows: 4}
   .clearfix
   .form-actions
     %input.btn.btn-orange.grey-disabled{type: 'button', value: "Execute", id: "core_datacast_preview", disabled: true}

@@ -5,13 +5,9 @@
       %h4 
         Data Casts
         .pull-right
-          .dropdown
-            = link_to "Cast new data <span class='caret'></span>".html_safe, "#", id: "dLabel", type: "button", "data-toggle"=>"dropdown", "aria-haspopup"=>"true", "aria-expanded"=>"false", class: "btn btn-orange btn-sm"
-            %ul.dropdown-menu{role: "menu", "aria-labelledby"=>"dLabel"}
-              - @core_db_connections.each do |db|
-                %li= link_to db.name, new_account_core_project_datacast_path(@account, @core_project, db: db.id)
+          = link_to "Cast new data", new_account_core_project_datacast_path(@account, @core_project), id: "dLabel", class: "btn btn-orange btn-sm"
 
-      %p Lorem Epsum
+      %p All Datacast
       %hr
         %table.table.table-condensed
           %thead

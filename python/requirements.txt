@@ -1,6 +1,0 @@
-Scrapy v0.24.1
-pip install Scrapy
-
-PyYAML
-pip install PyYAML
-

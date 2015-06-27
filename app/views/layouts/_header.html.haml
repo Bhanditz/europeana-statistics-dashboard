@@ -1,5 +1,5 @@
 - if account_signed_in?
-  %nav.navbar.navbar-default{style: "background: transparent; margin-bottom: 0px; border-bottom: 0px;"}
+  %nav#navbar_default.navbar.navbar-default{style: "background: transparent; margin-bottom: 0px; border-bottom: 0px;"}
     .container
       .navbar-header.page-scroll
         = link_to image_tag("https://s3-ap-southeast-1.amazonaws.com/ap-southeast-1.datahub.pykih/assets/images/rumi-logo.png", style: "margin-top: 10px;"), root_url
@@ -9,7 +9,7 @@
         %li= link_to "<b class='glyphicon glyphicon-off'></b>".html_safe, destroy_account_session_path, style: "color: black;", "data-toggle"=>"tooltip", "data-placement"=>"bottom", title: "Sign Out"
 - else
   - if controller_name == "static_pages" and action_name == "index"
-    %nav.navbar.navbar-default.navbar-fixed-top
+    %nav#navbar_default.navbar.navbar-default.navbar-fixed-top
       .container-fluid
         .row-fluid
           .col-sm-12

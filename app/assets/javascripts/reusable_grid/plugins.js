@@ -3,7 +3,8 @@ Rumali.plugins = function () {
   var loadingOverlay = function () {
     var loading_overlay = document.createElement("div");
     loading_overlay.setAttribute("id", "rumali_loading_overlay");
-    document.body.appendChild(loading_overlay);
+    loading_overlay.style.display = "none";
+    document.body.insertBefore(loading_overlay,document.getElementById("navbar_default"));
     var loading_text = document.createElement("div");
     loading_text.className = "rumali-loading-text";
     loading_text.innerHTML = "Loading..";
@@ -12,7 +13,6 @@ Rumali.plugins = function () {
       loading_overlay.style.opacity = 1;
       loading_overlay.style.display = "block";
     });
-
     $(document).ajaxStop(function(pe) {
       loading_overlay.style.opacity = 0;
       setTimeout(function () {
