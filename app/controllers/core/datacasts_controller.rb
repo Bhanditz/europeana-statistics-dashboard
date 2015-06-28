@@ -1,13 +1,10 @@
 class Core::DatacastsController < ApplicationController
   
   before_action :sudo_project_member!
-  before_action :set_core_datacast, only: [:show, :edit, :update, :destroy]
+  before_action :set_core_datacast, only: [:edit, :update, :destroy]
 
   def index
     @core_datacasts = @core_project.core_datacasts
-  end
-
-  def show
   end
 
   def new

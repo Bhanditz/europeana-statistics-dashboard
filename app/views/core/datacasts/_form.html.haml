@@ -3,8 +3,11 @@
   .form-inputs
     .row
       .col-sm-2
-        = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
-        = f.input :core_db_connection_id,collection: @core_db_connections, id: "core_db_connection_id", include_blank: false, label: "Database"
+        - if @core_datacast.id.blank?
+          = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
+          = f.input :core_db_connection_id,collection: @core_db_connections, id: "core_db_connection_id", include_blank: false, label: "Database"
+        - else
+          = f.input :core_db_connection_id, selected: @core_datacast.core_db_connection.name, collection: @core_db_connections, include_blank: false, label: "Database", disabled: true
       .col-sm-7= f.input :name, label: "Query Name", hint: "https://api.rumi.io/datacast/:id"
       .col-sm-1= f.input :format, as: :select, collection: [["CSV", "csv"], ["JSON", "json"], ["XML", "xml"], ["2d Array", "2darray"]], include_blank: false, label: "Format"
       .col-sm-2= f.input :refresh_frequency, as: :select, collection: [["Never", "0"], ["every 1 min", "1"], ["every 5 min", "5"], ["every 1 day", "1440"], ["every 2 days", "2880"], ["every 1 week", "10080"]], include_blank: false, label: "Refresh" #, input_html: {style: "width: 120px !important;"}
