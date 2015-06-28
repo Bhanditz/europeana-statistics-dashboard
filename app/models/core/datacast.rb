@@ -72,6 +72,7 @@ class Core::Datacast < ActiveRecord::Base
   
   def before_create_set
     self.number_of_rows = 0
+    self.method = "get"
     self.error = ""
     true
   end

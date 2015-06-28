@@ -1,18 +1,25 @@
 = simple_form_for(@core_datacast, url: url,method: method) do |f|
   = f.error_notification
   .form-inputs
-    .col-sm-12
-      = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
-      .col-sm-4.col-without-padding
-        = f.input :core_db_connection_id,collection: @core_db_connections, id: "core_db_connection_id", include_blank: false, input_html: {style: "width:50%"}
-      .clearfix
-      = f.input :name
-      = f.input :query, as: :text, id: 'query', hint: "Query should be a valid SQL query. We do not support queries other than Select queries",input_html: {rows: 4}
-  .clearfix
-  .form-actions
-    %input.btn.btn-orange.grey-disabled{type: 'button', value: "Execute", id: "core_datacast_preview", disabled: true}
-    = f.submit "Publish", id: "core_datacast_submit", class: 'btn btn-orange', disabled: true
--preview_url = preview_account_core_project_datacasts_url(@core_project.account,@core_project)
-:javascript
-  var url  = "#{preview_url}"
-  , execute_flag = false
+    .row
+      .col-sm-2
+        = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
+        = f.input :core_db_connection_id,collection: @core_db_connections, id: "core_db_connection_id", include_blank: false, label: "Database"
+      .col-sm-10= f.input :name, label: "Query Name"
+    .row
+      .col-sm-12= f.input :query, as: :text, id: 'query', hint: "Query should be a valid SQL query. We do not support queries other than Select queries",input_html: {rows: 4}
+    .clearfix
+    .row
+      .col-sm-3
+        .form-actions
+          %input.btn.btn-orange.grey-disabled{type: 'button', value: "Execute", id: "core_datacast_preview", disabled: true}
+          = f.submit "Publish", id: "core_datacast_submit", class: 'btn btn-orange', disabled: true
+      .col-sm-1 Format:
+      .col-sm-2= f.input :format, as: :select, collection: [["CSV", "csv"], ["JSON", "json"], ["XML", "xml"], ["2d Array", "2darray"]], include_blank: false, label: false
+        
+  -preview_url = preview_account_core_project_datacasts_url(@core_project.account,@core_project)
+  :javascript
+    var url  = "#{preview_url}"
+    , execute_flag = false
+  
+= #:refresh_frequency

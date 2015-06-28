@@ -18,9 +18,10 @@ class Core::Datacast::RunWorker
           d.last_data_changed_at   = Time.now
           d.number_of_rows         = response["number_of_rows"]
           d.number_of_columns      = response["number_of_columns"]
-          d.size                   = (response["query_output"].bytesize.to_f)/1024
+          d.size                   = response["query_output"].bytesize.to_f
           d.error                  = ""
           prev.update_attributes(output: response["query_output"], fingerprint: fingerprint)
+          # Todo: Generate Column Meta
         end
       else
         d.error = response["query_output"]
@@ -36,8 +37,7 @@ class Core::Datacast::RunWorker
     d.count_of_queries = d.count_of_queries.blank? ? 1 : d.count_of_queries + 1
     d.last_run_at = Time.now
     d.save
-    #REPEAT QUERY
-    if d.refresh_frequency.present? and d.refresh_frequency > 0
+    if d.refresh_frequency.present? and d.refresh_frequency > 0                                #REPEAT QUERY
       Core::Datacast::RunWorker.perform_at((Time.now + (d.refresh_frequency * 60)), core_datacast_id)
     end
   end

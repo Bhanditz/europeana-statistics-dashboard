@@ -5,13 +5,14 @@
   %h3
     = show_project_name(@core_project).html_safe
     %span.thin= " / "
-    = link_to "Datacast", account_core_project_datacasts_path(@core_project.account, @core_project)
+    = link_to "Datacasts", account_core_project_datacasts_path(@core_project.account, @core_project), class: "thin gray"
+    %span.thin= " / "
+    New DataCast
   .panel.panel-default.sheet.sub
     .panel-body
-      %h4 Add new Datacast
-      %hr
       - url = account_core_project_datacasts_path(@core_project.account,@core_project)
       .col-sm-12
+        %br
         = render partial: "form", locals: {url: url, method: :post,core_db_connection_id: params[:db]}
         %br
       .col-sm-12
