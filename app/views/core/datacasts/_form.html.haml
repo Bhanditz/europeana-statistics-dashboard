@@ -1,22 +1,28 @@
 = simple_form_for(@core_datacast, url: url,method: method) do |f|
   = f.error_notification
   .form-inputs
-    .col-sm-12
-      = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
-      - unless @core_datacast.core_db_connection.present?
-        .col-sm-4.col-without-padding
-          = f.input :core_db_connection_id,collection: @core_db_connections, id: "core_db_connection_id", include_blank: false, input_html: {style: "width:50%"}
-      - else
-        = f.input :core_db_connection_id,as: :hidden, input_html: {value: @core_datacast.core_db_connection_id}
-      .clearfix
-      = f.input :name
-      = f.input :query, as: :text, id: 'query', hint: "Query should be a valid SQL query. We do not support queries other than Select queries",input_html: {rows: 4}, disabled: action_name == "edit"
-  .clearfix
-  .form-actions
-    %input.btn.btn-orange.grey-disabled{type: 'button', value: "Execute", id: "core_datacast_preview", disabled: true}
-    = f.submit "Publish", id: "core_datacast_submit", class: 'btn btn-orange', disabled: true
-    %input.btn.btn-orange.grey-disabled.pull-right{type: 'button', value: "Change Query", id: "change_query_text_button",style: "display:#{action_name == 'edit' ? 'block' : 'none'}"}
--preview_url = preview_account_core_project_datacasts_url(@core_project.account,@core_project)
-:javascript
-  var url  = "#{preview_url}"
-  , execute_flag = false
+    .row
+      .col-sm-2
+        - if @core_datacast.id.blank?
+          = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
+          = f.input :core_db_connection_id,collection: @core_db_connections, id: "core_db_connection_id", include_blank: false, label: "Database"
+        - else
+          = f.input :core_db_connection_id, selected: @core_datacast.core_db_connection.name, collection: @core_db_connections, include_blank: false, label: "Database", disabled: true
+      .col-sm-7= f.input :name, label: "Query Name", hint: "https://api.rumi.io/datacast/:id"
+      .col-sm-1= f.input :format, as: :select, collection: [["CSV", "csv"], ["JSON", "json"], ["XML", "xml"], ["2d Array", "2darray"]], include_blank: false, label: "Format"
+      .col-sm-2= f.input :refresh_frequency, as: :select, collection: [["Never", "0"], ["every 1 min", "1"], ["every 5 min", "5"], ["every 1 day", "1440"], ["every 2 days", "2880"], ["every 1 week", "10080"]], include_blank: false, label: "Refresh" #, input_html: {style: "width: 120px !important;"}
+    .row
+      .col-sm-12
+        = f.input :query, as: :text, id: 'query', hint: "Query should be a valid SQL query. We do not support queries other than Select queries",input_html: {rows: 4},disabled: action_name == "edit"
+    .clearfix
+    .row
+      .col-sm-3
+        .form-actions
+          %input.btn.btn-orange.grey-disabled{type: 'button', value: "Execute", id: "core_datacast_preview", disabled: true}
+          = f.submit "Publish", id: "core_datacast_submit", class: 'btn btn-orange', disabled: true
+      %input.btn.btn-orange.grey-disabled.pull-right{type: 'button', value: "Change Query", id: "change_query_text_button",style: "display:#{action_name == 'edit' ? 'block' : 'block'}"}
+          
+  -preview_url = preview_account_core_project_datacasts_url(@core_project.account,@core_project)
+  :javascript
+    var url  = "#{preview_url}"
+    , execute_flag = false

@@ -30,4 +30,10 @@ class Core::Adapters::Pg
     return response
   end
   
+  def self.get_column_meta
+  end
+  
+  def self.get_output_column_meta
+  end
+
 end

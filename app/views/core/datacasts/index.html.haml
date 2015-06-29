@@ -3,27 +3,57 @@
   .panel.panel-default.sheet.sub
     .panel-body
       %h4 
-        Data Casts
+        DataCasts
         .pull-right
-          = link_to "Cast new data", new_account_core_project_datacast_path(@account, @core_project), id: "dLabel", class: "btn btn-orange btn-sm"
-
-      %p All Datacast
+          = link_to "Create new DataCast", new_account_core_project_datacast_path(@account, @core_project), id: "dLabel", class: "btn btn-orange btn-sm"
+      %p.gray Share your data! Convert SQL queries into sharable, real-time APIs.
       %hr
         %table.table.table-condensed
           %thead
             %tr
+              %th Table
               %th Name
-              %th Identifier
+              %th
+              %th Last Run
+              %th Size
+              %th Last Modified
+              %th Kind
               %th
               %th
-              %th
-              
           %tbody
             - @core_datacasts.each do |core_datacast|
               %tr
-                %td= core_datacast.name
-                %td= core_datacast.identifier
-                %td= link_to 'Show', account_core_project_datacast_path(@account, @core_project,  core_datacast)
+                %td.hint
+                  Database
+                  %br
+                  Table
+                %td
+                  = core_datacast.name
+                  .hint= link_to truncate("https://api.rumi.io/datacasts/#{core_datacast.identifier}", length: 60, omission: "..."),  "https://api.rumi.io/datacasts/#{core_datacast.identifier}", target: "_blank"
+                  - if core_datacast.error.present?
+                    .hint{style: "color: red;"}= core_datacast.error.html_safe
+                %td= signal_datacast_status(core_datacast)
+                %td.hint
+                  - if core_datacast.last_run_at.present?
+                    = time_ago_in_words(core_datacast.last_run_at)
+                  - if core_datacast.count_of_queries.present?
+                    %br
+                    = core_datacast.count_of_queries
+                    runs
+                %td.hint
+                  = number_to_human_size(core_datacast.size.to_f.ceil)
+                  - if core_datacast.number_of_rows.present? and core_datacast.number_of_columns.present?
+                    %br
+                    = core_datacast.number_of_rows
+                    = ":"
+                    = core_datacast.number_of_columns
+                %td.hint
+                  - if core_datacast.last_data_changed_at.present?
+                    = time_ago_in_words(core_datacast.last_data_changed_at)
+                  - if core_datacast.average_execution_time.present?
+                    %br
+                    = core_datacast.average_execution_time.to_f.ceil
+                    ms (avg. time)
+                %td= core_datacast.format
                 %td= link_to 'Edit', edit_account_core_project_datacast_path(@account, @core_project,  core_datacast)
                 %td= link_to icon_del(account_core_project_datacast_path(@account, @core_project, core_datacast))
-
