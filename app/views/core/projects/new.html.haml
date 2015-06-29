@@ -1,0 +1,21 @@
+%script{:src => "/assets/core_projects.js"}
+- content_for :title do
+  New Project · #{current_account.username}
+
+.row
+  .col-sm-6.float_to_center
+    %h2.thin Create a new project
+    %p.thin Organise data files and visualisations into projects.
+    .panel.panel-default
+      .panel-body
+        %br
+        = simple_form_for(@core_project, url: account_core_projects_path(@account, @core_project), method: :post, html: {class: "form-inline"}) do |f|
+          = f.input :account_id, as: :hidden, input_html: {value: current_account.id}
+          %table
+            %tr
+              %td= f.input :name, label: "Project name", input_html: {size: 40},required: true
+          .gray Great repository names are short and memorable. 
+          .clearfix
+          %br
+          %br
+          = f.button :submit, "Add new project", id: "new_project_submit"

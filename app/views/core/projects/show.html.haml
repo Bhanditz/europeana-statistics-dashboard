@@ -1,0 +1,64 @@
+- content_for :title do
+  #{@core_project.name} · #{@account.username}
+= include_gon
+.panel.panel-default.sheet{"data-intro" => "See all your data sets in your current project here", "data-position" => "bottom"}
+  .panel-body
+    .row
+      .col-sm-12
+        %h1.pagetitle{style: "margin-bottom: 0px;"}
+          - if @core_project and !@core_project.nil?    
+            - if !@core_project.is_public
+              = icon_lock
+            = link_to @account.username, _account_path(@account), class: "thin"
+            %span.thin= " / "
+            %b= link_to @core_project.name, _account_project_path(@core_project.account, @core_project), class: "black"
+            -if @sudo[1]
+              .pull-right
+                - if @sudo[0] or @sudo[1]
+                  = link_to "Project Settings", _edit_account_project_path(@core_project.account, @core_project), style: "font-size: 0.5em; font-weight: normal; border-bottom: 1px dotted gray;", class: "black"
+                  = link_to 'Add a Data Set', _new_account_project_data_stores_path(@core_project.account, @core_project), class: "btn btn-sm btn-orange"
+        - if !@sudo[0]
+          - if @core_project.description.present?
+            %p.lead.gray{style: "border-bottom: 1px dotted gray;"}= @core_project.description
+          - else
+            %br
+        - else
+          %div{style: "color: #aa9c84; margin: 5px 0px 0px 0px;"}= best_in_place @core_project, :description, {path: account_core_project_path(@core_project.account, @core_project), type: :input, html_attrs: {style: "width:100%"}, place_holder: "Add a description"}
+    %hr{style: "margin-bottom: 5px; border-top-color: lightgray;"}
+    .pull-right
+      = link_to "Datacasts", account_core_project_datacasts_path(@account, @core_project)
+      &nbsp;
+      &nbsp;
+    %hr{style: "margin-top: 5px; border-top-color: lightgray;"}
+    .row
+      .col-sm-12
+        -if @pending_data_store_pulls.present? and current_account.present? and @sudo[1]
+          %hr
+          = render partial: "core/data_store_pulls/index", locals: {pending_data_store_pulls: @pending_data_store_pulls}
+%br
+%br
+%br
+%br
+#pubslishedModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-body
+        .row
+          .col-sm-12
+            #s3-published-url
+-if @data_store.present?
+  #dependentDestroyModal.modal{"aria-hidden" => "false", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+    .modal-dialog
+      .modal-content
+        .modal-body
+          .row
+            .col-sm-12
+              #d_destroy
+                .alert.alert-danger
+                  - if @url.present? and @dependent_to_destroy.present?
+                    %p=t("dependent.d",dependent_to_destroy: @dependent_to_destroy,url: @url).html_safe
+            
+%script{:src => "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"}
+%script{:src => "/assets/data_stores.js"}
+:javascript
+  if ($('#dependentDestroyModal').length > 0) $('#dependentDestroyModal').modal('show');

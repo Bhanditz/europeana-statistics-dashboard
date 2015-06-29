@@ -1,0 +1,19 @@
+.well
+  %h4 Data Sets being uploaded from WEB Addresses (URLs)
+  %hr
+  %table.table.table-condensed
+    %thead
+      %th URL
+      %th Status
+      %th Date Modified
+      %th
+    %tbody
+    -@pending_data_store_pulls.each do |data_store_pull|
+      %tr
+        %td
+          =link_to data_store_pull.file_url, edit_account_core_project_data_store_pull_path(data_store_pull.core_project.account,data_store_pull.core_project,data_store_pull)
+        %td= data_store_pull.status.html_safe
+        %td.hint= time_ago_in_words(data_store_pull.updated_at)
+        -if @sudo[1]
+          %td
+            = icon_del(account_core_project_data_store_pull_path(data_store_pull.core_project.account,data_store_pull.core_project,data_store_pull))

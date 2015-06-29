@@ -1,0 +1,22 @@
+= simple_form_for(@core_datacast, url: url,method: method) do |f|
+  = f.error_notification
+  .form-inputs
+    .col-sm-12
+      = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
+      - unless @core_datacast.core_db_connection.present?
+        .col-sm-4.col-without-padding
+          = f.input :core_db_connection_id,collection: @core_db_connections, id: "core_db_connection_id", include_blank: false, input_html: {style: "width:50%"}
+      - else
+        = f.input :core_db_connection_id,as: :hidden, input_html: {value: @core_datacast.core_db_connection_id}
+      .clearfix
+      = f.input :name
+      = f.input :query, as: :text, id: 'query', hint: "Query should be a valid SQL query. We do not support queries other than Select queries",input_html: {rows: 4}, disabled: action_name == "edit"
+  .clearfix
+  .form-actions
+    %input.btn.btn-orange.grey-disabled{type: 'button', value: "Execute", id: "core_datacast_preview", disabled: true}
+    = f.submit "Publish", id: "core_datacast_submit", class: 'btn btn-orange', disabled: true
+    %input.btn.btn-orange.grey-disabled.pull-right{type: 'button', value: "Change Query", id: "change_query_text_button",style: "display:#{action_name == 'edit' ? 'block' : 'none'}"}
+-preview_url = preview_account_core_project_datacasts_url(@core_project.account,@core_project)
+:javascript
+  var url  = "#{preview_url}"
+  , execute_flag = false

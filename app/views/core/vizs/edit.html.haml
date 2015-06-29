@@ -1,0 +1,63 @@
+.container-fluid
+  .row-fluid
+    =simple_form_for(@viz,url: account_core_project_data_store_viz_path(@core_project.account, @core_project,@data_store,@viz),method: :put) do |f|
+      .col-sm-3
+        -if @viz.ref_chart.name == "Grid"
+          .well.col-sm-12
+            %h4 Advanced Settings
+            .col-sm-8
+              -if current_account.is_admin?
+                = f.input :refresh_freq_in_minutes, as: :integer, hint: "How frequently do you want to refresh the data in this query?", label: "Datacast Frequency", placeholder: "in minutes"
+                = f.input :is_static, as: :select, label: "Are you using PykQuery in Interactive Mode?", include_blank: false, selected: false
+              %label Data Format
+              #data_format_toggle.btn-group{"data-toggle" => "buttons", style: "margin-top: 15px;"}
+                %label.btn.btn-xs.btn-default{class: @data_format == "csv" ? "active" : ""}
+                  %input#data_format_csv{:autocomplete => "off", :checked => @data_format == "csv", :name => "options", :type => "radio",:value => "csv"} CSV
+                %label.btn.btn-xs.btn-default{class: @data_format == "json" ? "active" : ""}
+                  %input#data_format_json{:autocomplete => "off", :name => "options",:checked => @data_format == "json",:type => "radio",:value => 'json'} JSON
+                %label.btn.btn-xs.btn-default{class: @data_format == "array" ? "active" : ""}
+                  %input#data_format_{:autocomplete => "off", :name => "options",:checked => @data_format == "array", :type => "radio",:value => 'array'} Array
+        -else
+          = render partial: "live_editor",locals: {f: f}
+      .col-sm-9
+        -if @viz.ref_chart.name == "Grid"
+          = f.input :name, id: "name",required: true
+          -if @data_format == "csv"
+            #chart_container{style: "height:500px;overflow-y:scroll"}
+          -else
+            %textarea#chart_container_display{:readonly => ""}
+          .pull-right= f.submit "Save", id: "core_viz_update", class: "btn btn-lg btn-orange"
+          :javascript
+            var config_data = #{@viz.config.to_json}, data_file = "",selector = "#chart_container",obj;map_code = "",chart_name = "Grid",initializer = "#{@viz.ref_chart.api}";
+        -else
+          #chart_container
+          .pull-right
+            = f.input :name, as: :hidden,id: "name",input_html: {value: @viz.name}
+            = f.input :config, as: :hidden, id: "config"
+            = f.submit "Save", id: "core_viz_update", class: "btn btn-lg btn-orange"
+          %br
+          %br
+          %p.thin Click on a theme to customize the chart
+          = render partial: "core/themes/core_themes"
+
+        -if true
+          %h4 Datacast EndPoint
+          %textarea#broadcast-code-display{:readonly => "",rows: 4}
+            = "curl -X POST \"#{REST_API_ENDPOINT}data/#{@viz.datagram_identifier}/q\" --data \"account_slug=#{current_account.slug}&token=<<TOKEN>>\""
+          %h4 Embed this in your website
+          %textarea#embed-code-display{:readonly => ""}
+          %br
+          %a#copy-link.pull-right.btn.btn-default{:href => "#copy"} Copy to Clipboard
+    = simple_form_for(@viz,url: update_only_query_account_core_project_data_store_viz_path(@core_project.account, @core_project,@data_store,@viz),method: :put) do |form|
+      = form.input :dataformat, as: :hidden,id: "data_format"
+      = form.submit "Submit", style: "display:none",id: "core_viz_data_format_update"
+%script{:src => "/copy-to-clipboard/jquery.zclip.min.js"}
+
+:javascript
+  function initClipBoard(selector,from) {
+    $(selector).zclip({
+      path:"/copy-to-clipboard/ZeroClipboard.swf",
+      copy:function(){return $(from).text();}
+    });
+  }
+  var embed_url = "#{_embed_visualization_account_project_data_store_url(@account,@core_project,@viz.data_store,@viz)}";

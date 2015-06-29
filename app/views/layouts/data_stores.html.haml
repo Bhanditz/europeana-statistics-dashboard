@@ -1,0 +1,72 @@
+!!!
+%html
+  %head
+    %title= (yield(:title).empty? ? "Rumi · Pykih" : yield(:title))
+    :javascript
+      var rumi_api_endpoint = "#{REST_API_ENDPOINT}";
+      var data_store_action_name = "#{action_name}";
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    %script{:src => "/assets/data_stores.js"}
+    = csrf_meta_tags
+  %body{id: "scopejs_#{controller_name}_#{action_name}", style: "background: white;"}
+    #divg1
+    #tooltip.grid_tooltip_style{style:"position: absolute; z-index:1;display:none"}
+    .container-fluid
+      .row-fluid
+        .col-sm-9{style: "margin-top: 10px;"}
+          %table
+            %tr
+              %td= link_to "<<&nbsp; Back".html_safe, _account_project_path(@core_project.account, @core_project), class: "btn btn-sm btn-default"
+              %td &nbsp;&nbsp;
+              %td
+                %h4.m0p0
+                  - if @parent.present?
+                    = clone
+                  = @data_store.name
+            %tr
+              %td
+              %td
+              %td
+                %ul.nav.navbar-nav
+                  %li.dropdown
+                    %a.black.m0p0#dLabel{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :role => "button", style: "padding: 5px 10px 5px 0px; font-size: 12px;"}
+                      File
+                    %ul.dropdown-menu{"aria-labelledby" => "dLabel", :role => "menu"}
+                      %li{style: "padding: 0px 10px;"}= link_to "Download", _csv_account_project_data_store_path(@core_project.account, @core_project, @data_store), id: "download-data",data_store_name: @data_store.name
+                      #flash_categorize_columns-save{style: "margin-top: 10px; color: black;"}  
+                        
+          #myModal.modal.in.outer_cstm_modal{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1",style: "display: none"}
+            .modal-dialog
+              .modal-conten{style: "height: 83px,margin-top: 188px,width:337px;"}
+                .modal-body
+                  .col-sm-12{:style => "text-align:center;"}
+                    #progressPercent
+                    %progress#progressBar
+          .row-fluid
+            - config = {}
+            - if notice.present?
+              - config = {text: notice, notify: "success"}
+              /.alert.alert-success= notice
+            - if alert.present?
+              - config = {text: alert, notify: "error"}
+              /.alert.alert-danger= alert
+          = yield
+          = render partial: "layouts/validations_errors", locals: {config: config}
+        .col-sm-3
+          %br
+          = link_to "Data View", _account_project_data_store_path(@data_store.account, @data_store.core_project, @data_store), class: (action_name == "edit" or action_name == "show") ? "btn btn-orange btn-sm active" : "btn btn-default btn-sm"
+          = link_to "<span class='octicon octicon-broadcast'></span> Datacast".html_safe, _visualizations_account_project_data_store_path(@account, @data_store.core_project, @data_store), class: "btn btn-default btn-sm"
+          %br
+          %br
+          %div{style: "border-left: 1px solid #CACACA; background: #F6F6F6;"}= render partial: "grid_side_bar"
+    %nav.navbar.navbar-blue.navbar-fixed-bottom{role: "navigation", style: "margin-bottom: 0px; background: #F2F2F2; border-top: 1px solid lightgray; min-height: 20px;"}
+      .container-fluid
+        .row-fluid
+          #bs-example-navbar-collapse-1.collapse.navbar-collapse
+            %ul.nav.navbar-nav
+              %li#page-count{style: "height: 33px; "}
+            %ul.nav.navbar-nav.pull-right
+              %li#grid-count{style: "height: 33px; "}
+            %ul.nav.navbar-nav.pull-right
+              %li#pyk_statistics{style: "height: 33px; margin-right:22px; "}

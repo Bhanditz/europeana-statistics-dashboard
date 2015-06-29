@@ -1,0 +1,37 @@
+.clearfix
+%table.table.table-condensed
+  %thead
+    %tr
+      %th.col-sm-8 Name
+      %th
+      %th Kind
+      %th Date Modified
+      %th
+  %tbody
+    -@vizs.each_with_index do |viz,index|
+      %tr
+        %td.borderless
+          - if viz.ref_chart.name == "Grid"
+            %span.octicon.octicon-file-binary
+          - else
+            %span.octicon.octicon-graph
+          = link_to viz.name, _visualization_account_project_data_store_path(viz.core_project.account,viz.core_project,viz.data_store,viz)
+          .hint= viz.datagram_identifier
+        - if @sudo[1]
+          %td.borderless
+            =link_to "Edit", _edit_visualization_account_project_data_store_path(viz.core_project.account,viz.core_project,viz.data_store,viz)
+            
+        %td.borderless
+          - if viz.ref_chart.name == "Grid"
+            API
+          - else
+            = viz.ref_chart.name
+        %td.borderless
+          %span.hint= time_ago_in_words(viz.updated_at) + " ago"
+        - if @sudo[1]
+          %td.borderless= icon_del(account_core_project_data_store_viz_path(viz.core_project.account,viz.core_project,viz.data_store, viz))
+          
+.clearfix
+%br
+%center
+  = paginate @vizs

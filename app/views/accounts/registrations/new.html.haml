@@ -1,0 +1,37 @@
+%head
+  %meta{:content => "Search, clean and visualize open data with Rumi DataHub! Sign up for free!", :name => "description"}
+  %meta{:content => "Pykih Software LLP", :name => "author"}
+  
+- content_for :title do
+  Sign Up · Rumi
+
+.row
+  .col-sm-6
+    %br
+    %br
+    %p.text-center{style: "font-size: 1.5em; font-weight: 200; margin-bottom: 30px;"} Search, clean, model and visualize data within minutes.      
+    = image_tag "https://s3-ap-southeast-1.amazonaws.com/ap-southeast-1.datahub.pykih/assets/images/person.png"
+  .col-sm-4
+    %br
+    %br
+    .panel.panel-default
+      .panel-body
+        %p.lead{style: "font-size: 1.3em;"} Create your personal account. You can create organisation accounts once in.
+        .col-sm-12.m0p0
+          %div{:role => "tabpanel"}
+            %ul.nav.nav-tabs{:role => "tablist", style: "margin: 0px; padding: 0px;"}
+              %li.active{:role => "presentation"}= link_to "Sign up", "#old", "aria-controls" => "settings", "data-toggle" => "tab", :role => "tab", style: "font-size: 11px;"
+            .tab-content
+              #old.tab-pane.active{:role => "tabpanel"}
+                .col-sm-9
+                  %br
+                  = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "form-horizontal"}) do |f|
+                    = f.input :username, required: true, hint: "https://rumi.io/username", autofocus: true
+                    = f.input :email, as: :email, placeholder: 'user@domain.com', required: true
+                    = f.input :password, as: :password, required: true, input_html:{style: "margin-bottom: 10px;"}
+                    - if @r.present?
+                      = f.input :referred_by_account_id, as: :hidden, input_html: {value: @r}
+                    = f.button :submit, "Sign Up", class: "btn btn-lg btn-primary"
+    = render "accounts/shared/links"
+    %br
+    %br
