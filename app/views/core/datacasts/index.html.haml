@@ -11,7 +11,7 @@
         %table.table.table-condensed
           %thead
             %tr
-              %th Table
+              %th Database
               %th Name
               %th
               %th Last Run
@@ -24,9 +24,7 @@
             - @core_datacasts.each do |core_datacast|
               %tr
                 %td.hint
-                  Database
-                  %br
-                  Table
+                  = core_datacast.core_db_connection.db_name
                 %td
                   = core_datacast.name
                   .hint= link_to truncate("https://api.rumi.io/datacasts/#{core_datacast.identifier}", length: 60, omission: "..."),  "https://api.rumi.io/datacasts/#{core_datacast.identifier}", target: "_blank"
