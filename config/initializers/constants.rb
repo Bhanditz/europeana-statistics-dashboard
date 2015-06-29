@@ -25,8 +25,8 @@ class Constants
   RUMI_VERSION = "1.0"
     
   #AWS--------
-  AMAZON_ACCESS_KEY_ID = "AKIAJ6TV5ZTM2GRYGOWA"
-  AMAZON_SECRET_ACCESS_KEY = "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"
+  AMAZON_ACCESS_KEY_ID = "AKIAJH7TS3TK2JT7DIIQ"
+  AMAZON_SECRET_ACCESS_KEY = "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"
   AMAZON_REGION = "ap-southeast-1" 
   AMAZON_S3_ENDPOINT = "https://s3-ap-southeast-1.amazonaws.com/"
   AMAZON_S3_BUCKET = Rails.env.development? ? "rumi.io.local" : "rumi.io"

@@ -36,6 +36,7 @@ Rumali.dataCastNewPage = function(){
         $("#core_datacast_submit").prop("disabled", false);
         $("#core_datacast_query").prop("disabled", true)
         $("#change_query_text_button").show();
+        $("#core_datacast_preview").prop("disabled", true);
       },
       error: function (data, textStatus, errorThrown) {
         // $("#datacast_preview_loader").hide();
@@ -47,15 +48,18 @@ Rumali.dataCastNewPage = function(){
         $("#core_datacast_submit").prop("disabled", true);
         $("#core_datacast_query").focus()
         $("#change_query_text_button").hide();
+        $("#core_datacast_preview").prop("disabled", true);
       }
     });
   });
 
   $("#core_datacast_submit").click(function () {
+    $("#core_datacast_query").prop("disabled", false)
     var query = $("#core_datacast_query").val(),
     core_db_connection_id = $("#core_datacast_core_db_connection_id").val();
     if (!validateQuery(query) || !execute_flag) {
       generate_notify({text: "Query does not match the requirements", notify:"error"});
+      $("#core_datacast_query").prop("disabled", true)
       return false;
     }
   });
@@ -72,7 +76,8 @@ Rumali.dataCastNewPage = function(){
 
   $("#change_query_text_button").on("click", function() {
     $("#core_datacast_query").prop("disabled", false);
-    $("#core_datacast_submit").prop("disabled", true)
+    $("#core_datacast_submit").prop("disabled", true);
+    $("#core_datacast_preview").prop("disabled", false);
     $(this).hide()
   });
 }

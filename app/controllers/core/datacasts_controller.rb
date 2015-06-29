@@ -23,6 +23,7 @@ class Core::DatacastsController < ApplicationController
     if @core_datacast.save
       redirect_to account_core_project_datacasts_path(@account, @core_project), notice: t('c.s')
     else
+      @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
       flash.now.alert = t('c.f')
       render "new"
     end
