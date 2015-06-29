@@ -20,7 +20,7 @@
         .form-actions
           %input.btn.btn-orange.grey-disabled{type: 'button', value: "Execute", id: "core_datacast_preview", disabled: true}
           = f.submit "Publish", id: "core_datacast_submit", class: 'btn btn-orange', disabled: true
-      %input.btn.btn-orange.grey-disabled.pull-right{type: 'button', value: "Change Query", id: "change_query_text_button",style: "display:#{action_name == 'edit' ? 'block' : 'block'}"}
+      %input.btn.btn-orange.grey-disabled.pull-right{type: 'button', value: "Change Query", id: "change_query_text_button",style: "display:#{action_name == 'edit' ? 'block' : 'none'}"}
           
   -preview_url = preview_account_core_project_datacasts_url(@core_project.account,@core_project)
   :javascript
