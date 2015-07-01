@@ -4,7 +4,7 @@ class Core::DatacastsController < ApplicationController
   before_action :set_core_datacast, only: [:edit, :update, :destroy]
 
   def index
-    @core_datacasts = @core_project.core_datacasts.includes(:core_db_connection)
+    @core_datacasts = @core_project.core_datacasts.includes(:core_db_connection).order(updated_at: :desc)
   end
 
   def new

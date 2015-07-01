@@ -35,7 +35,7 @@ class Core::Datacast < ActiveRecord::Base
   #ASSOCIATIONS
   belongs_to :core_project, class_name: "Core::Project", foreign_key: "core_project_id"
   belongs_to :core_db_connection, class_name: "Core::DbConnection", foreign_key: "core_db_connection_id"
-  has_one :core_datacast_output, class_name: "Core::DatacastOutput", foreign_key: "datacast_identifier", primary_key: "identifier"
+  has_one :core_datacast_output, class_name: "Core::DatacastOutput", foreign_key: "datacast_identifier", primary_key: "identifier", dependent: :destroy
   
   #VALIDATIONS
   validates :name, presence: true, uniqueness: {scope: :core_project_id}
@@ -52,40 +52,42 @@ class Core::Datacast < ActiveRecord::Base
   #CUSTOM SCOPES
   #OTHER
   #FUNCTIONS
-  def self.create_or_update_by(q,core_project_id,db_connection_id,table_name,column_properties)
+  def self.create_or_update_by(q,core_project_id,db_connection_id,table_name)
     a = where(name: table_name, core_project_id: core_project_id, core_db_connection_id: db_connection_id).first
     if a.blank?
-      a = create({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, column_properties: column_properties, identifier: SecureRandom.hex(33)})
+      a = create({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, identifier: SecureRandom.hex(33)})
     else
-      a.update_attributes(query: q, column_properties: column_properties)
+      a.update_attributes(query: q)
     end
     a
   end
 
   def self.get_data_distribution(data)
     #Doubt: What about JSON/HSTORE datatypes
+    # Data is a 2d array
     datatype_distribution = {}
     column_names = data.shift
     column_names.each do |col|
-      datatype_distribution[col] = {"string" => 0, "boolean" => 0, "float" => 0, "integer" => 0, "date" => 0, "blank" => 0}
+      datatype_distribution[col] = {"string": 0, "boolean": 0, "float": 0, "integer": 0, "date": 0, "blank": 0}
     end
     data.each do |row|
       row.each_with_index do |elem, index|
         datatype = Core::Datacast.get_element_datatype(elem)
-        datatype_distribution[column_names[index]][datatype] += 1
+        datatype_distribution[column_names[index]][datatype.to_sym] += 1
       end
     end
     return datatype_distribution
   end
 
-  def self.get_col_datatype(col_data_distribution)
+  def self.get_col_datatype(datatype_distribution)
     # Need to work on it. This is scrappy's code, for reference
-    # possible_types = datatype_distribution.keys
-    # return "double" if datatype_distribution.has_key?("double") and (possible_types & ["date", "boolean"]).length < 1 and datatype_distribution["double"] > 0
-    # return "integer" if datatype_distribution.has_key?("integer") and (possible_types & ["date", "boolean", "double"]).length < 1 and datatype_distribution["integer"] > 0
-    # return "boolean" if datatype_distribution.has_key?("boolean") and (possible_types & ["date", "double"]).length < 1 and datatype_distribution["boolean"] > 0
-    # return "date" if datatype_distribution.has_key?("date") and (possible_types & ["boolean", "double", "integer"]).length < 1 and datatype_distribution["date"] > 0
-    # return "string" if datatype_distribution.has_key?("string") and datatype_distribution["string"] > 0
+    datatype_distribution = datatype_distribution.reject {|k,v| v <= 0}
+    possible_types = datatype_distribution.keys
+    return "float" if datatype_distribution.has_key?("float") and (possible_types & ["date", "boolean"]).length < 1 and datatype_distribution["float"] > 0
+    return "integer" if datatype_distribution.has_key?("integer") and (possible_types & ["date", "boolean", "float"]).length < 1 and datatype_distribution["integer"] > 0
+    return "boolean" if datatype_distribution.has_key?("boolean") and (possible_types & ["date", "float"]).length < 1 and datatype_distribution["boolean"] > 0
+    return "date" if datatype_distribution.has_key?("date") and (possible_types & ["boolean", "float", "integer"]).length < 1 and datatype_distribution["date"] > 0
+    return "string" if datatype_distribution.has_key?("string") and datatype_distribution["string"] > 0
     return "string" #else - worst case scenario
   end
 
@@ -99,10 +101,11 @@ class Core::Datacast < ActiveRecord::Base
     return "string"
   end
 
-  def run
-    Core::Adapters::Db.run(self.core_db_connection, self.query, self.format)
+  def run(format=nil)
+    Core::Adapters::Db.run(self.core_db_connection, self.query, format || self.format)
   end
-  
+
+
   #PRIVATE
   
   private
@@ -111,6 +114,7 @@ class Core::Datacast < ActiveRecord::Base
     self.number_of_rows = 0
     self.method = "get"
     self.error = ""
+    self.format = "csv" if self.format.nil?
     true
   end
 

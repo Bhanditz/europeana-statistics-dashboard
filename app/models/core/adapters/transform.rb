@@ -1,4 +1,4 @@
-class Core::Adapter::Transform
+class Core::Adapters::Transform
   
   def self.twod_array_generate(object)
     # Convert PG::Result object to 2d array
