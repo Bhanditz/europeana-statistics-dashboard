@@ -2,14 +2,15 @@ class Core::DataTransform
   
   def self.twod_array_generate(object)
     # Convert PG::Result object to 2d array
+
     final_data = []
     begin
       final_data << object[0].keys
-    rescue IndexError => e
+      object.each do |row|
+        final_data << row.values
+      end
+    rescue => e
       return []
-    end
-    object.each do |row|
-      final_data << row.values
     end
     return final_data
   end

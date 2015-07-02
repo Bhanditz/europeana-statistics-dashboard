@@ -47,7 +47,7 @@ Rumali.dataCastNewPage = function(){
         $("#core_datacast_submit").addClass("grey-disabled");
         $("#core_datacast_submit").prop("disabled", true);
         $("#core_datacast_query").focus()
-        $("#change_query_text_button").hide();
+        $("#change_query_text_button").show();
         $("#core_datacast_preview").prop("disabled", true);
       }
     });
