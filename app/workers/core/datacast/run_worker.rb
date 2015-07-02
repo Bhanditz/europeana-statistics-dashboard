@@ -12,17 +12,16 @@ class Core::Datacast::RunWorker
       response = d.run("raw")                                                                       # RUN QUERY
       if response["execute_flag"]
         query_data = d.format == "2darray" ? Core::DataTransform.twod_array_generate(response["query_output"]) : d.format == "json" ? Core::DataTransform.json_generate(response["query_output"]) : d.format == "xml" ? Core::DataTransform.json_generate(response["query_output"], true) : Core::DataTransform.csv_generate(response["query_output"])
-        fingerprint = Digest::MD5.hexdigest(query_data)                        # NEW HASH
+        fingerprint = Digest::MD5.hexdigest(query_data.to_s)                        # NEW HASH
         time_taken = Time.now - start_time
         if (prev.output.present? and prev.fingerprint != fingerprint) or prev.output.blank?  # IS DATA CHANGE
           d.average_execution_time = d.average_execution_time.blank? ? time_taken : ((d.average_execution_time * d.count_of_queries) + time_taken)/d.count_of_queries
           d.last_data_changed_at   = Time.now
           d.number_of_rows         = response["number_of_rows"]
           d.number_of_columns      = response["number_of_columns"]
-          d.size                   = query_data.bytesize.to_f
+          d.size                   = query_data.to_s.bytesize.to_f
           d.error                  = ""
-          # Todo: Generate Column Meta
-          array_data = d.format == "2darray" ? query_data : Core::DataTransform.twod_array_generate(response["query_output"])
+          array_data = d.format == "2darray" ? query_data.dup : Core::DataTransform.twod_array_generate(response["query_output"])
           col = {}
           if !array_data.blank? and array_data != "0" and array_data != 0
             column_data_distribution = Core::Datacast.get_data_distribution(array_data)
@@ -53,5 +52,4 @@ class Core::Datacast::RunWorker
       Core::Datacast::RunWorker.perform_at((Time.now + (d.refresh_frequency * 60)), core_datacast_id)
     end
   end
-  
 end

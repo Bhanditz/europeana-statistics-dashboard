@@ -13,8 +13,16 @@ class Core::DatacastsController < ApplicationController
   end
 
   def edit
-    @preview_data = Core::Adapters::Db.run(@core_datacast.core_db_connection, @core_datacast.query,"2darray", 500)
-    gon.query_output = @preview_data["query_output"]
+    @preview_data = @core_datacast.core_datacast_output
+    if @core_datacast.format == "csv"
+      gon.query_output = CSV.parse(@preview_data.output)[0..500]
+    elsif ["2darray","json"].include?(@core_datacast.format)
+      gon.query_output = JSON.parse(@preview_data.output)[0..500]
+    else
+      gon.query_output = @preview_data.output
+    end
+
+    gon.format = @core_datacast.format
   end
 
   def create
@@ -31,9 +39,7 @@ class Core::DatacastsController < ApplicationController
 
   def update
     if @core_datacast.update(core_datacast_params)
-      # if @core_datacast.params_object.present?
-      #   Core::Datacast::QueryOutputUploadWorker.perform_async(@core_datacast.id)
-      # end
+      Core::Datacast::RunWorker.perform_async(@core_datacast.id)
       redirect_to account_core_project_datacasts_path(@account, @core_project), notice: t('u.s')
     else
       flash.now.alert = t('u.f')
