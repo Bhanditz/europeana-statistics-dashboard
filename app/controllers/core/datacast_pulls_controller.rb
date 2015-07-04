@@ -10,7 +10,7 @@ class Core::DatacastPullsController < ApplicationController
     @core_datacast_pull.first_row_header = params[:first_row_header].present? ? true : false
     if @core_datacast_pull.save
       Core::UploadFromFTP::UploadWorker.perform_async(@core_datacast_pull.id)
-      redirect_to _account_core_project_path(@account, @core_project), notice: t("w.s")
+      redirect_to _account_project_path(@account, @core_project), notice: t("w.s")
     else
       @core_datacast = Core::Datacast.new
       flash.now.alert = t("c.f")
@@ -20,7 +20,7 @@ class Core::DatacastPullsController < ApplicationController
 
   def destroy
     @core_datacast_pull.destroy
-    redirect_to _account_core_project_path(@account, @core_project), notice: t('d.s')
+    redirect_to _account_project_path(@account, @core_project), notice: t('d.s')
   end
 
   def update
@@ -28,7 +28,7 @@ class Core::DatacastPullsController < ApplicationController
     @core_datacast_pull.first_row_header = params[:first_row_header].present? ? true : false
     if @core_datacast_pull.save
       Core::UploadFromFTP::UploadWorker.perform_async(@core_datacast_pull.id)
-      redirect_to _account_core_project_path(@account, @core_project), notice: t("w.s")
+      redirect_to _account_project_path(@account, @core_project), notice: t("w.s")
     else
       render :edit
     end

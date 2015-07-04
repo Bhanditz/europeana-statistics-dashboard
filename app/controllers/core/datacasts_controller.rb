@@ -6,6 +6,7 @@ class Core::DatacastsController < ApplicationController
 
   def new
     @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
+    @core_datacast = Core::Datacast.new
   end
 
   def file
@@ -42,7 +43,7 @@ class Core::DatacastsController < ApplicationController
   def update
     if @core_datacast.update(core_datacast_params)
       Core::Datacast::RunWorker.perform_async(@core_datacast.id)
-      redirect_to _account_core_project_path(@account, @core_project), notice: t('u.s')
+      redirect_to _account_project_path(@account, @core_project), notice: t('u.s')
     else
       flash.now.alert = t('u.f')
       render "edit"
@@ -51,7 +52,7 @@ class Core::DatacastsController < ApplicationController
 
   def destroy
     @core_datacast.destroy
-    redirect_to _account_core_project_path(@account, @core_project)
+    redirect_to _account_project_path(@account, @core_project)
   end
 
   def preview
@@ -83,9 +84,9 @@ class Core::DatacastsController < ApplicationController
         Nestful.post REST_API_ENDPOINT + "#{@account.slug}/#{@core_project.slug}/#{@core_datacast.slug}/grid/delete", {:token => @alknfalkfnalkfnadlfkna}, :format => :json
       end
       @core_datacast.destroy
-      redirect_to _account_core_project_path(@account, @core_project), notice: notice
+      redirect_to _account_project_path(@account, @core_project), notice: notice
     rescue => e
-      redirect_to _account_core_project_path(@account, @core_project), alert: e.to_s
+      redirect_to _account_project_path(@account, @core_project), alert: e.to_s
     end
   end
 
@@ -104,7 +105,7 @@ class Core::DatacastsController < ApplicationController
       end
       if @core_datacast
         Core::Datacast::RunWorker.perform_async(@core_datacast.id)
-        redirect_to _account_core_project_path(@account, @core_project), notice: t('c.s')
+        redirect_to _account_project_path(@account, @core_project), notice: t('c.s')
       else
         @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
         @core_datacast = Core::Datacast.new
