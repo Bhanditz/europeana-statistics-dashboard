@@ -42,7 +42,7 @@ class Core::Datacast < ActiveRecord::Base
   has_one :core_datacast_output, class_name: "Core::DatacastOutput", foreign_key: "datacast_identifier", primary_key: "identifier", dependent: :destroy
   
   #VALIDATIONS
-  validates :name, presence: true, uniqueness: {scope: :core_project_id}
+  validates :name, presence: true
   validates :core_project_id, presence: true
   validates :core_db_connection_id, presence: true
   validates :query,presence: true

@@ -14,7 +14,7 @@ class Core::Datacast::RunWorker
         query_data = d.format == "2darray" ? Core::DataTransform.twod_array_generate(response["query_output"]) : d.format == "json" ? Core::DataTransform.json_generate(response["query_output"]) : d.format == "xml" ? Core::DataTransform.json_generate(response["query_output"], true) : Core::DataTransform.csv_generate(response["query_output"])
         fingerprint = Digest::MD5.hexdigest(query_data.to_s)                        # NEW HASH
         time_taken = Time.now - start_time
-        if (prev.output.present? and prev.fingerprint != fingerprint) or prev.output.blank?  # IS DATA CHANGE
+        if (prev.output.present? and prev.fingerprint != fingerprint) or prev.output.blank? or d.column_properties == {} # IS DATA CHANGE
           d.average_execution_time = d.average_execution_time.blank? ? time_taken : ((d.average_execution_time * d.count_of_queries) + time_taken)/d.count_of_queries
           d.last_data_changed_at   = Time.now
           d.number_of_rows         = response["number_of_rows"]
