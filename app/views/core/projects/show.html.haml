@@ -16,7 +16,8 @@
               .pull-right
                 - if @sudo[0] or @sudo[1]
                   = link_to "Project Settings", _edit_account_project_path(@core_project.account, @core_project), style: "font-size: 0.5em; font-weight: normal; border-bottom: 1px dotted gray;", class: "black"
-                  = link_to 'Add a Data Set', _new_account_project_data_stores_path(@core_project.account, @core_project), class: "btn btn-sm btn-orange"
+                  = link_to 'Upload datacast', file_account_core_project_datacasts_path(@core_project.account, @core_project), class: "btn btn-sm btn-orange"
+                  = link_to "Query datacast", new_account_core_project_datacast_path(@account, @core_project), id: "dLabel", class: "btn btn-orange btn-sm"
         - if !@sudo[0]
           - if @core_project.description.present?
             %p.lead.gray{style: "border-bottom: 1px dotted gray;"}= @core_project.description
@@ -25,40 +26,56 @@
         - else
           %div{style: "color: #aa9c84; margin: 5px 0px 0px 0px;"}= best_in_place @core_project, :description, {path: account_core_project_path(@core_project.account, @core_project), type: :input, html_attrs: {style: "width:100%"}, place_holder: "Add a description"}
     %hr{style: "margin-bottom: 5px; border-top-color: lightgray;"}
-    .pull-right
-      = link_to "Datacasts", account_core_project_datacasts_path(@account, @core_project)
-      &nbsp;
-      &nbsp;
+    %table.table.table-condensed
+      %thead
+        %tr
+          %th Database
+          %th Name
+          %th
+          %th Last Run
+          %th Size
+          %th Last Modified
+          %th Kind
+          %th
+          %th
+      %tbody
+        - @core_datacasts.each do |core_datacast|
+          %tr
+            %td.hint
+              = core_datacast.core_db_connection.db_name
+            %td
+              = core_datacast.name
+              .hint= link_to truncate("https://api.rumi.io/datacasts/#{core_datacast.identifier}", length: 60, omission: "..."),  "https://api.rumi.io/datacasts/#{core_datacast.identifier}", target: "_blank"
+              - if core_datacast.error.present?
+                .hint{style: "color: red;"}= core_datacast.error.html_safe
+            %td= signal_datacast_status(core_datacast)
+            %td.hint
+              - if core_datacast.last_run_at.present?
+                = time_ago_in_words(core_datacast.last_run_at)
+              - if core_datacast.count_of_queries.present?
+                %br
+                = core_datacast.count_of_queries
+                runs
+            %td.hint
+              = number_to_human_size(core_datacast.size.to_f.ceil)
+              - if core_datacast.number_of_rows.present? and core_datacast.number_of_columns.present?
+                %br
+                = core_datacast.number_of_rows
+                = ":"
+                = core_datacast.number_of_columns
+            %td.hint
+              - if core_datacast.last_data_changed_at.present?
+                = time_ago_in_words(core_datacast.last_data_changed_at)
+              - if core_datacast.average_execution_time.present?
+                %br
+                = core_datacast.average_execution_time.to_f.ceil
+                ms (avg. time)
+            %td= core_datacast.format
+            %td= link_to 'Edit', edit_account_core_project_datacast_path(@account, @core_project,  core_datacast)
+            %td= link_to icon_del(account_core_project_datacast_path(@account, @core_project, core_datacast))
     %hr{style: "margin-top: 5px; border-top-color: lightgray;"}
     .row
       .col-sm-12
-        -if @pending_data_store_pulls.present? and current_account.present? and @sudo[1]
+        -if @pending_datacast_pulls.present? and current_account.present? and @sudo[1]
           %hr
-          = render partial: "core/data_store_pulls/index", locals: {pending_data_store_pulls: @pending_data_store_pulls}
-%br
-%br
-%br
-%br
-#pubslishedModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-body
-        .row
-          .col-sm-12
-            #s3-published-url
--if @data_store.present?
-  #dependentDestroyModal.modal{"aria-hidden" => "false", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
-    .modal-dialog
-      .modal-content
-        .modal-body
-          .row
-            .col-sm-12
-              #d_destroy
-                .alert.alert-danger
-                  - if @url.present? and @dependent_to_destroy.present?
-                    %p=t("dependent.d",dependent_to_destroy: @dependent_to_destroy,url: @url).html_safe
-            
-%script{:src => "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"}
-%script{:src => "/assets/data_stores.js"}
-:javascript
-  if ($('#dependentDestroyModal').length > 0) $('#dependentDestroyModal').modal('show');
+          = render partial: "core/datacast_pulls/index", locals: {pending_datacast_pulls: @pending_datacast_pulls}

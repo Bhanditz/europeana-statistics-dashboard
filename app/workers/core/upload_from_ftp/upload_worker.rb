@@ -4,7 +4,7 @@ class Core::UploadFromFTP::UploadWorker
   sidekiq_options :backtrace => true
 
   def perform(obj_id)
-    obj = Core::DataStorePull.find(obj_id)
+    obj = Core::DatacastPull.find(obj_id)
     obj.update_attributes({status: "<span style='color: orangered;'>Pending</span>"})
     url = obj.file_url
     file_name = "#{url.split("/")[-1]}"
@@ -16,10 +16,15 @@ class Core::UploadFromFTP::UploadWorker
       headers = File.open(file_path, &:readline)
       column_separator = ["\t", "|", ";", ","].sort_by{|separator| headers.count(separator)}.last
       begin
-        Core::DataStore.upload_or_create_file(file_path, file_name, obj.core_project_id, first_row_header, column_separator, api_token)
-        obj.update_attributes({status: "completed"})
-        obj.delete
-      rescue Exception => e
+        @core_datacast = Core::Datacast.upload_or_create_file(file_path, file_name, obj.core_project_id,obj.core_db_connection_id,obj.table_name,first_row_header, column_separator, api_token)
+        if @core_datacast
+          Core::Datacast::RunWorker.perform_async(@core_datacast.id)
+          obj.update_attributes({status: "completed"})
+          obj.delete
+        else
+          raise "Failed to create Datacast"
+        end
+      rescue => e
         obj.update_attributes({status: "<span style='color:red;'>Failed</span>", error_messages: e})
       end
     else

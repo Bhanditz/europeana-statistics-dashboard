@@ -1,23 +1,25 @@
 # == Schema Information
 #
-# Table name: core_data_store_pulls
+# Table name: core_datacast_pulls
 #
-#  id               :integer          not null, primary key
-#  core_project_id  :integer
-#  file_url         :text
-#  first_row_header :boolean
-#  status           :string
-#  error_messages   :text
-#  created_by       :integer
-#  updated_by       :integer
-#  created_at       :datetime
-#  updated_at       :datetime
+#  id                    :integer          not null, primary key
+#  core_project_id       :integer
+#  file_url              :text
+#  first_row_header      :boolean
+#  status                :string
+#  error_messages        :text
+#  created_by            :integer
+#  updated_by            :integer
+#  created_at            :datetime
+#  updated_at            :datetime
+#  core_db_connection_id :integer
+#  table_name            :string
 #
 
-class Core::DataStorePull < ActiveRecord::Base
+class Core::DatacastPull < ActiveRecord::Base
   
   #GEMS
-  self.table_name = "core_data_store_pulls"
+  self.table_name = "core_datacast_pulls"
   include WhoDidIt
   
   #CONSTANTS
@@ -28,6 +30,7 @@ class Core::DataStorePull < ActiveRecord::Base
   
   #VALIDATIONS
   validates :core_project_id, presence: true
+  validates :core_db_connection_id, presence: true
   validates :file_url, presence: true, format: {with: Constants::URL}
   validates :first_row_header, presence: true
   
@@ -40,10 +43,6 @@ class Core::DataStorePull < ActiveRecord::Base
   
   def to_s
     ""
-  end
-  
-  def self.account_id
-    self.core_project.account_id
   end
   
   #private

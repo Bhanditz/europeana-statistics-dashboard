@@ -16,7 +16,7 @@
         %ul.nav.nav-tabs{:role => "tablist"}
           %li.active{:role => "presentation"}
             %a{"aria-controls" => "output", "data-toggle" => "tab", :href => "#output", :role => "tab"} Output
-          - if @core_datacast.column_properties.nil?
+          - if @core_datacast.column_properties.present?
             %li{:role => "presentation"}
               %a{"aria-controls" => "column_meta", "data-toggle" => "tab", :href => "#column_meta", :role => "tab"} Column Meta
         .tab-content
@@ -28,7 +28,7 @@
             -else
               %textarea#datacast_display{:readonly => "",style: "width:100%;height:480px;overflow:scroll;"}
 
-          - if @core_datacast.column_properties.nil?
+          - if @core_datacast.column_properties.present?
             #column_meta.tab-pane{:role => "tabpanel"}
               %table.table.table-condensed
                 %tr

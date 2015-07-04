@@ -69,3 +69,5 @@ en:
   recalibrate_metadata:
     s: "Successfully recalibrated metadata"
     f: "Recalibrating metadata failed"
+  datacast:
+    specify_table: "You need to specify table name"

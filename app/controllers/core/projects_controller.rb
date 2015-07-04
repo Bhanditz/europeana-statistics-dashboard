@@ -14,6 +14,8 @@ class Core::ProjectsController < ApplicationController
   end
   
   def show
+    @core_datacasts = @core_project.core_datacasts.includes(:core_db_connection).order(updated_at: :desc)
+    @pending_datacast_pulls = @core_project.core_datacast_pulls
   end
 
   def edit

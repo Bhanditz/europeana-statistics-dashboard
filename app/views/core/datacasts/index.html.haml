@@ -55,3 +55,8 @@
                 %td= core_datacast.format
                 %td= link_to 'Edit', edit_account_core_project_datacast_path(@account, @core_project,  core_datacast)
                 %td= link_to icon_del(account_core_project_datacast_path(@account, @core_project, core_datacast))
+    .row
+      .col-sm-12
+        -if @pending_datacast_pulls.present? and current_account.present? and @sudo[1]
+          %hr
+          = render partial: "core/datacast_pulls/index", locals: {pending_datacast_pulls: @pending_datacast_pulls}  

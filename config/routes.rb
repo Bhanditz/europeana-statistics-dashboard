@@ -19,8 +19,9 @@ Rails.application.routes.draw do
       resources :projects do
         get "members", on: :member
         resources :db_connections, except: [:show]
-        resources :datacasts do 
-          post "preview", on: :collection
+        resources :datacasts, except: [:index] do
+          post "preview","upload", on: :collection
+          get "file", on: :collection
         end
         resources :tokens
         resources :data_stores do
@@ -29,7 +30,7 @@ Rails.application.routes.draw do
             put "update_only_query", on: :member
           end
         end
-        resources :data_store_pulls,only: [:create,:destroy,:edit,:update]
+        resources :datacast_pulls,only: [:create,:destroy,:edit,:update]
       end
     end
   end

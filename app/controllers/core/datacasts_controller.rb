@@ -2,14 +2,16 @@ class Core::DatacastsController < ApplicationController
   
   before_action :sudo_project_member!
   before_action :set_core_datacast, only: [:edit, :update, :destroy]
-
-  def index
-    @core_datacasts = @core_project.core_datacasts.includes(:core_db_connection).order(updated_at: :desc)
-  end
+  before_action :set_token,only: [:upload,:destroy]
 
   def new
     @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
+  end
+
+  def file
+    @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
     @core_datacast = Core::Datacast.new
+    @core_datacast_pull = Core::DatacastPull.new
   end
 
   def edit
@@ -29,7 +31,7 @@ class Core::DatacastsController < ApplicationController
     @core_datacast = Core::Datacast.new(core_datacast_params)
     @core_datacast.identifier = SecureRandom.hex(33)
     if @core_datacast.save
-      redirect_to account_core_project_datacasts_path(@account, @core_project), notice: t('c.s')
+      redirect_to _account_project_path(@account, @core_project), notice: t('c.s')
     else
       @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
       flash.now.alert = t('c.f')
@@ -40,7 +42,7 @@ class Core::DatacastsController < ApplicationController
   def update
     if @core_datacast.update(core_datacast_params)
       Core::Datacast::RunWorker.perform_async(@core_datacast.id)
-      redirect_to account_core_project_datacasts_path(@account, @core_project), notice: t('u.s')
+      redirect_to _account_core_project_path(@account, @core_project), notice: t('u.s')
     else
       flash.now.alert = t('u.f')
       render "edit"
@@ -49,7 +51,7 @@ class Core::DatacastsController < ApplicationController
 
   def destroy
     @core_datacast.destroy
-    redirect_to account_core_project_datacasts_path(@account, @core_project)
+    redirect_to _account_core_project_path(@account, @core_project)
   end
 
   def preview
@@ -76,35 +78,56 @@ class Core::DatacastsController < ApplicationController
   
   
   def destroy
-    #is_deletable = @data_store.check_dependent_destroy?
-    #if is_deletable[:is_deletable]
-      #begin
-        #Nestful.post REST_API_ENDPOINT + "#{@account.slug}/#{@core_project.slug}/#{@data_store.slug}/grid/delete", {:token => @alknfalkfnalkfnadlfkna}, :format => :json
-        #if @data_store.cdn_published_url.present? #PUBLISH TO CDN Functionality
-          #@data_store.update_attributes(marked_to_be_deleted: "true")
-          #Core::S3File::DestroyWorker.perform_async("DataStore", @data_store.id)
-          #notice = t("d.m")
-        #else
-          #@data_store.destroy
-          #notice = t("d.s")
-        #end
-        #redirect_to _account_project_path(@core_project.account, @core_project), notice: notice
-      #rescue => e
-        #redirect_to _account_project_path(@core_project.account, @core_project), alert: e.to_s
-      #end
-    #else
-      #redirect_to _account_project_path(@core_project.account, @core_project,d: is_deletable[:dependent_to_destroy],d_id: @data_store.id)
-      #end
+    begin
+      if @core_datacast.table_name.present?
+        Nestful.post REST_API_ENDPOINT + "#{@account.slug}/#{@core_project.slug}/#{@core_datacast.slug}/grid/delete", {:token => @alknfalkfnalkfnadlfkna}, :format => :json
+      end
+      @core_datacast.destroy
+      redirect_to _account_core_project_path(@account, @core_project), notice: notice
+    rescue => e
+      redirect_to _account_core_project_path(@account, @core_project), alert: e.to_s
+    end
+  end
+
+  def upload
+    if !core_datacast_params[:table_name]
+      @core_datacast = Core::DataStore.new
+      @datacast_pull = Core::DatacastPull.new
+      flash.now.alert = t("datacast.specify_table")
+      render :file
+    else
+      r = Core::Datacast.upload_tmp_file(core_datacast_params[:file])
+      if r[1].present?
+        alert_message = r[1]
+      else
+        @core_datacast = Core::Datacast.upload_or_create_file(r[0].file.path, r[0].filename, @core_project.id,core_datacast_params[:core_db_connection_id],core_datacast_params[:table_name],params[:first_row_header] ? true : false, r[2],@alknfalkfnalkfnadlfkna)
+      end
+      if @core_datacast
+        Core::Datacast::RunWorker.perform_async(@core_datacast.id)
+        redirect_to _account_core_project_path(@account, @core_project), notice: t('c.s')
+      else
+        @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
+        @core_datacast = Core::Datacast.new
+        @validator = Csvlint::Validator.new( File.new(r[0].file.path), {"header" => params[:first_row_header], "delimiter" => r[2]} )
+        flash.now[:alert] = alert_message || "Failed to upload"
+        render :file
+      end
+    end
   end
 
   private
   
   def set_core_datacast
-    @core_datacast = @core_project.core_datacasts.find(params[:id])
+    @core_datacast = @core_project.core_datacasts.friendly.find(params[:id])
+  end
+  
+  def set_token
+    @alknfalkfnalkfnadlfkna = @account.core_tokens.where(core_project_id: @core_project.id).first.api_token
+    gon.token = @alknfalkfnalkfnadlfkna
   end
 
   def core_datacast_params
-    params.require(:core_datacast).permit(:core_project_id, :core_db_connection_id, :name, :identifier, :properties, :created_by, :updated_by, :query, :method, :refresh_frequency, :error, :fingerprint, :last_execution_time, :average_execution_time, :size,:last_run_at,:last_data_changed_at, :format,:params_object,:column_properties)
+    params.require(:core_datacast).permit(:core_project_id, :core_db_connection_id, :name, :identifier, :properties, :created_by, :updated_by, :query, :method, :refresh_frequency, :error, :fingerprint, :last_execution_time, :average_execution_time, :size,:last_run_at,:last_data_changed_at, :format,:params_object,:column_properties, :table_name, :file)
   end
   
 end

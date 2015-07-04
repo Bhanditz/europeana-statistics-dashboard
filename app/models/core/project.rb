@@ -14,22 +14,6 @@
 #  updated_by :integer
 #
 
-  # == Schema Information
-#
-# Table name: core_projects
-#
-#  id            :integer          not null, primary key
-#  account_id    :integer
-#  name          :string(255)
-#  slug          :string(255)
-#  properties    :hstore
-#  is_public     :boolean
-#  created_at    :datetime
-#  updated_at    :datetime
-#  created_by    :integer
-#  updated_by    :integer
-#
-
 class Core::Project < ActiveRecord::Base
   
   #GEMS
@@ -46,9 +30,9 @@ class Core::Project < ActiveRecord::Base
   #ASSOCIATIONS
   belongs_to :account
   has_many :vizs, foreign_key: "core_project_id"
-#DONE
+  #DONE
   has_many :core_tokens, class_name: "Core::Token", foreign_key: "core_project_id"
-  has_many :core_data_store_pulls, class_name: "Core::DataStorePull", foreign_key: "core_project_id", dependent: :destroy
+  has_many :core_datacast_pulls, class_name: "Core::DatacastPull", foreign_key: "core_project_id", dependent: :destroy
   has_many :core_permissions, class_name: "Core::Permission", foreign_key: "core_project_id"
   has_many :core_db_connections, class_name: "Core::DbConnection", foreign_key: "core_project_id", dependent: :destroy
   has_many :core_datacasts, class_name: "Core::Datacast", foreign_key: "core_project_id", dependent: :destroy

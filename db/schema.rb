@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150626100044) do
+ActiveRecord::Schema.define(version: 20150703115523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,18 +56,6 @@ ActiveRecord::Schema.define(version: 20150626100044) do
     t.datetime "updated_at"
   end
 
-  create_table "core_data_store_pulls", force: :cascade do |t|
-    t.integer  "core_project_id"
-    t.text     "file_url"
-    t.boolean  "first_row_header"
-    t.string   "status"
-    t.text     "error_messages"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "core_datacast_outputs", force: :cascade do |t|
     t.string   "datacast_identifier", null: false
     t.integer  "core_datacast_id",    null: false
@@ -78,6 +66,20 @@ ActiveRecord::Schema.define(version: 20150626100044) do
   end
 
   add_index "core_datacast_outputs", ["datacast_identifier"], name: "index_core_datacast_outputs_on_datacast_identifier", unique: true, using: :btree
+
+  create_table "core_datacast_pulls", force: :cascade do |t|
+    t.integer  "core_project_id"
+    t.text     "file_url"
+    t.boolean  "first_row_header"
+    t.string   "status"
+    t.text     "error_messages"
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "core_db_connection_id"
+    t.string   "table_name"
+  end
 
   create_table "core_datacasts", force: :cascade do |t|
     t.integer  "core_project_id"
@@ -96,6 +98,8 @@ ActiveRecord::Schema.define(version: 20150626100044) do
     t.integer  "count_of_queries"
     t.float    "average_execution_time"
     t.float    "size"
+    t.string   "slug"
+    t.string   "table_name"
   end
 
   create_table "core_db_connections", force: :cascade do |t|

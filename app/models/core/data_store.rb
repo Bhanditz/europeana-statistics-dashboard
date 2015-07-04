@@ -44,7 +44,7 @@ class Core::DataStore
     end
     return [uploader, nil, column_separator]
   end
-  
+
   def self.upload_or_create_file(file_path, file_name, _core_project_id, first_row_header, column_separator, token)
     d = Core::DataStore.new({name: file_name, core_project_id: _core_project_id})
     if d.save
@@ -79,7 +79,7 @@ class Core::DataStore
       return nil
     end
   end
-  
+
   def self.insert_into_grid(projectname, username, filename, token, grid_data)
     begin
       response = Nestful.post REST_API_ENDPOINT + "#{username}/#{projectname}/#{filename}/row/batch_add", {token: token, data: grid_data }, :format => :json

@@ -19,6 +19,8 @@
 #  count_of_queries       :integer
 #  average_execution_time :float
 #  size                   :float
+#  slug                   :string
+#  table_name             :string
 #
 
 class Core::Datacast < ActiveRecord::Base
@@ -27,6 +29,8 @@ class Core::Datacast < ActiveRecord::Base
 
   #GEMS
   include WhoDidIt
+  extend FriendlyId
+  friendly_id :name, use: :slugged
   #CONSTANTS
   #ATTRIBUTES  
   #ACCESSORS
@@ -42,6 +46,7 @@ class Core::Datacast < ActiveRecord::Base
   validates :core_project_id, presence: true
   validates :core_db_connection_id, presence: true
   validates :query,presence: true
+  validates :table_name,uniqueness: {scope: :core_db_connection_id}
   validates :identifier, presence: true, uniqueness: true
 
   #CALLBACKS
@@ -101,10 +106,94 @@ class Core::Datacast < ActiveRecord::Base
     return "string"
   end
 
+
+  def self.create_grid(projectname, username, filename, token, grid_data, first_row_header=true)
+    begin
+      response = Nestful.post REST_API_ENDPOINT + "#{username}/#{projectname}/#{filename}/grid/create", {:token => token, :data => grid_data, :first_row_header => first_row_header }, :format => :json
+      if response.status == 201
+        return true
+      else
+        return false
+      end
+    rescue Exception => e
+      return false
+    end
+  end
+  
+  def self.upload_tmp_file(_data)
+    uploader = CsvFileUploader.new
+    if uploader.cache!(_data)
+      file_path = uploader.file.path
+      file_size = uploader.file.size
+      if !file_path or file_size < 1
+        return [uploader, "File is empty.", nil] 
+      end
+    else
+      return [uploader, "File is not uploaded.", nil]
+    end
+    headers = File.open(file_path, &:readline) 
+    begin 
+      column_separator = ["\t", "|", ";", ","].sort_by{|separator| headers.count(separator)}.last
+    rescue => e
+      return [uploader, e.to_s, nil]
+    end
+    return [uploader, nil, column_separator]
+  end
+  
+  def self.upload_or_create_file(file_path, file_name, _core_project_id,_core_db_connection_id ,table_name,first_row_header, column_separator,token)
+    query = "Select * from #{table_name}"
+    d = Core::Datacast.new({query: query, name: file_name, core_project_id: _core_project_id, core_db_connection_id: _core_db_connection_id, identifier: SecureRandom.hex(33), table_name: table_name })
+    if d.save
+      puts d.id
+      grid_data = []
+      is_everything_saved_properly = false
+      begin
+        CSV.foreach(file_path, {:col_sep => column_separator, :skip_blanks => true}) do |row|
+          grid_data << row
+          if $. == 2
+            is_everything_saved_properly = Core::Datacast.create_grid(d.core_project.slug, d.core_project.account.slug, d.slug, token, grid_data, first_row_header)
+            break if !is_everything_saved_properly
+            grid_data = []
+          elsif $. % 100 == 0 and $. > 0
+            is_everything_saved_properly = Core::Datacast.insert_into_grid(d.core_project.slug, d.core_project.account.slug, d.slug, token, grid_data)
+            break if !is_everything_saved_properly
+            grid_data = []
+          end
+        end
+        if !grid_data.empty?
+          is_everything_saved_properly = Core::Datacast.insert_into_grid(d.core_project.slug, d.core_project.account.slug, d.slug, token, grid_data)
+        end
+      rescue
+        is_everything_saved_properly = false
+      end
+      if is_everything_saved_properly
+        return d
+      else
+        puts d.errors.messages
+        d.destroy
+        return nil
+      end
+    else
+      return nil
+    end
+  end
+  
+  def self.insert_into_grid(projectname, username, filename, token, grid_data)
+    begin
+      response = Nestful.post REST_API_ENDPOINT + "#{username}/#{projectname}/#{filename}/row/batch_add", {token: token, data: grid_data }, :format => :json
+      if response.status == 201
+        return true
+      else
+        return false
+      end
+    rescue Exception => e
+      return false
+    end
+  end
+
   def run(format=nil)
     Core::Adapters::Db.run(self.core_db_connection, self.query, format || self.format)
   end
-
 
   #PRIVATE
   
@@ -115,12 +204,15 @@ class Core::Datacast < ActiveRecord::Base
     self.method = "get"
     self.error = ""
     self.format = "csv" if self.format.nil?
+    self.refresh_frequency = "0" if self.refresh_frequency.nil?
     true
   end
 
   def after_create_set
     Core::DatacastOutput.create(datacast_identifier: self.identifier, core_datacast_id: self.id)
-    Core::Datacast::RunWorker.perform_async(self.id)
+    unless self.table_name.present?
+      Core::Datacast::RunWorker.perform_async(self.id)
+    end
     true
   end
 
