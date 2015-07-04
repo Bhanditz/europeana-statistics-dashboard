@@ -52,7 +52,7 @@ Rumali.dataCastNewPage = function(){
             $("#preview_output_grid").handsontable(config_data);
           }
         } else {
-          $("#preview_output_error").val("The query ran successfully, but it returned 0 rows")
+          $("#preview_output_error").val("The query ran successfully and 0 rows returned")
           $("#preview_output_error").show();
         }
       },
