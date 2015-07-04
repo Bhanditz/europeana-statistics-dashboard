@@ -17,14 +17,12 @@ class Core::DatacastsController < ApplicationController
 
   def edit
     @preview_data = @core_datacast.core_datacast_output
+    gon.query_output = @preview_data.output
     if @core_datacast.format == "csv"
-      gon.query_output = CSV.parse(@preview_data.output)[0..500]
+      gon.query_output = CSV.parse(@preview_data.output)[0..500] unless @preview_data.output.nil?
     elsif ["2darray","json"].include?(@core_datacast.format)
-      gon.query_output = JSON.parse(@preview_data.output)[0..500]
-    else
-      gon.query_output = @preview_data.output
+      gon.query_output = JSON.parse(@preview_data.output)[0..500] unless @preview_data.output.nil?
     end
-
     gon.format = @core_datacast.format
   end
 
@@ -59,8 +57,12 @@ class Core::DatacastsController < ApplicationController
     respond_to do |format|
       format.json { 
         query =  params["query"] || ""
+        format = params["data_format"] == "csv" ? "2darray" : params["data_format"]
         core_db_connection = Core::DbConnection.find(params["core_db_connection_id"])
-        response = Core::Adapters::Db.run(core_db_connection, query,"2darray", 500)
+        response = Core::Adapters::Db.run(core_db_connection, query,format, 500)
+        if response['query_output'].blank?
+          response["query_output"] = ""
+        end
         if response['execute_flag']
           render json: response
         else

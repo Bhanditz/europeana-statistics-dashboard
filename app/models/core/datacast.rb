@@ -88,11 +88,11 @@ class Core::Datacast < ActiveRecord::Base
     # Need to work on it. This is scrappy's code, for reference
     datatype_distribution = datatype_distribution.reject {|k,v| v <= 0}
     possible_types = datatype_distribution.keys
-    return "float" if datatype_distribution.has_key?("float") and (possible_types & ["date", "boolean"]).length < 1 and datatype_distribution["float"] > 0
-    return "integer" if datatype_distribution.has_key?("integer") and (possible_types & ["date", "boolean", "float"]).length < 1 and datatype_distribution["integer"] > 0
-    return "boolean" if datatype_distribution.has_key?("boolean") and (possible_types & ["date", "float"]).length < 1 and datatype_distribution["boolean"] > 0
-    return "date" if datatype_distribution.has_key?("date") and (possible_types & ["boolean", "float", "integer"]).length < 1 and datatype_distribution["date"] > 0
-    return "string" if datatype_distribution.has_key?("string") and datatype_distribution["string"] > 0
+    return "float" if datatype_distribution.has_key?(:float) and (possible_types & [:date, :boolean]).length < 1 and datatype_distribution[:float] > 0
+    return "integer" if datatype_distribution.has_key?(:integer) and (possible_types & [:date, :boolean, :float]).length < 1 and datatype_distribution[:integer] > 0
+    return "boolean" if datatype_distribution.has_key?(:boolean) and (possible_types & [:date, :float]).length < 1 and datatype_distribution[:boolean] > 0
+    return "date" if datatype_distribution.has_key?(:date) and (possible_types & [:boolean, :float, :integer]).length < 1 and datatype_distribution[:date] > 0
+    return "string" if datatype_distribution.has_key?(:string) and datatype_distribution[:string] > 0
     return "string" #else - worst case scenario
   end
 

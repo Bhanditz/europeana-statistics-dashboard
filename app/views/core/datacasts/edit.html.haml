@@ -22,11 +22,16 @@
         .tab-content
           #output.tab-pane.active{:role => "tabpanel"}
             = render partial: "form", locals: {url: url, method: :put,core_db_connection_id: @core_datacast.core_db_connection_id}
-            -if ["csv","2darray"].include?(@core_datacast.format)
-              #preview_output_grid{style: "width:100%;height:480px;overflow:scroll;"}
+            - unless @core_datacast.core_datacast_output.output.blank?
+              #preview_output_grid{style: "width:100%;height:480px;overflow:scroll;display:#{["csv","2darray"].include?(@core_datacast.format) ? "block" : none}"}
+              %textarea#datacast_display{:readonly => "",style: "width:100%;height:480px;overflow:scroll;display:#{["csv","2darray"].include?(@core_datacast.format) ? "none" : block}"}
               %textarea.form-control#preview_output_error{rows: 20, style: "overflow-y:scroll;display:none"}
-            -else
-              %textarea#datacast_display{:readonly => "",style: "width:100%;height:480px;overflow:scroll;"}
+            - else
+              #preview_output_grid{style: "width:100%;height:480px;overflow:scroll;display:none"}
+              %textarea#datacast_display{:readonly => "",style: "width:100%;height:480px;overflow:scroll;display:none"}
+              %textarea.form-control#preview_output_error{rows: 20, style: "overflow-y:scroll;display:block"}
+                = "The query ran successfully, but it returned 0 rows"
+
 
           - if @core_datacast.column_properties.present?
             #column_meta.tab-pane{:role => "tabpanel"}
@@ -48,10 +53,3 @@
                           %br
 
                     %td= value["d_or_m"] == "d" ? "Dimension" : "Metric"
-
-
-:javascript
-  // $('#myTabs a').click(function (e) {
-  //   e.preventDefault()
-  //   $(this).tab('show')
-  // })
