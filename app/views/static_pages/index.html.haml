@@ -2,25 +2,7 @@
   Rumi DataHub · Pykih
 .container.index
   .row
-    .col-sm-9
-      %h2.thin Data Collaboration Simplified.
-      %br
-      %p.thin{style: "font-size: 1.3em; "} Rumi.io is a GarageBand for data so managers, journalists and open-data enthusiasts can collaboratively make sense of data themselves without developers. We do this by providing drag-drop tools so normal people can pull, clean, model, mix, analyse and visualise any kind of data themselves.
-      %br
-      .col-sm-3
-        = image_tag "robot.png", class: "img-responsive"
-        %h4.text-center Enterprise Dashboards
-      .col-sm-1
-      .col-sm-3
-        = image_tag "sun_burst.png", class: "img-responsive"
-        %h4.text-center Custom Visualization Projects
-      .col-sm-1
-      .col-sm-3
-        = image_tag "open_data.png", class: "img-responsive"
-        %h4.text-center Open Data Social Projects
     .col-sm-3
-      %br
-      %br
       .well.login-well
         %h5.thin Sign In
         %br
@@ -30,7 +12,3 @@
           = f.button :submit, "Sign in"
         %br
         = link_to "Can't access your account?", new_password_path(resource_name), style: "font-size: 11px; color: blue;"
-    .col-sm-12
-      - if 1 == 2
-        .text-center= link_to "Read about our commitment to the open data movement.", open_data_path, class: "black", style: "border-bottom: 1px dotted gray;"
-        
