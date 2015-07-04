@@ -1,32 +1,5 @@
 - if current_account.blank? 
-  %div{style: "margin-bottom: 40px; margin-top: 40px;"}
-    .container
-      .row
-        .col-sm-12
-          %hr{style: "border-top: 1px lightgray solid;"}
-          = link_to image_tag("tw.png", style: "width: 20px;"), "https://twitter.com/pykih", target: "_blank"
-          &nbsp;
-          = link_to image_tag("fb.png", style: "width: 20px;"), "https://www.facebook.com/pykih", target: "_blank"
-          &nbsp;
-          = link_to image_tag("yt.png", style: "width: 20px;"), "https://www.youtube.com/user/pykih", target: "_blank"
-          &nbsp;
-          = link_to image_tag("google-plus-icon.png", style: "width: 20px;"), "https://plus.google.com/b/113872780156890470004/113872780156890470004", target: "_blank"
-          &nbsp;
-          &nbsp;
-          &nbsp;
-          &nbsp;
-          = link_to "Privacy", privacy_path
-          &nbsp;
-          &nbsp;
-          &nbsp;
-          &nbsp;
-          = link_to "Enterprise Security", security_path
-          &nbsp;
-          &nbsp;
-          &nbsp;
-          &nbsp;
-          - if 1 == 2
-            = link_to "Terms", terms_path
+  &nbsp;
 - elsif @is_not_rumi
   %div{style: "margin-bottom: 40px; margin-top: 40px;"}
     .container
