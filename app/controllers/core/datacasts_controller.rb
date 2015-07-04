@@ -48,11 +48,6 @@ class Core::DatacastsController < ApplicationController
     end 
   end
 
-  def destroy
-    @core_datacast.destroy
-    redirect_to _account_project_path(@account, @core_project)
-  end
-
   def preview
     respond_to do |format|
       format.json { 
