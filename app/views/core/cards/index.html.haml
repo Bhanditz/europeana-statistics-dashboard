@@ -1,0 +1,37 @@
+%h1 Listing Cards
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Is public
+      %th Content
+      %th Properties
+      %th Core card layout
+      %th Core project
+      %th Core datacast identifier
+      %th Created by
+      %th Updated by
+      %th
+      %th
+      %th
+
+  %tbody
+    - @core_cards.each do |core_card|
+      %tr
+        %td= core_card.name
+        %td= core_card.is_public
+        %td= core_card.content
+        %td= core_card.properties
+        %td= core_card.core_card_layout_id
+        %td= core_card.core_project_id
+        %td= core_card.core_datacast_identifier
+        %td= core_card.created_by
+        %td= core_card.updated_by
+        %td= link_to 'Show', account_core_project_card_path(@account, @core_project,core_card)
+        %td= link_to 'Edit', edit_account_core_project_card_path(@account, @core_project, core_card)
+        %td= link_to 'Destroy', account_core_project_card_path(@account, @core_project,core_card), :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Core card', new_account_core_project_card_path(@account, @core_project)
