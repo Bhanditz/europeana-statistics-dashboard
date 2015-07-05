@@ -4,6 +4,11 @@ class Core::DatacastsController < ApplicationController
   before_action :set_core_datacast, only: [:edit, :update, :destroy]
   before_action :set_token,only: [:upload,:destroy]
 
+  def index
+    @core_datacasts = @core_project.core_datacasts.includes(:core_db_connection).order(updated_at: :desc)
+    @pending_datacast_pulls = @core_project.core_datacast_pulls
+  end
+
   def new
     @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
     @core_datacast = Core::Datacast.new

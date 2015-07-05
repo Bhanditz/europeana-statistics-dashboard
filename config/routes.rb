@@ -19,7 +19,7 @@ Rails.application.routes.draw do
       resources :projects do
         get "members", on: :member
         resources :db_connections, except: [:show]
-        resources :datacasts, except: [:index] do
+        resources :datacasts do
           post "preview","upload", on: :collection
           get "file", on: :collection
         end
