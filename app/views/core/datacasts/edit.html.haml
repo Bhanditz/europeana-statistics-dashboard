@@ -6,7 +6,7 @@
   %h3
     = show_project_name(@core_project).html_safe
     %span.thin= " / "
-    = link_to "Datacast", account_core_project_datacasts_path(@core_project.account, @core_project)
+    = link_to "Datacast", account_core_project_datacasts_path(@core_project.account, @core_project), class: "thin gray"
   .panel.panel-default.sheet.sub
     .panel-body
       %h4 Edit Datacast

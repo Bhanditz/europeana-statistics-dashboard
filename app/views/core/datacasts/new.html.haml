@@ -6,10 +6,10 @@
     = show_project_name(@core_project).html_safe
     %span.thin= " / "
     = link_to "Datacasts", account_core_project_datacasts_path(@core_project.account, @core_project), class: "thin gray"
-    %span.thin= " / "
-    New DataCast
   .panel.panel-default.sheet.sub
     .panel-body
+      %h4 Create new Datacast
+      %hr
       - url = account_core_project_datacasts_path(@core_project.account,@core_project)
       .col-sm-12
         %br
