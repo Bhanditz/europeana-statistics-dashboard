@@ -32,6 +32,7 @@ class Core::Project < ActiveRecord::Base
   has_many :vizs, foreign_key: "core_project_id"
   #DONE
   has_many :core_tokens, class_name: "Core::Token", foreign_key: "core_project_id"
+  has_many :impl_aggregations, class_name: "Impl::Aggregation", foreign_key: "core_project_id"
   has_many :core_datacast_pulls, class_name: "Core::DatacastPull", foreign_key: "core_project_id", dependent: :destroy
   has_many :core_permissions, class_name: "Core::Permission", foreign_key: "core_project_id"
   has_many :core_db_connections, class_name: "Core::DbConnection", foreign_key: "core_project_id", dependent: :destroy
