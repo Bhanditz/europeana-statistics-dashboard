@@ -27,6 +27,8 @@ class Core::Card < ActiveRecord::Base
   store_accessor :properties
   #ACCESSORS
   #ASSOCIATIONS
+  belongs_to :core_project_id, class_name: "Core::Project", foreign_key: "core_project_id"
+  has_many :core_article_cards, class_name: "Core::ArticleCard", foreign_key: "core_card_id"
   #VALIDATIONS
   mount_uploader :image, ImageUploader
   validates :name, presence: true
@@ -62,7 +64,7 @@ class Core::Card < ActiveRecord::Base
   private
 
     def before_create_set
-      self.is_public = self.is_public.present? self.is_public : false
+      self.is_public = self.is_public.present? ? self.is_public : false
       true
     end
 

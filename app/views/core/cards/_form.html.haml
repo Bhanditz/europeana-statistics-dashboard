@@ -1,11 +1,17 @@
-= simple_form_for(@core_card) do |f|
+- if action_name == "new"
+  - url = account_core_project_cards_path(@account, @core_project)
+  - method = "post"
+-elsif action_name == "edit"
+  - url = account_core_project_card_path(@account, @core_project, @core_card)
+  - method = "put,"
+
+= simple_form_for(@core_card, url: url, method: method) do |f|
   = f.error_notification
 
   .form-inputs
     = f.input :name
     = f.input :is_public
     = f.input :content
-    = f.input :properties
     = f.input :core_card_layout_id
     = f.input :core_project_id
     = f.input :core_datacast_identifier

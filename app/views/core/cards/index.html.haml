@@ -1,4 +1,4 @@
-%h1 Listing core_cards
+%h1 Listing Cards
 
 %table
   %thead
@@ -28,10 +28,10 @@
         %td= core_card.core_datacast_identifier
         %td= core_card.created_by
         %td= core_card.updated_by
-        %td= link_to 'Show', core_card
-        %td= link_to 'Edit', edit_core_card_path(core_card)
-        %td= link_to 'Destroy', core_card, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td= link_to 'Show', account_core_project_card_path(@account, @core_project,core_card)
+        %td= link_to 'Edit', edit_account_core_project_card_path(@account, @core_project, core_card)
+        %td= link_to 'Destroy', account_core_project_card_path(@account, @core_project,core_card), :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 
-= link_to 'New Core card', new_core_card_path
+= link_to 'New Core card', new_account_core_project_card_path(@account, @core_project)

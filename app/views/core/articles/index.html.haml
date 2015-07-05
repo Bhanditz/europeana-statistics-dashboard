@@ -1,0 +1,29 @@
+%h1 Listing core_articles
+
+%table
+  %thead
+    %tr
+      %th Core project
+      %th Name
+      %th Created by
+      %th Updated by
+      %th Status
+      %th
+      %th
+      %th
+
+  %tbody
+    - @core_articles.each do |core_article|
+      %tr
+        %td= core_article.core_project.id
+        %td= core_article.name
+        %td= core_article.created_by
+        %td= core_article.updated_by
+        %td= core_article.status
+        %td= link_to 'Show', account_core_project_article_path(@account, @core_project, @core_article)
+        %td= link_to 'Edit', edit_account_core_project_article_path(@account, @core_project, @core_article)
+        %td= link_to 'Destroy', account_core_project_article_path(@account, @core_project, @core_article), :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Core article', new_account_core_project_article_path(@account, @core_project)

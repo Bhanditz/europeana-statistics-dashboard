@@ -1,0 +1,7 @@
+%h1 Editing Card
+
+= render 'form'
+
+= link_to 'Show', account_core_project_card_path(@account,@core_project,@core_card)
+\|
+= link_to 'Back', account_core_project_cards_path(@account,@core_project)
