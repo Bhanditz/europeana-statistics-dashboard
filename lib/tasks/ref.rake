@@ -4,12 +4,12 @@ namespace :ref do
 
   task :load => :environment do  |t, args|
     puts "----> Migrations"
-  
+
     Rake::Task['db:migrate'].invoke
   
     puts "----> Loading Ref::Chart"
     Ref::Chart.destroy_all
-    #headers-> name,slug,description,img_small,img_data_mapping,api,sort_order,genre,combination_code,source,file_path,map
+    #headers name,slug,description,img_small,img_data_mapping,api,sort_order,genre,combination_code,source,file_path,map
     CSV.read("ref/ref_chart.csv").each_with_index do |line, index|
       next if index == 0 #skipping header
       name             = line[0]
@@ -53,15 +53,17 @@ namespace :ref do
       image_url      = line[4]
       Core::Theme.create!({name: name, config: config,account_id: account_id, sort_order: sort_order, image_url: image_url})
     end
-
-    puts "----> Done"
-  end
-
-  task :delete_all_viz => :environment do  |t, args|
-    puts "----> Destroying All Viz"
-    Core::Viz.all.each do |viz|
-      viz.destroy
+    header name,template,img,sort_order
+    puts "----> Loading Core::CardLayout"
+    CSV.read("ref/core_card_layouts.csv").each_with_index do |line, index|
+      next if index == 0
+      name = line[0]
+      template = line[1]
+      img = line[2]
+      sort_order = line[3]
+      Core::CardLayout.create!({name: name, template: template, img: img, sort_order: sort_order})
     end
+
     puts "----> Done"
   end
 

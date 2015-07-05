@@ -1,0 +1,27 @@
+%h1 Listing core_card_layouts
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Template
+      %th Img
+      %th Sort order
+      %th
+      %th
+      %th
+
+  %tbody
+    - @core_card_layouts.each do |core_card_layout|
+      %tr
+        %td= core_card_layout.name
+        %td= core_card_layout.template
+        %td= core_card_layout.img
+        %td= core_card_layout.sort_order
+        %td= link_to 'Show', core_card_layout
+        %td= link_to 'Edit', edit_core_card_layout_path(core_card_layout)
+        %td= link_to 'Destroy', core_card_layout, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Core card layout', new_core_card_layout_path

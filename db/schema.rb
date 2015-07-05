@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150703115523) do
+ActiveRecord::Schema.define(version: 20150705080353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,15 @@ ActiveRecord::Schema.define(version: 20150703115523) do
     t.integer  "updated_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "core_card_layouts", force: :cascade do |t|
+    t.string   "name"
+    t.text     "template"
+    t.text     "img"
+    t.integer  "sort_order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "core_datacast_outputs", force: :cascade do |t|
