@@ -56,6 +56,15 @@ ActiveRecord::Schema.define(version: 20150703114537) do
     t.datetime "updated_at"
   end
 
+  create_table "core_card_layouts", force: :cascade do |t|
+    t.string   "name"
+    t.text     "template"
+    t.text     "img"
+    t.integer  "sort_order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "core_datacast_outputs", force: :cascade do |t|
     t.string   "datacast_identifier", null: false
     t.integer  "core_datacast_id",    null: false
