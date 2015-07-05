@@ -103,7 +103,7 @@ class Core::DatacastsController < ApplicationController
       if r[1].present?
         alert_message = r[1]
       else
-        @core_datacast = Core::Datacast.upload_or_create_file(r[0].file.path, r[0].filename, @core_project.id,core_datacast_params[:core_db_connection_id],core_datacast_params[:table_name],params[:first_row_header] ? true : false, r[2],@alknfalkfnalkfnadlfkna)
+        @core_datacast = Core::Datacast.upload_or_create_file(r[0].file.path, core_datacast_params[:table_name], @core_project.id,core_datacast_params[:core_db_connection_id],core_datacast_params[:table_name],params[:first_row_header] ? true : false, r[2],@alknfalkfnalkfnadlfkna)
       end
       if @core_datacast
         Core::Datacast::RunWorker.perform_async(@core_datacast.id)
