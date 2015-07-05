@@ -36,23 +36,6 @@ Rails.application.routes.draw do
   end
 
   #CUSTOM PUBLIC URLs --------------------------------------------------------------
-
-  get "/refer", to: "static_pages#refer", as: "refer"
-
-  get "/roadmap", to: "static_pages#roadmap", as: "roadmap"
-  get "/enterprise", to: "static_pages#enterprise", as: "enterprise"
-  get "/privacy", to: "static_pages#privacy", as: "privacy"
-  get "/terms", to: "static_pages#terms", as: "terms"
-  get "/tour", to: "static_pages#tour", as: "tour"
-  get "/enterprise-security", to: "static_pages#security", as: "security"
-  get "/pricing", to: "static_pages#pricing", as: "pricing"
-  get "/case-studies", to: "static_pages#case_studies", as: "case_studies"
-  get "/use-cases/data-journalism", to: "static_pages#data_journalism", as: "_use_cases_data_journalism"
-  get "/use-cases/visualizations", to: "static_pages#visualizations", as: "_use_cases_visualizations"
-  get "/use-cases/publish-open-data", to: "static_pages#publish_open_data", as: "_use_cases_publish_open_data"
-
-
-  #CUSTOM PUBLIC URLs --------------------------------------------------------------
   
   get 'switch_user' => 'switch_user#set_current_user'
   get 'approve/account/:id' => "accounts#change_approval"  
