@@ -31,6 +31,7 @@ Rails.application.routes.draw do
           end
         end
         resources :datacast_pulls,only: [:create,:destroy,:edit,:update]
+        resources :cards
       end
     end
   end

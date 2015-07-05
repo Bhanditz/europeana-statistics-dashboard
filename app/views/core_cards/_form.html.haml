@@ -1,0 +1,16 @@
+= simple_form_for(@core_card) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :is_public
+    = f.input :content
+    = f.input :properties
+    = f.input :core_card_layout_id
+    = f.input :core_project_id
+    = f.input :core_datacast_identifier
+    = f.input :created_by
+    = f.input :updated_by
+
+  .form-actions
+    = f.button :submit

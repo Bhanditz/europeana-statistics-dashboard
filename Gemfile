@@ -24,6 +24,7 @@ gem "git"
 gem "switch_user"
 #gem "aws-s3", :require => "aws/s3"
 gem "jquery-fileupload-rails"
+gem "rmagick", "2.13.4"
 gem 'carrierwave'
 gem 'carrierwave_direct'
 gem 'csvlint'

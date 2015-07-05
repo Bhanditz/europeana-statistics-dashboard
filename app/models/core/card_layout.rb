@@ -15,15 +15,23 @@ class Core::CardLayout < ActiveRecord::Base
   #GEMS
   self.table_name = "core_card_layouts"
   #CONSTANTS
-  #ATTRIBUTES  
+  #ATTRIBUTES
   #ACCESSORS
   #ASSOCIATIONS
   #VALIDATIONS
   validates :name, presence: true
   validates :template, presence: true
-  #CALLBACKS  
+  #CALLBACKS
   #SCOPES
   #CUSTOM SCOPES
   #OTHER
   #FUNCTIONS
+  def mandator_parameters
+    if self.name == "table"
+      [:core_datacast_identfier]
+    else
+      []
+    end
+  end
+
 end

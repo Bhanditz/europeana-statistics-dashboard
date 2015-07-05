@@ -344,6 +344,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    rmagick (2.13.4)
     ruby-graphviz (1.2.2)
     ruby_parser (3.7.0)
       sexp_processor (~> 4.1)
@@ -444,6 +445,7 @@ DEPENDENCIES
   rails-erd
   redis
   rest-client
+  rmagick (= 2.13.4)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   sentry-raven!
