@@ -1,0 +1,23 @@
+#core_text_layout_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1","data-backdrop" => "static"}
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4#myModalLabel.modal-title
+          ="#{Constants::ARTICLE_LAYOUTS_TEXT} Panel"
+          / = link_to "< back","#","data-target" => "#core_card_layout_modal", "data-toggle" => "modal", "data-dismiss"=>"modal",class: "hint"
+      .modal-body
+        .row
+          .col-sm-6
+            #editor
+              #toolbar.wmd-toolbar
+              = f.text_area :content, id: "input", cols:"65", rows:"26",class: "form-control wmd-input", required: true, :onscroll => "scrolling('textarea')", :onkeyup => "scrolling('textarea')"
+          .col-sm-6
+            #text_card_preview.wmd-preview{:style => "height: auto; overflow:auto; background: #F2F2F2;"} Live preview
+        .clearfix
+        = f.submit "Create", class: "btn btn-orange card_submit_button", "data-card_type" => "text"
+        %br
+
+:javascript
+  new WMD("input", "toolbar", { preview: "text_card_preview" });

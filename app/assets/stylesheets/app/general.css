@@ -247,3 +247,36 @@ body#scopejs_datacasts_new #preview_output_error {
 body#scopejs_datacasts_edit #preview_output_error {
   color: red;
 }
+
+.full-width {
+  width: 90%;
+}
+
+#scopejs_articles_edit #number_preview {
+  background-color: #F2F2F2;
+  height: 250px;
+  margin-top: 5%;
+  padding: 20px;
+}
+#scopejs_articles_edit #number_input_value {
+  font-size:2em
+}
+
+#scopejs_articles_edit  #label_for_number_value {
+  font-size:2em
+}
+
+#scopejs_articles_update #number_preview {
+  background-color: #F2F2F2;
+  height: 250px;
+  margin-top: 5%;
+  padding: 20px;
+  font-size:2em
+}
+#scopejs_articles_update #number_input_value {
+  font-size:3em
+}
+
+#scopejs_articles_update  #label_for_number_value {
+  font-size:2em
+}

@@ -9,11 +9,7 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :core_project_id
+    = f.input :core_project_id, as: :hidden, inner_html: {value: @core_project.id}
     = f.input :name
-    = f.input :created_by
-    = f.input :updated_by
-    = f.input :status
-
   .form-actions
     = f.button :submit

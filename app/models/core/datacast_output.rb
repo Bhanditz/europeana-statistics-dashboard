@@ -14,8 +14,6 @@
 class Core::DatacastOutput < ActiveRecord::Base
   
   self.table_name = "core_datacast_outputs"
-  self.primary_key = "datacast_identifier"
-
   #GEMS
   #CONSTANTS
   #ATTRIBUTES  

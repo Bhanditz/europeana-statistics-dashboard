@@ -4,7 +4,7 @@ class Core::ArticlesController < ApplicationController
   # GET /core_articles
   # GET /core_articles.json
   def index
-    @core_articles = @core_project.core_articles.all
+    @core_articles = @core_project.core_articles
   end
 
   # GET /core_articles/1
@@ -14,11 +14,16 @@ class Core::ArticlesController < ApplicationController
 
   # GET /core_articles/new
   def new
-    @core_article = Core::Article.new
+    @core_article = Core::Article.new({name: "Untitled Article - #{SecureRandom.hex(3)}", core_project_id: @core_project.id, status: "draft"})
+    @core_article.save!
+    redirect_to edit_account_core_project_article_path(@account, @core_project, @core_article)
   end
 
   # GET /core_articles/1/edit
   def edit
+    @core_card_layouts = Core::CardLayout.all
+    @core_datacasts = @core_project.core_datacasts.where("properties -> 'format' = 'json'").map {|d| [d.name, d.identifier]}
+    @core_card = Core::Card.new
   end
 
   # POST /core_articles
@@ -46,7 +51,7 @@ class Core::ArticlesController < ApplicationController
   # DELETE /core_articles/1.json
   def destroy
     @core_article.destroy
-    redirect_to account_core_project_article_path(@account, @core_project), notice: t('d.s')
+    redirect_to account_core_project_articles_path(@account, @core_project), notice: t('d.s')
   end
 
   private

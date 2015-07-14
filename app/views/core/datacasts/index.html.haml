@@ -34,7 +34,7 @@
                 %span.gray= core_datacast.core_db_connection.db_name
                 = " / "
                 %b= core_datacast.name
-                .hint= link_to truncate("https://api.rumi.io/datacasts/#{core_datacast.identifier}", length: 60, omission: "..."),  "https://api.rumi.io/datacasts/#{core_datacast.identifier}", target: "_blank"
+                .hint= link_to truncate("#{REST_API_ENDPOINT}datacast/#{core_datacast.identifier}", length: 60, omission: "..."),  "#{REST_API_ENDPOINT}datacast/#{core_datacast.identifier}", target: "_blank"
                 - if core_datacast.error.present?
                   .hint{style: "color: red;"}= core_datacast.error.html_safe
         

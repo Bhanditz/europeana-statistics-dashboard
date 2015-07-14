@@ -1,0 +1,45 @@
+#core_number_layout_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1","data-backdrop" => "static"}
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", type: "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4#myModalLabel.modal-title
+          ="#{Constants::ARTICLE_LAYOUTS_NUMBER} Panel"
+          / = link_to "< back","#","data-target" => "#core_card_layout_modal", "data-toggle" => "modal", "data-dismiss"=>"modal",class: "hint"
+      .modal-body
+        .col-sm-5
+          %form
+            .form-group
+              %label{for: "number"} Enter Number
+              %input#number_input.form-control
+            .form-group
+              %label{for: "label_for_number"} Label for figure
+              %input#label_for_number.form-control
+              .form-group
+              %input#enable_difference{type: "checkbox"} 
+              %label{for: "label_for_enable_difference"} Enable comparative value
+              / %label{for: "label_for_number"} Label for figure
+            .form-group
+              %label{for: "plus_or_minus"} +/-
+              %select#plus_or_minus.form-control{name: "select"}
+                %option{value: "+", selected: "selected"} Plus
+                %option{value: "-"} Minus
+            .form-group
+              %label{for: "value_for_plus_or_minus"} Value of +/-
+              %input#diff_for_plus_or_minus.form-control
+            %input#preview_number_button.btn.btn-default{type: "button", value: "Preview"}
+            = f.submit "Create", class: "btn btn-orange card_submit_button", "data-card_type" => "number"
+        .col-sm-1
+        .col-sm-6
+          #number_preview{style: "font-size:2em"}
+            .col-sm-9
+              %span#number_input_value
+            .col-sm-3
+              %span#diff
+                %span#plus_or_minus_value.glyphicon
+                %span#diff_for_plus_or_minus_value
+            %br
+            #label_for_number_value.text-center
+        .clearfix
+        %br

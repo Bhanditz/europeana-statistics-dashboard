@@ -46,7 +46,7 @@ class Core::Datacast < ActiveRecord::Base
   validates :core_project_id, presence: true
   validates :core_db_connection_id, presence: true
   validates :query,presence: true
-  validates :table_name,uniqueness: {scope: :core_db_connection_id}
+  validates :table_name,uniqueness: {scope: :core_db_connection_id}, allow_blank: true, allow_nil: true
   validates :identifier, presence: true, uniqueness: true
 
   #CALLBACKS
@@ -203,7 +203,7 @@ class Core::Datacast < ActiveRecord::Base
     self.number_of_rows = 0
     self.method = "get"
     self.error = ""
-    self.format = "csv" if self.format.nil?
+    self.format = "json" if self.format.nil?
     self.refresh_frequency = "0" if self.refresh_frequency.nil?
     true
   end

@@ -21,6 +21,7 @@ class Core::ArticleCard < ActiveRecord::Base
   #ASSOCIATIONS
   belongs_to :core_article, class_name: "Core::Article", foreign_key: "core_article_id"
   belongs_to :core_card, class_name: "Core::Card", foreign_key: "core_card_id"
+  accepts_nested_attributes_for :core_card
   #VALIDATIONS
   validates :core_article_id, presence: true
   validates :core_card_id, presence: true

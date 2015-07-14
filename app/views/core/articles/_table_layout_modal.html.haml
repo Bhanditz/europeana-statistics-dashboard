@@ -1,0 +1,16 @@
+#core_table_layout_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1","data-backdrop" => "static"}
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4#myModalLabel.modal-title
+          ="#{Constants::ARTICLE_LAYOUTS_TABLE} Panel"
+          / = link_to "< back","#","data-target" => "#core_card_layout_modal", "data-toggle" => "modal", "data-dismiss"=>"modal",class: "hint"
+      .modal-body
+        / Simple form for @core_card
+        = f.input :core_datacast_identifier ,collection: @core_datacasts, include_blank: "Select a Datacast",label: "Datacast name"
+        #core_card_datacast_preview{style: "height:600px;width:100%;display:none;overflow:scroll"}
+        #core_card_datacast_preview_error
+        
+        = f.submit "Create", class: "btn btn-orange card_submit_button", "data-card_type" => "table"

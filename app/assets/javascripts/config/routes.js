@@ -47,6 +47,9 @@ window.onload = function () {
       Rumali.dataCastNewPage();
       Rumali.initDataCastGrid();
       break;
+    case "scopejs_articles_edit":
+    case "scopejs_articles_update":
+      Rumali.newArticleCreate();
     default:
   }
 };

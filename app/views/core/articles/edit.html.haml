@@ -1,7 +1,32 @@
-%h1 Editing Article
+= javascript_include_tag "articles"
+.previous-sheet
+  %h3
+    = show_project_name(@core_project).html_safe
+    %span.thin= " / "
+    = link_to "Articles", account_core_project_articles_path(@core_project.account, @core_project), class: "thin gray"
+  .panel.panel-default.sheet.sub
+    .panel-body
+      .row
+        .col-sm-12
+          .pull-left
+            %h4
+              = best_in_place @core_article, :name, {path: account_core_project_article_path(@account, @core_project, @core_article), type: :input, html_attrs: {style: "width:100%"}}
+          .pull-right
+            .btn-group
+              = link_to "New Panel <span class='caret'></span>".html_safe, "#", class: "btn btn-orange dropdown-toggle","aria-expanded" => "false","aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"
+              %ul.dropdown-menu
+                - @core_card_layouts.each_with_index do |card_layout, index|
+                  %li
+                    %a{href: '#',"data-target" => "#core_#{card_layout.name.downcase}_layout_modal", "data-toggle" => "modal", class: "layout_modal_links", "data-layout_id" => card_layout.id, "data-dismiss"=>"modal"}= card_layout.name
 
-= render 'form'
 
-= link_to 'Show', account_core_project_article_path(@account, @core_project, @core_article)
-\|
-= link_to 'Back', ccount_core_project_articles_path(@account, @core_project)
+= simple_form_for(@core_card, url: account_core_project_cards_path(@account, @core_project), method: :post, remote: true, format: :json, input_html: {class: "form-control"}) do |f|
+  = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
+  = f.input :core_card_layout_id,as: :hidden
+  = f.input :content,as: :hidden
+
+  = render partial: "image_layout_modal", locals: {f: f}
+  = render partial: "text_layout_modal", locals: {f: f}
+  = render partial: "table_layout_modal", locals: {f: f}
+  = render partial: "number_layout_modal", locals: {f: f}
+
