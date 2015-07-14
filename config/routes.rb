@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   resources :accounts do
     get "revoke_session", on: :member
+    
     namespace :core do
       resources :account_emails do
         get "confirmation", "resend_confirmation", on: :member
@@ -33,6 +34,16 @@ Rails.application.routes.draw do
         resources :datacast_pulls,only: [:create,:destroy,:edit,:update]
         resources :cards
         resources :articles
+      end
+    end
+  end
+  
+  resources :accounts do
+    resources :projects do
+      namespace :impl do
+        resources :aggregations do
+          resources :providers
+        end
       end
     end
   end

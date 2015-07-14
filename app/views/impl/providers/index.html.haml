@@ -1,0 +1,48 @@
+.previous-sheet
+  %h3
+    = show_project_name(@core_project).html_safe
+    %span.gray= " / "
+    = link_to "Aggregations", account_project_impl_aggregations_path(@core_project.account, @core_project), class: "thin"
+  .panel.panel-default.sheet.sub
+    .panel-body
+      .row
+        .col-sm-9
+          %h4 
+            Aggregation: 
+            = @impl_aggregation.name
+          %p.gray Aggregate data with various provider ids
+          %hr
+          = simple_form_for(@impl_provider, url: account_project_impl_aggregation_providers_path(@core_project.account, @core_project, @impl_aggregation), method: "post") do |f|
+            = f.error_notification
+            .form-inputs
+              %table
+                %tr
+                  %td
+                    = f.input :impl_aggregation_id, input_html: {value: @impl_aggregation.id}, as: :hidden
+                    = f.input :provider_id
+                  %td
+                    &nbsp; &nbsp;
+                  %td= f.button :submit, "Add"
+          %table.table.table-condensed
+            %thead
+              %tr
+                %th Provider
+                %th
+            %tbody
+              - @impl_providers.each do |impl_provider|
+                %tr
+                  %td= impl_provider.provider_id
+                  %td= icon_del(account_project_impl_aggregation_provider_path(@core_project.account, @core_project, @impl_aggregation, impl_provider))
+        .col-sm-3
+          .well
+            %h5 Edit Aggregator
+            %hr
+            = simple_form_for(@impl_aggregation, url: account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), method: "put") do |f|
+              = f.error_notification
+              .form-inputs
+                = f.input :genre, hint: "Provider, Data Provider, County"
+                = f.input :name
+                = f.input :wikiname
+              .form-actions
+                = f.button :submit, "Save"
+          

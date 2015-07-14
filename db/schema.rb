@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150705144014) do
+
+ActiveRecord::Schema.define(version: 20150705144533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -271,6 +272,28 @@ ActiveRecord::Schema.define(version: 20150705144014) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
+
+  create_table "impl_aggregations", force: :cascade do |t|
+    t.integer  "core_project_id"
+    t.string   "genre"
+    t.string   "name"
+    t.string   "wikiname"
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.integer  "last_requested_at"
+    t.integer  "last_updated_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "impl_providers", force: :cascade do |t|
+    t.integer  "impl_aggregation_id"
+    t.string   "provider_id"
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
 
   create_table "ref_charts", force: :cascade do |t|
     t.string  "name"
