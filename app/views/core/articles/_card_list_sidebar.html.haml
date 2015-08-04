@@ -1,0 +1,4 @@
+- if @all_article_cards.present? and @all_article_cards.count > 0
+  #card_list
+  - @all_article_cards.each do |card|
+    = card.id

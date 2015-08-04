@@ -18,9 +18,11 @@
                 - @core_card_layouts.each_with_index do |card_layout, index|
                   %li
                     %a{href: '#',"data-target" => "#core_#{card_layout.name.downcase}_layout_modal", "data-toggle" => "modal", class: "layout_modal_links", "data-layout_id" => card_layout.id, "data-dismiss"=>"modal"}= card_layout.name
+      .row
+        .col-sm-4
+          = render partial: "card_list_sidebar", locals: {all_article_cards: @all_article_cards}
 
-
-= simple_form_for(@core_card, url: account_core_project_cards_path(@account, @core_project), method: :post, remote: true, format: :json, input_html: {class: "form-control"}) do |f|
+= simple_form_for(@core_card, url: account_core_project_cards_path(@account, @core_project, format: :json), method: :post, remote: true, input_html: {class: "form-control"}) do |f|
   = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
   = f.input :core_card_layout_id,as: :hidden
   = f.input :content,as: :hidden
@@ -29,4 +31,5 @@
   = render partial: "text_layout_modal", locals: {f: f}
   = render partial: "table_layout_modal", locals: {f: f}
   = render partial: "number_layout_modal", locals: {f: f}
+  = render partial: "name_input_modal", locals: {f: f}
 

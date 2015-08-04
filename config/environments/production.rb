@@ -13,6 +13,7 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
+  config.active_record.raise_in_transactional_callbacks = true
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
   # Add `rack-cache` to your Gemfile before enabling this.
@@ -112,6 +113,15 @@ Rails.application.configure do
   #Resque.redis = redis_client
   # Logo Bucket
   S3_BUCKET_LOGO = "rumi.logos"
+
+  #GA IDS
+  GA_CLIENT_ID = "599221898843-7oc1qsiruqh65iemmq45oceck0kp1g49.apps.googleusercontent.com"
+  GA_CLIENT_SECRET = "-_VGYZBgcqf1ju1poeuDn3gJ"
+  GA_SCOPE = "https://www.googleapis.com/auth/analytics"
+  GA_REFRESH_TOKEN = "1/ATA4d0qo-2q5j9N4Mw-f0uRgt-wH_UGMrl1G62zvWeg"
+  GA_IDS = "25899454"
+  GA_ENDPOINT = "https://www.googleapis.com/analytics/v3/data/ga"
+
 
   ActionMailer::Base.delivery_method = :smtp
   

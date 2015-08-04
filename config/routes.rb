@@ -1,9 +1,9 @@
-require 'sidekiq/pro/web'
+# require 'sidekiq/pro/web'
 Rails.application.routes.draw do
   
-  authenticate :account, lambda { |u| u.is_admin? } do
-    mount Sidekiq::Web, at: '/workers.engine'
-  end
+  # authenticate :account, lambda { |u| u.is_admin? } do
+  #   mount Sidekiq::Web, at: '/workers.engine'
+  # end
 
   devise_for :accounts, :controllers => { :registrations => 'core/registrations' }, :path => 'accounts', :path_names => {:sign_up => 'get_in_only_while_rumi_is_in_beta_version'}
 
@@ -42,6 +42,7 @@ Rails.application.routes.draw do
     resources :projects do
       namespace :impl do
         resources :aggregations do
+          get "restart_all_aggregation_workers", on: :member
           resources :providers
         end
       end
@@ -70,7 +71,8 @@ Rails.application.routes.draw do
   get "/:account_id/:project_id/data/:data_id/charts/:id/embed", to: "core/vizs#embed", as: "_embed_visualization_account_project_data_store"
   #
   get "/:account_id/:project_id/charts", to: "core/vizs#index", as: "_account_project_vizs"
-  #  
+  #
+  #
   #ROOT URL --------------------------------------------------------------
   root "static_pages#index"
 

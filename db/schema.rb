@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20150705144533) do
+ActiveRecord::Schema.define(version: 20150803184242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -282,17 +281,33 @@ ActiveRecord::Schema.define(version: 20150705144533) do
     t.integer  "updated_by"
     t.integer  "last_requested_at"
     t.integer  "last_updated_at"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "provider_ids",      default: [],              array: true
+    t.string   "status"
+    t.string   "error_messages"
+  end
+
+  create_table "impl_outputs", force: :cascade do |t|
+    t.text     "output"
+    t.string   "genre"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.string   "impl_parent_type"
+    t.integer  "impl_parent_id"
+    t.string   "status"
+    t.string   "error_messages"
   end
 
   create_table "impl_providers", force: :cascade do |t|
-    t.integer  "impl_aggregation_id"
     t.string   "provider_id"
     t.integer  "created_by"
     t.integer  "updated_by"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.string   "status"
+    t.string   "error_messages"
+    t.integer  "impl_aggregation_id"
   end
 
   create_table "ref_charts", force: :cascade do |t|
@@ -310,6 +325,13 @@ ActiveRecord::Schema.define(version: 20150705144533) do
     t.string  "source"
     t.string  "file_path"
     t.integer "sort_order"
+  end
+
+  create_table "ref_country_codes", force: :cascade do |t|
+    t.string   "country"
+    t.string   "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

@@ -24,7 +24,6 @@ GIT
 
 GEM
   remote: https://rubygems.org/
-  remote: https://257ae126:45e60663@gems.contribsys.com/
   specs:
     CFPropertyList (2.3.1)
     actionmailer (4.2.1)
@@ -67,6 +66,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
+    aescrypt (1.0.0)
     annotate (2.6.10)
       activerecord (>= 3.2, <= 4.3)
       rake (~> 10.4)
@@ -346,6 +346,8 @@ GEM
       netrc (~> 0.7)
     rmagick (2.13.4)
     ruby-graphviz (1.2.2)
+    ruby-jq (0.1.6)
+      multi_json
     ruby_parser (3.7.0)
       sexp_processor (~> 4.1)
     sass (3.2.19)
@@ -364,8 +366,6 @@ GEM
       json
       redis (>= 3.0.6)
       redis-namespace (>= 1.3.1)
-    sidekiq-pro (2.0.3)
-      sidekiq (>= 3.3.2)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -415,6 +415,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store
+  aescrypt
   annotate (>= 2.6.0)
   aws-sdk
   aws-sdk-core
@@ -446,10 +447,11 @@ DEPENDENCIES
   redis
   rest-client
   rmagick (= 2.13.4)
+  ruby-jq (= 0.1.6)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   sentry-raven!
-  sidekiq-pro
+  sidekiq
   simple_form!
   sinatra (>= 1.3.0)
   slim

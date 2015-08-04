@@ -2,8 +2,8 @@
 #
 # Table name: core_datacast_outputs
 #
-#  id                  :integer          not null
-#  datacast_identifier :string           not null, primary key
+#  id                  :integer          not null, primary key
+#  datacast_identifier :string           not null
 #  core_datacast_id    :integer          not null
 #  output              :text
 #  fingerprint         :text

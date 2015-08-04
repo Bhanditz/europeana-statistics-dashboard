@@ -8,6 +8,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
+  config.active_record.raise_in_transactional_callbacks = true
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
@@ -66,6 +67,15 @@ Rails.application.configure do
   SOFTLAYER_CONTAINER_NAME  = "rumi.io.local"
   # Logo Bucket
   S3_BUCKET_LOGO = "rumi.logos.local"
+
+
+  #GA IDS
+  GA_CLIENT_ID = "599221898843-7oc1qsiruqh65iemmq45oceck0kp1g49.apps.googleusercontent.com"
+  GA_CLIENT_SECRET = "-_VGYZBgcqf1ju1poeuDn3gJ"
+  GA_SCOPE = "https://www.googleapis.com/auth/analytics"
+  GA_REFRESH_TOKEN = "1/ATA4d0qo-2q5j9N4Mw-f0uRgt-wH_UGMrl1G62zvWeg"
+  GA_IDS = "25899454"
+  GA_ENDPOINT = "https://www.googleapis.com/analytics/v3/data/ga"
 
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {

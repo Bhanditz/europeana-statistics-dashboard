@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-source "https://257ae126:45e60663@gems.contribsys.com/"
 
 ruby '2.2.2'
 
@@ -29,11 +28,13 @@ gem 'carrierwave'
 gem 'carrierwave_direct'
 gem 'csvlint'
 gem 'gon', '~> 5.2.3'
+gem 'ruby-jq', '0.1.6'
 
 gem 'activerecord-session_store'
+gem 'aescrypt'
 
 #-WORKERS_SYSTEM
-gem 'sidekiq-pro'
+gem 'sidekiq'
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem "slim"
 

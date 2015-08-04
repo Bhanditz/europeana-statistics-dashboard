@@ -71,3 +71,5 @@ en:
     f: "Recalibrating metadata failed"
   datacast:
     specify_table: "You need to specify table name"
+  aggregation:
+    refreshed_all_jobs: "Refrehsing all background jobs"

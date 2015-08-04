@@ -27,12 +27,12 @@ class Core::Card < ActiveRecord::Base
   store_accessor :properties
   #ACCESSORS
   #ASSOCIATIONS
-  belongs_to :core_project_id, class_name: "Core::Project", foreign_key: "core_project_id"
+  belongs_to :core_project, class_name: "Core::Project", foreign_key: "core_project_id"
   has_many :core_article_cards, class_name: "Core::ArticleCard", foreign_key: "core_card_id"
   #VALIDATIONS
   mount_uploader :image, ImageUploader
   validates :name, presence: true
-  validates :template, presence: true
+  validates :core_card_layout_id, presence: true
   validate  :validate_filesize
 
   #validates :core_datacast_identifier, if: check_for_mandatory_params
@@ -47,7 +47,7 @@ class Core::Card < ActiveRecord::Base
   # end
 
   def validate_filesize
-    if (self.image.size.to_f/1000).round(2) > 200
+    if self.image.present? && (self.image.size.kilobytes) > 200
       self.errors.add(:filesize,"maximum 200 KB allowed")
     end
   end
@@ -65,6 +65,7 @@ class Core::Card < ActiveRecord::Base
 
     def before_create_set
       self.is_public = self.is_public.present? ? self.is_public : false
+      self.filesize = self.image.size.kilobytes if self.image.present?
       true
     end
 

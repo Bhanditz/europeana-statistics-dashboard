@@ -21,14 +21,13 @@ class Core::CardsController < ApplicationController
   # POST /core_cards
   # POST /core_cards.json
   def create
-    s
     @core_card = Core::Card.new(core_card_params)
     respond_to do |format|
       if @core_card.save
-        format.html { redirect_to ccount_core_project_card_path(@account, @core_project, @core_card), notice: t("c.s") }
+        format.html { redirect_to account_core_project_card_path(@account, @core_project, @core_card), notice: t("c.s") }
         format.json { render json: @core_card, status: :created}
       else
-        format.html {render :new}
+        format.html { render :new }
         format.json { render json: @core_card.errors, status: :unprocessable_entity }
       end
     end

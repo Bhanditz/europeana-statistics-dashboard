@@ -30,7 +30,7 @@ class Constants
   AMAZON_REGION = "ap-southeast-1" 
   AMAZON_S3_ENDPOINT = "https://s3-ap-southeast-1.amazonaws.com/"
   AMAZON_S3_BUCKET = Rails.env.development? ? "rumi.io.local" : "rumi.io"
-  
+
   Aws.config.update({access_key_id: Constants::AMAZON_ACCESS_KEY_ID, 
                secret_access_key: Constants::AMAZON_SECRET_ACCESS_KEY, 
                region: Constants::AMAZON_REGION})
@@ -51,10 +51,14 @@ class Constants
   STUPID_USERNAMES = ["about","account","add","admin","api","app","apps","archive","archives","auth","better","billing","blog","cache","cdn","changelog","codereview","compare","config","connect","contact","create","delete","dev","direct_messages","downloads","edit","email","enterprise","faq","favorites","feed","feeds","follow","followers","following","ftp","gist","help","home","hosting","imap","invitations","invite","jobs","lists","log","login","logout","logs","mail","map","maps","master","messages","mine","news","next","oauth","oauth_clients","openid","organizations","plans","pop","popular","privacy","production","projects","register","remove","replies","rss","rsync","save","search","security","sessions","settings","sftp","shop","signup","sitemap","ssh","ssl","staging","status","stories","styleguide","subscribe","support","terms","tour","translations","trends","unfollow","unsubscribe","url","user","widget","widgets","wiki","www","xfn","xmpp", "404","account","accounts","admin","admins","administrator","administrators","billing","block","blog","bot","bots","bug","bugs","calendar","careers","chat","checkuser","client","clients","comment","comments","contract","contracts","create","customer","customers","customersupport","dev","development","download","downloads","ecommerce","enquiries","error","errors","event","events","faq","feedback","flock","form","forms","forum","github","help","herd","home","info","internal","invoice","invoices","issue","issues","job","jobs","log","mail","manual","new","news","office","press","print","recruit","script","scripts","service","services","shepherd","shepherdess","staff","staging","support","sysop","team","training","trainings","troll","version","video","videos","webmail","wiki","test","testing","tester","beta","mobile","list","site","friend","member"]
 
   #Constants::ARTICLE_LAYOUTS
-  Constants::ARTICLE_LAYOUTS_TEXT = "Text"
-  Constants::ARTICLE_LAYOUTS_IMAGE = "Image"
-  Constants::ARTICLE_LAYOUTS_TABLE = "Table"
-  Constants::ARTICLE_LAYOUTS_NUMBER = "Number"
+  ARTICLE_LAYOUTS_TEXT = "Text"
+  ARTICLE_LAYOUTS_IMAGE = "Image"
+  ARTICLE_LAYOUTS_TABLE = "Table"
+  ARTICLE_LAYOUTS_NUMBER = "Number"
+
+  #Constants::SOCIALINTEGRATIONSALT
+
+  SOCIALINTEGRATIONSALT = "d21642f275f260588353b815836e77d0 "
 
 
 end

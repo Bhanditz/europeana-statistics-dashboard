@@ -6,21 +6,17 @@ if Rails.env.production?
   
   Sidekiq.configure_server do |config|
     config.redis = { :url => ENV["REDISTOGO_URL"], :namespace => 'sidekiq' }
-    config.reliable_fetch!
-    config.reliable_scheduler!
     #require 'sidekiq/pro/reliable_fetch'
   end
 
   Sidekiq.configure_client do |config|
-    Sidekiq::Client.reliable_push!
+    # Sidekiq::Client.reliable_push!
     config.redis = { :url => ENV["REDISTOGO_URL"], :namespace => 'sidekiq' }
   end
 else
     
   #require 'sidekiq/pro/reliable_push'
   
-  Sidekiq.configure_server do |config|
-    config.reliable_fetch!
-    config.reliable_scheduler!
-  end
+  # Sidekiq.configure_server do |config|
+  # end
 end

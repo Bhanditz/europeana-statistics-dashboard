@@ -64,6 +64,8 @@ namespace :ref do
       Core::CardLayout.create!({name: name, template: template, img: img, sort_order: sort_order})
     end
 
+    puts '----> Seeding Ref::CountryCode'
+    Ref::CountryCode.seed
     puts "----> Done"
   end
 

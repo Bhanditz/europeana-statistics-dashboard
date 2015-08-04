@@ -1,5 +1,5 @@
 - content_for :title do
-  Sign In · Rumi
+  Sign In · Europeana
 
 .row.session-new
   .col-sm-4
@@ -9,7 +9,7 @@
         %h4.text-center
           %span.sign-in-text Sign in to
           %br
-          %strong.rumi-datahub-text Rumi DataHub
+          %strong.rumi-datahub-text Europeana
         .col-sm-12.index
           = simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form"}) do |f|
             = f.input :username, autofocus: true, required: true, input_html: {style: "width: 100%;"}

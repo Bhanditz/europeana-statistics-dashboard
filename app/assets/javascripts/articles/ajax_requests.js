@@ -9,7 +9,7 @@ var handsontble_config = {
 }
 Rumali.newArticleCreate = function () {
   $(".layout_modal_links").on("click", function () {
-    $("#core_card_core_card_layout_id").val($(this).data().layout_id)
+    $("#core_card_core_card_layout_id").val(parseInt($(this).data().layout_id),10)
   });
   $("#core_card_core_datacast_identifier").on("change", function (){
     var datacast_identifier = this.value;
@@ -39,7 +39,7 @@ Rumali.newArticleCreate = function () {
     }
   })
 
-  $(".card_submit_button").on("click", function(){
+  $("#card_submit_button").on("click", function(){
     var card_content = this.dataset.card_type,
     content = "";
     switch (card_content) {
@@ -53,7 +53,7 @@ Rumali.newArticleCreate = function () {
         content = $("#number_preview").parent().html().trim();
         break;
     }
-    if(!validate_content(content)) {
+    if(card_content !== 'table' && !validate_content(content)) {
       return false
     }
   })
@@ -82,3 +82,15 @@ var scrolling = function(opt){
     $("#text_card_preview").scrollTop($("#input").scrollTop());
   } 
 }
+
+var validate_content = function(content){
+  if (content === ""){
+    return false
+  }
+  return true
+}
+
+
+$( document ).ajaxComplete(function( event, xhr, settings ) {
+  console.log(xhr)
+});

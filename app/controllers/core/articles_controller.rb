@@ -24,6 +24,7 @@ class Core::ArticlesController < ApplicationController
     @core_card_layouts = Core::CardLayout.all
     @core_datacasts = @core_project.core_datacasts.where("properties -> 'format' = 'json'").map {|d| [d.name, d.identifier]}
     @core_card = Core::Card.new
+    @all_article_cards = @core_article.core_cards
   end
 
   # POST /core_articles
