@@ -4,7 +4,8 @@ class StaticPagesController < ApplicationController
 
   def index
     if account_signed_in?
-      redirect_to dashboard_path(current_account)
+      p = Core::Project.first
+      redirect_to _account_project_path(p.account, p)
     end
   end
   

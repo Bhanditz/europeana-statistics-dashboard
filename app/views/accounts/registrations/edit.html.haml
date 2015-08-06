@@ -1,11 +1,16 @@
 - content_for :title do
   Security · #{current_account.username}
 .row
-  .col-sm-2= render partial: "accounts/sidebar"
+  - if 1 == 2
+    .col-sm-2= render partial: "accounts/sidebar"
   .col-sm-8
+    %br
     .panel.panel-default
       .panel-heading
-        .panel-title Change Password
+        .panel-title 
+          Change Password for username:
+          %b
+            %u= @account.username
       .panel-body
         .col-sm-8
           = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: {method: :put, class: "form-horizontal"}) do |f|
@@ -13,29 +18,30 @@
             = f.input :current_password, as: :password, autocomplete: "off", required: true, hint: "We need your current password to confirm your changes"
             = f.input :password, as: :password, required: true, label: "New Password"
             = f.button :submit, "Change Password"
-    .panel.panel-default
-      .panel-heading
-        .panel-title Activity on this account
-      .panel-body
-        %p.pykhelp The system tracks unique open sessions into your account along with activity performed by each session.
-        %hr
-        - if @logged_in_from_multiple_sources == 1
-          %p This account does not seem to be open in any other location. However, there may be sessions that have not been signed out.
-        - else
-          %table.table.table-condensed
-            - @sessions.each do |s|
-              %tr
-                %td
-                  %table
-                    %tr
-                      %td
-                        - if s.is_active?
-                          %b.glyphicon.glyphicon-eye-open{style: "color: green;"}
-                          &nbsp;
-                        - else
-                          %b.glyphicon.glyphicon-eye-close{style: "color: gray;"}
-                          &nbsp;
-                      %td= s.ip
-                  %b= time_ago_in_words(s.created_at)
-                  .hint= s.blurb
-                  = link_to "Revoke Session", revoke_session_account_path(@account, s: s.session_id), class: "btn btn-xs btn-default"
+    - if 1 == 2
+      .panel.panel-default
+        .panel-heading
+          .panel-title Activity on this account
+        .panel-body
+          %p.pykhelp The system tracks unique open sessions into your account along with activity performed by each session.
+          %hr
+          - if @logged_in_from_multiple_sources == 1
+            %p This account does not seem to be open in any other location. However, there may be sessions that have not been signed out.
+          - else
+            %table.table.table-condensed
+              - @sessions.each do |s|
+                %tr
+                  %td
+                    %table
+                      %tr
+                        %td
+                          - if s.is_active?
+                            %b.glyphicon.glyphicon-eye-open{style: "color: green;"}
+                            &nbsp;
+                          - else
+                            %b.glyphicon.glyphicon-eye-close{style: "color: gray;"}
+                            &nbsp;
+                        %td= s.ip
+                    %b= time_ago_in_words(s.created_at)
+                    .hint= s.blurb
+                    = link_to "Revoke Session", revoke_session_account_path(@account, s: s.session_id), class: "btn btn-xs btn-default"

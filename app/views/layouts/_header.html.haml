@@ -4,8 +4,7 @@
       .navbar-header.page-scroll
         = link_to image_tag("europeana-logo.png", style: "margin-top: 10px;"), root_url
       %ul.nav.navbar-nav.navbar-right
-        %li= link_to image_tag(account_image(current_account, 25), style: "display:inline"), _account_path(current_account, "projects"), "data-toggle"=>"tooltip", "data-placement"=>"bottom", title: "My Profile"
-        %li= link_to "<b class='glyphicon glyphicon-cog'></b>".html_safe, _edit_account_path(current_account), style: "color: black;", "data-intro" => "Manage your profile & org. accounts from here.", "data-position" => "left"
+        %li= link_to "<b class='glyphicon glyphicon-cog'></b>".html_safe, edit_account_registration_path(current_account), style: "color: black;", "data-intro" => "Manage your profile & org. accounts from here.", "data-position" => "left"
         %li= link_to "<b class='glyphicon glyphicon-off'></b>".html_safe, destroy_account_session_path, style: "color: black;", "data-toggle"=>"tooltip", "data-placement"=>"bottom", title: "Sign Out"
 - else
   %nav.navbar.navbar-default.cstm-navbar{:role => "navigation"}
@@ -20,12 +19,3 @@
               %span.icon-bar
               %span.icon-bar
             %h1{style: "margin-left:10px; margin-top:10px; font-size: 24px;"}= link_to image_tag("europeana-logo.png"), root_url
-          / Collect the nav links, forms, and other content for toggling
-          #bs-example-navbar-collapse-2.collapse.navbar-collapse
-            %ul.nav.navbar-nav.navbar-right{style: "font-size: 13px; a{color: gray;}"}
-              %li= link_to "Overview", root_url,class: action_name=='index' ? "cstm-active" :  ""
-              - if Rails.env.development?
-                -if  1 == 2
-                  %li= link_to "Tour", tour_path,class: action_name=='tour' ? "cstm-active" :  ""
-                  %li= link_to "Enterprise", enterprise_path,class: action_name=='enterprise' ? "cstm-active" :  ""
-                %li= link_to "Sign Up", new_account_registration_path,class: controller_name=='registrations' ? "cstm-active" :  ""

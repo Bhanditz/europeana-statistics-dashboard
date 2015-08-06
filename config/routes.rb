@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   #   mount Sidekiq::Web, at: '/workers.engine'
   # end
 
-  devise_for :accounts, :controllers => { :registrations => 'core/registrations' }, :path => 'accounts', :path_names => {:sign_up => 'get_in_only_while_rumi_is_in_beta_version'}
+  devise_for :accounts, :controllers => { :registrations => 'core/registrations' }, :path => 'accounts', :path_names => {:sign_up => 'secret_signup_only'}
 
   #NORMAL ROUTES --------------------------------------------------------------
 

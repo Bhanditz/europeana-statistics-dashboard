@@ -26,12 +26,15 @@ module ApplicationHelper
   end
   
   def show_project_name(p)
-    if !p.is_public
-      str = "<b class='glyphicon glyphicon-lock' style='color: #FFF700; margin-left: 30px;'></b> "
-    else
-      str = "<b style='margin-left: 30px;'></b> "
-    end    
-    str = str + "<a class='thin gray' style='letter-spacing: -1px;' href='#{_account_path(p.account)}'>#{p.account.username}</a> <span class='thin'> /</span> <u><a style='letter-spacing: -1px;' href='#{_account_project_path(p.account, p)}'>#{p.name}</a></u>"
+    if 1 == 2
+      if !p.is_public
+        str = "<b class='glyphicon glyphicon-lock' style='color: #FFF700; margin-left: 30px;'></b> "
+      else
+        str = "<b style='margin-left: 30px;'></b> "
+      end
+      str = str + "<a class='thin gray' style='letter-spacing: -1px;' href='#{_account_path(p.account)}'>#{p.account.username}</a> <span class='thin'> /</span> <u><a style='letter-spacing: -1px;' href='#{_account_project_path(p.account, p)}'>#{p.name}</a></u>"
+    end
+    str = "<a class='thin gray' style='letter-spacing: -1px; margin-left: 30px;' href='#{_account_project_path(p.account, p)}'>Home</a>"
     return str.html_safe
   end
   
