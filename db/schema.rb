@@ -272,6 +272,15 @@ ActiveRecord::Schema.define(version: 20150805095431) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
+  create_table "impl_aggregation_datapoints", force: :cascade do |t|
+    t.integer  "impl_aggregation_id"
+    t.string   "key"
+    t.integer  "val"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.string   "genre"
+  end
+
   create_table "impl_aggregation_providers", force: :cascade do |t|
     t.integer  "impl_aggregation_id"
     t.integer  "impl_provider_id"
@@ -280,7 +289,6 @@ ActiveRecord::Schema.define(version: 20150805095431) do
   end
 
   create_table "impl_aggregations", force: :cascade do |t|
-    t.integer  "core_project_id"
     t.string   "genre"
     t.string   "name"
     t.string   "wikiname"
@@ -290,8 +298,18 @@ ActiveRecord::Schema.define(version: 20150805095431) do
     t.integer  "last_updated_at"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.string   "country"
     t.string   "status"
-    t.string   "error_messages"
+    t.text     "error"
+  end
+
+  create_table "impl_aggregator_providers", force: :cascade do |t|
+    t.integer  "impl_aggregation_id"
+    t.integer  "impl_provider_id"
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "impl_outputs", force: :cascade do |t|
@@ -309,11 +327,10 @@ ActiveRecord::Schema.define(version: 20150805095431) do
     t.string   "provider_id"
     t.integer  "created_by"
     t.integer  "updated_by"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.string   "status"
     t.string   "error_messages"
-    t.integer  "impl_aggregation_id"
   end
 
   create_table "ref_charts", force: :cascade do |t|
