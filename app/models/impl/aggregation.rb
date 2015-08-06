@@ -13,7 +13,6 @@
 #  last_updated_at   :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  provider_ids      :string           default([]), is an Array
 #  status            :string
 #  error_messages    :string
 #
@@ -25,7 +24,8 @@ class Impl::Aggregation < ActiveRecord::Base
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
-  has_many :impl_providers, class_name: "Impl::Provider", foreign_key: "impl_aggregation_id", dependent: :destroy
+  has_many :impl_aggregation_providers, class_name: "Impl::AggregationProvider", foreign_key: "impl_aggregation_id", dependent: :destroy
+  has_many :impl_providers, through: :impl_aggregation_providers
   has_many :impl_aggregation_outputs,-> {aggregation_output},class_name: "Impl::Output", foreign_key: "impl_parent_id", dependent: :destroy
   has_many :impl_provider_outputs, through: :impl_providers
   #ASSOCIATIONS
@@ -33,7 +33,6 @@ class Impl::Aggregation < ActiveRecord::Base
   validates :core_project_id, presence: true
   validates :genre, presence: true
   validates :name, presence: true
-  validates :provider_ids, presence: true
   
   #CALLBACKS
   before_create :before_create_set
@@ -52,12 +51,6 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def after_create_set
-    if self.provider_ids.count > 0
-      self.provider_ids.each do |p|
-        Impl::Provider.create(provider_id: p,impl_aggregation_id: self.id)
-      end
-    end
-    Impl::AggregationOutput.create(impl_aggregation_id: a.id)
     true
   end
 

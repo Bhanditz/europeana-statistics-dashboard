@@ -22,13 +22,12 @@ class Impl::Provider < ActiveRecord::Base
   #ATTRIBUTES
   #ACCESSORS
   #ASSOCIATIONS
-  belongs_to :impl_aggregation, class_name: "Impl::Aggregation", foreign_key: "impl_aggregation_id"
+  has_many :impl_aggregation_providers, class_name: "Impl::AggregationProvider", foreign_key: "impl_provider_id"
   has_many :impl_provider_outputs,->{provider_output} ,class_name: "Impl::Output", foreign_key: "impl_parent_id", dependent: :destroy
 
   #VALIDATIONS
   validates :provider_id, presence: :true
-  validates :impl_aggregation_id, presence: :true
-  
+
   #CALLBACKS
   before_create :before_create_set
   after_create :after_create_set
@@ -59,7 +58,6 @@ class Impl::Provider < ActiveRecord::Base
   end
 
   def after_create_set
-    # Impl::Provider.media_types_builder.perform_async(impl_provider_id)
     true
   end
   

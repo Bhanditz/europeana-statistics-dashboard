@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803184242) do
+ActiveRecord::Schema.define(version: 20150805095431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -272,6 +272,13 @@ ActiveRecord::Schema.define(version: 20150803184242) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
+  create_table "impl_aggregation_providers", force: :cascade do |t|
+    t.integer  "impl_aggregation_id"
+    t.integer  "impl_provider_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
   create_table "impl_aggregations", force: :cascade do |t|
     t.integer  "core_project_id"
     t.string   "genre"
@@ -281,9 +288,8 @@ ActiveRecord::Schema.define(version: 20150803184242) do
     t.integer  "updated_by"
     t.integer  "last_requested_at"
     t.integer  "last_updated_at"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.string   "provider_ids",      default: [],              array: true
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.string   "status"
     t.string   "error_messages"
   end

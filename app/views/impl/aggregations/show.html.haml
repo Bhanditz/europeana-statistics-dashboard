@@ -3,13 +3,10 @@
   .panel.panel-default.sheet.sub
     .panel-body
       .row
-        .col-sm-9
-          .col-sm-6
-            %h1= @impl_aggregation.name
-          .cols-sm-6
-            = link_to "Refresh data for last week", restart_all_aggregation_workers_account_project_impl_aggregation_path(@account, @core_project, @impl_aggregation), class: "btn btn-orange pull-right"
+        .col-sm-12
+          %h1= @impl_aggregation.name
+          = link_to "Refresh data for last week", restart_all_aggregation_workers_account_project_impl_aggregation_path(@account, @core_project, @impl_aggregation), class: "btn btn-orange pull-right"
           .clearfix
-          %hr= "Aggregation Jobs"
           %table.table.table-condensed
             %thead
               %th Genre
@@ -22,4 +19,4 @@
                   %td= output.genre
                   %td= output.status
                   %td= output.error_messages
-                  %td= link_to "Refresh", , class: "hint"
+                  %td= link_to "Refresh",nil, class: "hint"
