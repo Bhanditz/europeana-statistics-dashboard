@@ -36,7 +36,7 @@ class AccountsController < ApplicationController
     core_project_ids = @account.core_projects.pluck(:id).uniq
   end
   
-  private
+  # private
 
   def account_params
     params.require(:account).permit(:username, :email, :authentication_token,

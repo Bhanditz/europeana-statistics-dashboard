@@ -22,7 +22,7 @@ class Impl::Provider < ActiveRecord::Base
   #ATTRIBUTES
   #ACCESSORS
   #ASSOCIATIONS
-  has_many :impl_aggregation_providers, class_name: "Impl::AggregationProvider", foreign_key: "impl_provider_id"
+  has_many :impl_aggregation_providers, class_name: "Impl::AggregationProvider", foreign_key: "impl_provider_id", dependent: :destroy
   has_many :impl_provider_outputs,->{provider_output} ,class_name: "Impl::Output", foreign_key: "impl_parent_id", dependent: :destroy
 
   #VALIDATIONS

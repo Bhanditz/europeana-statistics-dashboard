@@ -1,4 +1,4 @@
-# == Schema Information
+  # == Schema Information
 #
 # Table name: impl_aggregations
 #
@@ -15,6 +15,7 @@
 #  updated_at        :datetime         not null
 #  status            :string
 #  error_messages    :string
+#  properties        :hstore
 #
 
 class Impl::Aggregation < ActiveRecord::Base
@@ -24,11 +25,12 @@ class Impl::Aggregation < ActiveRecord::Base
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
+  store_accessor :properties, :wikipedia_content
+  #ASSOCIATIONS
   has_many :impl_aggregation_providers, class_name: "Impl::AggregationProvider", foreign_key: "impl_aggregation_id", dependent: :destroy
   has_many :impl_providers, through: :impl_aggregation_providers
   has_many :impl_aggregation_outputs,-> {aggregation_output},class_name: "Impl::Output", foreign_key: "impl_parent_id", dependent: :destroy
   has_many :impl_provider_outputs, through: :impl_providers
-  #ASSOCIATIONS
   #VALIDATIONS
   validates :core_project_id, presence: true
   validates :genre, presence: true

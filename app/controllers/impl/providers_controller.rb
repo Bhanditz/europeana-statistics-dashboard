@@ -7,11 +7,12 @@ class Impl::ProvidersController < ApplicationController
     @impl_provider = Impl::Provider.new
   end
 
-  def create    
+  def create
     @impl_provider = Impl::Provider.new(impl_provider_params)
     @impl_provider.created_by = current_account.id
     @impl_provider.updated_by = current_account.id
     if @impl_provider.save
+      Impl::AggregationProvider.create({impl_aggregation_id: @impl_aggregation.id, impl_provider_id: @impl_provider.id})
       redirect_to account_project_impl_aggregation_providers_path(@core_project.account, @core_project, @impl_aggregation), notice: 'Impl provider was successfully created.'
     else
       @impl_providers = @impl_aggregation.impl_providers

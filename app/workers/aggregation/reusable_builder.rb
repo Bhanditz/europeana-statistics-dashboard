@@ -13,8 +13,8 @@ class Aggregation::ReusableBuilder
       begin
         reusables = Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{aggregation.genre.upcase}%3a%22#{CGI.escape(aggregation.name)}%22&facet=REUSABILITY&profile=facets&rows=0")
         if reusables["facets"].present?
-          reusable_data =  reusables["facets"].jq('.[0].fields | .[] | {name: .label, weight: .count}')
-          reusable_data_to_save = reusable_data.to_s
+          reusable_data =  reusables["facets"].jq('.[0].fields | .[] | {(.label):(.count)}')
+          Impl::StaticAttribute.create_or_update_static_data(reusable_data, aggregation_output.id)
           aggregation_output.update_attributes(output: reusable_data_to_save,status: "Processed Reusables")
           aggregation.update_attributes(status: "Processed Reusables")  
         else

@@ -13,7 +13,6 @@
                 %th Genre
                 %th Name
                 %th Wikiname
-                %th Provider Ids
                 %th
                 %th
             %tbody
@@ -22,7 +21,6 @@
                   %td= impl_aggregation.genre.titleize
                   %td= link_to impl_aggregation.name, account_project_impl_aggregation_path(@account, @core_project, impl_aggregation)
                   %td= impl_aggregation.wikiname
-                  %td= impl_aggregation.provider_ids.join(",")
                   %td= link_to 'Edit', account_project_impl_aggregation_providers_path(@core_project.account, @core_project, impl_aggregation)
                   %td= icon_del(account_project_impl_aggregation_path(@core_project.account, @core_project, impl_aggregation))
         .col-sm-3
@@ -37,6 +35,5 @@
                   = f.input :genre,collection: [["Provider","provider"],["Data Provider", "data_provider"],["Country", "country"]] ,hint: "Provider, Data Provider, County", include_blank: false
                   = f.input :name
                   = f.input :wikiname
-                  = f.input :provider_ids, label: "Provider Ids",hint: "Add comma seperated values"
                 .form-actions
                   = f.button :submit, "Create"

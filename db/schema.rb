@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150805095431) do
+ActiveRecord::Schema.define(version: 20150808101929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,6 +225,20 @@ ActiveRecord::Schema.define(version: 20150805095431) do
     t.datetime "updated_at"
   end
 
+  create_table "core_time_aggregations", force: :cascade do |t|
+    t.string   "aggregation_level"
+    t.string   "parent_type"
+    t.integer  "parent_id"
+    t.string   "aggregation_level_value"
+    t.string   "metric"
+    t.integer  "value"
+    t.integer  "difference_from_previous_value"
+    t.boolean  "is_positive_value"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "aggregation_index"
+  end
+
   create_table "core_tokens", force: :cascade do |t|
     t.integer  "account_id"
     t.integer  "core_project_id"
@@ -272,15 +286,6 @@ ActiveRecord::Schema.define(version: 20150805095431) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
-  create_table "impl_aggregation_datapoints", force: :cascade do |t|
-    t.integer  "impl_aggregation_id"
-    t.string   "key"
-    t.integer  "val"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.string   "genre"
-  end
-
   create_table "impl_aggregation_providers", force: :cascade do |t|
     t.integer  "impl_aggregation_id"
     t.integer  "impl_provider_id"
@@ -289,6 +294,7 @@ ActiveRecord::Schema.define(version: 20150805095431) do
   end
 
   create_table "impl_aggregations", force: :cascade do |t|
+    t.integer  "core_project_id"
     t.string   "genre"
     t.string   "name"
     t.string   "wikiname"
@@ -298,22 +304,12 @@ ActiveRecord::Schema.define(version: 20150805095431) do
     t.integer  "last_updated_at"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
-    t.string   "country"
     t.string   "status"
-    t.text     "error"
-  end
-
-  create_table "impl_aggregator_providers", force: :cascade do |t|
-    t.integer  "impl_aggregation_id"
-    t.integer  "impl_provider_id"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.string   "error_messages"
+    t.hstore   "properties"
   end
 
   create_table "impl_outputs", force: :cascade do |t|
-    t.text     "output"
     t.string   "genre"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
@@ -321,16 +317,27 @@ ActiveRecord::Schema.define(version: 20150805095431) do
     t.integer  "impl_parent_id"
     t.string   "status"
     t.string   "error_messages"
+    t.string   "key"
+    t.string   "value"
   end
 
   create_table "impl_providers", force: :cascade do |t|
     t.string   "provider_id"
     t.integer  "created_by"
     t.integer  "updated_by"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.string   "status"
     t.string   "error_messages"
+    t.integer  "impl_aggregation_id"
+  end
+
+  create_table "impl_static_attributes", force: :cascade do |t|
+    t.integer  "impl_output_id"
+    t.string   "key"
+    t.string   "value"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "ref_charts", force: :cascade do |t|

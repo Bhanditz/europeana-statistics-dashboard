@@ -13,9 +13,9 @@ class Aggregation::MediaTypesBuilder
       begin
         media_types =  Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{aggregation.genre.upcase}%3a%22#{CGI.escape(aggregation.name)}%22&facet=TYPE&profile=facets&rows=0")
         if media_types["facets"].present?
-          media_type_data =  media_types["facets"].jq('.[0].fields | .[] | {name: .label, weight: .count}')
-          media_type_data_to_save = media_type_data.to_s
-          aggregation_output.update_attributes(output: media_type_data_to_save,status: "Processed Media Types")
+          media_type_data =  media_types["facets"].first["fields"].jq(". [ ] | {(.label):(.count)}")
+          Impl::StaticAttribute.create_or_update_static_data(media_type_data, aggregation_output.id)
+          aggregation_output.update_attributes(status: "Processed Media Types")
           aggregation.update_attributes(status: "Processed Media Types")
         else
           raise "No media type detected"
