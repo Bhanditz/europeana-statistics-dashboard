@@ -23,6 +23,7 @@ Rails.application.routes.draw do
         resources :datacasts do
           post "preview","upload", on: :collection
           get "file", on: :collection
+          get "run_worker", on: :member
         end
         resources :tokens
         resources :data_stores do
@@ -42,8 +43,10 @@ Rails.application.routes.draw do
     resources :projects do
       namespace :impl do
         resources :aggregations do
-          get "restart_all_aggregation_workers", on: :member
-          resources :providers
+          get "restart_all_aggregation_workers","datacasts", on: :member
+          resources :providers do
+            get "restart_worker", on: :member
+          end
         end
       end
     end

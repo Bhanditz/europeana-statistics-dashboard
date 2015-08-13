@@ -14,6 +14,7 @@
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  aggregation_index              :integer
+#  aggregation_value_to_display   :string
 #
 
 class Core::TimeAggregation < ActiveRecord::Base
@@ -90,10 +91,7 @@ class Core::TimeAggregation < ActiveRecord::Base
 
   def self.create_digital_objects_aggregation(digital_objects_data,aggregation_level, provider_id)
     digital_objects_data.each do |d|
-      digital_objects_output = Impl::Output.find_or_create(provider_id,"Impl::Provider","top_digital_objects", key: "title", value: d["title"])
-      d.except("year", "month", "size","title").each do |key, value|
-        Impl::StaticAttribute.create_or_update(digital_objects_output.id, key, value)
-      end
+      digital_objects_output = Impl::Output.update_with_custom_attributes(provider_id,"Impl::Provider","top_digital_objects", d["title_url"],d["image_url"],key: "title", value: d["title"])
       month = d["month"]
       year  = d["year"]
       value = d["size"]

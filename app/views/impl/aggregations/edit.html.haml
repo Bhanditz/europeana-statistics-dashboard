@@ -2,32 +2,41 @@
   %h3
     = show_project_name(@core_project).html_safe
     %span.gray= " / "
-    = link_to "Aggregations", account_project_impl_aggregations_path(@core_project.account, @core_project), class: "thin"
+    = link_to "Reports", account_project_impl_aggregations_path(@core_project.account, @core_project), class: "thin"
   .panel.panel-default.sheet.sub
     .panel-body
       .row
         .col-sm-9
           %h4 
-            Aggregation: 
+            Report: 
             = @impl_aggregation.name
           %p.gray.pull-left Aggregate data with various provider ids
-          .pull-right= link_to "Datacasts",datacasts_account_project_impl_aggregation_path(@account, @core_project, @impl_aggregation), class: "btn btn-orange"
           .clearfix
           %hr
-          / .col-sm-6
-          /Here The Providers which are present, but not added should come
-          / .col-sm-6
+          %h3= "Refresh Reports"
+          .red
+            %h4= "Still Pending to Implement"
+          %hr
+          %h3= "Chart Creation"
+          .pending.red
+            %h4= "Still Pending to Implement"
+
+          %hr
+          %h3= "Preparing data for charts"
+          = render partial: "core/datacasts/index", locals: {core_datacasts: @core_datacasts}
+          %hr
+          %h3= "Data Pulling"
           = simple_form_for(@impl_provider, url: account_project_impl_aggregation_providers_path(@core_project.account, @core_project, @impl_aggregation), method: "post") do |f|
             = f.error_notification
             .form-inputs
               %table
                 %tr
                   %td
+                    = f.input :provider_id, label: false
                     = f.input :impl_aggregation_id, input_html: {value: @impl_aggregation.id}, as: :hidden
-                    = f.input :provider_id
                   %td
                     &nbsp; &nbsp;
-                  %td= f.button :submit, "Add"
+                  %td= f.button :submit, "Add a PId", style: "margin-top:-17px"
           - unless @impl_providers.blank?
             .pull-right
               = link_to "<span class='glyphicon glyphicon-refresh'>all</span>".html_safe, restart_all_aggregation_workers_account_project_impl_aggregation_path(@account, @core_project, @impl_aggregation)
@@ -35,30 +44,35 @@
           %table.table.table-condensed
             %thead
               %tr
-                %th Provider
+                %th
+                %th PId
                 %th Status
                 %th
                 %th
             %tbody
               - @impl_providers.each do |impl_provider|
                 %tr
-                  %td= impl_provider.provider_id
+                  %td
+                    = get_impl_status(impl_provider).html_safe
+                  %td
+                    = impl_provider.provider_id
                   %td
                     %strong= impl_provider.status
                     - if impl_provider.error_messages.present?
                       .hint= impl_provider.error_messages
-                  %td= link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, restart_worker_account_project_impl_aggregation_provider_path(@account, @core_project, @impl_aggregation, impl_provider)
+                  %td
+                    - if impl_provider.status.downcase.include?("failed")
+                      = link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, restart_worker_account_project_impl_aggregation_provider_path(@account, @core_project, @impl_aggregation, impl_provider)
                   %td= icon_del(account_project_impl_aggregation_provider_path(@core_project.account, @core_project, @impl_aggregation, impl_provider))
         .col-sm-3
           .well
-            %h5 Edit Aggregator
+            %h5 Edit Report
             %hr
             = simple_form_for(@impl_aggregation, url: account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), method: "put") do |f|
               = f.error_notification
               .form-inputs
-                = f.input :genre,collection: [["Provider","provider"],["Data Provider", "data_provider"],["Country", "country"]], selected: @impl_aggregation.genre ,hint: "Provider, Data Provider, Country"
+                = f.input :genre,collection: [["Provider","provider"],["Data Provider", "data_provider"],["Country", "country"]], selected: @impl_aggregation.genre ,hint: "Provider, Data Provider, Country", label: "Report type"
                 = f.input :name
                 = f.input :wikiname
               .form-actions
                 = f.button :submit, "Save"
-          

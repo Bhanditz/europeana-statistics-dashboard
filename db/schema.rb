@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150808101929) do
+ActiveRecord::Schema.define(version: 20150811133344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -237,6 +237,7 @@ ActiveRecord::Schema.define(version: 20150808101929) do
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
     t.integer  "aggregation_index"
+    t.string   "aggregation_value_to_display"
   end
 
   create_table "core_tokens", force: :cascade do |t|
@@ -286,6 +287,13 @@ ActiveRecord::Schema.define(version: 20150808101929) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
+  create_table "impl_aggregation_datacasts", force: :cascade do |t|
+    t.integer  "impl_aggregation_id"
+    t.string   "core_datacast_identifier"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
   create_table "impl_aggregation_providers", force: :cascade do |t|
     t.integer  "impl_aggregation_id"
     t.integer  "impl_provider_id"
@@ -319,17 +327,17 @@ ActiveRecord::Schema.define(version: 20150808101929) do
     t.string   "error_messages"
     t.string   "key"
     t.string   "value"
+    t.hstore   "properties"
   end
 
   create_table "impl_providers", force: :cascade do |t|
     t.string   "provider_id"
     t.integer  "created_by"
     t.integer  "updated_by"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.string   "status"
     t.string   "error_messages"
-    t.integer  "impl_aggregation_id"
   end
 
   create_table "impl_static_attributes", force: :cascade do |t|

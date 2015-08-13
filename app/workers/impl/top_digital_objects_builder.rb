@@ -3,18 +3,17 @@ class Impl::TopDigitalObjectsBuilder
   sidekiq_options backtrace: true
   require 'active_support/core_ext/date/calculations'
 
-  def perform(provider_id, user_start_date = "2012-01-01",user_end_date = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d"))
+  def perform(provider_id, user_start_date = "2012-01-01",user_end_date = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"))
     provider = Impl::Provider.find(provider_id)
-    provider.update_attributes(status: "Building top 25 countries")
-    provider_output.update_attributes(status: "Building top 25 countries", error_messages: nil)
+    provider.update_attributes(status: "Building top digital objects")
     begin
-      start_date  = user_start_date
-      end_date    = user_end_date
-      top_digital_objects = Impl::TopDigitalObjectsBuilder.fetch_data_for_all_quarters_between(start_date, end_date, provider)
+      top_digital_objects = Impl::TopDigitalObjectsBuilder.fetch_data_for_all_quarters_between(user_start_date, user_end_date, provider)
       Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects,"quarterly", provider_id)
-      provider.update_attributes(status: "Processed top 10 digital objects") 
+      provider.update_attributes(status: "Processed top 10 digital objects")
+      next_start_date = (Date.today.at_beginning_of_week).strftime("%Y-%m-%d")
+      next_end_date = (Date.today.at_end_of_week).strftime("%Y-%m-%d")
+      Impl::TrafficBuilder.perform_at(1.week.from_now,provider_id,next_start_date, next_end_date)
     rescue => e
-      provider_output.update_attributes(status: "Failed", error_messages: e.to_s)
       provider.update_attributes(status: "Failed",error_messages: e.to_s)
     end
   end

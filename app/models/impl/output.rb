@@ -12,6 +12,7 @@
 #  error_messages   :string
 #  key              :string
 #  value            :string
+#  properties       :hstore
 #
 
 class Impl::Output < ActiveRecord::Base
@@ -21,6 +22,7 @@ class Impl::Output < ActiveRecord::Base
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
+  store_accessor :properties, :image_url, :title_url
   #ASSOCIATIONS
   belongs_to :impl_parent,polymorphic: :true
   has_many :impl_static_attributes, class_name: "Impl::StaticAttribute", foreign_key: "impl_output_id", dependent: :destroy
@@ -43,6 +45,15 @@ class Impl::Output < ActiveRecord::Base
       a = create({impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre, key: options[:key], value: options[:value]})
     end
     a 
+  end
+
+  def self.update_with_custom_attributes(impl_parent_id, impl_parent_type, genre,title_url, image_url, options={})
+    a = Impl::Output.find_or_create(impl_parent_id,impl_parent_type,genre,options)
+    a.title_url = title_url
+    a.image_url = image_url
+    a.properties_will_change!
+    a.save!
+    return a
   end
 
   #PRIVATE

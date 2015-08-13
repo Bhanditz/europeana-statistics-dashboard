@@ -1,4 +1,4 @@
-class Aggregation::MediaTypesBuilder
+class Aggregations::MediaTypesBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
   require 'jq'
@@ -20,6 +20,7 @@ class Aggregation::MediaTypesBuilder
         else
           raise "No media type detected"
         end
+        Aggregations::ReusableBuilder.perform_async(aggregation_id)
       rescue => e
         aggregation_output.update_attributes(status: "Failed to build media types", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed to build media types", error_messages: e.to_s)

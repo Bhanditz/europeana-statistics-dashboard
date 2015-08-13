@@ -1,4 +1,4 @@
-class Aggregation::WikiProfileBuilder
+class Aggregations::WikiProfileBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 

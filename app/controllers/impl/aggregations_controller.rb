@@ -1,11 +1,17 @@
 class Impl::AggregationsController < ApplicationController
   
   before_action :sudo_project_member!
-  before_action :set_impl_aggregation, only: [:show,:edit, :update, :destroy, :restart_all_aggregation_workers]
+  before_action :set_impl_aggregation, only: [:show,:edit, :update, :destroy, :restart_all_aggregation_workers, :datacasts]
 
   def index
     @impl_aggregations = @core_project.impl_aggregations
     @impl_aggregation = Impl::Aggregation.new
+  end
+
+  def edit
+    @impl_providers = @impl_aggregation.impl_providers
+    @core_datacasts = @impl_aggregation.core_datacasts.includes(:core_db_connection).order(updated_at: :desc)
+    @impl_provider = Impl::Provider.new
   end
 
   def show
@@ -38,11 +44,8 @@ class Impl::AggregationsController < ApplicationController
   end
 
   def restart_all_aggregation_workers
-    @impl_aggregation.refresh_all_jobs
-    redirect_to account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), notice: t("aggregation.refreshed_all_jobs")
-  end
-
-  def restart_worker
+    @impl_aggregation.restart_all_jobs
+    redirect_to account_project_impl_aggregation_providers_path(@core_project.account, @core_project, @impl_aggregation), notice: t("aggregation.refreshed_all_jobs")
   end
 
   private

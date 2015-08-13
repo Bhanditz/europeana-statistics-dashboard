@@ -62,7 +62,10 @@ class Core::Datacast < ActiveRecord::Base
     if a.blank?
       a = create({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, identifier: SecureRandom.hex(33)})
     else
-      a.update_attributes(query: q)
+      if a.q != q
+        a.update_attributes(query: q)
+        Core::Datacast::RunWorker.perform_async(a.id) unless a.table_name.present?
+      end
     end
     a
   end

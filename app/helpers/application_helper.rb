@@ -45,6 +45,10 @@ module ApplicationHelper
       return nil
     end
   end
+
+  def get_impl_status(impl)
+    impl.error_messages.present?  ? "<div class='signal sig-red'></div>" : impl.status.downcase.include?("building") ?  "<div class='signal sig-gray'></div>" : "<div class='signal sig-green'></div>"
+  end
   
   def resource_name
     :account

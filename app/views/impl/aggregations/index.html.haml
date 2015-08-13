@@ -4,8 +4,8 @@
     .panel-body
       .row
         .col-sm-9
-          %h4 Aggregations
-          %p.gray Aggregate data with various provider ids
+          %h4 Reports
+          %p.gray Collect data with various provider ids
           %hr{style: "margin-bottom: 5px; margin-top: 2px; border-top-color: lightgray;"}
           %table.table.table-condensed
             %thead
@@ -13,26 +13,32 @@
                 %th Genre
                 %th Name
                 %th Wikiname
+                %th Status
                 %th
                 %th
             %tbody
               - @impl_aggregations.each do |impl_aggregation|
                 %tr
+                  %td= get_impl_status(impl_aggregation).html_safe
                   %td= impl_aggregation.genre.titleize
-                  %td= link_to impl_aggregation.name, account_project_impl_aggregation_path(@account, @core_project, impl_aggregation)
+                  %td= impl_aggregation.name
                   %td= impl_aggregation.wikiname
-                  %td= link_to 'Edit', account_project_impl_aggregation_providers_path(@core_project.account, @core_project, impl_aggregation)
+                  %td
+                    %strong=impl_aggregation.status
+                    - if impl_aggregation.error_messages.present?
+                      .hint= impl_aggregation.error_messages
+                  %td= link_to 'Edit', edit_account_project_impl_aggregation_path(@core_project.account, @core_project, impl_aggregation)
                   %td= icon_del(account_project_impl_aggregation_path(@core_project.account, @core_project, impl_aggregation))
         .col-sm-3
           -if @sudo[1]
             .well
-              %h5 Add new aggregation
+              %h5 Add new report
               %hr
               = simple_form_for(@impl_aggregation, url: account_project_impl_aggregations_path(@core_project.account, @core_project), method: "post") do |f|
                 = f.error_notification
                 .form-inputs
                   = f.input :core_project_id, input_html: {value: @core_project.id}, as: :hidden
-                  = f.input :genre,collection: [["Provider","provider"],["Data Provider", "data_provider"],["Country", "country"]] ,hint: "Provider, Data Provider, County", include_blank: false
+                  = f.input :genre,collection: [["Provider","provider"],["Data Provider", "data_provider"],["Country", "country"]] ,hint: "Provider, Data Provider, Country", include_blank: false, label: "Report Type"
                   = f.input :name
                   = f.input :wikiname
                 .form-actions

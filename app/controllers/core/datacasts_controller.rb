@@ -1,7 +1,7 @@
 class Core::DatacastsController < ApplicationController
   
   before_action :sudo_project_member!
-  before_action :set_core_datacast, only: [:edit, :update, :destroy]
+  before_action :set_core_datacast, only: [:edit, :update, :destroy, :run_worker]
   before_action :set_token,only: [:upload,:destroy]
 
   def index
@@ -117,6 +117,11 @@ class Core::DatacastsController < ApplicationController
         render :file
       end
     end
+  end
+
+  def run_worker
+    Core::Datacast::RunWorker.perform_async(@core_datacast.id)
+    redirect_to :back, notice: "datacast.run_worker"
   end
 
   private

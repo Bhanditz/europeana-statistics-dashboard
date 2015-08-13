@@ -5,7 +5,7 @@ class Impl::TrafficBuilder
   require 'jq'
   require 'jq/extend'
 
-  def perform(provider_id, user_start_date = "2012-01-01",user_end_date = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d"))
+  def perform(provider_id, user_start_date = "2012-01-01",user_end_date = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"))
     provider = Impl::Provider.find(provider_id)
     provider.update_attributes(status: "Building Pageviews", error_messages: nil)
     provider_pageviews_output = Impl::Output.find_or_create(provider_id,"Impl::Provider","pageviews")
@@ -40,6 +40,7 @@ class Impl::TrafficBuilder
       events_data = events_data.sort_by {|d| [d["year"], d["month"]]}
       Core::TimeAggregation.create_time_aggregations("Impl::Output",provider_events_output.id,events_data,"events","quarterly")
       provider.update_attributes(status: "Processed Events", error_messages: nil)
+      Impl::TopCountriesBuilder.perform_async(provider_id,user_start_date,user_end_date)
     rescue => e
       provider_events_output.update_attributes(status: "Failed", error_messages: e.to_s)
       provider.update_attributes(status: "Failed", error_messages: e.to_s)

@@ -1,4 +1,4 @@
-class Aggregation::ReusableBuilder
+class Aggregations::ReusableBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
   require 'jq'
@@ -15,11 +15,12 @@ class Aggregation::ReusableBuilder
         if reusables["facets"].present?
           reusable_data =  reusables["facets"].jq('.[0].fields | .[] | {(.label):(.count)}')
           Impl::StaticAttribute.create_or_update_static_data(reusable_data, aggregation_output.id)
-          aggregation_output.update_attributes(output: reusable_data_to_save,status: "Processed Reusables")
+          aggregation_output.update_attributes(status: "Processed Reusables")
           aggregation.update_attributes(status: "Processed Reusables")  
         else
           raise "No reusable detected"
         end
+        Aggregations::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)
       rescue => e
         aggregation_output.update_attributes(status: "Failed to build reusables", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed to build reusables", error_messages: e.to_s)

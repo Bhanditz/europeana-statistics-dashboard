@@ -71,5 +71,8 @@ en:
     f: "Recalibrating metadata failed"
   datacast:
     specify_table: "You need to specify table name"
+    run_worker: "Rerunning the job."
   aggregation:
-    refreshed_all_jobs: "Refrehsing all background jobs"
+    refreshed_all_jobs: "Refreshing all background jobs"
+  provider:
+    worker: "The job is restarting"
