@@ -1,0 +1,12 @@
+pg: &pg
+  adapter: postgresql
+  encoding: unicode
+  pool: 20
+
+development:
+  <<: *pg
+  port: 5432
+  database: datastory
+  host: localhost
+  username: developer
+  password: developer

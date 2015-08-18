@@ -20,7 +20,6 @@
 /tmp
 /test
 #/vendor
-config/database.yml
 .DS_Store
 /nbproject
 /node_modules
