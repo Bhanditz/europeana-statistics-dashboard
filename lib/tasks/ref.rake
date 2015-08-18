@@ -6,6 +6,10 @@ namespace :ref do
     puts "----> Migrations"
 
     Rake::Task['db:migrate'].invoke
+
+    puts '----> Creating Europeana Project'
+
+    Core::Project.create({account_id: 2, name: "Europeana"})
   
     puts "----> Loading Ref::Chart"
     Ref::Chart.destroy_all
@@ -53,7 +57,7 @@ namespace :ref do
       image_url      = line[4]
       Core::Theme.create!({name: name, config: config,account_id: account_id, sort_order: sort_order, image_url: image_url})
     end
-    header name,template,img,sort_order
+    #header name,template,img,sort_order
     puts "----> Loading Core::CardLayout"
     CSV.read("ref/core_card_layouts.csv").each_with_index do |line, index|
       next if index == 0
@@ -64,7 +68,7 @@ namespace :ref do
       Core::CardLayout.create!({name: name, template: template, img: img, sort_order: sort_order})
     end
 
-    puts '----> Seeding Ref::CountryCode'
+    puts '----> Loading Ref::CountryCode'
     Ref::CountryCode.seed
     puts "----> Done"
   end
