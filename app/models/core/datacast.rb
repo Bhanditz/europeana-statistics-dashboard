@@ -40,7 +40,7 @@ class Core::Datacast < ActiveRecord::Base
   belongs_to :core_project, class_name: "Core::Project", foreign_key: "core_project_id"
   belongs_to :core_db_connection, class_name: "Core::DbConnection", foreign_key: "core_db_connection_id"
   has_one :core_datacast_output, class_name: "Core::DatacastOutput", foreign_key: "datacast_identifier", primary_key: "identifier", dependent: :destroy
-  
+  has_many :core_vizs, class_name: "Core::Viz", foreign_key: "core_datacast_identifier", primary_key: "identifier"
   #VALIDATIONS
   validates :name, presence: true
   validates :core_project_id, presence: true
@@ -54,6 +54,13 @@ class Core::Datacast < ActiveRecord::Base
   after_create :after_create_set
   
   #SCOPES
+  scope :media_type, -> {where("core_datacasts.name LIKE '%Media Types'")}
+  scope :reusable, -> {where("core_datacasts.name LIKE '%Reusables'")}
+  scope :traffic, -> {where("core_datacasts.name LIKE '%Traffic'")}
+  scope :top_country, -> {where("core_datacasts.name LIKE '%Top Countries'")}
+  scope :top_digital_objects, -> {where("core_datacasts.name LIKE '%Top Digital Objects'")}
+  scope :collections, -> {where("core_datacasts.name LIKE '%Collections'")}
+
   #CUSTOM SCOPES
   #OTHER
   #FUNCTIONS
@@ -62,7 +69,7 @@ class Core::Datacast < ActiveRecord::Base
     if a.blank?
       a = create({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, identifier: SecureRandom.hex(33)})
     else
-      if a.q != q
+      if a.query != q
         a.update_attributes(query: q)
         Core::Datacast::RunWorker.perform_async(a.id) unless a.table_name.present?
       end
@@ -196,6 +203,35 @@ class Core::Datacast < ActiveRecord::Base
 
   def run(format=nil)
     Core::Adapters::Db.run(self.core_db_connection, self.query, format || self.format)
+  end
+
+  def column_names(only_d_or_m=nil)
+    column_names = []
+    unless self.column_properties.blank?
+      if only_d_or_m.nil?
+        column_names = self.column_properties.keys
+      else
+        column_names = self.column_properties.map {|key, value| key if value["d_or_m"] == only_d_or_m }.compact!
+      end
+    end
+    return column_names
+  end
+
+  def column_with_d_or_m(only_d_or_m=nil)
+    column_names = []
+    unless self.column_properties.blank?
+      if only_d_or_m.nil?
+        column_names = self.column_properties.map {|key, value| {key => value["d_or_m"]}}
+      else
+        column_names = self.column_properties.map {|key, value| {key => value["d_or_m"]} if value["d_or_m"] == only_d_or_m }.compact!
+      end
+    end
+    return column_names
+  end
+
+  def count(d_or_m)
+    dimension_or_metric = self.column_with_d_or_m.select {|k| k if k.values.first == d_or_m}
+    return dimension_or_metric.count
   end
 
   #PRIVATE

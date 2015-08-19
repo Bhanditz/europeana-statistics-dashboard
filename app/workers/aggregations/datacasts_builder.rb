@@ -8,6 +8,14 @@ class Aggregations::DatacastsBuilder
     begin
       core_project_id = aggregation.core_project_id
       core_db_connection_id = Core::DbConnection.default_db.id
+
+      # Collections in Europeana
+      collections_datacast_name = "#{aggregation.name} - Collections"
+      collections_datacast_query = aggregation.get_collections_query
+      collections_datacast = Core::Datacast.create_or_update_by(collections_datacast_query,core_project_id,core_db_connection_id,collections_datacast_name)
+      aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,collections_datacast.identifier)
+
+
       # Media Types
       media_type_datacast_name = "#{aggregation.name} - Media Types"
       media_type_datacast_query = aggregation.get_static_query("media_type")
@@ -39,6 +47,7 @@ class Aggregations::DatacastsBuilder
       top_digital_objects_datacast = Core::Datacast.create_or_update_by(top_digital_objects_datacast_query,core_project_id,core_db_connection_id,top_digital_objects_datacast_name)
       top_digital_objects_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,top_digital_objects_datacast.identifier)
       aggregation.update_attributes(status: "Created all datacasts")
+      Aggregations::VizsBuilder.perform_async(aggregation_id)
     rescue => e
       aggregation.update_attributes(status: "Failed to build datacast", error_messages: e.to_s)
     end

@@ -33,6 +33,9 @@ class Impl::Aggregation < ActiveRecord::Base
   has_many :impl_provider_outputs, through: :impl_providers
   has_many :impl_aggregation_datacasts, class_name: "Impl::AggregationDatacast", foreign_key: "impl_aggregation_id", dependent: :destroy
   has_many :core_datacasts, through: :impl_aggregation_datacasts, dependent: :destroy
+  has_many :core_vizs, through: :core_datacasts, dependent: :destroy
+  has_one :impl_report, class_name: "Impl::Report", foreign_key: "impl_aggregation_id", dependent: :destroy
+
   #VALIDATIONS
   validates :core_project_id, presence: true
   validates :genre, presence: true
@@ -46,11 +49,15 @@ class Impl::Aggregation < ActiveRecord::Base
   #FUNCTIONS
 
   def get_static_query(genre)
-    return "Select key as name, value as weight from impl_static_attributes where impl_output_id in (Select o.id from impl_aggregations a, impl_outputs o where a.id = #{self.id} and o.genre='#{genre}'and o.impl_parent_id = #{self.id})"
+    if genre == "reusable"
+      return "Select key as name, value as weight from impl_static_attributes where impl_output_id in (Select o.id from impl_aggregations a, impl_outputs o where a.id = #{self.id} and o.genre='#{genre}'and o.impl_parent_id = #{self.id})"
+    else
+      return "Select key as x, value as y from impl_static_attributes where impl_output_id in (Select o.id from impl_aggregations a, impl_outputs o where a.id = #{self.id} and o.genre='#{genre}'and o.impl_parent_id = #{self.id})"
+    end
   end
 
   def get_traffic_query
-    return "Select ta.aggregation_level_value, ta.aggregation_value_to_display as x,ta.metric as group, ta.value as y   from core_time_aggregations as ta, (Select o.id as output_id from impl_outputs o where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id = #{self.id}) and genre in ('pageviews','events')) as b where ta.parent_id = b.output_id"
+    return "Select ta.aggregation_level_value, ta.aggregation_value_to_display as x,ta.metric as group, ta.value as y   from core_time_aggregations as ta, (Select o.id as output_id from impl_outputs o where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id = #{self.id}) and genre in ('pageviews','events')) as b where ta.parent_id = b.output_id order by aggregation_index;"
   end
 
   def get_digital_objects_query
@@ -58,7 +65,11 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_countries_query
-    return "Select ta.aggregation_value_to_display, ta.metric, ta.value, ta.difference_from_previous_value, ta.is_positive_value, b.value, b.code, ta.aggregation_index from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id =#{self.id}) and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id order by aggregation_index;"
+    return "Select ta.value as size, b.code as iso2 ,ta.aggregation_level_value from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id = #{self.id}) and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id order by aggregation_index;"
+  end
+
+  def get_collections_query
+    return "Select key, value from impl_aggregations a, impl_outputs o where a.id = #{self.id} and o.genre='collections' and o.impl_parent_id = #{self.id}"
   end
 
   def restart_all_jobs
@@ -77,6 +88,11 @@ class Impl::Aggregation < ActiveRecord::Base
       is_processed = true
     end
     return is_processed
+  end
+
+  def top_digital_objects_auto_html
+    datacast = self.core_datacasts.top_digital_objects.first
+    return "<div id='#{datacast.name.parameterize("_")}' data-datacast_identifier='#{datacast.identifier}' class='d3-pykcharts'></div>"
   end
 
   #PRIVATE

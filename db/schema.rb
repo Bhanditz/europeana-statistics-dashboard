@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150811133344) do
+ActiveRecord::Schema.define(version: 20150818073001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -213,6 +213,15 @@ ActiveRecord::Schema.define(version: 20150811133344) do
   add_index "core_sessions", ["session_id"], name: "index_core_sessions_on_session_id", unique: true, using: :btree
   add_index "core_sessions", ["updated_at"], name: "index_core_sessions_on_updated_at", using: :btree
 
+  create_table "core_templates", force: :cascade do |t|
+    t.string   "name"
+    t.text     "html_content"
+    t.string   "genre"
+    t.json     "required_variables"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
   create_table "core_themes", force: :cascade do |t|
     t.integer  "account_id"
     t.string   "name"
@@ -256,7 +265,6 @@ ActiveRecord::Schema.define(version: 20150811133344) do
   create_table "core_vizs", force: :cascade do |t|
     t.integer  "core_project_id"
     t.hstore   "properties"
-    t.json     "pykquery_object"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
@@ -264,15 +272,9 @@ ActiveRecord::Schema.define(version: 20150811133344) do
     t.integer  "created_by"
     t.integer  "updated_by"
     t.string   "ref_chart_combination_code"
-    t.integer  "refresh_freq_in_minutes"
-    t.text     "output"
-    t.datetime "refreshed_at"
-    t.string   "datagram_identifier"
-    t.boolean  "is_static"
-    t.boolean  "was_output_big"
+    t.boolean  "filter_present"
+    t.string   "core_datacast_identifier"
   end
-
-  add_index "core_vizs", ["datagram_identifier"], name: "index_core_vizs_on_datagram_identifier", using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
@@ -338,6 +340,17 @@ ActiveRecord::Schema.define(version: 20150811133344) do
     t.datetime "updated_at",     null: false
     t.string   "status"
     t.string   "error_messages"
+  end
+
+  create_table "impl_reports", force: :cascade do |t|
+    t.integer  "impl_aggregation_id"
+    t.integer  "core_template_id"
+    t.string   "name"
+    t.string   "slug"
+    t.text     "html_content"
+    t.json     "variable_object"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "impl_static_attributes", force: :cascade do |t|

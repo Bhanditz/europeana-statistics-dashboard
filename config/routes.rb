@@ -57,6 +57,7 @@ Rails.application.routes.draw do
   get 'switch_user' => 'switch_user#set_current_user'
   get 'approve/account/:id' => "accounts#change_approval"  
   get "/new", to: "core/projects#new", as: "_new_project"
+  get "/:impl_report_id", to: "impl/reports#show", as: "impl_report"
 
   #
   get "/:account_id/projects", to: "accounts#show", as: "_account", :defaults => { :content => "projects" }

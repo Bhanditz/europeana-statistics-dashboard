@@ -9,7 +9,7 @@ class Aggregations::WikiProfileBuilder
       wiki_url =  URI.encode("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=#{aggregation.wikiname}")
       wiki_context = JSON.parse(open(wiki_url).read)
       aggregation.wikipedia_content = wiki_context["query"]["pages"].values.first["extract"]
-      aggregation.status = "fetched wiki content"        
+      aggregation.status = "fetched wiki content"
       aggregation.properties_will_change!
       aggregation.save
     rescue => e
