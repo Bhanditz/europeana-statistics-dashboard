@@ -114,8 +114,7 @@ class Core::TimeAggregation < ActiveRecord::Base
       self.difference_from_previous_value = diff.abs
       self.is_positive_value = (diff < 0) 
     end
+    self.aggregation_value_to_display = self.aggregation_value_to_display.blank? ? self.aggregation_level_value.split("_")[1] : self.aggregation_level_value
     true
   end
-
-
 end

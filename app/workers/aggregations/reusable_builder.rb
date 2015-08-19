@@ -20,7 +20,7 @@ class Aggregations::ReusableBuilder
         else
           raise "No reusable detected"
         end
-        Aggregations::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)
+        Aggregations::CollectionsBuilder.perform_async(aggregation_id)
       rescue => e
         aggregation_output.update_attributes(status: "Failed to build reusables", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed to build reusables", error_messages: e.to_s)

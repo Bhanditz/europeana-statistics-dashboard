@@ -38,6 +38,7 @@ class Core::Theme < ActiveRecord::Base
   #SCOPES
   scope :admin, -> {where("account_id IS NULL")}
   default_scope {order('sort_order ASC')}
+  scope :default_theme, -> {where(name: "Default").first}
   
   #CUSTOM SCOPES
   #FUNCTIONS
