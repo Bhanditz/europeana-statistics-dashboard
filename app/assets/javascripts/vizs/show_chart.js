@@ -215,11 +215,6 @@ var callTheChart = function(api, data, dimensions_array, metrics_array, dimensio
   k.execute();
 }
 
-var getApiFromString = function(api){
-  api = api.split(".");
-  return PykCharts[api[1]][api[2]];
-}
-
 var disableAllChartsAndGrid = function(){
   $(".options").removeClass("enabled");
   $(".options").addClass("disabled");

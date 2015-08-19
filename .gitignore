@@ -26,8 +26,6 @@
 nohup.out
 dump.rdb
 
-app/assets/javascripts/application/zlib/pykcharts.1.0.0.js
-app/assets/javascripts/application/zlib/pykquery.0.0.1.js
-
+app/assets/javascripts/application/zlib/*.js
 *.pyc
 *.idea

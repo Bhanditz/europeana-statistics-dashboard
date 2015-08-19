@@ -50,6 +50,8 @@ window.onload = function () {
     case "scopejs_articles_edit":
     case "scopejs_articles_update":
       Rumali.newArticleCreate();
+    case "scopejs_aggregations_index":
+      Rumali.buildCharts();
     default:
   }
 };
