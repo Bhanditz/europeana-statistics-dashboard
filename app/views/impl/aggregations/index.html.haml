@@ -10,6 +10,7 @@
           %table.table.table-condensed
             %thead
               %tr
+                %th
                 %th Genre
                 %th Name
                 %th Wikiname
@@ -21,7 +22,7 @@
                 %tr
                   %td= get_impl_status(impl_aggregation).html_safe
                   %td= impl_aggregation.genre.titleize
-                  %td= impl_aggregation.name
+                  %td= link_to impl_aggregation.name, impl_report_path(impl_aggregation.impl_report)
                   %td= impl_aggregation.wikiname
                   %td
                     %strong=impl_aggregation.status

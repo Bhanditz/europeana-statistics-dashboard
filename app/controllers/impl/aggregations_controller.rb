@@ -4,7 +4,7 @@ class Impl::AggregationsController < ApplicationController
   before_action :set_impl_aggregation, only: [:show,:edit, :update, :destroy, :restart_all_aggregation_workers, :datacasts]
 
   def index
-    @impl_aggregations = @core_project.impl_aggregations
+    @impl_aggregations = @core_project.impl_aggregations.includes(:impl_report)
     @impl_aggregation = Impl::Aggregation.new
   end
 

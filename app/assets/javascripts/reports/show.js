@@ -1,13 +1,16 @@
 
 var chart_data = {};
+var content_data = {};//data for the top 10 digital items,
 chart_data.onelayer =[];
 
 Rumali.buildCharts = function () {
 	//Loading all the charts with .d3-pykcharts as a class.
-	chart_data.charts = $('.d3-pykcharts')
+	chart_data.charts = $('.d3-pykcharts');
+	content_data.content = $('.top_digital_objects');
 
 	var charts_length = chart_data.charts.length, 
-		index = 0;
+		index = 0,
+		digital_api;
 
 	chart_data.year_no = gon.selected_year;
 	chart_data.quarter_no = gon.selected_quarter;
@@ -33,7 +36,10 @@ Rumali.buildCharts = function () {
 			default:
 				break;
 		}
-	} 	
+	}
+
+	loadTop10digitalObject(content_data.content[0],chart_data.year_no,chart_data.quarter_no);
+	//Get top 10 digital objects for the current year and quarter.
 }
 
 
@@ -47,7 +53,15 @@ var loadOnedPie = function(obj,year,quarter){
 			chart_data.onedpie = data;
 		}
 
-		callPykChart(data);
+		if(data.length <= 0){
+			createErrorDiv($(obj).attr('id'));
+		}
+		else{
+			removeErrorDiv($(obj).attr('id'));
+		}
+
+			callPykChart(data);	
+		
 	}
 	
 	var callPykChart = function(data){
@@ -84,6 +98,15 @@ var loadMultiDCol = function(obj,year,quarter){
 		if(!chart_data.multidcol){
 			chart_data.multidcol = data;
 		}
+
+		
+		if(data.length <= 0){
+			createErrorDiv($(obj).attr('id'));
+		}
+		else{
+			removeErrorDiv($(obj).attr('id'));
+		}
+
 		callPykChart(data);
 	}
 
@@ -107,6 +130,8 @@ var loadMultiDCol = function(obj,year,quarter){
 	}	
 	
 	if(!chart_data.multidcol){
+		//If data is not available then call the database to fetch the data.
+		console.log(rumi_api_endpoint + 'datacast/'+ obj.dataset.datacast_identifier);
 		getJSON(rumi_api_endpoint + 'datacast/'+ obj.dataset.datacast_identifier,this,filterData);		
 	}
 	else{
@@ -128,9 +153,15 @@ var loadMultiDGroupedCol =  function(obj,year,quarter){
 		}
 		filter_data = _.filter(chart_data.multidgroupcol, function(obj){ return obj.aggregation_level_value.split("_")[0]  == year; });
 		
-		filter_data = _.sortBy(filter_data,'aggregation_level_value');		
+		if(filter_data.length <= 0){
+			createErrorDiv($(obj).attr('id'));
+		}
+		else{
+			removeErrorDiv($(obj).attr('id'));
+		}		
 
-		callPykChart(filter_data);
+		callPykChart(filter_data);	
+		
 	}
 
 	var callPykChart = function(data){
@@ -152,6 +183,7 @@ var loadMultiDGroupedCol =  function(obj,year,quarter){
 	}
 
 	if(!chart_data.multidgroupcol){
+		//If data is not available then call the database to fetch the data.
 		getJSON(rumi_api_endpoint + 'datacast/'+ obj.dataset.datacast_identifier,this,filterData);		
 	}
 	else{
@@ -166,6 +198,9 @@ var loadMapOneLayer = function (obj,year,quarter) {
 
 	var filterData = function(data,year,quarter){
 
+		if(!chart_data.maps){
+			chart_data.maps = data; //Saving the data once so that we don't need to call service again.
+		}
 		//If future data is being fetched show current record instead.
 		while(year >= gon.selected_year && quarter > gon.selected_quarter){
 			quarter--;
@@ -180,10 +215,6 @@ var loadMapOneLayer = function (obj,year,quarter) {
 
 		quarter_val = 'Q'+quarter;
 
-		if(!chart_data.maps){
-			chart_data.maps = data
-		}
-
 
 		if(!chart_data.onelayer[year]){
 			chart_data.onelayer[year]=[];
@@ -192,14 +223,34 @@ var loadMapOneLayer = function (obj,year,quarter) {
 			chart_data.onelayer[year][quarter] = {};
 
 			filter_data = _.filter(chart_data.maps, function(obj){ return ((obj.aggregation_level_value.split("_")[0]  == year) && (obj.aggregation_level_value.split("_")[1]  == quarter_val)) });
-			filter_data = _.sortBy(filter_data,'aggregation_level_value');
+
+			console.log(filter_data);
+			
+			filter_data = _.sortBy(filter_data,function(obj){
+					(parseInt(obj.size))*(-1);
+				});
+
+			console.log(filter_data);
+
 			filter_data = _.first(filter_data,25);
+			console.log(filter_data);
 
 			chart_data.onelayer[year][quarter] = filter_data;
 
 		}
+		//If data is not available then call the database to fetch the data.
+		//console.log(rumi_api_endpoint + 'datacast/'+ obj.dataset.datacast_identifier);
 		//We need to show only top 25 countries.
-		callPykChart(chart_data.onelayer[year][quarter]);
+
+		if(chart_data.onelayer[year][quarter].length <= 0){
+			createErrorDiv($(obj).attr('id'));
+		}
+		else{
+			//Removing error div in case data is correct
+			removeErrorDiv($(obj).attr('id'));
+		}
+		
+		callPykChart(chart_data.onelayer[year][quarter]);	
 	}
 
 	var callPykChart = function(data){
@@ -210,22 +261,27 @@ var loadMapOneLayer = function (obj,year,quarter) {
 				//Api for fetching the data.
 		      	export_enable: "no",
 		      	map_code: "world",
-		      	chart_height: 400,//height of the chart
+		      	chart_height: '700',//height of the chart
+		      	chart_width:'1000',
 		      	tooltip_enable: "yes", //enabling tool tip for the gven chart
-		      	palette_color:"Green-4",
-		      	total_no_of_colors: 5
+		      	//palette_color:"Red",
+		      	//total_no_of_colors: 5,
+		      	default_color:["white"],//,
+		      	saturation_color: "#255AEE",
+		      	color_mode: "saturation"
 			};
 
 		var chartobj = new PykCharts.maps.oneLayer(
 					loadonedmap_obj
 				);
 
-		debugger;
-		chartobj.execute();
-		debugger; 
+		chartobj.execute(); 
 	}
+
+
 	
 	if(!chart_data.maps){
+		//If data is not available then call the database to fetch the data.
 		getJSON(rumi_api_endpoint + 'datacast/'+ obj.dataset.datacast_identifier,this,filterData);		
 	}
 	else{
@@ -233,6 +289,83 @@ var loadMapOneLayer = function (obj,year,quarter) {
 	}
 }
 
+
+//Function to load top 10 digital objects.
+var loadTop10digitalObject = function(obj,year,quarter){
+	var selector = "#"+ $(obj).attr('id'),
+		quarter_val,
+		filter_data;
+
+	var filterData = function(data,year,quarter){
+		if(!content_data.top10digital){
+			content_data.top10digital = data; //Saving the data once so that we don't need to call service again.
+		}
+
+		//If future data is being fetched show current record instead.
+		while(year >= gon.selected_year && quarter > gon.selected_quarter){
+			quarter--;
+			if(quarter < 0){
+				year--;
+				quarter = gon.selected_quarter;
+			}
+		}
+
+
+		chart_data.year_no = year;
+		chart_data.quarter_no = quarter;
+
+		quarter_val = 'Q'+quarter;
+
+		filter_data = _.filter(content_data.top10digital, function(obj){ return ((obj.aggregation_level_value.split("_")[0]  == year) && (obj.aggregation_level_value.split("_")[1]  == quarter_val)) });
+		filter_data = _.sortBy(filter_data,function(obj){
+			return parseInt(obj.value)*-1;
+		});
+		filter_data = _.first(filter_data,10);
+		renderHTMLForDigitalObj(filter_data);
+	}
+
+	var renderHTMLForDigitalObj = function(data){
+		var index=0,
+		length = 0,
+		html='';
+		length = data.length > 10 ? 10 : data.length;
+		for(index=0;index<length;index++){
+			html += setInnerHTML(data[index],index);
+		}
+		$(selector).html(html);
+	}
+
+	//setting up inner html content for the top 10 digital items
+	var setInnerHTML = function(obj,index){
+		var html = '';
+		html += '<span class = col-sm-'+6+' style="margin-top:15px;height:90px;">';
+		html += '<span class= col-sm-3>';
+			html += '<a class=pull-left href='+obj.title_url+' target="_blank">';
+			html += '<img src='+obj.image_url+ ' style="width:90px;height:90px;">';
+			html += '</a></span>';
+		html += '<span class=col-sm-9>';
+			html += '<span class=col-sm-12><b>';
+			html += (index+1)+'.';
+				html += '</b></span>';
+		html += '<span class=col-sm-12>';
+			html += '<a href='+obj.title_url+' target="_blank">';
+			html += obj.title;
+			html += '</a>';
+			html += '</span>';
+			html += '<span class=col-sm-12><b>';
+			html +=  obj.value +' views';
+			html += '</b></span></span></span>';
+		return html;
+	}	
+
+	if(!content_data.top10digital){
+		//If data is not available then call the database to fetch the data.
+		getJSON(rumi_api_endpoint + 'datacast/'+ obj.dataset.datacast_identifier,this,filterData);		
+	}
+	else{
+		filterData(content_data.top10digital,year,quarter);
+	}	
+}
 
 //Set up the data json once so that we don't need to call service again.It is saved in return_data object
 var getJSON = function(url,context,callbackfn){
@@ -247,6 +380,7 @@ var filterDataYear = function(year_no){
 	chart_data.year_no = year_no;
 	loadMultiDGroupedCol(chart_data.charts[2],chart_data.year_no,chart_data.quarter_no);
 	loadMapOneLayer(chart_data.charts[3],chart_data.year_no,chart_data.quarter_no);
+	loadTop10digitalObject(content_data.content[0],chart_data.year_no,chart_data.quarter_no);
 }
 
 //Load year filter
@@ -264,6 +398,7 @@ var loadYearMenuBar = function(){
 var filterQuarterData = function(quarter_no){
 	chart_data.quarter_no = quarter_no;
 	loadMapOneLayer(chart_data.charts[3],chart_data.year_no,chart_data.quarter_no);	
+	loadTop10digitalObject(content_data.content[0],chart_data.year_no,chart_data.quarter_no);
 }
 
 //Load quarter filter
@@ -275,3 +410,16 @@ var loadQuarterMenuBar = function(){
 				+'<span id = id_quarter_filters_quarterno_4 onclick="filterQuarterData(4)">Q4</span>'; 
 	document.getElementById('id_quarter_filters').innerHTML = html_string;
 }
+
+//Load error div in case data is not present
+var createErrorDiv = function(selector,custommesg){
+	removeErrorDiv(selector);
+	var defaultmesg = 'Data not available';
+	var error_html =  "<span id=error_"+selector+">"+(custommesg ? custommesg : defaultmesg)+"</span>";
+	$(error_html).insertBefore("#"+selector);
+}
+//removing a div for error
+var removeErrorDiv = function(selector){
+	$('#error_'+selector).remove();
+}
+
