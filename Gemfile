@@ -33,6 +33,10 @@ gem 'ruby-jq', '0.1.6'
 gem 'activerecord-session_store'
 gem 'aescrypt'
 
+#Europeana Style Guide Gem
+
+#gem 'europeana-styleguide', git: 'https://github.com/europeana/europeana-styleguide-ruby'
+
 #-WORKERS_SYSTEM
 gem 'sidekiq'
 gem 'sinatra', '>= 1.3.0', :require => nil

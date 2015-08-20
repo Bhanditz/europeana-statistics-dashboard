@@ -1,4 +1,5 @@
 class Impl::ReportsController < ApplicationController
+  #include Europeana::Styleguide
 
   before_action :sudo_public!, only: [:show]
   before_action :set_impl_report, only: [:show]
@@ -6,8 +7,8 @@ class Impl::ReportsController < ApplicationController
 
   def show
   	selected_date = Date.today.at_beginning_of_month - 1
-	gon.selected_year = selected_date.year
-	gon.selected_quarter = ((selected_date.month.to_i - 1)/3) + 1
+    gon.selected_year = selected_date.year
+    gon.selected_quarter = ((selected_date.month.to_i - 1)/3) + 1
   end
 
   private

@@ -56,11 +56,9 @@ class Aggregations::ReportBuilder
 
         a = Impl::Report.create_or_update(aggregation.name, aggregation_id, core_template.id, html_content, variable_object)
         aggregation.update_attributes(status: "Build Report", error_messages: nil)
-        puts a.errors
       rescue => e
         aggregation.update_attributes(status: "Failed to build report", error_messages: e.to_s)
       end
     end
   end
-
-end    
+end

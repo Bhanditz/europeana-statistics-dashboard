@@ -12,6 +12,7 @@ class Impl::TopDigitalObjectsBuilder
       provider.update_attributes(status: "Processed top 10 digital objects")
       next_start_date = (Date.today.at_beginning_of_week).strftime("%Y-%m-%d")
       next_end_date = (Date.today.at_end_of_week).strftime("%Y-%m-%d")
+      Impl::ProivderAggregationDatacastUpdate.perform_async(provider_id)
       Impl::TrafficBuilder.perform_at(1.week.from_now,provider_id,next_start_date, next_end_date)
     rescue => e
       provider.update_attributes(status: "Failed",error_messages: e.to_s)
