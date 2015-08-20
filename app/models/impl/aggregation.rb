@@ -92,7 +92,7 @@ class Impl::Aggregation < ActiveRecord::Base
 
   def top_digital_objects_auto_html
     datacast = self.core_datacasts.top_digital_objects.first
-    return "<div id='#{datacast.name.parameterize("_")}' data-datacast_identifier='#{datacast.identifier}' class='d3-pykcharts'></div>"
+    return "<div id='#{datacast.name.parameterize("_")}' data-datacast_identifier='#{datacast.identifier}' class='top_digital_objects'></div>"
   end
 
   #PRIVATE
