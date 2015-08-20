@@ -61,7 +61,7 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_digital_objects_query
-    return "Select ta.aggregation_level_value, ta.aggregation_value_to_display, ta.metric, ta.value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id = #{self.id}) and genre='top_digital_objects') as b where ta.parent_id = b.output_id order by aggregation_index"
+    return "Select ta.aggregation_level_value, ta.aggregation_value_to_display, ta.metric, ta.value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id = #{self.id}) and genre='top_digital_objects') as b where ta.parent_id = b.output_id order by aggregation_index"
   end
 
   def get_countries_query
