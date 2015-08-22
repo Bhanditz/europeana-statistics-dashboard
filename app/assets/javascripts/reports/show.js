@@ -151,7 +151,7 @@ var loadMultiDGroupedCol =  function(obj,year,quarter){
 		if(!chart_data.multidgroupcol){
 			chart_data.multidgroupcol = data; //Saving the data once so that we don't need to call service again.
 		}
-		filter_data = _.filter(chart_data.multidgroupcol, function(obj){ return obj.aggregation_level_value.split("_")[0]  == year; });
+		filter_data = _.filter(chart_data.multidgroupcol, function(obj){ return obj.year  == year; });
 		
 		if(filter_data.length <= 0){
 			createErrorDiv($(obj).attr('id'));
@@ -222,18 +222,14 @@ var loadMapOneLayer = function (obj,year,quarter) {
 		if(!chart_data.onelayer[year][quarter]){
 			chart_data.onelayer[year][quarter] = {};
 
-			filter_data = _.filter(chart_data.maps, function(obj){ return ((obj.aggregation_level_value.split("_")[0]  == year) && (obj.aggregation_level_value.split("_")[1]  == quarter_val)) });
+			filter_data = _.filter(chart_data.maps, function(obj){ return ((obj.year  == year) && (obj.quarter  == quarter_val)) });
 
-			console.log(filter_data);
 			
 			filter_data = _.sortBy(filter_data,function(obj){
-					(parseInt(obj.size))*(-1);
+					return (parseInt(obj.size))*(-1);
 				});
 
-			console.log(filter_data);
-
 			filter_data = _.first(filter_data,25);
-			console.log(filter_data);
 
 			chart_data.onelayer[year][quarter] = filter_data;
 
@@ -316,7 +312,8 @@ var loadTop10digitalObject = function(obj,year,quarter){
 
 		quarter_val = 'Q'+quarter;
 
-		filter_data = _.filter(content_data.top10digital, function(obj){ return ((obj.aggregation_level_value.split("_")[0]  == year) && (obj.aggregation_level_value.split("_")[1]  == quarter_val)) });
+		filter_data = _.filter(content_data.top10digital, function(obj){ return ((obj.year  == year) && (obj.quarter  == quarter_val)) });
+
 		filter_data = _.sortBy(filter_data,function(obj){
 			return parseInt(obj.value)*-1;
 		});
