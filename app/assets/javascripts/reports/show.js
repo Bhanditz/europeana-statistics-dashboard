@@ -131,7 +131,6 @@ var loadMultiDCol = function(obj,year,quarter){
 	
 	if(!chart_data.multidcol){
 		//If data is not available then call the database to fetch the data.
-		console.log(rumi_api_endpoint + 'datacast/'+ obj.dataset.datacast_identifier);
 		getJSON(rumi_api_endpoint + 'datacast/'+ obj.dataset.datacast_identifier,this,filterData);		
 	}
 	else{
@@ -221,6 +220,7 @@ var loadMapOneLayer = function (obj,year,quarter) {
 		}
 		if(!chart_data.onelayer[year][quarter]){
 			chart_data.onelayer[year][quarter] = {};
+
 
 			filter_data = _.filter(chart_data.maps, function(obj){ return ((obj.year  == year) && (obj.quarter  == quarter_val)) });
 
@@ -368,6 +368,7 @@ var loadTop10digitalObject = function(obj,year,quarter){
 var getJSON = function(url,context,callbackfn){
 	$.getJSON(url) //jquery function to parse url and get data in done method.
 		.done(function(data){
+			console.log(url);
 			callbackfn(data,gon.selected_year,gon.selected_quarter);
 		});
 }
@@ -419,4 +420,14 @@ var createErrorDiv = function(selector,custommesg){
 var removeErrorDiv = function(selector){
 	$('#error_'+selector).remove();
 }
+
+// var div = $('<div />').appendTo('body');
+// 	div.attr('id', 'holdy');
+// 	var htmlcontent = '<span class = col-sm-'+2+' style="margin-left:15px;margin-bottom:15px; background-color:#333333;color: white;border: 1px solid #888;border-radius:3px;">';
+// 	htmlcontent += '<span class= col-sm-12 style="text-align:center"><h4><b>Top Views</b></h4></span>';
+// 	htmlcontent += '<span class= col-sm-12 style="text-align:center"><b>Spain</b></span>';
+// 	htmlcontent += '<span class= col-sm-12 style="text-align:center"><b>1,00,000</b></span>';
+// 	htmlcontent += '<span class= col-sm-12 style="text-align:center"><i>previous month\'s data</i></span>';
+
+// $('#holdy').html(htmlcontent);
 
