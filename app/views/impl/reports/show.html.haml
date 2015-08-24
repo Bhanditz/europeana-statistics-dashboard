@@ -37,11 +37,18 @@
           %h4 Views & Click-Throughs
           %p This chart displays the views of the collection on the Europeana.eu website together with the number of times a user clicked through to the website of the data provider. Click-throughs are not measured prior to April 2012. (Filter chart by year above)
           #rijksmuseum_-_traffic.d3-pykcharts{"data-api" => "PykCharts.multiD.groupedColumn", "data-datacast_identifier" => "e99610bb27ac302482aa61da1beb8ebb5c9a10ba8504d693afb8b18d9355d19415", "data-filter_column_name" => "aggregation_level_value", "data-filter_present" => "true"}
+
+    .col-sm-12
+      %h4 Line Chart for Page view
+      %p This is a test visualization
+      #rijksmuseum_-_line_chart.d3-pykcharts{"data-api" => "PykCharts.multiD.multiSeriesLine", "data-datacast_identifier" => "00e52fed8b2a7b81ff08972e766594b53c68ecbe86fa4969e1a26776e99e08e2ae", "data-filter_present" => "true"}
     .col-sm-12
       %h4 Top 25 Countries
       %p This chart displays the top 25 countries that generated the most views for this collection on Europeana.eu website. (Filter chart by year above and by quarter below)
       %span#id_quarter_filters
       #rijksmuseum_-_top_countries.d3-pykcharts{"data-api" => "PykCharts.maps.oneLayer", "data-datacast_identifier" => "e0520bd3323c3228f273f608b117b1bd884d0cca7466473cd872dbee20ab87977d", "data-filter_column_name" => "aggregation_level_value", "data-filter_present" => "true"}
+
+
     .col-sm-12
       %h4 Top 10 Digital Objects
       %p The list below displays the top 10 digital objects from the collection that generated the most views on Europeana.eu. (Filter list by year and quarter above)
