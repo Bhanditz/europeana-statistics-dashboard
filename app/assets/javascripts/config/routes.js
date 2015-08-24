@@ -52,6 +52,7 @@ window.onload = function () {
       Rumali.newArticleCreate();
     case "scopejs_reports_show":
       Rumali.buildCharts();
+      Rumali.buildMultiLineChart();
     default:
   }
 };
