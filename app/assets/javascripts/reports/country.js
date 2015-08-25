@@ -47,7 +47,6 @@ var loadMultiSeriesLine = function(obj){
 				chart_color: ["#B0E2FF","#60AFFE"],
 				data_sort_enable: "no",
 				axis_x_time_value_datatype:"month",
-				chart_width:700
 			};
 
 		var chartobj = new PykCharts.multiD.multiSeriesLine(
@@ -63,11 +62,20 @@ var loadMultiSeriesLine = function(obj){
 	else{
 		filterData(country_chart_data);
 	}
-
-
-	
-
 }
 
+//Set up the data json once so that we don't need to call service again.It is saved in return_data object
+var getJSON = function(url,context,callbackfn){
+	$.getJSON(url) //jquery function to parse url and get data in done method.
+		.done(function(data){
+			console.log(url);
+			callbackfn(data,gon.selected_year,gon.selected_quarter);
+		});
+}
+
+//removing a div for error
+var removeErrorDiv = function(selector){
+	$('#error_'+selector).remove();
+}
 
 

@@ -5343,3 +5343,12 @@ border-color:#eed3d7;
 .PykCharts-credits {
   display: none;
 }
+
+.ten_digital{
+	margin-top:15px;
+	height:90px;
+}
+.ten_digital_image{
+	width:90px;
+	height:90px;
+}

@@ -51,7 +51,7 @@ window.onload = function () {
     case "scopejs_articles_update":
       Rumali.newArticleCreate();
     case "scopejs_reports_show":
-      Rumali.buildCharts();
+      Rumali.buildCharts.loadReportChart();
       Rumali.buildMultiLineChart();
     default:
   }
