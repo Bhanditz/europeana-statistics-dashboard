@@ -22,7 +22,7 @@ class Impl::Output < ActiveRecord::Base
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
-  store_accessor :properties, :image_url, :title_url
+  store_accessor :properties, :image_url, :title_url, :title, :content
   #ASSOCIATIONS
   belongs_to :impl_parent,polymorphic: :true
   has_many :impl_static_attributes, class_name: "Impl::StaticAttribute", foreign_key: "impl_output_id", dependent: :destroy
@@ -47,7 +47,11 @@ class Impl::Output < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
   def self.find_or_create(impl_parent_id,impl_parent_type,genre,options={})
-    a = where(impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre,key: options[:key], value: options[:value]).first
+    unless options.blank?
+      a = where(impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre,key: options[:key], value: options[:value]).first
+    else
+      a = where(impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre).first
+    end
     if a.blank?
       a = create({impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre, key: options[:key], value: options[:value]})
     end

@@ -69,7 +69,7 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_collections_query
-    return "Select key, value from impl_aggregations a, impl_outputs o where a.id = #{self.id} and o.genre='collections' and o.impl_parent_id = #{self.id}"
+    return "Select o.value, o.properties -> 'title' as title, o.properties -> 'content' as content from impl_aggregations a, impl_outputs o where a.id = #{self.id} and o.genre='collections' and o.impl_parent_id = #{self.id}"
   end
 
   def get_pageviews_line_chart_query
