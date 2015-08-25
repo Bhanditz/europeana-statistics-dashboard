@@ -47,6 +47,7 @@ var loadMultiSeriesLine = function(obj){
 				chart_color: ["#B0E2FF","#60AFFE"],
 				data_sort_enable: "no",
 				axis_x_time_value_datatype:"month",
+				chart_width:700
 			};
 
 		var chartobj = new PykCharts.multiD.multiSeriesLine(

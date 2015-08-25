@@ -18,7 +18,7 @@ class Aggregations::CollectionsBuilder
         else
           raise "No Collections detected"
         end
-        #Aggregations::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)
+        Aggregations::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)
       rescue => e
         aggregation_output.update_attributes(status: "Failed to build collections", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed to build collections", error_messages: e.to_s)

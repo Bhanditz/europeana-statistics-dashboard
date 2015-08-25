@@ -14,7 +14,7 @@ class Impl::ProvidersController < ApplicationController
     @impl_provider.updated_by = current_account.id
     if @impl_provider.save
       Impl::AggregationProvider.create({impl_aggregation_id: @impl_aggregation.id, impl_provider_id: @impl_provider.id})
-      redirect_to account_project_impl_aggregation_providers_path(@core_project.account, @core_project, @impl_aggregation), notice: t("c.s")
+      redirect_to edit_account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), notice: t("c.s")
     else
       @impl_providers = @impl_aggregation.impl_providers
       render :index
@@ -28,7 +28,7 @@ class Impl::ProvidersController < ApplicationController
 
   def restart_worker
     Impl::TrafficBuilder.perform_async(@impl_provider.id)
-    redirect_to account_project_impl_aggregation_providers_path(@core_project.account, @core_project, @impl_aggregation), notice: t("provider.worker")
+    redirect_to :back, notice: t("provider.worker")
   end
   
   private

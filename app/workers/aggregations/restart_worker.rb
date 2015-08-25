@@ -10,7 +10,6 @@ class Aggregations::RestartWorker
         sleep 30
       end
     rescue => e
-      aggregation.update_attributes(status: "Failed to Restart all Jobs", error_messages: e.to_s)
     end
   end
 end

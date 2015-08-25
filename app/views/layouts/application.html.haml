@@ -4,7 +4,9 @@
     %title= (yield(:title).empty? ? "Europeana" : yield(:title))
     :javascript
       var rumi_api_endpoint = "#{REST_API_ENDPOINT}";
-    = stylesheet_link_tag    'application', media: 'all'
+    = stylesheet_link_tag 'application', media: 'all'
+    - if controller_name == "reports" and action_name == 'show'
+      = stylesheet_link_tag "europeana"
     = javascript_include_tag 'application'
     = javascript_include_tag 'accounts'
     = csrf_meta_tags

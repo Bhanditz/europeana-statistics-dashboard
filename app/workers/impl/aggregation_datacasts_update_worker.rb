@@ -1,4 +1,4 @@
-class Impl::ProviderAggregationDatacastUpdate
+class Impl::AggregationDatacastsUpdateWorker
   include Sidekiq::Worker
   sidekiq_options backtrace: true
   

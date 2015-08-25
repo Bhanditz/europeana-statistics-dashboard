@@ -126,6 +126,9 @@ GEM
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
+    europeana-api (0.3.4)
+      activesupport (>= 3.0)
+      multi_json (~> 1.0)
     excon (0.45.3)
     execjs (2.5.2)
     faraday (0.9.1)
@@ -428,6 +431,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   csvlint
   devise
+  europeana-api
   friendly_id (~> 5.0.0)
   git
   gon (~> 5.2.3)

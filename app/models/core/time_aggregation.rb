@@ -54,7 +54,10 @@ class Core::TimeAggregation < ActiveRecord::Base
     if a.blank?
       a = create({parent_type: parent_type, parent_id: parent_id, metric: metric, aggregation_level: aggregation_level,aggregation_level_value: aggregation_level_value, value: value})
     else
-      a.update_attributes(value: (a.value.to_i + value))
+      new_value = a.value.to_i + value
+      difference_from_previous_value = a.is_positive_value ? (a.difference_from_previous_value + new_value) : ((-a.difference_from_previous_value) + new_value)
+      is_positive_value = (difference_from_previous_value > 0)
+      a.update_attributes(value: new_value, difference_from_previous_value: difference_from_previous_value, is_positive_value: is_positive_value)
     end
     a
   end
@@ -68,7 +71,7 @@ class Core::TimeAggregation < ActiveRecord::Base
         quarter = ((month.to_i - 1)/3) + 1
         aggregation_value = "#{year}_Q#{quarter}"
       when "monthly"
-        aggregation_value = "#{year}_M#{month}"
+        aggregation_value = "#{year}_#{Date::MONTHNAMES[month.to_i]}"
       when "half_yearly"
         half = ((month.to_i - 1)/6) + 1
         aggregation_value = "#{year}_H#{half}"

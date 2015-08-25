@@ -65,7 +65,7 @@ namespace :ref do
       template = line[1]
       img = line[2]
       sort_order = line[3]
-      Core::CardLayout.create!({name: name, template: template, img: img, sort_order: sort_order})
+      Core::CardLayout.create({name: name, template: template, img: img, sort_order: sort_order})
     end
 
     puts '----> Loading Ref::CountryCode'

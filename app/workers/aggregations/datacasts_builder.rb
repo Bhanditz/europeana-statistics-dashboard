@@ -47,7 +47,12 @@ class Aggregations::DatacastsBuilder
       top_digital_objects_datacast = Core::Datacast.create_or_update_by(top_digital_objects_datacast_query,core_project_id,core_db_connection_id,top_digital_objects_datacast_name)
       top_digital_objects_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,top_digital_objects_datacast.identifier)
       aggregation.update_attributes(status: "Created all datacasts")
-      Aggregations::VizsBuilder.perform_async(aggregation_id)
+      #Aggregations::VizsBuilder.perform_async(aggregation_id)
+
+      # pageviews_line_chart_datacast_name = "#{aggregation.name} - Line Chart"
+      # pageviews_line_chart_datacast_query =  aggregation.get_pageviews_line_chart_query
+      # pageviews_line_chart_datacast = Core::Datacast.create_or_update_by(pageviews_line_chart_datacast_query,core_project_id, core_db_connection_id,pageviews_line_chart_datacast_name)
+      # pageviews_line_chart_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,pageviews_line_chart_datacast.identifier)
     rescue => e
       aggregation.update_attributes(status: "Failed to build datacast", error_messages: e.to_s)
     end

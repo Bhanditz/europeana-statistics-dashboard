@@ -19,7 +19,7 @@ class Core::CardLayout < ActiveRecord::Base
   #ACCESSORS
   #ASSOCIATIONS
   #VALIDATIONS
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
   validates :template, presence: true
   #CALLBACKS
   #SCOPES

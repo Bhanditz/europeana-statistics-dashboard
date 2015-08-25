@@ -23,7 +23,7 @@ class Impl::AggregationsController < ApplicationController
     @impl_aggregation.updated_by = current_account.id
     @impl_aggregation.provider_ids = impl_aggregation_params[:provider_ids].split(",") unless impl_aggregation_params[:provider_ids].blank?
     if @impl_aggregation.save
-      redirect_to account_project_impl_aggregations_path(@core_project.account, @core_project), notice: t("c.s")
+      redirect_to edit_account_project_impl_aggregation_path(@core_project.account, @core_project,@impl_aggregation), notice: t("c.s")
     else
       render :index
     end
@@ -45,7 +45,7 @@ class Impl::AggregationsController < ApplicationController
 
   def restart_all_aggregation_workers
     @impl_aggregation.restart_all_jobs
-    redirect_to account_project_impl_aggregation_providers_path(@core_project.account, @core_project, @impl_aggregation), notice: t("aggregation.refreshed_all_jobs")
+    redirect_to edit_account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), notice: t("aggregation.refreshed_all_jobs")
   end
 
   private

@@ -171,7 +171,8 @@ var loadMultiDGroupedCol =  function(obj,year,quarter){
 			//Api for fetching the data.
 	      	export_enable: "no",
 	      	axis_x_pointer_position: "bottom", //put x-axis at bottom
-	      	tooltip_enable: "yes" //enabling tool tip for the gven chart
+	      	tooltip_enable: "yes", //enabling tool tip for the gven chart
+	      	chart_width:700
 			};
 
 		var chartobj = new PykCharts.multiD.groupedColumn(

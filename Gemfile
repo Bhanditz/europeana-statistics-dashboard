@@ -35,6 +35,8 @@ gem 'aescrypt'
 
 #Europeana Style Guide Gem
 
+gem 'europeana-api'
+
 #gem 'europeana-styleguide', git: 'https://github.com/europeana/europeana-styleguide-ruby'
 
 #-WORKERS_SYSTEM

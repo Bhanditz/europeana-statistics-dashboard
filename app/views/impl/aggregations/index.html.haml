@@ -22,7 +22,12 @@
                 %tr
                   %td= get_impl_status(impl_aggregation).html_safe
                   %td= impl_aggregation.genre.titleize
-                  %td= link_to impl_aggregation.name, impl_report_path(impl_aggregation.impl_report)
+                  %td
+                    - if impl_aggregation.impl_report.present?
+                      = link_to impl_aggregation.name, impl_report_path(impl_aggregation.impl_report)
+                    -else
+                      = impl_aggregation.name
+
                   %td= impl_aggregation.wikiname
                   %td
                     %strong=impl_aggregation.status
