@@ -13,7 +13,7 @@ class Aggregations::CollectionsBuilder
       begin
         collections =  JSON.parse(Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{aggregation.genre.upcase}%3a%22#{CGI.escape(aggregation.name)}%22&rows=0").body)
         if collections["totalResults"].present?
-          aggregation_output.update_attributes(status: "Processed Collections", key: "total_results", value: collections["totalResults"])
+          aggregation_output.update_attributes(status: "Processed Collections", key: "total_results", value: collections["totalResults"], content: "digital objects in europeana", title: "Total Collections")
           aggregation.update_attributes(status: "Processed Collections")
         else
           raise "No Collections detected"
