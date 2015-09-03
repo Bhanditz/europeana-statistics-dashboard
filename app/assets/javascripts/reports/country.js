@@ -38,9 +38,6 @@ var loadMultiSeriesLine = function(obj){
 	}
 
 	var callPykChart = function(data){
-
-		console.log(data);
-
 		var loadonedmap_obj = {
 				selector: selector,//Getting id for the element as expected by the pykihcharts.
 				data:data,
@@ -68,7 +65,6 @@ var loadMultiSeriesLine = function(obj){
 var getJSON = function(url,context,callbackfn){
 	$.getJSON(url) //jquery function to parse url and get data in done method.
 		.done(function(data){
-			console.log(url);
 			callbackfn(data,gon.selected_year,gon.selected_quarter);
 		});
 }
