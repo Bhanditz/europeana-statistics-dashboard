@@ -32,7 +32,7 @@ class Impl::Output < ActiveRecord::Base
   validates :impl_parent_id, presence: :true
   validates :impl_parent_type, presence: :true, inclusion: {in: ["Impl::Aggregation","Impl::Provider"]}
   validates :genre, presence: :true
-  validates :value, uniqueness: {scope: [:key, :impl_parent_id, :impl_parent_type]}, allow_blank: true, allow_nil: true
+  validates :value, uniqueness: {scope: [:key, :impl_parent_id, :impl_parent_type, :genre]}, allow_blank: true, allow_nil: true
 
   #CALLBACKS
   #SCOPES

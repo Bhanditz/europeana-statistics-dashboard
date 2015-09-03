@@ -38,10 +38,10 @@ class Aggregations::ReportBuilder
         variable_object[traffic_content_key] = traffic_content_value
         
 
-        #Putting Top Countries
-        top_countries_content_key = required_variables.shift
-        top_countries_content_value = core_vizs.top_country.first.auto_html_div
-        variable_object[top_countries_content_key] = top_countries_content_value
+        # #Putting Top Countries
+        # top_countries_content_key = required_variables.shift
+        # top_countries_content_value = core_vizs.top_country.first.auto_html_div
+        # variable_object[top_countries_content_key] = top_countries_content_value
 
         #Putting Top Digital Objects
         top_digital_objects_content_key = required_variables.shift
@@ -54,7 +54,7 @@ class Aggregations::ReportBuilder
           html_content.gsub!(key, value.to_s)
         end
 
-        a = Impl::Report.create_or_update(aggregation.name, aggregation_id, core_template.id, html_content, variable_object)
+        a = Impl::Report.create_or_update(aggregation.name, aggregation_id, core_template.id, html_content, variable_object, true)
         aggregation.update_attributes(status: "Report built", error_messages: nil)
       rescue => e
         aggregation.update_attributes(status: "Failed to build report", error_messages: e.to_s)

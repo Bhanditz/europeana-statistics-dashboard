@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: impl_aggregations
+#
+#  id                :integer          not null, primary key
+#  core_project_id   :integer
+#  genre             :string
+#  name              :string
+#  wikiname          :string
+#  created_by        :integer
+#  updated_by        :integer
+#  last_requested_at :integer
+#  last_updated_at   :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  status            :string
+#  error_messages    :string
+#  properties        :hstore
+#  country           :string
+#
+
   # == Schema Information
 #
 # Table name: impl_aggregations
@@ -39,12 +60,16 @@ class Impl::Aggregation < ActiveRecord::Base
   #VALIDATIONS
   validates :core_project_id, presence: true
   validates :genre, presence: true
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: {scope: :core_project_id}
   
   #CALLBACKS
   before_create :before_create_set
   after_create :after_create_set
   #SCOPES
+  scope :aggregations, -> {where(genre: ["provider","data_provider"])}
+  scope :no_country, -> {where(country: nil)}
+  scope :country, ->{no_country.where(genre: "country")}
+  scope :europeana, -> {no_country.where(genre: "europeana").first}
   #CUSTOM SCOPES
   #FUNCTIONS
 
@@ -57,7 +82,7 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_traffic_query
-    return "Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta. aggregation_level_value, '_',2) as quarter, ta.aggregation_value_to_display as x,ta.metric as group, ta.value as y   from core_time_aggregations as ta, (Select o.id as output_id from impl_outputs o where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id = #{self.id}) and genre in ('pageviews','events')) as b where ta.parent_id = b.output_id order by aggregation_index;"
+    return "Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta. aggregation_level_value, '_',2) as quarter, ta.aggregation_value_to_display as x,ta.metric as group, ta.value as y   from core_time_aggregations as ta, (Select o.id as output_id from impl_outputs o where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id = #{self.id}) and genre in ('pageviews_for_traffic','events_for_traffic')) as b where ta.parent_id = b.output_id order by aggregation_index;"
   end
 
   def get_digital_objects_query
@@ -73,7 +98,15 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_pageviews_line_chart_query
-    return "Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,ta.value as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o join (Select ip.id from impl_providers ip join impl_aggregation_providers iap on ip.id = iap.impl_provider_id and iap.impl_aggregation_id = #{self.id}) as a on impl_parent_id = a.id and genre='pageviews_line_chart') as b  on parent_type='Impl::Output' and parent_id = output_id"
+    return "Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,ta.value as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o join (Select ip.id from impl_providers ip join impl_aggregation_providers iap on ip.id = iap.impl_provider_id and iap.impl_aggregation_id = #{self.id}) as a on impl_parent_id = a.id and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id"
+  end
+
+  def get_pageviews_top_country_query
+    return "Select key,value,properties -> 'title' as title, properties -> 'content' as content from impl_outputs where impl_parent_type = 'Impl::Aggregation' and impl_parent_id = '#{self.id}' and genre='top_pageviews_country';"
+  end
+
+  def get_users_top_country_query
+    return "Select key,value,properties -> 'title' as title, properties -> 'content' as content from impl_outputs where impl_parent_type = 'Impl::Aggregation' and impl_parent_id = '#{self.id}' and genre='top_users_country';"
   end
 
 
@@ -86,6 +119,32 @@ class Impl::Aggregation < ActiveRecord::Base
     return "<div id='#{datacast.name.parameterize("_")}' data-datacast_identifier='#{datacast.identifier}' class='top_digital_objects'></div>"
   end
 
+  def get_aggregated_filters
+    filter = "ga:hostname=~europeana.eu;"
+    impl_providers = self.impl_providers
+    last_id = impl_providers.last.id
+    impl_providers.each do |p|
+      filter += "ga:pagePath=~/#{p.provider_id.strip}/#{p.id == last_id ? "" : ","}"
+    end
+    return filter
+  end
+
+  def europeana?
+    return self.genre == "europeana"
+  end
+
+
+  def self.create_or_find_country_report(country, genre, core_project_id)
+    country_report = where(name:country, genre: genre, core_project_id: core_project_id).first
+    if country_report.nil?
+      country_report = create({name: country, genre: genre, wikiname: nil,core_project_id: core_project_id, status: "Building Country Report"})
+    end
+    country_report
+  end
+
+  def self.get_europeana_query(metric)
+    return "Select sum(value),split_part(aggregation_level_value,'_',1) as year from core_time_aggregations cta join (select io.id as impl_output_id from impl_outputs io join impl_aggregations ia on io.impl_parent_id = ia.id and io.impl_parent_type='Impl::Aggregation' and ia.genre='europeana' and io.genre='#{metric}') as iao on cta.parent_id = iao.impl_output_id and cta.parent_type='Impl::Output' group by metric, split_part(aggregation_level_value,'_',1)"
+  end
 
   #PRIVATE
   private
@@ -96,9 +155,13 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def after_create_set
-    Aggregations::DatacastsBuilder.perform_async(self.id)
-    Aggregations::MediaTypesBuilder.perform_async(self.id)
-    Aggregations::WikiProfileBuilder.perform_async(self.id)
+    if self.genre == "country" and self.country.nil?
+      country_report = Impl::Aggregation.create_or_find_country_report(self.country,"country", self.core_project_id)
+    elsif ["provider","data_provider"].include?(genre)
+      Aggregations::DatacastsBuilder.perform_async(self.id)
+      Aggregations::MediaTypesBuilder.perform_async(self.id)
+      Aggregations::WikiProfileBuilder.perform_async(self.id)
+    end
     true
   end
 

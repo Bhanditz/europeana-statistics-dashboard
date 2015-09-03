@@ -6,14 +6,16 @@ class Aggregations::ReusableBuilder
 
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
-    if aggregation.genre == "provider" or aggregation.genre == "data_provider"
+    if ["provider","data_provider"].include?(aggregation.genre)
       aggregation.update_attributes(status: "Building Reusables", error_messages: nil)
       aggregation_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","reusable")
       aggregation_output.update_attributes(status: "Building Reusables", error_messages: nil)
       begin
-        reusables = Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{aggregation.genre.upcase}%3a%22#{CGI.escape(aggregation.name)}%22&facet=REUSABILITY&profile=facets&rows=0")
+        europeana_query = "#{aggregation.genre.upcase}%3a%22#{CGI.escape(aggregation.name)}%22"
+        reusables = Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{europeana_query}&facet=REUSABILITY&profile=facets&rows=0")
         if reusables["facets"].present?
           reusable_data =  reusables["facets"].jq('.[0].fields | .[] | {(.label):(.count)}')
+          aggregation_output.update_attributes(key: "total_results", value: reusables["totalResults"])
           Impl::StaticAttribute.create_or_update_static_data(reusable_data, aggregation_output.id)
           aggregation_output.update_attributes(status: "Processed Reusables")
           aggregation.update_attributes(status: "Processed Reusables")  

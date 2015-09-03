@@ -15,44 +15,57 @@ class Aggregations::DatacastsBuilder
       collections_datacast = Core::Datacast.create_or_update_by(collections_datacast_query,core_project_id,core_db_connection_id,collections_datacast_name)
       aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,collections_datacast.identifier)
 
+      unless aggregation.europeana?
+        # Media Types
+        media_type_datacast_name = "#{aggregation.name} - Media Types"
+        media_type_datacast_query = aggregation.get_static_query("media_type")
+        media_type_datacast = Core::Datacast.create_or_update_by(media_type_datacast_query,core_project_id,core_db_connection_id,media_type_datacast_name)
+        aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,media_type_datacast.identifier)
 
-      # Media Types
-      media_type_datacast_name = "#{aggregation.name} - Media Types"
-      media_type_datacast_query = aggregation.get_static_query("media_type")
-      media_type_datacast = Core::Datacast.create_or_update_by(media_type_datacast_query,core_project_id,core_db_connection_id,media_type_datacast_name)
-      aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,media_type_datacast.identifier)
+        # Reusables
+        reusable_datacast_name = "#{aggregation.name} - Reusables"
+        reusable_datacast_query = aggregation.get_static_query("reusable")
+        reusable_datacast = Core::Datacast.create_or_update_by(reusable_datacast_query,core_project_id,core_db_connection_id,reusable_datacast_name)
+        aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,reusable_datacast.identifier)
 
-      # Reusables
-      reusable_datacast_name = "#{aggregation.name} - Reusables"
-      reusable_datacast_query = aggregation.get_static_query("reusable")
-      reusable_datacast = Core::Datacast.create_or_update_by(reusable_datacast_query,core_project_id,core_db_connection_id,reusable_datacast_name)
-      aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,reusable_datacast.identifier)
-      
-      
-      # Traffic
-      traffic_datacast_name = "#{aggregation.name} - Traffic"
-      traffic_datacast_query = aggregation.get_traffic_query
-      traffic_datacast = Core::Datacast.create_or_update_by(traffic_datacast_query,core_project_id,core_db_connection_id,traffic_datacast_name)
-      traffic_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,traffic_datacast.identifier)
 
-      #Top Countries
-      top_countries_datacast_name = "#{aggregation.name} - Top Countries"
-      top_countries_datacast_query = aggregation.get_countries_query
-      top_countries_datacast = Core::Datacast.create_or_update_by(top_countries_datacast_query,core_project_id,core_db_connection_id,top_countries_datacast_name)
-      top_countries_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,top_countries_datacast.identifier)
+        # Traffic
+        traffic_datacast_name = "#{aggregation.name} - Traffic"
+        traffic_datacast_query = aggregation.get_traffic_query
+        traffic_datacast = Core::Datacast.create_or_update_by(traffic_datacast_query,core_project_id,core_db_connection_id,traffic_datacast_name)
+        traffic_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,traffic_datacast.identifier)
 
-      #Top Digital Objects
-      top_digital_objects_datacast_name = "#{aggregation.name} - Top Digital Objects"
-      top_digital_objects_datacast_query = aggregation.get_digital_objects_query
-      top_digital_objects_datacast = Core::Datacast.create_or_update_by(top_digital_objects_datacast_query,core_project_id,core_db_connection_id,top_digital_objects_datacast_name)
-      top_digital_objects_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,top_digital_objects_datacast.identifier)
-      aggregation.update_attributes(status: "Created all datacasts")
-      #Aggregations::VizsBuilder.perform_async(aggregation_id)
+        #Top Countries
+        top_countries_datacast_name = "#{aggregation.name} - Top Countries"
+        top_countries_datacast_query = aggregation.get_countries_query
+        top_countries_datacast = Core::Datacast.create_or_update_by(top_countries_datacast_query,core_project_id,core_db_connection_id,top_countries_datacast_name)
+        top_countries_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,top_countries_datacast.identifier)
 
-      # pageviews_line_chart_datacast_name = "#{aggregation.name} - Line Chart"
-      # pageviews_line_chart_datacast_query =  aggregation.get_pageviews_line_chart_query
-      # pageviews_line_chart_datacast = Core::Datacast.create_or_update_by(pageviews_line_chart_datacast_query,core_project_id, core_db_connection_id,pageviews_line_chart_datacast_name)
-      # pageviews_line_chart_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,pageviews_line_chart_datacast.identifier)
+        #Top Digital Objects
+        top_digital_objects_datacast_name = "#{aggregation.name} - Top Digital Objects"
+        top_digital_objects_datacast_query = aggregation.get_digital_objects_query
+        top_digital_objects_datacast = Core::Datacast.create_or_update_by(top_digital_objects_datacast_query,core_project_id,core_db_connection_id,top_digital_objects_datacast_name)
+        top_digital_objects_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,top_digital_objects_datacast.identifier)
+        aggregation.update_attributes(status: "Created all datacasts")
+
+        pageviews_line_chart_datacast_name = "#{aggregation.name} - Line Chart"
+        pageviews_line_chart_datacast_query =  aggregation.get_pageviews_line_chart_query
+        pageviews_line_chart_datacast = Core::Datacast.create_or_update_by(pageviews_line_chart_datacast_query,core_project_id, core_db_connection_id,pageviews_line_chart_datacast_name)
+        pageviews_line_chart_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,pageviews_line_chart_datacast.identifier)
+        Aggregations::VizsBuilder.perform_async(aggregation_id)
+
+        #Pageviews top country
+        # pageviews_top_country_datacast_name = "#{aggregation.name} - Pageviews Top Country"
+        # pageviews_top_country_datacast_query =  aggregation.get_pageviews_top_country_query
+        # pageviews_top_country_datacast = Core::Datacast.create_or_update_by(pageviews_top_country_datacast_query,core_project_id, core_db_connection_id,pageviews_top_country_datacast_name)
+        # pageviews_top_country_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,pageviews_top_country_datacast.identifier)
+
+        #Users top country
+        # users_top_country_datacast_name = "#{aggregation.name} - Users Top Country"
+        # users_top_country_datacast_query =  aggregation.get_users_top_country_query
+        # users_top_country_datacast = Core::Datacast.create_or_update_by(users_top_country_datacast_query,core_project_id, core_db_connection_id,users_top_country_datacast_name)
+        # users_top_country_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,users_top_country_datacast.identifier)
+      end
     rescue => e
       aggregation.update_attributes(status: "Failed to build datacast", error_messages: e.to_s)
     end

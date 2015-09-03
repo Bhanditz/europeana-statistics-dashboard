@@ -4,7 +4,7 @@ class Impl::AggregationsController < ApplicationController
   before_action :set_impl_aggregation, only: [:show,:edit, :update, :destroy, :restart_all_aggregation_workers, :datacasts]
 
   def index
-    @impl_aggregations = @core_project.impl_aggregations.includes(:impl_report)
+    @impl_aggregations = @core_project.impl_aggregations.aggregations.includes(:impl_report)
     @impl_aggregation = Impl::Aggregation.new
   end
 
@@ -32,7 +32,10 @@ class Impl::AggregationsController < ApplicationController
   def update
     @impl_aggregation.updated_by = current_account.id
     if @impl_aggregation.update(impl_aggregation_params)
-      redirect_to account_project_impl_aggregation_providers_path(@core_project.account, @core_project, @impl_aggregation), notice: t("u.s")
+      Aggregations::DatacastsBuilder.perform_async(@impl_aggregation.id)
+      Aggregations::MediaTypesBuilder.perform_async(@impl_aggregation.id)
+      Aggregations::WikiProfileBuilder.perform_async(@impl_aggregation.id)
+      redirect_to edit_account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), notice: t("u.s")
     else
       render "impl/providers/index"
     end

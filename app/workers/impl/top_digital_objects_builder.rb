@@ -15,7 +15,7 @@ class Impl::TopDigitalObjectsBuilder
       Impl::AggregationDatacastsUpdateWorker.perform_async(provider_id)
       Impl::TrafficBuilder.perform_at(1.week.from_now,provider_id,next_start_date, next_end_date)
     rescue => e
-      provider.update_attributes(status: "Failed",error_messages: e.to_s)
+      provider.update_attributes(status: "Failed to build top digital objects",error_messages: e.to_s)
     end
   end
 

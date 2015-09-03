@@ -6,6 +6,7 @@ namespace :ref do
     puts "----> Migrations"
 
     Rake::Task['db:migrate'].invoke
+    Rake::Task['seed:users'].invoke
 
     puts '----> Creating Europeana Project'
 
@@ -71,6 +72,10 @@ namespace :ref do
     puts '----> Loading Ref::CountryCode'
     Ref::CountryCode.seed
     puts "----> Done"
+
+    Rake::Task['ref:create_default_db_connection'].invoke
+    Rake::Task['ref:create_default_template'].invoke
+    Rake::Task['ref:create_europeana_aggregation_report'].invoke
   end
 
   task :create_default_db_connection => :environment do |t, args|
@@ -93,5 +98,19 @@ namespace :ref do
     required_variables = {"required_variables" => ['$AGGREGATION_WIKIPEDIA_DESCRIPTION$','$COLLECTION_IN_EUROPEANA$','$MEDIA_TYPES_CHART$','$REUSABLES_CHART$','$TRAFFIC_CHART$','$TOP_COUNTRIES_MAP$','$TOP_DIGITAL_OBJECTS$']}
     html_content = File.open("ref/default_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
+  end
+
+  task :create_europeana_aggregation_report => :environment do |t,args|
+    puts "Building Europeana Report"
+    core_project_id = Core::Project.where(name: "Europeana").first.id
+    name = "Europeana"
+    genre = "europeana"
+    wikiname = nil
+    status = ""
+    impl_aggregation = Impl::Aggregation.create({genre: genre, name: name, wikiname: wikiname, status: status, core_project_id: core_project_id })
+    if impl_aggregation.id.present?
+      Aggregations::CollectionsBuilder.perform_async(impl_aggregation.id)
+      Aggregations::DatacastsBuilder.perform_at(5.minute.from_now, impl_aggregation.id)
+    end
   end
 end

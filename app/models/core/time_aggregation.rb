@@ -55,7 +55,7 @@ class Core::TimeAggregation < ActiveRecord::Base
       a = create({parent_type: parent_type, parent_id: parent_id, metric: metric, aggregation_level: aggregation_level,aggregation_level_value: aggregation_level_value, value: value})
     else
       new_value = a.value.to_i + value
-      difference_from_previous_value = a.is_positive_value ? (a.difference_from_previous_value + new_value) : ((-a.difference_from_previous_value) + new_value)
+      difference_from_previous_value = a.is_positive_value ? (a.difference_from_previous_value.to_i + new_value) : (-(a.difference_from_previous_value.to_i) + new_value)
       is_positive_value = (difference_from_previous_value > 0)
       a.update_attributes(value: new_value, difference_from_previous_value: difference_from_previous_value, is_positive_value: is_positive_value)
     end

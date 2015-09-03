@@ -5,11 +5,10 @@ class Old < ActiveRecord::Migration
     enable_extension "hstore"
     enable_extension "unaccent"
 
-    create_table "accounts", force: true do |t|
+    create_table "accounts", force: :cascade do |t|
       t.string   "username"
       t.string   "email",                  default: "", null: false
       t.string   "slug"
-      t.string   "accountable_type"
       t.hstore   "properties"
       t.string   "encrypted_password",     default: "", null: false
       t.string   "reset_password_token"
@@ -32,55 +31,7 @@ class Old < ActiveRecord::Migration
     add_index "accounts", ["slug"], name: "index_accounts_on_slug", unique: true, using: :btree
     add_index "accounts", ["username"], name: "index_accounts_on_username", unique: true, using: :btree
 
-    create_table "cerebro_accounts", force: true do |t|
-      t.string   "email"
-      t.integer  "account_id"
-      t.hstore   "properties"
-      t.json     "response"
-      t.datetime "request_sent_at"
-      t.string   "status"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
-
-    create_table "cerebro_socials", force: true do |t|
-      t.integer  "cerebro_account_id"
-      t.string   "source"
-      t.string   "source_name"
-      t.text     "photo_url"
-      t.text     "bio"
-      t.text     "url"
-      t.string   "identifier"
-      t.string   "username"
-      t.string   "followers"
-      t.string   "following"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
-
-    create_table "cerebro_websites", force: true do |t|
-      t.integer  "cerebro_account_id"
-      t.text     "url"
-      t.string   "genre"
-      t.string   "handle"
-      t.string   "client"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
-
-    create_table "cerebro_works", force: true do |t|
-      t.integer  "cerebro_account_id"
-      t.string   "start_date"
-      t.string   "end_date"
-      t.string   "title"
-      t.string   "is_primary"
-      t.string   "name"
-      t.string   "is_current"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
-
-    create_table "core_account_emails", force: true do |t|
+    create_table "core_account_emails", force: :cascade do |t|
       t.integer  "account_id"
       t.string   "email"
       t.string   "confirmation_token"
@@ -92,45 +43,62 @@ class Old < ActiveRecord::Migration
       t.datetime "updated_at"
     end
 
-    create_table "core_account_images", force: true do |t|
-      t.integer  "account_id"
-      t.string   "filetype"
-      t.text     "image_url"
-      t.string   "filesize"
+    create_table "core_article_cards", force: :cascade do |t|
+      t.integer  "core_article_id"
+      t.integer  "core_card_id"
       t.integer  "created_by"
       t.integer  "updated_by"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-      t.hstore   "properties"
+      t.datetime "created_at",      null: false
+      t.datetime "updated_at",      null: false
     end
 
-    create_table "core_configuration_editors", force: true do |t|
-      t.integer  "account_id"
+    create_table "core_articles", force: :cascade do |t|
       t.integer  "core_project_id"
       t.string   "name"
-      t.string   "slug"
-      t.boolean  "to_publish"
-      t.datetime "last_published_at"
-      t.json     "content"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-      t.hstore   "properties"
       t.integer  "created_by"
       t.integer  "updated_by"
+      t.string   "status"
+      t.datetime "created_at",      null: false
+      t.datetime "updated_at",      null: false
     end
 
-    create_table "core_custom_dashboards", force: true do |t|
-      t.integer  "core_project_id"
+    create_table "core_card_layouts", force: :cascade do |t|
       t.string   "name"
-      t.hstore   "properties"
-      t.integer  "created_by"
-      t.integer  "updated_by"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-      t.string   "slug"
+      t.text     "template"
+      t.text     "img"
+      t.integer  "sort_order"
+      t.datetime "created_at", null: false
+      t.datetime "updated_at", null: false
     end
 
-    create_table "core_data_store_pulls", force: true do |t|
+    create_table "core_cards", force: :cascade do |t|
+      t.string   "name"
+      t.boolean  "is_public"
+      t.text     "content"
+      t.hstore   "properties"
+      t.integer  "core_card_layout_id"
+      t.integer  "core_project_id"
+      t.integer  "core_datacast_identifier"
+      t.text     "image"
+      t.integer  "created_by"
+      t.integer  "updated_by"
+      t.integer  "filesize"
+      t.datetime "created_at",               null: false
+      t.datetime "updated_at",               null: false
+    end
+
+    create_table "core_datacast_outputs", force: :cascade do |t|
+      t.string   "datacast_identifier", null: false
+      t.integer  "core_datacast_id",    null: false
+      t.text     "output"
+      t.text     "fingerprint"
+      t.datetime "created_at",          null: false
+      t.datetime "updated_at",          null: false
+    end
+
+    add_index "core_datacast_outputs", ["datacast_identifier"], name: "index_core_datacast_outputs_on_datacast_identifier", unique: true, using: :btree
+
+    create_table "core_datacast_pulls", force: :cascade do |t|
       t.integer  "core_project_id"
       t.text     "file_url"
       t.boolean  "first_row_header"
@@ -140,73 +108,59 @@ class Old < ActiveRecord::Migration
       t.integer  "updated_by"
       t.datetime "created_at"
       t.datetime "updated_at"
-    end
-
-    create_table "core_data_stores", force: true do |t|
-      t.integer  "core_project_id"
-      t.string   "name"
-      t.string   "slug"
-      t.hstore   "properties"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-      t.integer  "parent_id"
-      t.integer  "clone_parent_id"
+      t.integer  "core_db_connection_id"
       t.string   "table_name"
-      t.integer  "created_by"
-      t.integer  "updated_by"
-      t.string   "genre_class"
-      t.boolean  "is_verified_dictionary"
-      t.json     "join_query"
-      t.text     "meta_description"
     end
 
-    add_index "core_data_stores", ["properties"], name: "core_metadata_data_store_columns_properties", using: :gin
-    add_index "core_data_stores", ["properties"], name: "data_stores_properties", using: :gin
-    add_index "core_data_stores", ["slug"], name: "index_core_data_stores_on_slug", using: :btree
-
-    create_table "core_map_files", force: true do |t|
-      t.integer  "account_id"
-      t.boolean  "is_public"
+    create_table "core_datacasts", force: :cascade do |t|
+      t.integer  "core_project_id"
+      t.integer  "core_db_connection_id"
       t.string   "name"
-      t.string   "size"
-      t.string   "filetype"
+      t.string   "identifier"
       t.hstore   "properties"
-      t.boolean  "is_verified"
       t.integer  "created_by"
       t.integer  "updated_by"
       t.datetime "created_at"
       t.datetime "updated_at"
+      t.json     "params_object",          default: {}
+      t.json     "column_properties",      default: {}
+      t.datetime "last_run_at"
+      t.datetime "last_data_changed_at"
+      t.integer  "count_of_queries"
+      t.float    "average_execution_time"
+      t.float    "size"
+      t.string   "slug"
+      t.string   "table_name"
     end
 
-    create_table "core_permissions", force: true do |t|
+    create_table "core_db_connections", force: :cascade do |t|
+      t.string   "name"
+      t.string   "adapter"
+      t.hstore   "properties"
+      t.integer  "created_by"
+      t.integer  "updated_by"
+      t.datetime "created_at"
+      t.datetime "updated_at"
+      t.integer  "core_project_id"
+    end
+
+    create_table "core_permissions", force: :cascade do |t|
       t.integer  "account_id"
-      t.integer  "organisation_id"
       t.string   "role"
       t.string   "email"
       t.string   "status"
       t.datetime "invited_at"
       t.datetime "created_at"
       t.datetime "updated_at"
-      t.integer  "core_team_id"
       t.boolean  "is_owner_team"
       t.integer  "created_by"
       t.integer  "updated_by"
+      t.integer  "core_project_id"
     end
 
     add_index "core_permissions", ["email"], name: "index_core_permissions_on_email", using: :btree
 
-    create_table "core_project_oauths", force: true do |t|
-      t.integer  "core_project_id"
-      t.string   "unique_id"
-      t.string   "provider"
-      t.integer  "created_by"
-      t.integer  "updated_by"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-      t.json     "properties"
-    end
-
-    create_table "core_projects", force: true do |t|
+    create_table "core_projects", force: :cascade do |t|
       t.integer  "account_id"
       t.string   "name"
       t.string   "slug"
@@ -216,49 +170,12 @@ class Old < ActiveRecord::Migration
       t.datetime "updated_at"
       t.integer  "created_by"
       t.integer  "updated_by"
-      t.string   "ref_plan_slug"
     end
 
     add_index "core_projects", ["properties"], name: "projects_properties", using: :gin
     add_index "core_projects", ["slug"], name: "index_core_projects_on_slug", using: :btree
 
-    create_table "core_referral_gifts", force: true do |t|
-      t.integer  "account_id"
-      t.integer  "project_id"
-      t.integer  "referral_id"
-      t.integer  "created_by"
-      t.integer  "updated_by"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
-
-    create_table "core_referrals", force: true do |t|
-      t.string   "email"
-      t.integer  "account_id"
-      t.integer  "referered_id"
-      t.boolean  "is_eligible"
-      t.text     "notes"
-      t.integer  "created_by"
-      t.integer  "updated_by"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
-
-    create_table "core_session_actions", force: true do |t|
-      t.integer  "account_id"
-      t.integer  "core_session_impl_id"
-      t.string   "genre"
-      t.integer  "organisation_id"
-      t.integer  "project_id"
-      t.string   "objectable_type"
-      t.integer  "objectable_id"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-      t.text     "message"
-      t.integer  "count"
-    end
-
-    create_table "core_session_impls", force: true do |t|
+    create_table "core_session_impls", force: :cascade do |t|
       t.string   "session_id"
       t.integer  "account_id"
       t.string   "ip"
@@ -268,13 +185,12 @@ class Old < ActiveRecord::Migration
       t.datetime "created_at"
       t.datetime "updated_at"
       t.integer  "core_viz_id"
-      t.integer  "core_map_file_id"
     end
 
     add_index "core_session_impls", ["account_id"], name: "index_core_session_impls_on_account_id", using: :btree
     add_index "core_session_impls", ["session_id"], name: "index_core_session_impls_on_session_id", unique: true, using: :btree
 
-    create_table "core_sessions", force: true do |t|
+    create_table "core_sessions", force: :cascade do |t|
       t.string   "session_id", null: false
       t.text     "data"
       t.datetime "created_at"
@@ -284,28 +200,16 @@ class Old < ActiveRecord::Migration
     add_index "core_sessions", ["session_id"], name: "index_core_sessions_on_session_id", unique: true, using: :btree
     add_index "core_sessions", ["updated_at"], name: "index_core_sessions_on_updated_at", using: :btree
 
-    create_table "core_team_projects", force: true do |t|
-      t.integer  "core_team_id"
-      t.integer  "core_project_id"
-      t.integer  "created_by"
-      t.integer  "updated_by"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
-
-    create_table "core_teams", force: true do |t|
-      t.integer  "organisation_id"
+    create_table "core_templates", force: :cascade do |t|
       t.string   "name"
-      t.integer  "created_by"
-      t.integer  "updated_by"
-      t.text     "description"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-      t.string   "role"
-      t.boolean  "is_owner_team"
+      t.text     "html_content"
+      t.string   "genre"
+      t.json     "required_variables", default: {}
+      t.datetime "created_at",         null: false
+      t.datetime "updated_at",         null: false
     end
 
-    create_table "core_themes", force: true do |t|
+    create_table "core_themes", force: :cascade do |t|
       t.integer  "account_id"
       t.string   "name"
       t.integer  "sort_order"
@@ -317,7 +221,22 @@ class Old < ActiveRecord::Migration
       t.datetime "updated_at"
     end
 
-    create_table "core_tokens", force: true do |t|
+    create_table "core_time_aggregations", force: :cascade do |t|
+      t.string   "aggregation_level"
+      t.string   "parent_type"
+      t.integer  "parent_id"
+      t.string   "aggregation_level_value"
+      t.string   "metric"
+      t.integer  "value"
+      t.integer  "difference_from_previous_value"
+      t.boolean  "is_positive_value"
+      t.datetime "created_at",                     null: false
+      t.datetime "updated_at",                     null: false
+      t.integer  "aggregation_index"
+      t.string   "aggregation_value_to_display"
+    end
+
+    create_table "core_tokens", force: :cascade do |t|
       t.integer  "account_id"
       t.integer  "core_project_id"
       t.string   "api_token"
@@ -330,11 +249,9 @@ class Old < ActiveRecord::Migration
 
     add_index "core_tokens", ["api_token"], name: "index_core_tokens_on_api_token", using: :btree
 
-    create_table "core_vizs", force: true do |t|
+    create_table "core_vizs", force: :cascade do |t|
       t.integer  "core_project_id"
-      t.integer  "core_data_store_id"
       t.hstore   "properties"
-      t.json     "pykquery_object"
       t.datetime "created_at"
       t.datetime "updated_at"
       t.string   "name"
@@ -342,17 +259,11 @@ class Old < ActiveRecord::Migration
       t.integer  "created_by"
       t.integer  "updated_by"
       t.string   "ref_chart_combination_code"
-      t.integer  "refresh_freq_in_minutes"
-      t.text     "output"
-      t.datetime "refreshed_at"
-      t.string   "datagram_identifier"
-      t.boolean  "is_static"
-      t.boolean  "was_output_big"
+      t.string   "core_datacast_identifier"
+      t.boolean  "filter_present"
     end
 
-    add_index "core_vizs", ["datagram_identifier"], name: "index_core_vizs_on_datagram_identifier", using: :btree
-
-    create_table "friendly_id_slugs", force: true do |t|
+    create_table "friendly_id_slugs", force: :cascade do |t|
       t.string   "slug",                      null: false
       t.integer  "sluggable_id",              null: false
       t.string   "sluggable_type", limit: 50
@@ -365,7 +276,82 @@ class Old < ActiveRecord::Migration
     add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
     add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
-    create_table "ref_charts", force: true do |t|
+    create_table "impl_aggregation_datacasts", force: :cascade do |t|
+      t.integer  "impl_aggregation_id"
+      t.string   "core_datacast_identifier"
+      t.datetime "created_at",               null: false
+      t.datetime "updated_at",               null: false
+    end
+
+    create_table "impl_aggregation_providers", force: :cascade do |t|
+      t.integer  "impl_aggregation_id"
+      t.integer  "impl_provider_id"
+      t.datetime "created_at",          null: false
+      t.datetime "updated_at",          null: false
+    end
+
+    create_table "impl_aggregations", force: :cascade do |t|
+      t.integer  "core_project_id"
+      t.string   "genre"
+      t.string   "name"
+      t.string   "wikiname"
+      t.integer  "created_by"
+      t.integer  "updated_by"
+      t.integer  "last_requested_at"
+      t.integer  "last_updated_at"
+      t.datetime "created_at",        null: false
+      t.datetime "updated_at",        null: false
+      t.string   "status"
+      t.string   "error_messages"
+      t.hstore   "properties"
+      t.string   "country"
+    end
+
+    create_table "impl_outputs", force: :cascade do |t|
+      t.string   "genre"
+      t.datetime "created_at",       null: false
+      t.datetime "updated_at",       null: false
+      t.string   "impl_parent_type"
+      t.integer  "impl_parent_id"
+      t.string   "status"
+      t.string   "error_messages"
+      t.string   "key"
+      t.string   "value"
+      t.hstore   "properties"
+    end
+
+    create_table "impl_providers", force: :cascade do |t|
+      t.string   "provider_id"
+      t.integer  "created_by"
+      t.integer  "updated_by"
+      t.datetime "created_at",     null: false
+      t.datetime "updated_at",     null: false
+      t.string   "status"
+      t.string   "error_messages"
+    end
+
+    create_table "impl_reports", force: :cascade do |t|
+      t.integer  "impl_aggregation_id"
+      t.integer  "core_template_id"
+      t.string   "name"
+      t.string   "slug"
+      t.text     "html_content"
+      t.json     "variable_object"
+      t.datetime "created_at",          null: false
+      t.datetime "updated_at",          null: false
+    end
+
+    add_index "impl_reports", ["slug"], name: "index_impl_reports_on_slug", unique: true, using: :btree
+
+    create_table "impl_static_attributes", force: :cascade do |t|
+      t.integer  "impl_output_id"
+      t.string   "key"
+      t.string   "value"
+      t.datetime "created_at",     null: false
+      t.datetime "updated_at",     null: false
+    end
+
+    create_table "ref_charts", force: :cascade do |t|
       t.string  "name"
       t.text    "description"
       t.text    "img_small"
@@ -382,16 +368,11 @@ class Old < ActiveRecord::Migration
       t.integer "sort_order"
     end
 
-    create_table "ref_plans", force: true do |t|
-      t.string   "name"
-      t.string   "slug"
-      t.hstore   "properties"
-      t.integer  "created_by"
-      t.integer  "updated_by"
-      t.datetime "created_at"
-      t.datetime "updated_at"
+    create_table "ref_country_codes", force: :cascade do |t|
+      t.string   "country"
+      t.string   "code"
+      t.datetime "created_at", null: false
+      t.datetime "updated_at", null: false
     end
-
-    
   end
 end

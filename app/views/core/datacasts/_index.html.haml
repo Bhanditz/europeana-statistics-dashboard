@@ -60,4 +60,4 @@
         - if @impl_aggregation.nil?
           %td= link_to icon_del(account_core_project_datacast_path(@account, @core_project, core_datacast))
         -else
-          %td= link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, account_core_project_datacast_path(@account, @core_project, core_datacast)
+          %td= link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, run_worker_account_core_project_datacast_path(@account, @core_project, core_datacast)

@@ -340,7 +340,7 @@ Rumali.buildCharts = (function () {
 			      	tooltip_enable: "yes", //enabling tool tip for the gven chart
 			      	//palette_color:"Red",
 			      	//total_no_of_colors: 5,
-			      	default_color:["white"],//,
+			      	default_color:["#E4E4E4"],//,
 			      	saturation_color: "#255AEE",
 			      	color_mode: "saturation"
 				};

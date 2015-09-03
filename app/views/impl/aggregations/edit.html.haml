@@ -60,7 +60,7 @@
                       = impl_provider.provider_id
                     %td
                       %strong= impl_provider.status
-                      - if impl_provider.status.include?("failed") and impl_provider.error_messages.present?
+                      - if impl_provider.status.downcase.include?("failed") and impl_provider.error_messages.present?
                         .hint= impl_provider.error_messages
                     %td
                       - if impl_provider.status.downcase.include?("failed")

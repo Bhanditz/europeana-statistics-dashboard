@@ -4,7 +4,7 @@ class Aggregations::VizsBuilder
 
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
-    if aggregation.genre == "provider" or aggregation.genre == "data_provider"
+    if ["provider","data_provider"].include?(aggregation.genre)
       aggregation.update_attributes(status: "Building Vizs", error_messages: nil)
       begin
         aggregation.core_datacasts.each do |core_datacast|

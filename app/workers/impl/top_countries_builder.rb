@@ -16,7 +16,7 @@ class Impl::TopCountriesBuilder
       provider.update_attributes(status: "Processed top 25 countries")
       Impl::TopDigitalObjectsBuilder.perform_async(provider_id, user_start_date,user_end_date)
     rescue => e
-      provider.update_attributes(status: "Failed",error_messages: e.to_s)
+      provider.update_attributes(status: "Failed to build top 25 countries",error_messages: e.to_s)
     end
   end
 

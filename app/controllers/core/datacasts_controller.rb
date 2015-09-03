@@ -121,7 +121,7 @@ class Core::DatacastsController < ApplicationController
 
   def run_worker
     Core::Datacast::RunWorker.perform_async(@core_datacast.id)
-    redirect_to :back, notice: "datacast.run_worker"
+    redirect_to :back, notice: t("datacast.run_worker")
   end
 
   private
