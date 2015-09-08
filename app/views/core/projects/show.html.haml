@@ -21,15 +21,15 @@
           - else
             %div{style: "color: #aa9c84; margin: 5px 0px 0px 0px;"}= best_in_place @core_project, :description, {path: account_core_project_path(@core_project.account, @core_project), type: :input, html_attrs: {style: "width:100%"}, place_holder: "Add a description"}
       %hr{style: "margin-bottom: 5px; margin-top: 2px; border-top-color: lightgray;"}
-    = link_to "Datacasts", account_core_project_datacasts_path(@core_project.account, @core_project), style: "border-bottom: dotted 1px gray"
+    = link_to "Reports", account_project_impl_aggregations_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
     &nbsp;
     |
     &nbsp;
-    = link_to "Aggregations", account_project_impl_aggregations_path(@core_project.account, @core_project), style: "border-bottom: dotted 1px gray"
+    = link_to "Datacasts", account_core_project_datacasts_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
     &nbsp;
     |
     &nbsp;
-    = link_to "Articles", account_core_project_articles_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
+    = link_to "Visualizations", account_core_project_vizs_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
     %hr{style: "margin-bottom: 5px; margin-top: 5px; border-top-color: lightgray;"}
     - if 1 == 2
       %hr{style: "margin-bottom: 5px; border-top-color: lightgray;"}

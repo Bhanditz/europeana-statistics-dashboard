@@ -5,7 +5,7 @@ class StaticPagesController < ApplicationController
   def index
     if account_signed_in?
       p = Core::Project.first
-      redirect_to account_project_impl_aggregations_path(p.account, p)
+      redirect_to _account_project_path(p.account, p)
     end
   end
   

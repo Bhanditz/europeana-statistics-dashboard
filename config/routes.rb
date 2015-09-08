@@ -25,16 +25,9 @@ Rails.application.routes.draw do
           get "file", on: :collection
           get "run_worker", on: :member
         end
-        resources :tokens
-        resources :data_stores do
-          post "upload", on: :collection
-          resources :vizs, only: [:create, :update, :destroy] do
-            put "update_only_query", on: :member
-          end
-        end
         resources :datacast_pulls,only: [:create,:destroy,:edit,:update]
-        resources :cards
-        resources :articles
+        resources :vizs do
+        end
       end
     end
   end
@@ -68,13 +61,13 @@ Rails.application.routes.draw do
   get "/:account_id/:project_id/edit", to: "core/projects#edit", as: "_edit_account_project"
   #
   get "/:account_id/:project_id/data/new", to: "core/data_stores#new", as: "_new_account_project_data_stores"
-  get "/:account_id/:project_id/data/:data_id/charts", to: "core/vizs#data_stores", as: "_visualizations_account_project_data_store"
-  get "/:account_id/:project_id/data/:data_id/charts/new", to: "core/vizs#new", as: "_new_visualizations_account_project_data_store"
-  get "/:account_id/:project_id/data/:data_id/charts/:id/edit", to: "core/vizs#edit", as: "_edit_visualization_account_project_data_store"
-  get "/:account_id/:project_id/data/:data_id/charts/:id", to: "core/vizs#show", as: "_visualization_account_project_data_store"
-  get "/:account_id/:project_id/data/:data_id/charts/:id/embed", to: "core/vizs#embed", as: "_embed_visualization_account_project_data_store"
+  # get "/:account_id/:project_id/data/:data_id/charts", to: "core/vizs#data_stores", as: "_visualizations_account_project_data_store"
+  # get "/:account_id/:project_id/data/:data_id/charts/new", to: "core/vizs#new", as: "_new_visualizations_account_project_data_store"
+  # get "/:account_id/:project_id/data/:data_id/charts/:id/edit", to: "core/vizs#edit", as: "_edit_visualization_account_project_data_store"
+  # get "/:account_id/:project_id/data/:data_id/charts/:id", to: "core/vizs#show", as: "_visualization_account_project_data_store"
+  # get "/:account_id/:project_id/data/:data_id/charts/:id/embed", to: "core/vizs#embed", as: "_embed_visualization_account_project_data_store"
   #
-  get "/:account_id/:project_id/charts", to: "core/vizs#index", as: "_account_project_vizs"
+  # get "/:account_id/:project_id/charts", to: "core/vizs#index", as: "_account_project_vizs"
   #
   #
   #ROOT URL --------------------------------------------------------------

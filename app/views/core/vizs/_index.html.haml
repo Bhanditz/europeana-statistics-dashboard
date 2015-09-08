@@ -15,11 +15,10 @@
             %span.octicon.octicon-file-binary
           - else
             %span.octicon.octicon-graph
-          = link_to viz.name, _visualization_account_project_data_store_path(viz.core_project.account,viz.core_project,viz.data_store,viz)
-          .hint= viz.datagram_identifier
+          = link_to viz.name, "#"
         - if @sudo[1]
           %td.borderless
-            =link_to "Edit", _edit_visualization_account_project_data_store_path(viz.core_project.account,viz.core_project,viz.data_store,viz)
+            =link_to "Edit", account_core_project_viz_path(@account,@core_project,viz)
             
         %td.borderless
           - if viz.ref_chart.name == "Grid"
@@ -29,7 +28,7 @@
         %td.borderless
           %span.hint= time_ago_in_words(viz.updated_at) + " ago"
         - if @sudo[1]
-          %td.borderless= icon_del(account_core_project_data_store_viz_path(viz.core_project.account,viz.core_project,viz.data_store, viz))
+          %td.borderless= icon_del(account_core_project_viz_path(@account,@core_project,viz))
           
 .clearfix
 %br

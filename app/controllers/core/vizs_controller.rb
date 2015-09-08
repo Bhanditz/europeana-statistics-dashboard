@@ -1,47 +1,30 @@
 require 'json'
 class Core::VizsController < ApplicationController
-  layout "vizs", except: [:index, :data_stores]
+  layout "vizs", except: [:index]
 
-  before_action :sudo_project_member!, except: [:show, :data_stores, :index,:embed]
-  before_action :sudo_public!, only: [:show, :data_stores, :index,:embed]
-  before_action :set_viz, only: [:show, :edit, :update,:update_only_query, :destroy, :embed]
-  before_action :set_data_store, except: [:index]
+  before_action :sudo_project_member!, except: [:show, :index,:embed]
+  before_action :sudo_public!, only: [:show, :index,:embed]
+  before_action :set_viz, only: [:show, :edit, :update, :destroy, :embed]
   before_action :set_ref_charts, only: [:new, :create]
-  before_action :set_rumi_params,only: [:show,:edit, :update,:update_only_query,:embed]
+  before_action :set_rumi_params,only: [:show,:edit, :update,:embed]
   before_action :set_token
   after_action :set_response_header, only: [:embed]
 
   def index
-    @vizs = @core_project.vizs.order(:created_at).page params[:page]
-  end
-
-  def data_stores
-    @vizs = @data_store.vizs.order(:created_at).page params[:page]
-    if @vizs.first.blank?
-      redirect_to _new_visualizations_account_project_data_store_path(@core_project.account, @core_project,@data_store)
+    @vizs = @core_project.vizs.includes(:ref_chart).order(:created_at).page params[:page]
+    if @vizs.nil?
+      redirect_to new_account_core_project_viz_path(@account, @core_project)
     end
   end
 
   def show
-    @chart = @viz.ref_chart
-    @initializer = @chart.api
-    @all_core_themes = Core::Theme.where(:account_id => [@account.id,nil])
-    begin
-      data = Nestful.post "#{REST_API_ENDPOINT}/data/#{@viz.datagram_identifier}/q", account_slug: @account.slug,token: @alknfalkfnalkfnadlfkna
-      gon.data_file  = JSON.parse(data.body)["data"]
-    rescue
-    end
-    @data_format = @viz.pykquery_object["dataformat"]
-    gon.dataformat = @data_format
-    render layout: "application"
   end
 
   def new
+    @core_datacasts = @core_project.core_datacasts.order(created_at: :desc)
     @viz = Core::Viz.new
     @ref_charts =  Ref::Chart.where.not(slug: "grid")
     default_theme = Core::Theme.admin.where(name: "Default").first.config
-    default_theme["credit_my_site_name"] = "Rumi"#TODO: Set smart logic w.r.t. attribution
-    default_theme["credit_my_site_url"]  = "https://rumi.io"#TODO: Set smart logic w.r.t. attribution
     gon.default_theme = default_theme.to_json
   end
 
@@ -68,7 +51,6 @@ class Core::VizsController < ApplicationController
   def create
     @viz = Core::Viz.new(core_viz_params)
     @viz.core_project_id = @core_project.id
-    @viz.core_data_store_id = @data_store.id
     @viz.pykquery_object = JSON.parse(core_viz_params[:pykquery_object])
     @viz.config = JSON.parse(core_viz_params[:config])
     if @viz.save
@@ -101,31 +83,30 @@ class Core::VizsController < ApplicationController
   end
 
   def update_only_query
-    pykquery_object = @viz.pykquery_object
-    pykquery_object["dataformat"] = core_viz_params["dataformat"].blank? ? "csv" : core_viz_params["dataformat"]
-    @viz.pykquery_object = pykquery_object
-    @viz.pykquery_object_will_change!
-    @viz.save
-    redirect_to _edit_visualization_account_project_data_store_path(@account, @data_store.core_project, @data_store,@viz), notice: t("u.s")
+    # pykquery_object = @viz.pykquery_object
+    # pykquery_object["dataformat"] = core_viz_params["dataformat"].blank? ? "csv" : core_viz_params["dataformat"]
+    # @viz.pykquery_object = pykquery_object
+    # @viz.pykquery_object_will_change!
+    # @viz.save
+    # redirect_to _edit_visualization_account_project_data_store_path(@account, @data_store.core_project, @data_store,@viz), notice: t("u.s")
   end
 
   def destroy
     @viz.destroy
-    redirect_to  :back, notice: t("d.s")
+    redirect_to :back, notice: t("d.s")
   end
 
   def embed
-      begin
-        data = Nestful.post "#{REST_API_ENDPOINT}/data/#{@viz.datagram_identifier}/q", account_slug: @account.slug,token: @alknfalkfnalkfnadlfkna
-        gon.data_file = JSON.parse(data.body)["data"]
-      rescue
-      end
-      @chart = @viz.ref_chart
-      @initializer = @chart.api
-      @data_format = @viz.pykquery_object["dataformat"]
-      gon.dataformat = @data_format
-      render layout: "embed"
-
+    # begin
+    #   data = Nestful.post "#{REST_API_ENDPOINT}/data/#{@viz.datagram_identifier}/q", account_slug: @account.slug,token: @alknfalkfnalkfnadlfkna
+    #   gon.data_file = JSON.parse(data.body)["data"]
+    # rescue
+    # end
+    # @chart = @viz.ref_chart
+    # @initializer = @chart.api
+    # @data_format = @viz.pykquery_object["dataformat"]
+    # gon.dataformat = @data_format
+    # render layout: "embed"
   end
 
   private
@@ -141,18 +122,6 @@ class Core::VizsController < ApplicationController
 
   def set_viz
     @viz = Core::Viz.find(params[:id])
-  end
-
-  def set_data_store
-    if params[:data_store_id].present?
-      @data_store = @core_project.data_stores.where(slug: params[:data_store_id]).first
-    elsif params[:data_id].present?
-      @data_store = @core_project.data_stores.where(slug: params[:data_id]).first
-    end
-  end
-
-  def set_rumi_params
-    gon.rumiparams = "#{@account.username.parameterize}/#{@core_project.slug}/#{@data_store.slug}/"
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

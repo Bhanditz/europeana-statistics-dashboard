@@ -12,71 +12,20 @@
 .container-fluid
   .row-fluid
     .col-sm-2
-      %br
-      .panel.panel-default
-        .panel-heading
-          .panel-title Select Columns
-        .panel.body
-          #dimension_metrics_container
-            .col-sm-12
-              %strong Dimensions
-              = link_to "<b class='octicon octicon-issue-opened'></b>".html_safe, "#", "data-toggle"=>"popover", title:  "What is a Dimension?", "data-content"=>"Dimension Columns are typically text data e.g. people, countries, products, stores, etc. It might also include qualitative data points like color, size, etc.", tabindex: "0", "data-trigger"=>"focus", "data-placement"=>"bottom"       
-            %ul#ref_dimensions_list.categorize_columns-droppable.sortable.ui-sortable.column_list
-            .clearfix
-            .col-sm-12
-              %strong Metrics
-              = link_to "<b class='octicon octicon-issue-opened'></b>".html_safe, "#", "data-toggle"=>"popover", title:  "What is a Metric?", "data-content"=>"Metric Columns are typically numeric and often can be summed, averaged, etc. E.g. price, quantity, number of votes, etc.", tabindex: "0", "data-trigger"=>"focus", "data-placement"=>"top"
-            %ul#ref_metrics_list.categorize_columns-droppable.sortable.ui-sortable.column_list
-            .clearfix
-            %br
-            #flash_categorize_columns-save{style: "margin-top: 10px; color: black;"}
+      - unless @core_datacasts.nil?
+        %select#core_datacasts.form-control
+          - @core_datacasts.each do |core_datacast|
+            %option.form-control{"data-metrics" => core_datacast.column_names("m"),"data-dimensions" => core_datacast.column_names("d"), 'value' => core_datacast.identifier}= core_datacast.name
     #data_container.col-sm-8.categorize_columns-droppable.query-droppable.sortable
       #table_show{style: "height:450px;overflow:scroll;display:none;"}
       /DONT REMOVE THE INLINE STYLE FROM ABOVE LINE.
       #chart_show{style: "height:450px;overflow:scroll;"}
-      #first_time_load{style: "height:450px;"}= image_tag "viz_new_page.png"
-      %a#reset_all.hint.pull-right{href: "javascript:void(0)"} Reset
       #chart_eligibility.hint.pull-left
       .clearfix
-      %ul#active_dimensions_metrics{style: "margin-left:-3em;" }
-        .col-sm-12.active-columns
-          .col-sm-2.active-columns-title
-            Dimension
-            %a.dimensions-reset.remove-all
-              %span.glyphicon.glyphicon-trash.pull-right
-          .col-sm-10.active-columns-tags
-            %ul#Dimensions.query-ul
-        .col-sm-12.active-columns
-          .col-sm-2.active-columns-title
-            Metrics
-            %a.metrics-reset.remove-all
-              %span.glyphicon.glyphicon-trash.pull-right
-          .col-sm-10.active-columns-tags
-            %ul#Metrics.query-ul
-        .col-sm-6.active-columns
-          .col-sm-2.active-columns-title
-            Sort
-          .col-sm-10.active-columns-tags
-            #Sort
-              %select#sort_by_column.form-control.col-sm-6{:name => "sort_by_column"}
-                %option{:"value" => ""} No Sorting
-              .btn-group.col-sm-6{:role => "group"}
-                %button.btn.btn-default.active{:type => "button", :"data-sort" => "asc"} Asc
-                %button.btn.btn-default{:type => "button", :"data-sort" => "desc"} Desc
-        .col-sm-6.active-columns
-          .col-sm-2.active-columns-title
-            Limit
-          .col-sm-10.active-columns-tags
-            #Limit
-              %input#limit_rows{:name => "limit_rows", :type => "number", :min => "1", :max => "200", :placeholder => 200}
-        .col-sm-12.active-columns
-          #table_header{style:'overflow:scroll;'}
     .col-sm-2
       %br
       %ul.nav.nav-tabs.grid#myTab{:role => "tablist"}
         %li.active#all_charts{role: "navigation"}= link_to "Charts", "#chart_selector_list", "data-toggle" => "tab", :role => "tab", style: "font-size: 10px; color: black;"
-        %li#table1{role: "navigation",style:'display:none'}= link_to "Filter By column", "#show_filter_tab", "data-toggle" => "tab", :role => "tab", style: "font-size: 10px; color: black ;"
-        %li#filter_list{role: "navigation"}= link_to 'Filters <span id="applied_filters_tab_count" class="badge" style="font-weight: 400;"></span>'.html_safe, "#filter_list_tab", "data-toggle" => "tab", :role => "tab", style: "font-size: 10px; color: black;"
       / .panel.panel-default
       /   .panel-heading
       /     .panel-title Select chart
@@ -88,48 +37,10 @@
           - @ref_charts.each do |ref_chart|
             -dimensions_and_metrics = JSON.parse(ref_chart.map)
             %img{src: "#{ref_chart.img_small}", class: "col-sm-3 charts disabled options", style: "margin: 3px;padding:0px;", id: "#{ref_chart.slug}", "data-api" => ref_chart.api, "data-dimensions_required" => dimensions_and_metrics['dimensions_required'], "data-metrics_required" => dimensions_and_metrics['metrics_required'], "data-combination_code" => ref_chart.combination_code, "data-dimensions_alias" =>dimensions_and_metrics['dimensions_alias'],"data-metrics_alias" => dimensions_and_metrics['metrics_alias']}
-        #show_filter_tab.tab-pane{style: "height: 400px; overflow-y: scroll; padding: 10px;", role: "tabpanel"}
-          #chart_view_filter
-          .form-group{style: "margin: 10px 20px 10px 20px;"}
-            #pyk_histogram
-              #histogram-chart
-            #histogram_min_max{style:"display:none"}
-              .col-sm-3
-                %span.hint{} MIN
-                %input.form-control#min_value.histogram-val{"aria-describedby" => "sizing-addon3", :placeholder => "min", :type => "text", style: "padding: 0px; height: 16px;font-size: 12px;"}
-              .col-sm-3
-                %span.hint{} MAX
-                %input.form-control#max_value.histogram-val{"aria-describedby" => "sizing-addon3", :placeholder => "max", :type => "text", style: "padding: 0px; height: 16px; font-size: 12px;"}
-              .col-sm-6
-                #filter_toggle.btn-group{"data-toggle" => "buttons", style: "margin-top: 15px;"}
-                  %label.btn.btn-xs.btn-default.active
-                    %input#toggle_in{:autocomplete => "off", :checked => "", :name => "options", :type => "radio",:value => 'in'}IN
-                  %label.btn.btn-xs.btn-default
-                    %input#toggle_not_in{:autocomplete => "off", :name => "options", :type => "radio",:value => 'notin'}NOT IN
-            #merge.form-group{:style => 'display:none'}
-              %h5{style: "margin-bottom: 20px;"}
-                Filter by Uniques
-                #unique-values.pull-right.gray.thin
-                = #pending
-              %input#search_box{:style => "width: 95px", :type => "text",:placeholder => "search..."}
-              #sorting-value.dropdown.pull-right{style:"display:block;"}
-                %a#dropdownsortvalue.hint.dropdown-toggle{"data-toggle" => "dropdown", type: "button"}
-                  Sort Value by Count
-                  %span.caret
-                %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1", role: "menu"}
-                  %li
-                    %a.sort-unique{:href => "#", :tabindex => "-1", :id => "count"} Count
-                  %li
-                    %a.sort-unique{:href => "#", :tabindex => "-1", :id => "name"} Name
-              %br/
-            #column_values_filter
-            #grid_unique_values{style: "height:300px;"}
-        #filter_list_tab.tab-pane{style: "height: 500px; overflow-y: scroll;", role: "tabpanel"}
-          .hint
-          #list_applied_filters  
+
       .clearfix
-      =simple_form_for(@viz, url: account_core_project_data_store_vizs_path(@account,@core_project,@data_store),html:{class: "form-inline"},method: :post) do |f|
-        = f.input :ref_chart_combination_code, as: :hidden, id: "ref_chart_combination_code"
-        = f.input :config,as: :hidden,id: "config"
-        = f.input :pykquery_object, as: :hidden, id: "pykquery_object"
-        = f.submit "Save as Draft >",id: "core_viz_submit",class: "btn btn-lg btn-orange",style: "display:none"
+      / =simple_form_for(@viz, url: account_core_project_vizs_path(@account,@core_project),html:{class: "form-inline"},method: :post) do |f|
+      /   = f.input :ref_chart_combination_code, as: :hidden, id: "ref_chart_combination_code"
+      /   = f.input :config,as: :hidden,id: "config"
+      /   = f.input :pykquery_object, as: :hidden, id: "pykquery_object"
+      /   = f.submit "Save as Draft >",id: "core_viz_submit",class: "btn btn-lg btn-orange",style: "display:none"
