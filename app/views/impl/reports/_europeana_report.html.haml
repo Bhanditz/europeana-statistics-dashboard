@@ -1,8 +1,19 @@
 .container
   .col-sm-12
     %h1
-      = "Here Jinav is working"
 
-    %h3= "Chart/Number"
+    %h3= "Portal views for every year"
 
     #europeana_-_pageviews_per_year.d3-pykcharts{"data-api" => "PykCharts.multiD.column", "data-datacast_identifier" => "35d70ceb263219c462387f9eefc0e5d2e234dfb4e83aff5838c21fc1b1d69b3cc9", "data-filter_present" => "false"}
+
+    .clearfix
+
+  .col-sm-8
+    #europeana_-_provider_ranks.box_table{"data-datacast_identifier" => "f95476a7fa5ec67e87218ef303ac4456b5be438e9526305b5a657b0e693e11b615"}
+
+  .clearfix
+
+  
+  %h3= "Different Traffic Sources"
+  %br
+  #europeana_-_media_for_visits.d3-pykcharts{"data-api" => "PykCharts.oneD.pie", "data-datacast_identifier" => "89d865c673ee6c0d71ad7bfde9a054e24c3f375d77e7ae4f7d5c483e6b114a39f1", "data-filter_column_name" => "year", "data-filter_present" => "true"}

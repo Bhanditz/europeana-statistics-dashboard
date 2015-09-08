@@ -50,9 +50,8 @@ window.onload = function () {
     case "scopejs_articles_edit":
     case "scopejs_articles_update":
       Rumali.newArticleCreate();
-    case "scopejs_reports_show":
+    case "scopejs_reports_show": //need to break it into 2 switch cases
       Rumali.buildCharts.loadReportChart();
-      Rumali.buildMultiLineChart();
     default:
   }
 };

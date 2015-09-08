@@ -23,25 +23,28 @@
         / %h2 180,602
         / %p digital objects in Europeana
         .col-sm-3
-          #rijksmuseum_-_collections.card_with_value{"data-datacast_identifier" => "755581986ee522340930376915cf1cbb7926dd8dfb823ae6d37f1a1cc72904e83d"}
-        .col-sm-3
+          #rijksmuseum_-_collections.card_with_value{"data-datacast_identifier" => "0143967394533f418f835ef4b0d3af6e925d60cd5f0b8ac75e21ca5c2853313d05"}
+        / .col-sm-3
 
-          #rijksmuseum_-_pageviews_top_country.card_with_value{"data-datacast_identifier" => "d3e01d98eff022152ba9578c11e5d00a978333d863841fd7375378d64fa1601119"}
-        .col-sm-3
-          #rijksmuseum_-_users_top_country.card_with_value{"data-datacast_identifier" => "1f5449eac7bb09a54932bf496449e1599e990e6b769b37f396aea367f6b8edbc1a"}
+        /   #rijksmuseum_-_pageviews_top_country.card_with_value{"data-datacast_identifier" => "d3e01d98eff022152ba9578c11e5d00a978333d863841fd7375378d64fa1601119"}
+        / .col-sm-3
+        /   #rijksmuseum_-_users_top_country.card_with_value{"data-datacast_identifier" => "1f5449eac7bb09a54932bf496449e1599e990e6b769b37f396aea367f6b8edbc1a"}
         / .col-sm-3
         /   #rijksmuseum_-_users_top_country_1.card_with_value{"data-datacast_identifier" => "1f5449eac7bb09a54932bf496449e1599e990e6b769b37f396aea367f6b8edbc1a"}
+      .clearfix
       .col-sm-12
+      
         .col-sm-7
-          #rijksmuseum_-_ranking_table.box_table  
+          #rijksmuseum_-_rankings.box_table{"data-datacast_identifier" => "3eb9f2c06be083dddb0f258307c516483b3debdafa938293e00a0f44b10e3b3084"}
+
       .col-sm-6
         %h4 Item Types
         %p This chart displays a breakdown of the types of digital objects in this collection.
-        #rijksmuseum_-_media_types.d3-pykcharts{"data-api" => "PykCharts.multiD.column", "data-datacast_identifier" => "03fee3caef7ef6b8ae8213cfb689106ac52e9d58a72bf4a9dad3db457b05255ef1", "data-filter_column_name" => "", "data-filter_present" => "false"}
+        #rijksmuseum_-_media_types.d3-pykcharts{"data-api" => "PykCharts.multiD.column", "data-datacast_identifier" => "6637b7eb57dff7f79901c4f5b0a775763e72086fab47e65974f262ba24f4a8705b", "data-filter_column_name" => "", "data-filter_present" => "false"}
       .col-sm-6
         %h4 Open for Re-Use
         %p This chart displays what percentage of the collection is open for re-use.
-        #rijksmuseum_-_reusables.d3-pykcharts{"data-api" => "PykCharts.oneD.pie", "data-datacast_identifier" => "db2e4d683a57536e02c48be36daf4084a118b7a98801bfed3869d492564022cee7", "data-filter_column_name" => "", "data-filter_present" => "false"}
+        #rijksmuseum_-_reusables.d3-pykcharts{"data-api" => "PykCharts.oneD.pie", "data-datacast_identifier" => "96a8ef29be3d94c978d49eafad825d2010a37247529622aea421d17fdc446fc0ae", "data-filter_column_name" => "", "data-filter_present" => "false"}
       .col-sm-12
         %p Use the the year filter below to filter all of the charts under it.
         %span
@@ -50,22 +53,22 @@
             %span#id_year_filters
             %h4 Views & Click-Throughs
             %p This chart displays the views of the collection on the Europeana.eu website together with the number of times a user clicked through to the website of the data provider. Click-throughs are not measured prior to April 2012. (Filter chart by year above)
-            #rijksmuseum_-_traffic.d3-pykcharts{"data-api" => "PykCharts.multiD.groupedColumn", "data-datacast_identifier" => "e99610bb27ac302482aa61da1beb8ebb5c9a10ba8504d693afb8b18d9355d19415", "data-filter_column_name" => "aggregation_level_value", "data-filter_present" => "true"}
+            #rijksmuseum_-_traffic.d3-pykcharts{"data-api" => "PykCharts.multiD.groupedColumn", "data-datacast_identifier" => "c120b71fec137d06d6d6a182c1711ca68d55532ca666c4643bdea9ef378ef09628", "data-filter_column_name" => "aggregation_level_value", "data-filter_present" => "true"}
 
       .col-sm-12
         %h4 Line Chart for Page view
         %p This is a test visualization
-        #rijksmuseum_-_line_chart.d3-pykcharts{"data-api" => "PykCharts.multiD.multiSeriesLine", "data-datacast_identifier" => "00e52fed8b2a7b81ff08972e766594b53c68ecbe86fa4969e1a26776e99e08e2ae" , "data-filter_present" => "true"}
+        #rijksmuseum_-_line_chart.d3-pykcharts{"data-api" => "PykCharts.multiD.multiSeriesLine", "data-datacast_identifier" => "9ab5c690efe34d0a1dae0e296e50ecde587ff466521f8902e6d04f04f37bd3fd47" , "data-filter_present" => "true"}
       .col-sm-12
         %h4 Top 25 Countries
         %p This chart displays the top 25 countries that generated the most views for this collection on Europeana.eu website. (Filter chart by year above and by quarter below)
         %span#id_quarter_filters
-        #rijksmuseum_-_top_countries.d3-pykcharts{"data-api" => "PykCharts.maps.oneLayer", "data-datacast_identifier" => "e0520bd3323c3228f273f608b117b1bd884d0cca7466473cd872dbee20ab87977d", "data-filter_column_name" => "aggregation_level_value", "data-filter_present" => "true"}
+        #rijksmuseum_-_top_countries.d3-pykcharts{"data-api" => "PykCharts.maps.oneLayer", "data-datacast_identifier" => "17f7576df086858926e4fa93d0f6554a8fb747e350ec302403f26dc114e998b9d0", "data-filter_column_name" => "aggregation_level_value", "data-filter_present" => "true"}
 
 
       .col-sm-12
         %h4 Top 10 Digital Objects
         %p The list below displays the top 10 digital objects from the collection that generated the most views on Europeana.eu. (Filter list by year and quarter above)
-        #rijksmuseum_-_top_digital_objects.top_digital_objects{"data-datacast_identifier" => "df08e98ce3faec1c11d99a973b5e51188146733b60d785ed3256ea897b6df4670f"}
+        #rijksmuseum_-_top_digital_objects.top_digital_objects{"data-datacast_identifier" => "39d780a1f5cc3ef1557afc4109401c9ce6d3dfdfa3e6a8f694717df152861087bf"}
 - else
   = render partial: "impl/reports/europeana_report"
