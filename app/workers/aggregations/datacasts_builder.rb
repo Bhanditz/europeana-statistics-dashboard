@@ -65,6 +65,12 @@ class Aggregations::DatacastsBuilder
         # users_top_country_datacast_query =  aggregation.get_users_top_country_query
         # users_top_country_datacast = Core::Datacast.create_or_update_by(users_top_country_datacast_query,core_project_id, core_db_connection_id,users_top_country_datacast_name)
         # users_top_country_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,users_top_country_datacast.identifier)
+
+        #Aggregation Ranks
+        aggregation_ranking_datacast_name = "#{aggregation.name} - Rankings"
+        aggregation_ranking_datacast_query =  aggregation.get_aggregation_ranking_query
+        aggregation_ranking_datacast = Core::Datacast.create_or_update_by(aggregation_ranking_datacast_query,core_project_id, core_db_connection_id,aggregation_ranking_datacast_name)
+        aggregation_ranking_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,aggregation_ranking_datacast.identifier)
       end
     rescue => e
       aggregation.update_attributes(status: "Failed to build datacast", error_messages: e.to_s)

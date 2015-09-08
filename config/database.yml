@@ -6,7 +6,7 @@ pg: &pg
 development:
   <<: *pg
   port: 5432
-  database: datastory
+  database: datastory2
   host: localhost
   username: developer
   password: developer

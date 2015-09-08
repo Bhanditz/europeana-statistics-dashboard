@@ -58,7 +58,7 @@ Rumali.manualCharts = (function(){
 				selector: selector,//Getting id for the element as expected by the pykihcharts.
 				data:filter_data_multid_col,
 				//Api for fetching the data.
-        		axis_x_formatting_enable: "no",
+        axis_x_formatting_enable: "no",
 				chart_margin_left:60
 				};
 
@@ -151,7 +151,7 @@ Rumali.manualCharts = (function(){
 		string += '<span class='+cond_class+' data-toggle="tooltip" data-placement="bottom" data-original-title="'+utility.tooltipLayout(diff_in_value_in_percentage)+'">';
 		string += utility.applyConditionalFormatting(sum);
 		string += '</span>(';
-		string += value_contribution_for_europeana+'% )';
+		string += value_contribution_for_europeana+'%)';
 		string += '</span>';
 		return string;	
 	}

@@ -19,26 +19,6 @@
 #  country           :string
 #
 
-  # == Schema Information
-#
-# Table name: impl_aggregations
-#
-#  id                :integer          not null, primary key
-#  core_project_id   :integer
-#  genre             :string
-#  name              :string
-#  wikiname          :string
-#  created_by        :integer
-#  updated_by        :integer
-#  last_requested_at :integer
-#  last_updated_at   :integer
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  status            :string
-#  error_messages    :string
-#  properties        :hstore
-#
-
 class Impl::Aggregation < ActiveRecord::Base
   #GEMS
   self.table_name = "impl_aggregations"
@@ -109,7 +89,6 @@ class Impl::Aggregation < ActiveRecord::Base
     return "Select key,value,properties -> 'title' as title, properties -> 'content' as content from impl_outputs where impl_parent_type = 'Impl::Aggregation' and impl_parent_id = '#{self.id}' and genre='top_users_country';"
   end
 
-
   def restart_all_jobs
     Aggregations::RestartWorker.perform_async(self.id)
   end
@@ -133,6 +112,15 @@ class Impl::Aggregation < ActiveRecord::Base
     return self.genre == "europeana"
   end
 
+  def get_aggregation_ranking_query
+    current_date, prev_date = Impl::Aggregation.get_current_and_prev_date
+    return "Select metric,sum as value_of_last_month, diff as diff_value,CAST (contribution_to_europeana as Decimal(10,4)),rank_for_europeana, diff_in_rank_for_europeana from impl_aggregation_ranks where impl_aggregation_id=#{self.id} and ((metric='pageviews' and (year='#{prev_date.year}' and month='#{Date::MONTHNAMES[prev_date.month]}')) or metric='collections')"
+  end
+
+  def get_top_providers_query(maximum_rank=3)
+    current_date, prev_date = Impl::Aggregation.get_current_and_prev_date
+    return "SELECT impl_aggregation_name,metric,sum,CAST ((diff*1.00/(sum - diff)) * 100 as Decimal(10,4)) as diff_in_value_in_percentage,rank_for_europeana,diff_in_rank_for_europeana,CAST (contribution_to_europeana as Decimal(10,4)) FROM impl_aggregation_ranks where ((year='#{prev_date.year}' and month='#{Date::MONTHNAMES[prev_date.month]}') or (year='N/A' and month='N/A')) and (rank_for_europeana <= #{maximum_rank}) order by metric, rank_for_europeana"
+  end
 
   def self.create_or_find_country_report(country, genre, core_project_id)
     country_report = where(name:country, genre: genre, core_project_id: core_project_id).first
@@ -142,12 +130,23 @@ class Impl::Aggregation < ActiveRecord::Base
     country_report
   end
 
+  def get_media_for_visits_query
+    return "Select sum(value) as weight, name, split_part(aggregation_level_value,'_',1) as year from core_time_aggregations cta join (Select io.id as impl_output_id, value as name from impl_outputs io join impl_aggregations ia on io.impl_parent_id=ia.id and io.impl_parent_type ='Impl::Aggregation' and ia.name='Europeana' and io.genre='top_media') as impl_aggregation_output on parent_id = impl_output_id and parent_type='Impl::Output' group by name,split_part(aggregation_level_value,'_',1) order by split_part(aggregation_level_value,'_',1)"
+  end
+
+
   def self.get_europeana_query(metric)
-    return "Select sum(value),split_part(aggregation_level_value,'_',1) as year from core_time_aggregations cta join (select io.id as impl_output_id from impl_outputs io join impl_aggregations ia on io.impl_parent_id = ia.id and io.impl_parent_type='Impl::Aggregation' and ia.genre='europeana' and io.genre='#{metric}') as iao on cta.parent_id = iao.impl_output_id and cta.parent_type='Impl::Output' group by metric, split_part(aggregation_level_value,'_',1)"
+    return "Select sum(value) as y,split_part(aggregation_level_value,'_',1) as x from core_time_aggregations cta join (select io.id as impl_output_id from impl_outputs io join impl_aggregations ia on io.impl_parent_id = ia.id and io.impl_parent_type='Impl::Aggregation' and ia.genre='europeana' and io.genre='#{metric}') as iao on cta.parent_id = iao.impl_output_id and cta.parent_type='Impl::Output' group by metric, split_part(aggregation_level_value,'_',1) order by split_part(aggregation_level_value,'_',1)"
   end
 
   #PRIVATE
   private
+
+  def self.get_current_and_prev_date
+    current_date = Date.today.at_beginning_of_month
+    prev_date = (current_date - 1)
+    return current_date, prev_date
+  end
 
   def before_create_set
     self.status = "In queue"

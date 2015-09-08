@@ -234,8 +234,12 @@ class Core::Datacast < ActiveRecord::Base
     return dimension_or_metric.count
   end
 
-  def get_auto_html
+  def get_auto_html_for_number_indicators
     return "<div id='#{self.name.parameterize("_")}' data-datacast_identifier='#{self.identifier}' class='card_with_value' ></div>"
+  end
+
+  def get_auto_html_for_table
+    return "<div id='#{self.name.parameterize("_")}' data-datacast_identifier='#{self.identifier}' class='box_table' ></div>"
   end
 
   #PRIVATE

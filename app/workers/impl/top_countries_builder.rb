@@ -12,7 +12,7 @@ class Impl::TopCountriesBuilder
       start_date   = user_start_date
       end_date     = user_end_date
       country_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(start_date, end_date, provider)
-      Core::TimeAggregation.create_country_aggregations(country_output,"quarterly", provider_id) unless country_output.nil?
+      Core::TimeAggregation.create_aggregations(country_output,"quarterly", provider_id,"Impl::Provider","pageviews","country") unless country_output.nil?
       provider.update_attributes(status: "Processed top 25 countries")
       Impl::TopDigitalObjectsBuilder.perform_async(provider_id, user_start_date,user_end_date)
     rescue => e

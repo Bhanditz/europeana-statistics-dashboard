@@ -90,7 +90,7 @@ class Core::Viz < ActiveRecord::Base
   end
 
   def auto_html_div
-    return "<div id='#{self.name.parameterize("_")}' data-api='#{self.ref_chart.api}' data-datacast_identifier='#{self.core_datacast_identifier}' class='d3-pykcharts' data-filter_present='#{self.filter_present}'></div>"
+    return "<div id='#{self.name.parameterize("_")}' data-api='#{self.ref_chart.api}' data-datacast_identifier='#{self.core_datacast_identifier}' class='d3-pykcharts' data-filter_present='#{self.filter_present}' data-filter_column_name='#{self.filter_column_name}'></div>"
   end
 
   def self.find_or_create(core_datacast_identifier, name, ref_chart_combination_code,core_project_id,filter_present, filter_column_name, filter_column_d_or_m, validate=true)
