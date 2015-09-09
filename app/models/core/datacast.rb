@@ -79,7 +79,7 @@ class Core::Datacast < ActiveRecord::Base
 
   def self.get_data_distribution(data)
     #Doubt: What about JSON/HSTORE datatypes
-    # Data is a 2d array
+    #Data is a 2d array
     datatype_distribution = {}
     column_names = data.shift
     column_names.each do |col|

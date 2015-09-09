@@ -23,16 +23,18 @@ class Core::Datacast::RunWorker
           d.error                  = ""
           array_data = d.format == "2darray" ? query_data.dup : Core::DataTransform.twod_array_generate(response["query_output"])
           col = {}
+          prev_col = d.column_properties
           if !array_data.blank? and array_data != "0" and array_data != 0
             column_data_distribution = Core::Datacast.get_data_distribution(array_data)
             column_data_distribution.each do |key, value|
               col_name, col_data_type = key, Core::Datacast.get_col_datatype(value)
-              d_or_m = ["integer","double"].include?(col_data_type) ? "m" : "d"
+              d_or_m = (prev_col[col_name].present? and !prev_col[col_name]["d_or_m"].nil?) ? prev_col[col_name]["d_or_m"]  : ["integer","double"].include?(col_data_type) ? "m" : "d"
               col[col_name] = {"data_type": col_data_type,"d_or_m": d_or_m, "data_distribution": value}
             end
           end
           prev.update_attributes(output: query_data, fingerprint: fingerprint)
           d.column_properties = col
+          d.column_properties_will_change!
         end
       else
         d.error = response["query_output"]

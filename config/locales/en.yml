@@ -72,6 +72,7 @@ en:
   datacast:
     specify_table: "You need to specify table name"
     run_worker: "Rerunning the job."
+    changed_d_or_m: "Dimension or Metric changed"
   aggregation:
     refreshed_all_jobs: "Refreshing all background jobs"
   provider:
