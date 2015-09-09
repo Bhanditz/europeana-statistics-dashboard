@@ -10,7 +10,7 @@
           = f.input :core_db_connection_id,collection:[@core_datacast.core_db_connection],label: "Database",include_blank: false,disabled: true
       .col-sm-7= f.input :name, label: "Query Name", hint: "#{REST_API_ENDPOINT}datacast/#{@core_datacast.identifier || ":id"}"
       = f.input :format, as: :hidden, input_html: {value: "json"}
-      = f.input :refresh_frequency, as: :hidden, input_html: [value: "0"]
+      = f.input :refresh_frequency, as: :hidden, input_html: {value: "0"}
       /.col-sm-1= f.input :format, as: :select, collection: [["CSV", "csv"], ["JSON", "json"], ["XML", "xml"], ["2d Array", "2darray"]], include_blank: false, label: "Format",input_html: {class: "enable_it_on_change_query_click"}, disabled: action_name == "edit"
       / .col-sm-2= f.input :refresh_frequency, as: :select, collection: [["Never", "0"], ["every 1 min", "1"], ["every 5 min", "5"], ["every 1 day", "1440"], ["every 2 days", "2880"], ["every 1 week", "10080"]], include_blank: false, label: "Refresh" #, input_html: {style: "width: 120px !important;"}
     .row
