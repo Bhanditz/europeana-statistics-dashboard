@@ -28,7 +28,7 @@ var renderFilter = function(data,metric,id){
 } 
 //Render dropdown less than or equal to 5
 var smallDropDown = function(id,values,length){
-	var html_string = '<select id='+id+' class="filter">';
+	var html_string = '<select id='+id+' class="form-control" style="width:12.5%!important">';
 		for(i=0;i<length;i++){
 			html_string += '<option value="'+values[i]+'">'+values[i];
 		}
@@ -38,7 +38,7 @@ var smallDropDown = function(id,values,length){
 
 //Render dropdown greater than 5
 var largeDropDown = function(id,values,length){
-	var html_string = '<select id='+id+' class="filter">';
+	var html_string = '<select id='+id+' class="form-control" style="width:12.5%!important">';
 		for(i=0;i<length;i++){
 			html_string += '<option value="'+values[i]+'">'+values[i];
 		}

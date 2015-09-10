@@ -18,7 +18,7 @@
           = link_to viz.name, "#"
         - if @sudo[1]
           %td.borderless
-            =link_to "Edit", account_core_project_viz_path(@account,@core_project,viz)
+            =link_to "Edit", edit_account_core_project_viz_path(@account,@core_project,viz)
             
         %td.borderless
           - if viz.ref_chart.name == "Grid"

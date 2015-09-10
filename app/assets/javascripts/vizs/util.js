@@ -19,7 +19,6 @@ var findKeyArray = function(obj){
 
 var renderHTMLForCard = function(data,id){
 
-	console.log(data);
 	//id,title,key,value,content
 	var id = id,
 		title = data[0].title ? data[0].title : '',
@@ -29,7 +28,6 @@ var renderHTMLForCard = function(data,id){
 		diff_in_value = data[0].diff_in_value ? data[0].diff_in_value : '' ,
 		diff_string = '';
 
-	debugger;
 	if(typeof +value === "number"){
 		value = +value;
 		value = applyConditionalFormatting(value);
@@ -37,22 +35,22 @@ var renderHTMLForCard = function(data,id){
 	if(typeof +diff_in_value === 'number'){
 		if(+diff_in_value > 0){
 			diff_string = '(<span class="'+applyConditionalCssPositiveOrNegative(1)+'">'+diff_in_value;
-			diff_string += '</span>)';
+			diff_string +=  '&#9652;</span>)';
 		}
 		if(+diff_in_value < 0){
-			diff_string = '(<span class="'+applyConditionalCssPositiveOrNegative(2)+'">'+diff_in_value;
-			diff_string += '</span>)';
+			diff_string = '(<span class="'+applyConditionalCssPositiveOrNegative(2)+'">'+((+diff_in_value)*-1);
+			diff_string +=  '&#9660;</span>)';
 		}
 		if(+diff_in_value === 0){
 			diff_string = '(<span class="'+applyConditionalCssPositiveOrNegative(3)+'">'+diff_in_value;
-			diff_string += '</span>)';
+			diff_string += '-</span>)';
 		}
 	}
 
 
 	var div = $('<div />').appendTo('body');
 	div.attr('id', id);
-	var htmlcontent = '<span class = "col-sm-3 card_layout">';
+	var htmlcontent = '<span class = "col-sm-4 card_layout">';
 	htmlcontent += '<span class= "col-sm-12 card_layout_header_span"><h4 class="card_layout_header"><b>'+title+'</b></h4></span>';
 	htmlcontent += '<span class= "col-sm-12 card_layout_key">'+key+'</b></span>';
 	htmlcontent += '<span class= "col-sm-12 card_layout_value">'+value+'</b>';

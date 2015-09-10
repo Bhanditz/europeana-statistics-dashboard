@@ -5357,17 +5357,4 @@ select{
     appearance:none;
     cursor:pointer;
 }
-#data_container{
-	height: 500px;
-	overflow-y: scroll;
-}
-#table_show{
-  height: auto;
-  max-height: 470px;
-  overflow-y: scroll;
-}
-#chart_show{
-  height: auto;
-  max-height: 470px;
-  overflow-y: scroll;
-}
+

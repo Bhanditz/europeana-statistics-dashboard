@@ -1231,12 +1231,6 @@
         %label.cstm-label URL
         %input.form-control.cstm-form-control.execute{:placeholder => "URL", :type => "var",id: 'data_source_url',value: @visualization['config']['data_source_url'] }
 
-  -if @account.is_admin? and controller_name == "vizs"
-    %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#advanced_settings"}Advanced Settings
-    #advanced_settings.collapse.panel-body.grey.indent
-      .col-sm-12
-        = f.input :refresh_freq_in_minutes, as: :integer, hint: "How frequently do you want to refresh the data in this query?", label: "Datacast Frequency", placeholder: "in minutes"
-        = f.input :is_static, as: :select, label: "Are you using PykQuery in Interactive Mode?", include_blank: false, selected: false
 - @visualization['config']['panels_enable'] = 'yes' if @chart_name == "Panel of Lines"
 -if @visualization['genre'] == "Map Charts"
   -if !@map_code.present?

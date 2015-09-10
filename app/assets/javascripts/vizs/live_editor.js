@@ -4,10 +4,6 @@ Rumali.liveEditor = function(){
   var original_width;
   if (chart_name !== "Grid") {
     dataFinding(data);
-    if($("#embed-code-display").length > 0 && embed_url){
-      setTimeout(function(){ initClipBoard("#copy-link", "#embed-code-display"); }, 1000);
-      $("#embed-code-display").text('<iframe src="'+embed_url+'" height='+(data.chart_height+25)+' width='+(data.chart_width+25)+' frameborder="0" scrolling="no"></iframe>');
-    }
   }
   //loading the Default theme
   //when user selects any theme
@@ -204,14 +200,11 @@ Rumali.liveEditor = function(){
   });
 
   $("#core_viz_update").click(function(){
-    var final_obj_to_save = obj
-    , core_viz_name =$("#core_viz_name").val();
+    var final_obj_to_save = obj;
     if(final_obj_to_save.title_text.trim().replace(/ /g,"").toLowerCase() == "[entertitlehere]" || final_obj_to_save.title_text.trim().replace(/ /g,"").toLowerCase() == "") final_obj_to_save.title_text = "";
     if(final_obj_to_save.subtitle_text.trim().replace(/ /g,"").toLowerCase() == "[entersubtitlehere]" || final_obj_to_save.subtitle_text.replace(/ /g,"").toLowerCase() == "" ) final_obj_to_save.subtitle_text = "";
     final_obj_to_save.data = "";
     $("#core_viz_config").val(JSON.stringify(final_obj_to_save));
-    core_viz_name = (final_obj_to_save.title_text === "") ? core_viz_name : final_obj_to_save.title_text;
-    $("#core_viz_name").val(core_viz_name);
   });
 
 }

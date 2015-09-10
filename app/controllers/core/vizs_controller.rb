@@ -10,7 +10,7 @@ class Core::VizsController < ApplicationController
   after_action :set_response_header, only: [:embed]
 
   def index
-    @vizs = @core_project.vizs.includes(:ref_chart).order(:created_at).page params[:page]
+    @vizs = @core_project.vizs.includes(:ref_chart).order(created_at: :desc).page params[:page]
     if @vizs.nil?
       redirect_to new_account_core_project_viz_path(@account, @core_project)
     end
@@ -38,21 +38,24 @@ class Core::VizsController < ApplicationController
       @chart_slug = @chart_name == "Pulse" ? "pulse" : @chart_name == "Pyramid" ? "pyramid" : @chart_name == "Treemap" ? "treemap" : ["panel-of-lines","panel-of-scatters"].include?(chart.slug) ? "panels-of-#{chart.slug.split("-")[2][0..-2]}".tr('-', '_').camelize(:lower) : chart.slug.tr('-', '_').camelize(:lower)
     end
     begin
-      data = Nestful.post "#{REST_API_ENDPOINT}/data/#{@viz.datagram_identifier}/q", account_slug: @account.slug,token: @alknfalkfnalkfnadlfkna
-      gon.data_file  = JSON.parse(data.body)["data"]
+      data = Nestful.get "#{REST_API_ENDPOINT}datacast/#{@viz.core_datacast_identifier}"
+      gon.data_file  = data.body
     rescue
     end
-    @all_core_themes = Core::Theme.where(:account_id => [@account.id,nil])
+    @all_core_themes = Core::Theme.admin
   end
 
   def create
     @viz = Core::Viz.new(core_viz_params)
     @viz.core_project_id = @core_project.id
-    s
     @viz.config = Core::Theme.default_theme.config
     if @viz.save
-      redirect_to _edit_visualization_account_project_data_store_path(@core_project.account, @core_project, @data_store,@viz), notice: t("c.s")
+      redirect_to edit_account_core_project_viz_path(@account, @core_project,@viz), notice: t("c.s")
     else
+      @core_datacasts = @core_project.core_datacasts.ready.order(created_at: :desc)
+      @ref_charts =  Ref::Chart.where.not(slug: "grid")
+      default_theme = Core::Theme.admin.where(name: "Default").first.config
+      gon.default_theme = default_theme.to_json
       render action: :new
     end
   end
@@ -61,7 +64,7 @@ class Core::VizsController < ApplicationController
     @viz.update(core_viz_params)
     @viz.config = JSON.parse(params[:core_viz][:config]) if params[:core_viz][:config].present? 
     if @viz.save
-      redirect_to _edit_visualization_account_project_data_store_path(@account, @data_store.core_project, @data_store,@viz), notice: t("u.s")
+      redirect_to edit_account_core_project_viz_path(@account, @core_project,@viz), notice: t("u.s")
     else
       chart = @viz.ref_chart
       if chart.name != "Grid"
@@ -123,7 +126,7 @@ class Core::VizsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def core_viz_params
-    params.require(:core_viz).permit(:name,:core_project_id, :core_data_store_id, :properties, :pykquery_object, :ref_chart_combination_code, :refresh_freq_in_minutes, :is_static,:config,:dataformat)
+    params.require(:core_viz).permit(:name,:core_project_id,:core_datacast_identifier,:filter_present, :filter_column_name, :filter_column_d_or_m, :properties, :ref_chart_combination_code)
   end
 
   def set_response_header
@@ -131,3 +134,4 @@ class Core::VizsController < ApplicationController
   end
 
 end
+

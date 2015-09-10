@@ -7,6 +7,7 @@ Rumali.loadChartFromDropdown = function(){
 	var datacast_data = {};
 	var filter_name = '';
 	var default_theme = {};
+	var d_or_m_filter;
 	//Bind dropdown value to validate which charts to show.
 	var bindDropdownValue = function(){
 		//console.time("bindDropdownValue");
@@ -30,11 +31,13 @@ Rumali.loadChartFromDropdown = function(){
 				$("#id_manual_chart_filter").attr("disabled", true);
 				$("#id_manual_chart_filter").attr('checked', false); 
 				toggleFilterPanel();
-			}				
+			}	
+			enableCoreVizSubmit();			
 		});	
 		//Show filter when the enable filter is checked.
 		displayFilterColumn();
 		//console.timeEnd("bindDropdownValue");
+		bindOnChangeCoreVizName();
 	}
 
 	var validateChartsToBeShown = function(obj,filter){
@@ -44,11 +47,15 @@ Rumali.loadChartFromDropdown = function(){
 		var dimension_array = [],dimension_array_string;
 		var obj_metrics,obj_metrics_string;
 		var obj_dimensions,obj_dimensions_string;
-		
+		var original_obj_dimensions_string;
+		var original_obj_metrics_string;
+
 		chart_data = obj;
 
 		if(typeof obj.dataset.metrics !== 'undefined'){
 			obj_metrics = JSON.parse(obj.dataset.metrics);
+
+			original_obj_metrics_string = obj_metrics.sort().join(',');
 
 			if(typeof filter !== 'undefined'){
 				obj_metrics = _.without(obj_metrics,filter);
@@ -63,6 +70,8 @@ Rumali.loadChartFromDropdown = function(){
 		if(typeof obj.dataset.metrics !== 'undefined'){
 			obj_dimensions = JSON.parse(obj.dataset.dimensions);
 
+			original_obj_dimensions_string = obj_dimensions.sort().join(',');
+
 			if(typeof filter !== 'undefined'){
 				obj_dimensions = _.without(obj_dimensions,filter);
 			}
@@ -71,6 +80,15 @@ Rumali.loadChartFromDropdown = function(){
 		else{
 			obj_dimensions = [];
 			obj_dimensions_string = '';	
+		}
+		if(original_obj_dimensions_string !== obj_dimensions_string){
+			d_or_m_filter = 'd';
+		}
+		else if(original_obj_metrics_string !== obj_metrics_string){
+			d_or_m_filter = 'm';	
+		}
+		else{
+			d_or_m_filter = '';	
 		}
 		//Getting all the image tags inside the tag 
 		$('#chart_selector_list img').each(function(){
@@ -103,7 +121,6 @@ Rumali.loadChartFromDropdown = function(){
 				}
 			}
 		});
-		debugger;
 		//console.timeEnd("validateChartsToBeShown");
 		$('#chart_selector_list img')[0].click();			
 
@@ -320,8 +337,27 @@ Rumali.loadChartFromDropdown = function(){
 		});
 		//console.timeEnd("showUniqueFilterValues");	
 	}
-			
+	//Binding core viz name to change event.
+	var bindOnChangeCoreVizName = function(){
+		$('#core_viz_name').change(function(){
+			enableCoreVizSubmit();
+		});
+	}
+
+	var enableCoreVizSubmit = function(){
+		if($('#core_viz_name').val().length > 0 && $('#core_datacasts option:selected').index() > 0 && (typeof current_chart.dataset !== 'undefined')){
+			$('#core_viz_submit').prop('disabled', false);
+		}
+		else{
+			$('#core_viz_submit').prop('disabled', true);
+		}
+	}
+	$( "#core_viz_submit" ).on("click",function( event ) {
+		$("#core_viz_core_datacast_identifier").val($("#core_datacasts :selected").val());
+		$("#core_viz_ref_chart_combination_code").val(current_chart.dataset.combination_code); 
+		$("#core_viz_filter_column_d_or_m").val(d_or_m_filter); 
+		debugger;
+	});
 	//Call function on load of this function.
 	bindDropdownValue();
 }
-
