@@ -103,7 +103,7 @@ Rumali.loadChartFromDropdown = function(){
 				}
 			}
 		});
-
+		debugger;
 		//console.timeEnd("validateChartsToBeShown");
 		$('#chart_selector_list img')[0].click();			
 
@@ -119,7 +119,6 @@ Rumali.loadChartFromDropdown = function(){
 
 		//console.log(current_chart);
 		if(current_chart.dataset.api === 'handsontable'){
-
 			$("#table_show").show();
 			config = {
 			  "readOnly": true,
@@ -132,7 +131,11 @@ Rumali.loadChartFromDropdown = function(){
             config.colHeaders = findKeyArray(data[0]);
             $("#table_show").handsontable(config);	
 
-		}else{
+		}else if(current_chart.dataset.api === 'one-number-indicator'){
+			$("#box_show").show();
+			renderHTMLForCard(data,'box_show');
+		}
+		else{
 			$("#chart_show").show();
 			config = $.extend({}, default_theme);
 			chart_api = getApiFromString(current_chart.dataset.api);
@@ -149,8 +152,6 @@ Rumali.loadChartFromDropdown = function(){
 	}
 
 	var setFilterAndRenderChart = function(data){
-		////console.log('setFilterAndRenderChart');
-		//console.time("setFilterAndRenderChart");
 		setFilterContent();
 		datacast_data = data;
 		renderChart(data);
@@ -178,6 +179,7 @@ Rumali.loadChartFromDropdown = function(){
 	var clearChart = function(){
 		$("#table_show").hide();
 		$("#chart_show").hide();
+		$("#box_show").hide();
 	}
 	//Filtering chart data and data is already available.
 	var filterChart = function(){
@@ -215,7 +217,6 @@ Rumali.loadChartFromDropdown = function(){
 			////console.log(3);
 			return filtered_data;
 		}
-		console.timeEnd("filterChart");	
 	}
 
 	//Set up filter content on report page.

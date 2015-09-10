@@ -27,7 +27,8 @@
         #filter_show{style: "display:none;"}
         #table_show{style: "max-height:450px;display:none;"}
         /DONT REMOVE THE INLINE STYLE FROM ABOVE LINE.
-        #chart_show{style: "max-height:500px;display:none;"}
+        #chart_show{style: "max-height:450px;display:none;"}
+        #box_show{style: "max-height:450px;display:none;"}
         #chart_eligibility.hint.pull-left
         .clearfix
       .col-sm-2
@@ -40,7 +41,6 @@
               - @ref_charts.each do |ref_chart|
                 -dimensions_and_metrics = JSON.parse(ref_chart.map)
                 %img{src: "#{ref_chart.img_small}", class: "col-sm-3 charts disabled options", style: "margin: 3px;padding:0px;", id: "#{ref_chart.slug}", "data-api" => ref_chart.api, "data-dimensions_required" => dimensions_and_metrics['dimensions_required'], "data-metrics_required" => dimensions_and_metrics['metrics_required'], "data-combination_code" => ref_chart.combination_code, "data-dimensions_alias" =>dimensions_and_metrics['dimensions_alias'],"data-metrics_alias" => dimensions_and_metrics['metrics_alias']}
-
         .clearfix
         = f.input :ref_chart_combination_code, as: :hidden
         = f.input :core_datacast_identifier, as: :hidden
