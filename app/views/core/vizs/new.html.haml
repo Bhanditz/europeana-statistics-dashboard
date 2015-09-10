@@ -13,13 +13,22 @@
   .row-fluid
     .col-sm-2
       - unless @core_datacasts.nil?
-        %select#core_datacasts.form-control
-          - @core_datacasts.each do |core_datacast|
-            %option.form-control{"data-metrics" => core_datacast.column_names("m"),"data-dimensions" => core_datacast.column_names("d"), 'value' => core_datacast.identifier}= core_datacast.name
+        %div
+          %select#core_datacasts.form-control
+            %option.form-control= "Select a datacast"
+            - @core_datacasts.each do |core_datacast|
+              %option.form-control{"data-metrics" => core_datacast.column_names("m"),"data-dimensions" => core_datacast.column_names("d"), 'value' => core_datacast.identifier}= core_datacast.name
+        %div
+        %div
+          %input#id_manual_chart_filter{:name => "is_filter_enable", :type => "checkbox", :value => "Enable Filter"} Add Filter
+        %div
+          %select#core_datacasts_filter.form-control{:style => "display:none;"}
+            %option.form-control Select filter
     #data_container.col-sm-8.categorize_columns-droppable.query-droppable.sortable
-      #table_show{style: "height:450px;overflow:scroll;display:none;"}
+      #filter_show{style:"display:none;"}
+      #table_show{style: "max-height:500px;display:none;"}
       /DONT REMOVE THE INLINE STYLE FROM ABOVE LINE.
-      #chart_show{style: "height:450px;overflow:scroll;"}
+      #chart_show{style: "max-height:500px;display:none;"}
       #chart_eligibility.hint.pull-left
       .clearfix
     .col-sm-2
@@ -33,7 +42,7 @@
       #divg1
       .tab-content
         #chart_selector_list.tab-pane.active
-          = image_tag "https://s3-ap-southeast-1.amazonaws.com/charts.pykih.com/icons/grid-icon.png", id: "show_grid_and_hide_the_chart", class: "col-sm-3 disabled options", style: "margin: 3px;padding:0px;","data-combination_code" => "e91b52"
+          = image_tag "https://s3-ap-southeast-1.amazonaws.com/charts.pykih.com/icons/grid-icon.png", id: "show_grid_and_hide_the_chart", class: "col-sm-3 disabled options", style: "margin: 3px;padding:0px;","data-combination_code" => "e91b52","data-api" => "handsontable"
           - @ref_charts.each do |ref_chart|
             -dimensions_and_metrics = JSON.parse(ref_chart.map)
             %img{src: "#{ref_chart.img_small}", class: "col-sm-3 charts disabled options", style: "margin: 3px;padding:0px;", id: "#{ref_chart.slug}", "data-api" => ref_chart.api, "data-dimensions_required" => dimensions_and_metrics['dimensions_required'], "data-metrics_required" => dimensions_and_metrics['metrics_required'], "data-combination_code" => ref_chart.combination_code, "data-dimensions_alias" =>dimensions_and_metrics['dimensions_alias'],"data-metrics_alias" => dimensions_and_metrics['metrics_alias']}

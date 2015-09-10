@@ -9,3 +9,8 @@ var getJSON = function(url,callbackfn){
         callbackfn(data);  
     });
 }
+//find all the keys in an array.
+var findKeyArray = function(obj){
+	var key_array = Object.keys(obj);
+	return key_array;
+}
