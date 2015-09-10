@@ -73,6 +73,7 @@ en:
     specify_table: "You need to specify table name"
     run_worker: "Rerunning the job."
     changed_d_or_m: "Dimension or Metric changed"
+    col_not_found: "Column not found"
   aggregation:
     refreshed_all_jobs: "Refreshing all background jobs"
   provider:

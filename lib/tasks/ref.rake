@@ -73,9 +73,6 @@ namespace :ref do
     Ref::CountryCode.seed
     puts "----> Done"
 
-    Rake::Task['ref:create_default_db_connection'].invoke
-    Rake::Task['ref:create_default_template'].invoke
-    Rake::Task['ref:create_europeana_aggregation_report'].invoke
   end
 
   task :create_default_db_connection => :environment do |t, args|
@@ -113,4 +110,12 @@ namespace :ref do
       Aggregations::DatacastsBuilder.perform_at(5.minute.from_now, impl_aggregation.id)
     end
   end
+
+  task :seed => :environment do |t,args|
+    Rake::Task['ref:load'].invoke
+    Rake::Task['ref:create_default_db_connection'].invoke
+    Rake::Task['ref:create_default_template'].invoke
+    Rake::Task['ref:create_europeana_aggregation_report'].invoke
+  end
+
 end

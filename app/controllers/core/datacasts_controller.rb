@@ -132,10 +132,14 @@ class Core::DatacastsController < ApplicationController
     col_name = params[:column_name]
     session[:changed_d_or_m] = true
     prev_d_or_m = @core_datacast.column_properties[col_name]["d_or_m"]
-    @core_datacast.column_properties[col_name]["d_or_m"] =  prev_d_or_m == "d" ? "m" : "d"
-    @core_datacast.column_properties_will_change!
-    @core_datacast.save
-    redirect_to edit_account_core_project_datacast_path(@account,@core_project, @core_datacast), notice: t("datacast.changed_d_or_m")
+    if prev_d_or_m.nil?
+      @core_datacast.column_properties[col_name]["d_or_m"] =  prev_d_or_m == "d" ? "m" : "d"
+      @core_datacast.column_properties_will_change!
+      @core_datacast.save
+      redirect_to edit_account_core_project_datacast_path(@account,@core_project, @core_datacast), notice: t("datacast.changed_d_or_m")
+    else
+      redirect_to edit_account_core_project_datacast_path(@account,@core_project, @core_datacast), alert: t("datacast.col_not_found")
+    end
   end
 
   private
