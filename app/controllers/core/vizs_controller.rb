@@ -21,7 +21,7 @@ class Core::VizsController < ApplicationController
   end
 
   def new
-    @core_datacasts = @core_project.core_datacasts.order(created_at: :desc)
+    @core_datacasts = @core_project.core_datacasts.ready.order(created_at: :desc)
     @viz = Core::Viz.new
     @ref_charts =  Ref::Chart.where.not(slug: "grid")
     default_theme = Core::Theme.admin.where(name: "Default").first.config

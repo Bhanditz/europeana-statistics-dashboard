@@ -46,3 +46,17 @@
 #embed-code-display, #broadcast-code-display{font-family: monospace; display: block; overflow:auto; height:100%; width:100%; background:#292929; color:#fff; margin-top:30px;}
 
 #chart_container_display{font-family: monospace; overflow:auto; height:500px;width: 95%;background:#292929; color:#fff;padding: 20px;margin-top:20px;}
+
+#data_container{
+  height: 500px;
+}
+#table_show{
+  max-height: 470px;
+  display: block;
+  overflow-y: auto;
+  height: 500px;
+}
+#chart_show{
+  height: auto;
+  max-height: 470px;
+}

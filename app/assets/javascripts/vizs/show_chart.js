@@ -1,6 +1,5 @@
 var showHintForChartEligibility = function (data, api) {
   var text = "";
-  data = data ? d3.csv.parse(data) : [];
   data_length = data.length;
   switch (api) {
     case "PykCharts.oneD.pie":
