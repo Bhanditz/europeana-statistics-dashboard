@@ -17,7 +17,7 @@
         %br
       .col-sm-12
         #preview_output_grid{style: "width:100%;height:480px;overflow:scroll;"}
-        %textarea.form-control#preview_output_error{rows: 20, style: "overflow-y:scroll", readonly: true}
+        %textarea.form-control#preview_output_error{rows: 20, style: "overflow-y:scroll;display:none", readonly: true}
         %textarea#datacast_display{:readonly => "",style: "width:100%;height:480px;overflow:scroll;display:none"}
         %center
           %img{src: "/images/ajax-loader.gif", id: "datacast_preview_loader", style: "display:none"}

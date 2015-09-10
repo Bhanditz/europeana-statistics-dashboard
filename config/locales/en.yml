@@ -74,6 +74,7 @@ en:
     run_worker: "Rerunning the job."
     changed_d_or_m: "Dimension or Metric changed"
     col_not_found: "Column not found"
+    validate_query: "Cannot include update','insert','drop','truncate','delete' keywords in query"
   aggregation:
     refreshed_all_jobs: "Refreshing all background jobs"
   provider:

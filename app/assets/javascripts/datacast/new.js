@@ -15,7 +15,7 @@ Rumali.dataCastNewPage = function(){
     , format = $("#core_datacast_format").val() || "2darray"
     , obj = {};
     if (!validateQuery(query)) {
-      generate_notify({text: "Please write a proper query", notify:"error"});
+      generate_notify({text: "Please write a proper select query", notify:"error"});
       return false
     }
     obj['query'] = query;
@@ -112,12 +112,16 @@ Rumali.dataCastNewPage = function(){
 var validateQuery = function (query) {
   if (query.length <= 0) {
     return false;
-  } else if (query.indexOf("update") > 0) {
+  } else if (query.indexOf("update") >= 0) {
     return false;
-  } else if (query.indexOf("drop") > 0) {
+  } else if (query.indexOf("drop") >= 0) {
     return false;
-  } else if (query.indexOf('truncate') > 0) {
+  } else if (query.indexOf('truncate') >= 0) {
     return false;
+  } else if (query.indexOf("insert") >= 0){
+    return false;
+  } else if (query.indexOf("select") !== 0){
+    return false
   }
   return true;
 } 

@@ -72,7 +72,6 @@ namespace :ref do
     puts '----> Loading Ref::CountryCode'
     Ref::CountryCode.seed
     puts "----> Done"
-
   end
 
   task :create_default_db_connection => :environment do |t, args|

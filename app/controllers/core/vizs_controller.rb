@@ -6,7 +6,6 @@ class Core::VizsController < ApplicationController
   before_action :sudo_public!, only: [:show, :index,:embed]
   before_action :set_viz, only: [:show, :edit, :update, :destroy, :embed]
   before_action :set_ref_charts, only: [:new, :create]
-  before_action :set_rumi_params,only: [:show,:edit, :update,:embed]
   before_action :set_token
   after_action :set_response_header, only: [:embed]
 
@@ -43,8 +42,6 @@ class Core::VizsController < ApplicationController
       gon.data_file  = JSON.parse(data.body)["data"]
     rescue
     end
-    @data_format = @viz.pykquery_object["dataformat"]
-    gon.dataformat = @data_format
     @all_core_themes = Core::Theme.where(:account_id => [@account.id,nil])
   end
 

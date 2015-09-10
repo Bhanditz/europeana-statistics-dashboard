@@ -61,16 +61,23 @@ class Core::DatacastsController < ApplicationController
     respond_to do |format|
       format.json { 
         query =  params["query"] || ""
-        format = params["data_format"] == "csv" ? "2darray" : params["data_format"]
-        core_db_connection = Core::DbConnection.find(params["core_db_connection_id"])
-        response = Core::Adapters::Db.run(core_db_connection, query,format, 500)
-        if response['query_output'].blank?
-          response["query_output"] = ""
-        end
-        if response['execute_flag']
-          render json: response
-        else
+        if ['update','insert','drop','truncate','delete'].any? { |word| query.include?(word) }
+          response = {}
+          response["query_output"] = t("datacast.validate_query")
+          response["execute_flag"] = false
           render json: response, status: :unprocessable_entity
+        else
+          format = params["data_format"] == "csv" ? "2darray" : params["data_format"]
+          core_db_connection = Core::DbConnection.find(params["core_db_connection_id"])
+          response = Core::Adapters::Db.run(core_db_connection, query,format, 500)
+          if response['query_output'].blank?
+            response["query_output"] = ""
+          end
+          if response['execute_flag']
+            render json: response
+          else
+            render json: response, status: :unprocessable_entity
+          end
         end
       }
     end
