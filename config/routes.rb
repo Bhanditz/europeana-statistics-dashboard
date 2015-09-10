@@ -24,6 +24,7 @@ Rails.application.routes.draw do
           post "preview","upload", on: :collection
           get "file", on: :collection
           get "run_worker", on: :member
+          get "change_d_or_m", on: :member
         end
         resources :datacast_pulls,only: [:create,:destroy,:edit,:update]
         resources :vizs do

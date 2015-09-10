@@ -1,7 +1,7 @@
 class Core::DatacastsController < ApplicationController
   
   before_action :sudo_project_member!
-  before_action :set_core_datacast, only: [:edit, :update, :destroy, :run_worker]
+  before_action :set_core_datacast, only: [:edit, :update, :destroy, :run_worker, :change_d_or_m]
   before_action :set_token,only: [:upload,:destroy]
 
   def index
@@ -21,6 +21,10 @@ class Core::DatacastsController < ApplicationController
   end
 
   def edit
+    if session[:changed_d_or_m]
+      gon.changed_d_or_m = true
+      session.delete(:changed_d_or_m)
+    end
     @preview_data = @core_datacast.core_datacast_output
     gon.query_output = @preview_data.output
     if @core_datacast.format == "csv"
@@ -122,6 +126,16 @@ class Core::DatacastsController < ApplicationController
   def run_worker
     Core::Datacast::RunWorker.perform_async(@core_datacast.id)
     redirect_to :back, notice: t("datacast.run_worker")
+  end
+
+  def change_d_or_m
+    col_name = params[:column_name]
+    session[:changed_d_or_m] = true
+    prev_d_or_m = @core_datacast.column_properties[col_name]["d_or_m"]
+    @core_datacast.column_properties[col_name]["d_or_m"] =  prev_d_or_m == "d" ? "m" : "d"
+    @core_datacast.column_properties_will_change!
+    @core_datacast.save
+    redirect_to edit_account_core_project_datacast_path(@account,@core_project, @core_datacast), notice: t("datacast.changed_d_or_m")
   end
 
   private
