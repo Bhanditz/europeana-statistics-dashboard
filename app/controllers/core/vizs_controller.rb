@@ -48,8 +48,8 @@ class Core::VizsController < ApplicationController
   def create
     @viz = Core::Viz.new(core_viz_params)
     @viz.core_project_id = @core_project.id
-    @viz.pykquery_object = JSON.parse(core_viz_params[:pykquery_object])
-    @viz.config = JSON.parse(core_viz_params[:config])
+    s
+    @viz.config = Core::Theme.default_theme.config
     if @viz.save
       redirect_to _edit_visualization_account_project_data_store_path(@core_project.account, @core_project, @data_store,@viz), notice: t("c.s")
     else

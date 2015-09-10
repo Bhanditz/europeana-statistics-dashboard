@@ -120,7 +120,7 @@ var validateQuery = function (query) {
     return false;
   } else if (query.indexOf("insert") >= 0){
     return false;
-  } else if (query.indexOf("select") !== 0){
+  } else if (query.toLowerCase().indexOf("select") !== 0){
     return false
   }
   return true;

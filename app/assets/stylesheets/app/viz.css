@@ -60,3 +60,5 @@
   height: auto;
   max-height: 470px;
 }
+
+.form-control-checkbox{height: initial !important;width: initial !important;}
