@@ -6,13 +6,14 @@
           = render partial: "live_editor",locals: {f: f}
       .col-sm-9
         = f.input :name, id: "name",required: true
+        #filter_container
         -if ["Grid","One Number indicators"].include?(@viz.ref_chart.name)
           = @viz.auto_html_div.html_safe
           .pull-right
             = f.input :config, as: :hidden, id: "config"
             = f.submit "Save", id: "core_viz_update", class: "btn btn-lg btn-orange"
           :javascript
-            var config_data = #{@viz.config.to_json}, data_file = "",selector = "#chart_container",obj;map_code = "",chart_name = "#{@viz.ref_chart.name}",initializer = "#{@viz.ref_chart.api}";
+            var chart_name = "#{@viz.ref_chart.name}";
         -else
           #chart_container{"data-filter_present" => "#{@viz.filter_present}", "data-filter_column_name" => @viz.filter_column_name, "data-datacast_identifier" => "#{@viz.core_datacast_identifier}"}
           .pull-right

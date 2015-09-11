@@ -16,7 +16,7 @@
   display: inline !important;
 }
 #sub-title{
-  width: auto !important;
+  /*width: auto !important;*/
 }
 .theme-editor.panel-title{
   background: #DCDCDC !important;

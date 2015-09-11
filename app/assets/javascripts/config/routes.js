@@ -20,11 +20,12 @@ window.onload = function () {
     break;
     case "scopejs_vizs_edit":
     case "scopejs_vizs_update":
-      if (chart_name !== "Grid" || chart_name !== "One Number indicators") {
+      if (chart_name !== "Grid" && chart_name !== "One Number indicators") {
         Rumali.liveEditor();
-      } else {
+      } else if(chart_name !== "One Number indicators"){
         Rumali.showAndEditGridPage();
-        
+      }else{
+         Rumali.showAndEditBoxPage();
       }
       break;
     case "scopejs_datacast_pulls_create":
@@ -35,7 +36,8 @@ window.onload = function () {
     case "scopejs_vizs_show":
       if (chart_name !== "Grid") {
         Rumali.showChartPage();
-      } else {
+      } else{
+
         Rumali.showAndEditGridPage();
       }
       break;

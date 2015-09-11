@@ -1,215 +1,268 @@
 var chart
-  , current_config = {};
+  , current_config = {}
+  ,chart_html_tag
+  ,parsed_data
+  ,org_data;
+
 Rumali.liveEditor = function(){
-  var original_width;
-  if (chart_name !== "Grid") {
-    dataFinding(data);
-  }
-  //loading the Default theme
-  //when user selects any theme
+  var datacast_identifier,
+    url;
 
-  $(".theme_configuration").click(function(){
-    $(".execute1").attr("checked",false);
-    var config = JSON.parse($(this).attr("config"));
-    dataFinding(config)
-  });
+  var onDataLoad = function(json_data){
+    var original_width;
 
-  //
-  $("#expandCollapse").click(function(e){
-    e.preventDefault();
-    expandAndCollapseAllPanels();
-  });
-  //swatch mode
-  $(":input.execute1").on("click",function(){
-    if(this.type == "radio"){
-      if(this.id != "chart_color"){
-        var id = this.id;
-        if(!(final_config[id] === $(this).val() || final_config[id] === parseFloat($(this).val()))) {
-          current_config[id] = $(this).val();
+    data["data"] = parsed_data;
+
+    if (chart_name !== "Grid") {
+      dataFinding(data);
+    }
+
+    //loading the Default theme
+    //when user selects any theme
+
+    $(".theme_configuration").click(function(){
+      $(".execute1").attr("checked",false);
+      var config = JSON.parse($(this).attr("config"));
+      dataFinding(config)
+    });
+
+    //
+    $("#expandCollapse").click(function(e){
+      e.preventDefault();
+      expandAndCollapseAllPanels();
+    });
+    //swatch mode
+    $(":input.execute1").on("click",function(){
+      if(this.type == "radio"){
+        if(this.id != "chart_color"){
+          var id = this.id;
+          if(!(final_config[id] === $(this).val() || final_config[id] === parseFloat($(this).val()))) {
+            current_config[id] = $(this).val();
+          }
+          obj[this.id]= this.value;
+          final_config[this.id] = this.value;
         }
-        obj[this.id]= this.value;
-        final_config[this.id] = this.value;
+        initializeTheChart("true");
+      }
+    });
+    //checkboxes for swatch mode
+    $(":input.execute2").on("click",function(){
+      var i = this.id
+        , color_arr = [];
+      if (i==="chart_color_boolean0") {
+        colorRepetation=$("[id1='array_text']").val();
+        $("[id1='array_text']").attr('value',colorRepetation);
+        obj["chart_color"] = colorRepetation.split(";");
+        final_config["chart_color"] = obj['chart_color'];
+        $(".identity1").attr("disabled",true);
+        $(".identity2").attr("disabled",false);
+      } else {
+        var chart_color_checked = $('.execute3:checked');
+        if(!chart_color_checked.length){
+          color_arr.push(obj["chart_color"][0]);
+        }
+        else{
+          for (var j = 0; j<chart_color_checked.length; j++) {
+            color_arr.push(chart_color_checked[j].value);
+          }
+        }
+        obj["chart_color"] = color_arr;
+        final_config["chart_color"] = color_arr;
+        $(".identity1").attr("disabled",false);
+        $(".identity2").attr("disabled",true);
       }
       initializeTheChart("true");
-    }
-  });
-  //checkboxes for swatch mode
-  $(":input.execute2").on("click",function(){
-    var i = this.id
-      , color_arr = [];
-    if (i==="chart_color_boolean0") {
-      colorRepetation=$("[id1='array_text']").val();
-      $("[id1='array_text']").attr('value',colorRepetation);
-      obj["chart_color"] = colorRepetation.split(";");
-      final_config["chart_color"] = obj['chart_color'];
-      $(".identity1").attr("disabled",true);
-      $(".identity2").attr("disabled",false);
-    } else {
-      var chart_color_checked = $('.execute3:checked');
-      if(!chart_color_checked.length){
-        color_arr.push(obj["chart_color"][0]);
-      }
-      else{
+    });
+    //radio buttons for swatch mode
+    $(".execute3").on("click",function(){
+      if ($("#chart_color_boolean1").attr('checked') === "checked") {
+        var i = this.id
+          , color_arr = [];
+        var chart_color_checked = $('.execute3:checked');
         for (var j = 0; j<chart_color_checked.length; j++) {
           color_arr.push(chart_color_checked[j].value);
         }
+        obj[i] = color_arr;
+        final_config[i] = color_arr;
+        initializeTheChart("true");
       }
-      obj["chart_color"] = color_arr;
-      final_config["chart_color"] = color_arr;
-      $(".identity1").attr("disabled",false);
-      $(".identity2").attr("disabled",true);
-    }
-    initializeTheChart("true");
-  });
-  //radio buttons for swatch mode
-  $(".execute3").on("click",function(){
-    if ($("#chart_color_boolean1").attr('checked') === "checked") {
-      var i = this.id
-        , color_arr = [];
-      var chart_color_checked = $('.execute3:checked');
-      for (var j = 0; j<chart_color_checked.length; j++) {
-        color_arr.push(chart_color_checked[j].value);
+    });
+    //any other value changed
+    $(":input.execute").on("blur",function(){
+      var i = this.id;
+      obj[i]=$('#'+this.id).val();
+      if(!(final_config[i] === $(this).val() || final_config[i] === parseFloat($(this).val()))) {
+        if(i!="chart_color") {
+          current_config[i] = $(this).val();
+        }
       }
-      obj[i] = color_arr;
-      final_config[i] = color_arr;
-      initializeTheChart("true");
-    }
-  });
-  //any other value changed
-  $(":input.execute").on("blur",function(){
-    var i = this.id;
-    obj[i]=$('#'+this.id).val();
-    if(!(final_config[i] === $(this).val() || final_config[i] === parseFloat($(this).val()))) {
-      if(i!="chart_color") {
-        current_config[i] = $(this).val();
-      }
-    }
 
-    final_config[i]=$('#'+this.id).val();
-    if (i==="chart_color") {
-      if ($("#chart_color_boolean0").attr('checked') === "checked") {
-        var arr=[];
-        obj[i] = this.value.split(";");
+      final_config[i]=$('#'+this.id).val();
+      if (i==="chart_color") {
+        if ($("#chart_color_boolean0").attr('checked') === "checked") {
+          var arr=[];
+          obj[i] = this.value.split(";");
+          final_config[i] = obj[i];
+        }
+      }else if(this.type == "select-one")
+      {
+        if($('#'+this.id).val() == "fixed"){
+          $("."+$(this).attr("disableinputs1")).each(function(){
+            $(this).attr("disabled",false);
+          });
+        }else if($('#'+this.id).val() == "moving"){
+          $("."+$(this).attr("disableinputs1")).each(function(){
+            $(this).attr("disabled",true);
+          });
+        }else if($('#'+this.id).val() == "color"){
+          $("."+$(this).attr("disableinputs1")).each(function(){
+            $(this).attr("disabled",true);
+          });
+        }else{
+          $("."+$(this).attr("disableinputs1")).each(function(){
+            $(this).attr("disabled",false);
+          });
+        }
+      }else if(this.type == "checkbox") {
+        if(this.checked) {
+          $("."+$(this).attr("disableinputs")).each(function(){
+            $(this).attr("disabled",false);
+          });
+          obj[i] = "yes";
+          final_config[i] = "yes";
+          current_config[this.id] = "yes";
+        } else {
+          $("."+$(this).attr("disableinputs")).each(function(){
+            $(this).attr("disabled",true);
+          });
+          obj[i] = "no";
+          current_config[this.id] = "no";
+          final_config[i] = "no";
+        }
+      }
+      if(obj[i] !== "" && !isNaN(obj[i])){
+        obj[i] = parseInt(obj[i]);
+        final_config[i] = parseInt(obj[i]);
+      }
+
+      if (i==="axis_x_pointer_values" || i==="axis_y_pointer_values" || i==="clubdata_always_include_data_points") {
+        obj[i] = obj[i].toString().split(";");
         final_config[i] = obj[i];
       }
-    }else if(this.type == "select-one")
-    {
-      if($('#'+this.id).val() == "fixed"){
-        $("."+$(this).attr("disableinputs1")).each(function(){
-          $(this).attr("disabled",false);
-        });
-      }else if($('#'+this.id).val() == "moving"){
-        $("."+$(this).attr("disableinputs1")).each(function(){
-          $(this).attr("disabled",true);
-        });
-      }else if($('#'+this.id).val() == "color"){
-        $("."+$(this).attr("disableinputs1")).each(function(){
-          $(this).attr("disabled",true);
-        });
+
+      if (PykCharts.interval){
+        clearInterval(PykCharts.interval);
+      }
+
+      if(i=="palette_color"){
+        obj.saturation_color="";
+        final_config.saturation_color="";
+      }
+      initializeTheChart("true");
+    });
+    //
+    $("#color_mode").change(function(){
+      if(this.value == "color"){
+        $("#color_group").show();
+        $("#saturation_group").hide();
       }else{
-        $("."+$(this).attr("disableinputs1")).each(function(){
-          $(this).attr("disabled",false);
-        });
+        $("#color_group").hide();
+        $("#saturation_group").show();
       }
-    }else if(this.type == "checkbox") {
-      // console.log(this.checked,this)
-      if(this.checked) {
-        $("."+$(this).attr("disableinputs")).each(function(){
-          $(this).attr("disabled",false);
-        });
-        obj[i] = "yes";
-        final_config[i] = "yes";
-        current_config[this.id] = "yes";
-      } else {
-        $("."+$(this).attr("disableinputs")).each(function(){
-          $(this).attr("disabled",true);
-        });
-        obj[i] = "no";
-        current_config[this.id] = "no";
-        final_config[i] = "no";
+    });
+    //
+    $("#zoom_enable").click(function(){
+      if(this.checked){
+        $("#zoom_level").attr("disabled",false)
       }
-    }
-    if(obj[i] !== "" && !isNaN(obj[i])){
-      obj[i] = parseInt(obj[i]);
-      final_config[i] = parseInt(obj[i]);
-    }
+      else{
+        $("#zoom_level").attr("disabled",true)
+      }
+    });
+    //
+    $('.color').colorpicker().on("hide",function (e,d) {
+      if($(this).children()[1].checked){
+        if ($(this).has(".execute3").length > 0) {
+          if ($(selector).attr('checked') === "checked") {
+            var i = $(this).find(".execute3")[0].id
+              , color_arr = [];
+            var chart_color_checked = $('.execute3:checked');
+            for (var j = 0; j<chart_color_checked.length; j++) {
+              var color = $($(chart_color_checked[j])[0].previousElementSibling.childNodes[1]).css("background-color");
+              color_arr.push(color);
+            }
+            obj[i] = color_arr;
+            final_config[i] = color_arr;
+            initializeTheChart("true");
+          }
+        } else if ($(this).has(".execute1").length > 0) {
+          if($(this).find(".execute1")[0].type == "radio"){
+            $(selector).empty();
+            var i = $(this).find(".execute1")[0].id;
+            if(i != "chart_color"){
+              var color = $(this).find(".circle").css("background-color");
+              obj[i]= color;
+              final_config[this.id] = color;
+            }
+            initializeTheChart("true");
+          }
+        }
+      }
+    });
 
-    if (i==="axis_x_pointer_values" || i==="axis_y_pointer_values" || i==="clubdata_always_include_data_points") {
-      obj[i] = obj[i].toString().split(";");
-      final_config[i] = obj[i];
-    }
+    $("#core_viz_update").click(function(){
+      var final_obj_to_save = obj;
+      if(final_obj_to_save.title_text.trim().replace(/ /g,"").toLowerCase() == "[entertitlehere]" || final_obj_to_save.title_text.trim().replace(/ /g,"").toLowerCase() == "") final_obj_to_save.title_text = "";
+      if(final_obj_to_save.subtitle_text.trim().replace(/ /g,"").toLowerCase() == "[entersubtitlehere]" || final_obj_to_save.subtitle_text.replace(/ /g,"").toLowerCase() == "" ) final_obj_to_save.subtitle_text = "";
+      final_obj_to_save.data = "";
+      $("#core_viz_config").val(JSON.stringify(final_obj_to_save));
+    });
+  }
 
-    if (PykCharts.interval){
-      clearInterval(PykCharts.interval);
-    }
+  var saveOrgData = function(json_data){
+    org_data = json_data;
+    loadChartFilters();
+    onDataLoad(org_data);
+  }
 
-    if(i=="palette_color"){
-      obj.saturation_color="";
-      final_config.saturation_color="";
-    }
-    initializeTheChart("true");
-  });
-  //
-  $("#color_mode").change(function(){
-    if(this.value == "color"){
-      $("#color_group").show();
-      $("#saturation_group").hide();
-    }else{
-      $("#color_group").hide();
-      $("#saturation_group").show();
-    }
-  });
-  //
-  $("#zoom_enable").click(function(){
-    if(this.checked){
-      $("#zoom_level").attr("disabled",false)
+  var loadChartFilters = function(){
+    var filter_val;
+    if(chart_html_tag.dataset.filter_present === 'true'){
+     
+      $('#filter_container').show();
+      unique_filter_html = renderFilter(org_data,chart_html_tag.dataset.filter_column_name,'filter_show');
+      $('#filter_container').html(unique_filter_html); 
+
+      $('#filter_show').change(function(){
+        filter_val = $('#filter_show option:selected').val();
+        parsed_data = filterChart(org_data,chart_html_tag.dataset.filter_column_name,filter_val);
+        onDataLoad(parsed_data);
+      }); 
+
+      $("select#filter_show").prop('selectedIndex', 0);
+      filter_val = $('#filter_show option:selected').val();
+      parsed_data = filterChart(org_data,chart_html_tag.dataset.filter_column_name,filter_val);
     }
     else{
-      $("#zoom_level").attr("disabled",true)
+      $('#filter_container').hide(); 
+      parsed_data = org_data; 
     }
-  });
-  //
-  $('.color').colorpicker().on("hide",function (e,d) {
-    if($(this).children()[1].checked){
-      if ($(this).has(".execute3").length > 0) {
-        if ($(selector).attr('checked') === "checked") {
-          var i = $(this).find(".execute3")[0].id
-            , color_arr = [];
-          var chart_color_checked = $('.execute3:checked');
-          for (var j = 0; j<chart_color_checked.length; j++) {
-            var color = $($(chart_color_checked[j])[0].previousElementSibling.childNodes[1]).css("background-color");
-            color_arr.push(color);
-          }
-          obj[i] = color_arr;
-          final_config[i] = color_arr;
-          initializeTheChart("true");
-        }
-      } else if ($(this).has(".execute1").length > 0) {
-        if($(this).find(".execute1")[0].type == "radio"){
-          $(selector).empty();
-          var i = $(this).find(".execute1")[0].id;
-          if(i != "chart_color"){
-            var color = $(this).find(".circle").css("background-color");
-            obj[i]= color;
-            final_config[this.id] = color;
-          }
-          initializeTheChart("true");
-        }
-      }
-    }
-  });
+    // $('#filter_show').show();
+    // 
+    //
+  }
 
-  $("#core_viz_update").click(function(){
-    var final_obj_to_save = obj;
-    if(final_obj_to_save.title_text.trim().replace(/ /g,"").toLowerCase() == "[entertitlehere]" || final_obj_to_save.title_text.trim().replace(/ /g,"").toLowerCase() == "") final_obj_to_save.title_text = "";
-    if(final_obj_to_save.subtitle_text.trim().replace(/ /g,"").toLowerCase() == "[entersubtitlehere]" || final_obj_to_save.subtitle_text.replace(/ /g,"").toLowerCase() == "" ) final_obj_to_save.subtitle_text = "";
-    final_obj_to_save.data = "";
-    $("#core_viz_config").val(JSON.stringify(final_obj_to_save));
-  });
 
+  chart_html_tag = $('#chart_container')[0];
+
+  datacast_identifier = chart_html_tag.dataset.datacast_identifier;
+  url = Rumali.object.datacast_url + datacast_identifier;
+  getJSON(url,saveOrgData); 
 }
 
+
 function dataFinding(data) {
+
   if (genre == "One Dimensional Charts") {
     data["color_mode"] = "shade";
   }
@@ -284,10 +337,8 @@ function dataFinding(data) {
       final_config[$(configtype)[i].id] = config_data[$(configtype)[i].id]
     }
   }
-  config_data['data'] = data_file;
-  if (config_data.data == ""){
-    config_data.data = gon.data_file;
-  }
+  config_data['data'] = parsed_data;
+
   config_data['selector']  = selector;
   init();
 }
@@ -410,3 +461,4 @@ var giveTitleProperties = function(){
     });
   });
 }
+

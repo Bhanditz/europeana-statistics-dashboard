@@ -34,7 +34,7 @@ class Core::VizsController < ApplicationController
       @visualization['config'] = @viz.config
       @initializer = chart.api
       @chart_name = chart.name
-      @chart_slug = @chart_name == "Choropleth" ? "world-oneLayer" : "Pulse" ? "pulse" : @chart_name == "Pyramid" ? "pyramid" : @chart_name == "Treemap" ? "treemap" : ["panel-of-lines","panel-of-scatters"].include?(chart.slug) ? "panels-of-#{chart.slug.split("-")[2][0..-2]}".tr('-', '_').camelize(:lower) : chart.slug.tr('-', '_').camelize(:lower)
+      @chart_slug = @chart_name == "Choropleth" ? "world-oneLayer" : @chart_name == "Pulse" ? "pulse" : @chart_name == "Pyramid" ? "pyramid" : @chart_name == "Treemap" ? "treemap" : ["panel-of-lines","panel-of-scatters"].include?(chart.slug) ? "panels-of-#{chart.slug.split("-")[2][0..-2]}".tr('-', '_').camelize(:lower) : chart.slug.tr('-', '_').camelize(:lower)
     end
     gon.chart_config = @viz.config
     @all_core_themes = Core::Theme.admin

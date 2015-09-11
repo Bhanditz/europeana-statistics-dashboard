@@ -1,5 +1,4 @@
 Rumali.loadChartFromDropdown = function(){
-	////console.log('loadChartFromDropdown');
 	var chart_data = {};
 	var current_chart;
 	var filter_array = [];
@@ -10,9 +9,6 @@ Rumali.loadChartFromDropdown = function(){
 	var d_or_m_filter;
 	//Bind dropdown value to validate which charts to show.
 	var bindDropdownValue = function(){
-		//console.time("bindDropdownValue");
-		////console.log('bindDropdownValue');
-		//keep the checkbox disabled.
 		default_theme = JSON.parse(gon.default_theme);
 		$("#id_manual_chart_filter").attr("disabled", true);
 		$("#id_manual_chart_filter").attr('checked', false); 
@@ -36,13 +32,10 @@ Rumali.loadChartFromDropdown = function(){
 		});	
 		//Show filter when the enable filter is checked.
 		displayFilterColumn();
-		//console.timeEnd("bindDropdownValue");
 		bindOnChangeCoreVizName();
 	}
 
 	var validateChartsToBeShown = function(obj,filter){
-		//console.time("validateChartsToBeShown");
-		////console.log('validateChartsToBeShown');
 		var metric_array = [],metric_array_string;
 		var dimension_array = [],dimension_array_string;
 		var obj_metrics,obj_metrics_string;
@@ -121,20 +114,16 @@ Rumali.loadChartFromDropdown = function(){
 				}
 			}
 		});
-		//console.timeEnd("validateChartsToBeShown");
 		$('#chart_selector_list img')[0].click();			
 
 	}
 
 	var renderChart = function(data){
-		////console.log('renderChart');
 		var chart_api;
 		var config = {},k;
 		
 		clearChart();
 
-
-		//console.log(current_chart);
 		if(current_chart.dataset.api === 'handsontable'){
 			$("#table_show").show();
 			config = {
@@ -172,12 +161,10 @@ Rumali.loadChartFromDropdown = function(){
 		setFilterContent();
 		datacast_data = data;
 		renderChart(data);
-		//console.timeEnd("setFilterAndRenderChart");
 	}
 
 	var getData = function(){
 		var filtered_data = [];
-		//console.time("getData");
 		if(data_avail === 'new_data'){
 			var url = Rumali.object.datacast_url;
 			url = url + chart_data.value;
@@ -190,7 +177,6 @@ Rumali.loadChartFromDropdown = function(){
 			filtered_data = filterChart();
 			renderChart(filtered_data);		
 		}
-		//console.timeEnd("getData");	
 	}
 
 	var clearChart = function(){
@@ -200,19 +186,9 @@ Rumali.loadChartFromDropdown = function(){
 	}
 	//Filtering chart data and data is already available.
 	var filterChart = function(){
-		console.time("filterChart");
 		var filtered_data = [],index,filter_value,count=-1;
 		if(filter_name !== ''){
 			filter_value = $("#filter_show option:selected").text();
-
-			/*
-			filtered_data = datacast_data.filter(function(element,index){
-				return element[filter_name] === filter_value;
-			});
-
-			for(index=0;index < filtered_data.length ;index++){
-				delete filtered_data[filter_name];
-			}*/
 
 			for(index = 0;index < datacast_data.length;index++){
 				if(filter_value === datacast_data[index][filter_name]){
@@ -231,14 +207,12 @@ Rumali.loadChartFromDropdown = function(){
 		}
 		else{
 			filtered_data = datacast_data;
-			////console.log(3);
 			return filtered_data;
 		}
 	}
 
 	//Set up filter content on report page.
 	var setFilterContent = function(){
-		//console.time("setFilterContent");
 		var filter_array = JSON.parse(chart_data.dataset.metrics).concat(JSON.parse(chart_data.dataset.dimensions));
 
 		$('#core_datacasts_filter')
@@ -264,7 +238,6 @@ Rumali.loadChartFromDropdown = function(){
 		$( "#core_datacasts_filter").unbind("change");
 
 		$('#core_datacasts_filter').change(function() {
-			////console.log('setFilterContent');
 			if(this.selectedIndex !== 0){
 				data_avail = 'existing_data';
 				filter_name = this.options[this.selectedIndex].text;
@@ -272,13 +245,11 @@ Rumali.loadChartFromDropdown = function(){
 				validateChartsToBeShown(chart_data,this.options[this.selectedIndex].text);
 			}	
 		});	
-		//console.timeEnd("filterChart");	
 		return filter_array;
 	}
 
 	//Method to be used when we enable the filter
 	var displayFilterColumn = function(){
-		//console.time("displayFilterColumn");
 		var is_datacast_filter_enable ;
 		var x = document.getElementById("core_datacasts");
 		$('#id_manual_chart_filter').unbind("change");
@@ -287,13 +258,11 @@ Rumali.loadChartFromDropdown = function(){
 			hideChartFilter();
 			showUnfilteredData();
 			validateChartsToBeShown(x.options[x.selectedIndex]);	
-		});
-		//console.timeEnd("displayFilterColumn");	
+		});	
 	}
 
 	//toggle filter panel depending on the value of the checkbox.
 	var toggleFilterPanel = function(){
-		//console.time("toggleFilterPanel");
 		is_datacast_filter_enable = $('#id_manual_chart_filter').is(":checked");
 		if(is_datacast_filter_enable){
 			$('#core_datacasts_filter').show(); 
@@ -302,29 +271,20 @@ Rumali.loadChartFromDropdown = function(){
 			$('#core_datacasts_filter').hide();
 			//
 		}
-		//console.timeEnd("toggleFilterPanel");	
 	} 	
 
 	//Hiding chart filter
 	var hideChartFilter = function(){
-		//console.time("hideChartFilter");
-		////console.log('hideChartFilter');
 		$('#filter_show').hide();
-		//console.timeEnd("hideChartFilter");	
 	} 
 
 	var showUnfilteredData = function(){
-		//console.time("showUnfilteredData");
 		data_avail = 'existing_data';
-		filter_name = '';
-		//getData();
-		//console.timeEnd("showUnfilteredData");		
+		filter_name = '';	
 	}
 
 	//Showing unique values for the filter.
 	var showUniqueFilterValues = function(filter_name){
-		//console.time("showUniqueFilterValues");
-		//console.log('showUniqueFilterValues',filter_name);
 		var unique_filter_name_values = [];
 		$('#filter_show').show();
 		unique_filter_html = renderFilter(datacast_data,filter_name,'filter_show');	
@@ -334,8 +294,7 @@ Rumali.loadChartFromDropdown = function(){
 		$('#filter_show').change(function(){
 			data_avail = 'existing_data';
 			getData.call(current_chart);
-		});
-		//console.timeEnd("showUniqueFilterValues");	
+		});	
 	}
 	//Binding core viz name to change event.
 	var bindOnChangeCoreVizName = function(){
@@ -356,7 +315,6 @@ Rumali.loadChartFromDropdown = function(){
 		$("#core_viz_core_datacast_identifier").val($("#core_datacasts :selected").val());
 		$("#core_viz_ref_chart_combination_code").val(current_chart.dataset.combination_code); 
 		$("#core_viz_filter_column_d_or_m").val(d_or_m_filter); 
-		debugger;
 	});
 	//Call function on load of this function.
 	bindDropdownValue();

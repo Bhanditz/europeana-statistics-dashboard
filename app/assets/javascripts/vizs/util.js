@@ -3,7 +3,7 @@ Rumali.object = {
   datacast_url : rumi_api_endpoint + 'datacast/'
 }
 //Set up the data json once so that we don't need to call service again.It is saved in return_data object
-var getJSON = function(url,callbackfn){
+var getJSON = function(url,callbackfn){	
   $.getJSON(url) //jquery function to parse url and get data in done method.
     .done(function(data){
         callbackfn(data);  
@@ -81,4 +81,20 @@ var applyConditionalCssPositiveOrNegative = function(value){
 			return 'no_class';
 		}
 		//Convert it to switch case
+}
+var filterChart = function(data,column_name,column_value){
+	var index,filtered_data = [],count=-1;
+	for(index = 0;index < data.length;index++){
+			if(column_value === data[index][column_name]){
+				filtered_data[++count] = {};
+				for(var k in data[index]){
+					if(k !== column_name){
+						filtered_data[count][k]=data[index][k];
+						//Copying all the items from original array to new array.
+						//value to be pushed in the new array 
+				}
+			} 	//Filter data is the data that is to be displayed on the ui.
+		}		
+	}
+	return filtered_data;
 }

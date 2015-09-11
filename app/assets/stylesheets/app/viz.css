@@ -35,8 +35,8 @@
   -webkit-filter: grayscale(1);
   cursor:default;
 }
-#chart_container {
-  min-height: 475px;
+#chart_container,.d3-pykcharts,.card_with_value {
+  min-height: 450px;
 }
 
 #scopejs_vizs_data_stores .true,#scopejs_vizs_index  .true{
