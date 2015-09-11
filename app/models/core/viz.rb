@@ -54,6 +54,9 @@ class Core::Viz < ActiveRecord::Base
 
   def datacast_output_matches_the_required_conditions?
     required = self.required_conditions
+    if self.ref_chart.name == "Grid"
+      return true
+    end
     begin
       datacast = self.core_datacast
       dimension_count = datacast.count("d")
@@ -90,7 +93,7 @@ class Core::Viz < ActiveRecord::Base
   end
 
   def auto_html_div
-    return "<div id='#{self.name.parameterize("_")}' data-api='#{self.ref_chart.api}' data-datacast_identifier='#{self.core_datacast_identifier}' class='d3-pykcharts' data-filter_present='#{self.filter_present}' data-filter_column_name='#{self.filter_column_name}'></div>"
+    return "<div id='#{self.name.parameterize("_")}' data-api='#{self.ref_chart.api}' data-datacast_identifier='#{self.core_datacast_identifier}' class='#{ "One Number indicators" == self.ref_chart.name ? "card_with_value" : "d3-pykcharts"}' data-filter_present='#{self.filter_present}' data-filter_column_name='#{self.filter_column_name}'></div>"
   end
 
   def self.find_or_create(core_datacast_identifier, name, ref_chart_combination_code,core_project_id,filter_present, filter_column_name, filter_column_d_or_m, validate=true)
@@ -120,8 +123,6 @@ class Core::Viz < ActiveRecord::Base
         "outsideClickDeselects" => false,
         "contextMenu" => false
       }
-    elsif self.config.blank?
-      self.config = Core::Theme.default_theme.config
     end
     unless self.name.present?
       self.name = Core::Viz.last.present? ? "Untitled Visualisation #{Core::Viz.last.id + 1}" : "Untitled Visualisation 1"
