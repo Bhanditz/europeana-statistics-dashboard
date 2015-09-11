@@ -24,6 +24,7 @@ window.onload = function () {
         Rumali.liveEditor();
       } else {
         Rumali.showAndEditGridPage();
+        
       }
       break;
     case "scopejs_datacast_pulls_create":
