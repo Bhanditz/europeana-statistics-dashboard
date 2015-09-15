@@ -11,7 +11,7 @@ class Aggregations::CollectionsBuilder
       aggregation_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","collections")
       aggregation_output.update_attributes(status: "Building Collections", error_messages: nil)
       begin
-        europeana_query = aggregation.europeana? ? "Europeana" : "#{aggregation.genre.upcase}%3a%22#{CGI.escape(aggregation.name)}%22"
+        europeana_query = aggregation.europeana? ? "*:*" : "#{aggregation.genre.upcase}%3a%22#{CGI.escape(aggregation.name)}%22"
         collections =  JSON.parse(Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{europeana_query}&rows=0").body)
         if collections["totalResults"].present?
           aggregation_output.update_attributes(status: "Processed Collections", key: "total_results", value: collections["totalResults"], content: "digital objects in europeana", title: "Total Collections")

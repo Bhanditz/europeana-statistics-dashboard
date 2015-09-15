@@ -32,6 +32,7 @@ gem 'ruby-jq', '0.1.6'
 
 gem 'activerecord-session_store'
 gem 'aescrypt'
+gem 'redcarpet'
 
 #Europeana Style Guide Gem
 

@@ -35,12 +35,8 @@
   -webkit-filter: grayscale(1);
   cursor:default;
 }
-#chart_container,.d3-pykcharts,.card_with_value {
+#scopejs_vizs_edit #chart_container,#scopejs_vizs_edit  .d3-pykcharts,#scopejs_vizs_edit  .card_with_value,#scopejs_vizs_update #chart_container,#scopejs_vizs_update  .d3-pykcharts,#scopejs_vizs_update  .card_with_value {
   min-height: 450px;
-}
-
-#scopejs_vizs_data_stores .true,#scopejs_vizs_index  .true{
-  padding-top: 18px !important;
 }
 
 #embed-code-display, #broadcast-code-display{font-family: monospace; display: block; overflow:auto; height:100%; width:100%; background:#292929; color:#fff; margin-top:30px;}
