@@ -10,3 +10,10 @@ development:
   host: localhost
   username: developer
   password: developer
+
+staging:
+  <<: *pg
+  port: 5432
+  host: localhost
+  username: rumidbuser
+  password: 28bcda0b760a

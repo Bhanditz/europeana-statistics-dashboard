@@ -184,7 +184,7 @@
         .col-sm-12.indent
           %br
           %label.cstm-label Total number of colors
-          %input.form-control.cstm-form-control.execute.colorEnable{:value => "#4682B4", :placeholder => "Total number of colors", :type => "number",id: 'total_no_of_colors', value: @visualization['config']['total_no_of_colors']}
+          %input.form-control.cstm-form-control.execute.colorEnable{:placeholder => "Total number of colors", :type => "number",id: 'total_no_of_colors', value: @visualization['config']['total_no_of_colors']}
 
   -if @chart_name != 'Pictograph'
     %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#chartcolor"}Chart Color

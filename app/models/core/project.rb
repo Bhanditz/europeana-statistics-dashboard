@@ -39,6 +39,7 @@ class Core::Project < ActiveRecord::Base
   has_many :core_datacasts, class_name: "Core::Datacast", foreign_key: "core_project_id", dependent: :destroy
   #has_many :core_cards, class_name: "Core::Card", foreign_key: "core_project_id", dependent: :destroy
   has_many :core_articles, class_name: "Core::Article", foreign_key: "core_project_id", dependent: :destroy
+  has_many :impl_reports, class_name: "Impl::Report", foreign_key: "core_project_id", dependent: :destroy
   #VALIDATIONS
   validates :name, presence: true, uniqueness: {scope: :account_id}
   validates :account_id, presence: true
