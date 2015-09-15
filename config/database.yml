@@ -14,6 +14,7 @@ development:
 staging:
   <<: *pg
   port: 5432
+  database: datastory
   host: localhost
   username: rumidbuser
   password: 28bcda0b760a
