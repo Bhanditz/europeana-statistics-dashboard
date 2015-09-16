@@ -1,7 +1,6 @@
-if Rails.env.production?
+if Rails.env.production? or Rails.env.staging?
   #ENV["REDISTOGO_URL"] ||= 'http://datahub-prod.o5vvnb.0001.apse1.cache.amazonaws.com:6379'
-  ENV["REDISTOGO_URL"] ||= 'http://127.0.0.1:6379'
-  
+  ENV["REDISTOGO_URL"] ||= 'redis://127.0.0.1:6379'
   #require 'sidekiq/pro/reliable_push'
   
   Sidekiq.configure_server do |config|
