@@ -7,6 +7,7 @@ class Core::Datacast::RunWorker
     d = Core::Datacast.find(core_datacast_id)
     prev = d.core_datacast_output
     has_fail = false
+    d.error = ""
     begin
       start_time = Time.now
       response = d.run("raw")                                                                       # RUN QUERY

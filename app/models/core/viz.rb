@@ -45,6 +45,7 @@ class Core::Viz < ActiveRecord::Base
   scope :reusable, -> {where("core_vizs.name LIKE '%Reusables'")}
   scope :top_country, -> {where("core_vizs.name LIKE '%Top Countries'")}
   scope :traffic, -> {where("core_vizs.name LIKE '%Traffic'")}
+  scope :line_chart, -> {where("core_vizs.name LIKE '%Line Chart'")}
   #CUSTOM SCOPES
   #FUNCTIONS
 

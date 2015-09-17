@@ -18,9 +18,14 @@ class Aggregations::ReportBuilder
         
         #Putting Collections
         collection_content_key = required_variables.shift
-        collection_content_value = ActionController::Base.helpers.number_with_delimiter(aggregation.impl_aggregation_outputs.collections.first.value)
+        collection_content_value = aggregation.core_datacasts.where(name: "#{aggregation.name} - Collections").first.get_auto_html_for_number_indicators
         variable_object[collection_content_key] = collection_content_value
-        
+
+        #Putting Ranking Table
+        ranking_content_key = required_variables.shift
+        ranking_content_value = aggregation.core_datacasts.where(name: "#{aggregation.name} - Rankings").first.get_auto_html_for_table
+        variable_object[ranking_content_key] = ranking_content_value
+
         #Putting Media Types
         media_type_content_key = required_variables.shift
         media_type_content_value = core_vizs.media_type.first.auto_html_div
@@ -30,18 +35,21 @@ class Aggregations::ReportBuilder
         reusable_content_key = required_variables.shift
         reusable_content_value = core_vizs.reusable.first.auto_html_div
         variable_object[reusable_content_key] = reusable_content_value
-        
 
         #Putting Traffic
         traffic_content_key = required_variables.shift
         traffic_content_value = core_vizs.traffic.first.auto_html_div
         variable_object[traffic_content_key] = traffic_content_value
-        
 
-        # #Putting Top Countries
-        # top_countries_content_key = required_variables.shift
-        # top_countries_content_value = core_vizs.top_country.first.auto_html_div
-        # variable_object[top_countries_content_key] = top_countries_content_value
+        #Putting Line Chart
+        line_chart_content_key = required_variables.shift
+        line_chart_content_value = core_vizs.line_chart.first.auto_html_div
+        variable_object[line_chart_content_key] = line_chart_content_value
+
+        #Putting Top Countries
+        top_countries_content_key = required_variables.shift
+        top_countries_content_value = core_vizs.top_country.first.auto_html_div
+        variable_object[top_countries_content_key] = top_countries_content_value
 
         #Putting Top Digital Objects
         top_digital_objects_content_key = required_variables.shift

@@ -4,9 +4,10 @@
     .panel-body
       .row
         .col-sm-9
+          .pull-left= link_to "< All Reports", account_project_impl_reports_path(@account, @core_project)
+          .clearfix
           %h4 Aggregations
           %p.gray Collect data with various provider ids
-          .pull-right= link_to "< All Reports", account_project_impl_reports_path(@account, @core_project)
           .clearfix
           %hr{style: "margin-bottom: 5px; margin-top: 2px; border-top-color: lightgray;"}
           %table.table.table-condensed

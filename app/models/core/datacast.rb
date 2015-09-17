@@ -61,6 +61,7 @@ class Core::Datacast < ActiveRecord::Base
   scope :top_country, -> {where("core_datacasts.name LIKE '%Top Countries'")}
   scope :top_digital_objects, -> {where("core_datacasts.name LIKE '%Top Digital Objects'")}
   scope :collections, -> {where("core_datacasts.name LIKE '%Collections'")}
+  scope :line_charts, -> {where("core_datacasts.name LIKE '%Line Chart'")}
 
   #CUSTOM SCOPES
   #OTHER

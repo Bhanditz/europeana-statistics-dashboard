@@ -35,38 +35,27 @@ class Aggregations::DatacastsBuilder
         traffic_datacast = Core::Datacast.create_or_update_by(traffic_datacast_query,core_project_id,core_db_connection_id,traffic_datacast_name)
         traffic_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,traffic_datacast.identifier)
 
-        #Top Countries
+        # Top Countries
         top_countries_datacast_name = "#{aggregation.name} - Top Countries"
         top_countries_datacast_query = aggregation.get_countries_query
         top_countries_datacast = Core::Datacast.create_or_update_by(top_countries_datacast_query,core_project_id,core_db_connection_id,top_countries_datacast_name)
         top_countries_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,top_countries_datacast.identifier)
 
-        #Top Digital Objects
+        # Top Digital Objects
         top_digital_objects_datacast_name = "#{aggregation.name} - Top Digital Objects"
         top_digital_objects_datacast_query = aggregation.get_digital_objects_query
         top_digital_objects_datacast = Core::Datacast.create_or_update_by(top_digital_objects_datacast_query,core_project_id,core_db_connection_id,top_digital_objects_datacast_name)
         top_digital_objects_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,top_digital_objects_datacast.identifier)
         aggregation.update_attributes(status: "Created all datacasts")
 
+        # Line Chart
         pageviews_line_chart_datacast_name = "#{aggregation.name} - Line Chart"
         pageviews_line_chart_datacast_query =  aggregation.get_pageviews_line_chart_query
         pageviews_line_chart_datacast = Core::Datacast.create_or_update_by(pageviews_line_chart_datacast_query,core_project_id, core_db_connection_id,pageviews_line_chart_datacast_name)
         pageviews_line_chart_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,pageviews_line_chart_datacast.identifier)
         Aggregations::VizsBuilder.perform_async(aggregation_id)
 
-        #Pageviews top country
-        # pageviews_top_country_datacast_name = "#{aggregation.name} - Pageviews Top Country"
-        # pageviews_top_country_datacast_query =  aggregation.get_pageviews_top_country_query
-        # pageviews_top_country_datacast = Core::Datacast.create_or_update_by(pageviews_top_country_datacast_query,core_project_id, core_db_connection_id,pageviews_top_country_datacast_name)
-        # pageviews_top_country_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,pageviews_top_country_datacast.identifier)
-
-        #Users top country
-        # users_top_country_datacast_name = "#{aggregation.name} - Users Top Country"
-        # users_top_country_datacast_query =  aggregation.get_users_top_country_query
-        # users_top_country_datacast = Core::Datacast.create_or_update_by(users_top_country_datacast_query,core_project_id, core_db_connection_id,users_top_country_datacast_name)
-        # users_top_country_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,users_top_country_datacast.identifier)
-
-        #Aggregation Ranks
+        # Aggregation Ranks
         aggregation_ranking_datacast_name = "#{aggregation.name} - Rankings"
         aggregation_ranking_datacast_query =  aggregation.get_aggregation_ranking_query
         aggregation_ranking_datacast = Core::Datacast.create_or_update_by(aggregation_ranking_datacast_query,core_project_id, core_db_connection_id,aggregation_ranking_datacast_name)
