@@ -73,7 +73,7 @@
             = simple_form_for(@impl_aggregation, url: account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), method: "put") do |f|
               = f.error_notification
               .form-inputs
-                = f.input :genre,collection: [["Provider","provider"],["Data Provider", "data_provider"],["Country", "country"]], selected: @impl_aggregation.genre ,hint: "Provider, Data Provider, Country", label: "Report type"
+                = f.input :genre,collection: [["Provider","provider"],["Data Provider", "data_provider"]], selected: @impl_aggregation.genre ,hint: "Provider, Data Provider, Country", label: "Report type"
                 = f.input :name
                 = f.input :wikiname
               .form-actions
