@@ -5,7 +5,8 @@ class Core::DatacastsController < ApplicationController
   before_action :set_token,only: [:upload,:destroy]
 
   def index
-    @core_datacasts = @core_project.core_datacasts.includes(:core_db_connection).order(updated_at: :desc)
+    ids_to_exclude = Impl::AggregationDatacast.all.pluck(:core_datacast_identifier).uniq
+    @core_datacasts = @core_project.core_datacasts.where.not(identifier: ids_to_exclude).includes(:core_db_connection).order(updated_at: :desc)
     @pending_datacast_pulls = @core_project.core_datacast_pulls
   end
 

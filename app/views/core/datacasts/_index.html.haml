@@ -22,7 +22,6 @@
       %th
       %th
       - if @impl_aggregation.nil?
-        %th
   %tbody
     - @core_datacasts.each do |core_datacast|
       %tr
@@ -57,7 +56,6 @@
             ms (avg. time)
         %td= core_datacast.format
         %td= link_to 'Edit', edit_account_core_project_datacast_path(@account, @core_project,  core_datacast)
+        %td= link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, run_worker_account_core_project_datacast_path(@account, @core_project, core_datacast)
         - if @impl_aggregation.nil?
           %td= link_to icon_del(account_core_project_datacast_path(@account, @core_project, core_datacast))
-        -else
-          %td= link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, run_worker_account_core_project_datacast_path(@account, @core_project, core_datacast)

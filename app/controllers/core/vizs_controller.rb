@@ -10,7 +10,7 @@ class Core::VizsController < ApplicationController
 
   def index
     @vizs = @core_project.vizs.manual.includes(:ref_chart).order(created_at: :desc).page params[:page]
-    if @vizs.nil?
+    if @vizs.blank?
       redirect_to new_account_core_project_viz_path(@account, @core_project)
     end
   end
@@ -102,4 +102,3 @@ class Core::VizsController < ApplicationController
   end
 
 end
-
