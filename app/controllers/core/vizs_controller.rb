@@ -9,7 +9,7 @@ class Core::VizsController < ApplicationController
   after_action :set_response_header, only: [:embed]
 
   def index
-    @vizs = @core_project.vizs.includes(:ref_chart).order(created_at: :desc).page params[:page]
+    @vizs = @core_project.vizs.manual.includes(:ref_chart).order(created_at: :desc).page params[:page]
     if @vizs.nil?
       redirect_to new_account_core_project_viz_path(@account, @core_project)
     end
