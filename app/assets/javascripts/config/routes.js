@@ -55,6 +55,11 @@ window.onload = function () {
       Rumali.newArticleCreate();
     case "scopejs_reports_show": //need to break it into 2 switch cases
       Rumali.buildCharts.loadReportChart();
+    case "scopejs_reports_new":
+    case "scopejs_reports_create":
+    case "scopejs_reports_edit":
+    case "scopejs_reports_update":
+      Rumali.reportsNewPage();
     default:
   }
 };

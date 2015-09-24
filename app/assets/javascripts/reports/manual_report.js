@@ -62,33 +62,24 @@ Rumali.manualCharts = (function(){
 				chart_margin_left:60
 				};
 
-			console.log(multid_obj);
-
 			var chartobj = new PykCharts.multiD.column(
 					multid_obj
 				);
-
-
 			chartobj.execute(); 
-
-
 		}
 
 		//step 2 : filter the json
 		var filterData = function(url_data){
 			//case 1 : if filter is present in the data
 			//case 2 : if filter is not present in the data	
-			
+
 			if(data.dataset.filter_present === 'false'){
 				filter_data_multid_col = url_data;
 				callPykChart();
-
 			}
 			else{
 				//Code needs to be written and to be made generic if possible.
 			}
-
-
 		}
 
 		htmlcontent += '<span class = header id ='+ $(data).attr('id')+'_header></span>';

@@ -35,16 +35,16 @@ Rumali.showAndEditGridPage = function(){
 			unique_filter_html = renderFilter(org_data,grid_html_tag.dataset.filter_column_name,'filter_show');
 			$('#filter_container').html(unique_filter_html); 
 
-			$('#filter_show').change(function(){
-        		filter_val = $('#filter_show option:selected').val();
-        		parsed_data = filterChart(org_data,grid_html_tag.dataset.filter_column_name,filter_val);
-        		createGrid(parsed_data);
-      		});
+      $('#filter_show').change(function(){
+        filter_val = $('#filter_show option:selected').val();
+        parsed_data = filterChart(org_data,grid_html_tag.dataset.filter_column_name,filter_val);
+        createGrid(parsed_data);
+      });
 
-      		$("select#filter_show").prop('selectedIndex', 0);
-      		filter_val = $('#filter_show option:selected').val();
-      		parsed_data = filterChart(org_data,grid_html_tag.dataset.filter_column_name,filter_val);
-			createGrid(parsed_data);
+      $("select#filter_show").prop('selectedIndex', 0);
+      filter_val = $('#filter_show option:selected').val();
+      parsed_data = filterChart(org_data,grid_html_tag.dataset.filter_column_name,filter_val);
+      createGrid(parsed_data);
 
 		}else{
 			$('#filter_container').hide();

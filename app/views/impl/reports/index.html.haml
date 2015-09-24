@@ -7,8 +7,8 @@
           %h4 Reports
           .pull-right
             = link_to "Aggregations", account_project_impl_aggregations_path(@account,@core_project )
-            /|
-            /= link_to "New Report", new_account_project_impl_report_path(@account, @core_project)
+            |
+            = link_to "New Report", new_account_project_impl_report_path(@account, @core_project)
           .clearfix
           %hr{style: "margin-bottom: 5px; margin-top: 2px; border-top-color: lightgray;"}
           %table.table.table-condensed
@@ -24,5 +24,5 @@
                   %td
                     = link_to impl_report.name, impl_report_path(impl_report)
                   %td.hint= "#{time_ago_in_words(impl_report.updated_at)} ago"
-                  /%td= link_to 'Edit', edit_account_project_impl_report_path(@core_project.account, @core_project, impl_report)
+                  %td= link_to 'Edit', edit_account_project_impl_report_path(@core_project.account, @core_project, impl_report)
                   %td= icon_del(account_project_impl_report_path(@core_project.account, @core_project, impl_report))
