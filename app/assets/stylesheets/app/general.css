@@ -257,3 +257,8 @@ body#scopejs_reports_new #report_preview, body#scopejs_reports_create #report_pr
   overflow-y:auto !important;
   background: #F2F2F2 !important;
 }
+
+
+body#scopejs_reports_new .d3-pykcharts, body#scopejs_reports_create .d3-pykcharts, body#scopejs_reports_edit .d3-pykcharts, body#scopejs_reports_update .d3-pykcharts {
+  min-height: 400px
+}
