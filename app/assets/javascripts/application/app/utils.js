@@ -171,13 +171,20 @@ var getApiFromString = function(api){
 
 var genereteChartInMarkdown =  function () {
 	$(".d3-pykcharts").each(function (){
-    var chart_id = this.id,
-			datacast_url = Rumali.object.datacast_url + this.dataset.datacast_identifier,
-      chart_api = this.dataset.api,
-      filter_present = this.dataset.filter_present,
-      filter_column_name = this.dataset.filter_column_name || "";
-    getJSON(datacast_url,generateChart,chart_id ,chart_api, filter_present, filter_column_name);
+    callGetJson(this);
   });
+  $(".card_with_value").each(function (){
+    callGetJson(this);
+  });
+}
+
+var callGetJson = function(that) {
+	var chart_id = that.id,
+		datacast_url = Rumali.object.datacast_url + that.dataset.datacast_identifier,
+    chart_api = that.dataset.api,
+    filter_present = that.dataset.filter_present,
+    filter_column_name = that.dataset.filter_column_name || "";
+  getJSON(datacast_url,generateChart,chart_id ,chart_api, filter_present, filter_column_name);
 }
 
 var generateChart = function (data,chart_id,chart_api,filter_present, filter_column_name) {
@@ -217,10 +224,12 @@ var generateChart = function (data,chart_id,chart_api,filter_present, filter_col
 var createChart = function (data,chart_id,chart_key,api) {
 	var config = gon.chart_config_objects[chart_key] || {}
 	config.data = data
+	debugger;
 	if (api == "handsontable")
 		$("#"+chart_id).handsontable(config)
-	else if (api == "one-number-api") {
-		alert("hi")
+	else if (api == "one-number-indicator") {
+		debugger;
+		renderHTMLForCard(data, chart_id);
 	} else {
 		initializer_api = getApiFromString(api);
 		config.selector = "#"+chart_id

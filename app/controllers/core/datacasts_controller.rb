@@ -140,7 +140,7 @@ class Core::DatacastsController < ApplicationController
     col_name = params[:column_name]
     session[:changed_d_or_m] = true
     prev_d_or_m = @core_datacast.column_properties[col_name]["d_or_m"]
-    if prev_d_or_m.nil?
+    unless prev_d_or_m.nil?
       @core_datacast.column_properties[col_name]["d_or_m"] =  prev_d_or_m == "d" ? "m" : "d"
       @core_datacast.column_properties_will_change!
       @core_datacast.save

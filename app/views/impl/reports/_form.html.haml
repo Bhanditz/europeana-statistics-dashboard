@@ -13,8 +13,8 @@
       #editor
         .col-sm-8
           #toolbar.wmd-toolbar
-        .col-sm-4.pull-right
-          = link_to "Add a chart","#","data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector", class: " bootstrap-btn btn-xs btn-primary"
+        .col-sm-3.pull-right
+          = link_to "Add a chart","#","data-toggle" => "modal", "data-target"=>"#chart-selector", id: "btn-chart-selector", class: "bootstrap-btn btn btn-orange"
         = f.input :html_content, as: :text, input_html: {id: "input", cols:"65", rows:"26",class: "form-control wmd-input", onscroll: "scrolling('textarea')", onkeyup: "scrolling('textarea')"}, required: true, label: false
     .col-sm-6
       #report_preview.wmd-preview Live preview
@@ -29,7 +29,10 @@
     .modal-dialog 
       .modal-content
         .modal-body{style: "min-height:400px; overflow-y:scroll;"}
-          %table.table.table-bordred.table-hovered 
+          %table.table.table-bordred.table-hovered
+            %thead
+              %th Name
+              %th Type
             - @core_vizs.each do |viz|
               %tr
                 %td
