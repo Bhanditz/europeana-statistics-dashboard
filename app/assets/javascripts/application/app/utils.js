@@ -82,7 +82,7 @@ var findKeyArray = function(obj){
 }
 
 
-var renderHTMLForCard = function(data,id){
+var renderHTMLForCard = function(data,id,col_sm){
 
 	//id,title,key,value,content
 	var id = id,
@@ -115,7 +115,7 @@ var renderHTMLForCard = function(data,id){
 
 	var div = $('<div />').appendTo('body');
 	div.attr('id', id);
-	var htmlcontent = '<span class = "col-sm-4 card_layout">';
+	var htmlcontent = '<span class = "'+col_sm+' card_layout">';
 	htmlcontent += '<span class= "col-sm-12 card_layout_header_span"><h4 class="card_layout_header"><b>'+title+'</b></h4></span>';
 	htmlcontent += '<span class= "col-sm-12 card_layout_key">'+key+'</b></span>';
 	htmlcontent += '<span class= "col-sm-12 card_layout_value">'+value+'</b>';
@@ -229,7 +229,7 @@ var createChart = function (data,chart_id,chart_key,api) {
 		$("#"+chart_id).handsontable(config)
 	else if (api == "one-number-indicator") {
 		debugger;
-		renderHTMLForCard(data, chart_id);
+		renderHTMLForCard(data, chart_id,"col-sm-3");
 	} else {
 		initializer_api = getApiFromString(api);
 		config.selector = "#"+chart_id

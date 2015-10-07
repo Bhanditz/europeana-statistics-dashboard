@@ -22,7 +22,7 @@ Rumali.showAndEditBoxPage = function(){
 	var setFilterAndRenderChart = function(data){
 		org_data = data;
 		id = card_html_tag.id;
-		renderHTMLForCard(org_data,id);
+		renderHTMLForCard(org_data,id,'col-sm-4');
 	}
 
 	loadBox();

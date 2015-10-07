@@ -139,7 +139,7 @@ Rumali.loadChartFromDropdown = function(){
 
 		}else if(current_chart.dataset.api === 'one-number-indicator'){
 			$("#box_show").show();
-			renderHTMLForCard(data,'box_show');
+			renderHTMLForCard(data,'box_show','col-sm-4');
 		}
 		else{
 			$("#chart_show").show();
