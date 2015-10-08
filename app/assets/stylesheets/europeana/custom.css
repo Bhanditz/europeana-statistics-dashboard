@@ -12,12 +12,12 @@
 	height:90px;
 }
 .card_layout, .box_layout{
-	margin-left:15px;
-	margin-bottom:15px; 
 	background-color:#333333;
 	color: white;
 	border: 1px solid #888;
-	border-radius:3px;
+	border-radius:0px;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 .card_layout_header_span, .box_layout_header_span{
 	text-align:center;

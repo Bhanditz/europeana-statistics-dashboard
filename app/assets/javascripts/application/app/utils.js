@@ -224,12 +224,10 @@ var generateChart = function (data,chart_id,chart_api,filter_present, filter_col
 var createChart = function (data,chart_id,chart_key,api) {
 	var config = gon.chart_config_objects[chart_key] || {}
 	config.data = data
-	debugger;
 	if (api == "handsontable")
 		$("#"+chart_id).handsontable(config)
 	else if (api == "one-number-indicator") {
-		debugger;
-		renderHTMLForCard(data, chart_id,"col-sm-3");
+		renderHTMLForCard(data, chart_id,"col-sm-12");
 	} else {
 		initializer_api = getApiFromString(api);
 		config.selector = "#"+chart_id
