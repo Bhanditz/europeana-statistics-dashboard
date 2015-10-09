@@ -20,7 +20,7 @@ class Aggregations::CollectionsBuilder
           raise "No Collections detected"
         end
         if aggregation.europeana?
-          Aggregations::EuropeanaPageviewsBuilder.perform_async(aggregation_id)
+          Aggregations::Europeana::PageviewsBuilder.perform_async(aggregation_id)
           Aggregations::CollectionsBuilder.perform_at(1.week.from_now, aggregation_id)
         else
           Aggregations::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)

@@ -1,4 +1,4 @@
-class Aggregations::EuropeanaPageviewsBuilder
+class Aggregations::Europeana::PageviewsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
   require 'jq'
@@ -54,6 +54,22 @@ class Aggregations::EuropeanaPageviewsBuilder
         mediums_data = mediums_data.sort_by {|d| [d["year"], d["month"]]}
         Core::TimeAggregation.create_aggregations(mediums_data,"monthly",aggregation_id,"Impl::Aggregation","visits","medium")
 
+        #Fetching Countries
+        country_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "country")
+        Core::TimeAggregation.create_aggregations(country_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","country") unless country_output.nil?
+
+        #Fetching Languages
+        language_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "language")
+        Core::TimeAggregation.create_aggregations(language_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","language") unless language_output.nil?
+
+        #Fetching Mobile Categories
+        category_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "deviceCategory")
+        Core::TimeAggregation.create_aggregations(category_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","deviceCategory") unless category_output.nil?
+
+        #Fetching User Types
+        user_type_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "userType")
+        Core::TimeAggregation.create_aggregations(user_type_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","userType") unless user_type_output.nil?
+
 
         #Creating datacast
         media_for_visits_name = "#{aggregation.name} - Media for Visits"
@@ -66,7 +82,7 @@ class Aggregations::EuropeanaPageviewsBuilder
         validate = false
         core_viz = Core::Viz.find_or_create(media_for_visits_datacast.identifier,media_for_visits_datacast.name,ref_chart.combination_code,media_for_visits_datacast.core_project_id,filter_present,filter_column_name,filter_column_d_or_m, validate)
 
-        Aggregations::EuropeanaPageviewsBuilder.perform_at(1.week.from_now,aggregation_id,next_start_date, next_end_date)
+        Aggregations::Europeana::PageviewsBuilder.perform_at(1.week.from_now,aggregation_id,next_start_date, next_end_date)
       rescue => e
         aggregation_output.update_attributes(status: "Failed to fetch pageviews", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed Fetching pageviews", error_messages: e.to_s)

@@ -11,7 +11,7 @@ class Impl::TopCountriesBuilder
     begin
       start_date   = user_start_date
       end_date     = user_end_date
-      country_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(start_date, end_date, provider)
+      country_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(start_date, end_date, provider, "country")
       Core::TimeAggregation.create_aggregations(country_output,"quarterly", provider_id,"Impl::Provider","pageviews","country") unless country_output.nil?
       provider.update_attributes(status: "Processed top 25 countries")
       Impl::TopDigitalObjectsBuilder.perform_async(provider_id, user_start_date,user_end_date)
@@ -20,20 +20,25 @@ class Impl::TopCountriesBuilder
     end
   end
 
-  def self.fetch_data_for_all_quarters_between(start_date,end_date, provider)
+  def self.fetch_data_for_all_quarters_between(start_date,end_date, provider=nil, extra_dimension)
     ga_access_token = Impl::Provider.get_access_token
-    ga_dimensions   = "ga:month,ga:year,ga:country"
+    ga_dimensions   = "ga:month,ga:year,ga:#{extra_dimension}"
     ga_metrics      = "ga:pageviews"
     ga_sort         = '-ga:pageviews'
-    ga_filters      = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider.provider_id}"
-    top_25_countries_data = []
+    data = []
     ga_start_date = start_date
     ga_end_date = end_date
-    top_25_countries = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}").read)['rows']
-    if top_25_countries.present?
-      top_25_countries_data = top_25_countries.jq('. [ ] | {month: .[0], year: .[1], country: .[2], pageviews: .[3]|tonumber}')
-      top_25_countries_data = top_25_countries_data.sort_by {|d| [d["year"], d["month"]]}
+    unless provider.nil?
+      ga_filters      = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider.provider_id}"
+      query_url = "https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}"
+    else
+      query_url = "https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&sort=#{ga_sort}"
     end
-    return top_25_countries_data
+    top_25_countries = JSON.parse(open(query_url).read)['rows']
+    if top_25_countries.present?
+      data = top_25_countries.jq(". [ ] | {month: .[0], year: .[1], #{extra_dimension}: .[2], pageviews: .[3]|tonumber}")
+      data = data.sort_by {|d| [d["year"], d["month"]]}
+    end
+    return data
   end
 end
