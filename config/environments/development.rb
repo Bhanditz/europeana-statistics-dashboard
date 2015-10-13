@@ -87,28 +87,23 @@ Rails.application.configure do
     :authentication => :plain,
     :enable_starttls_auto => true
   }
-  
-  ActionMailer::Base.default_options = {
-    :from => "Rumi.io DataHub Local <rumi-local@pykih.com>"
-  }
-
 
   
-  if 1 == 2
-    #https://github.com/flyerhzm/bullet
-    config.after_initialize do
-      Bullet.enable = true
-      Bullet.bullet_logger = true
-      Bullet.console = true
-      #Bullet.xmpp = { :account  => '64187_912489@chat.hipchat.com', :password => 'westernsnow123', :receiver => '64187_pykih_software_llp@conf.hipchat.com', :show_online_status => true }
-      Bullet.add_footer = true
-      #Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
-      Bullet.alert = false
-      Bullet.growl = false
-      Bullet.airbrake = false
-      Bullet.rails_logger = false
-      Bullet.bugsnag = false
-    end
-  end
+  # if 1 == 2
+  #   #https://github.com/flyerhzm/bullet
+  #   config.after_initialize do
+  #     Bullet.enable = true
+  #     Bullet.bullet_logger = true
+  #     Bullet.console = true
+  #     #Bullet.xmpp = { :account  => '64187_912489@chat.hipchat.com', :password => 'westernsnow123', :receiver => '64187_pykih_software_llp@conf.hipchat.com', :show_online_status => true }
+  #     Bullet.add_footer = true
+  #     #Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
+  #     Bullet.alert = false
+  #     Bullet.growl = false
+  #     Bullet.airbrake = false
+  #     Bullet.rails_logger = false
+  #     Bullet.bugsnag = false
+  #   end
+  # end
   
 end

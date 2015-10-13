@@ -136,6 +136,6 @@ Rails.application.configure do
   }
 
   ActionMailer::Base.default_options = {
-    :from => "Rumi.io DataHub <rumi@pykih.com>"
+    :from => "Europeana Statistics <rumi@pykih.com>"
   }
 end

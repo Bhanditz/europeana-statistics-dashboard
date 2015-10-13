@@ -1,7 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-require 'chronic'
 require 'csv'
 require 'net/ftp'
 require 'rest_client'
