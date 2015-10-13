@@ -15,8 +15,8 @@
     * It creates Accounts
     * It creates Project
     * It Seeds from csv files which are placed in ref folder
-        * `reference_charts`
-        * `reference_themes`
+        * `reference charts`
+        * `reference themes`
         * `country codes for maps`
         * `default db connection`
         * `default provider report template`
