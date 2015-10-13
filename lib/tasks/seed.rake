@@ -21,7 +21,7 @@ namespace :seed do
   
   task :users => :environment do |t, args|
     puts "----> Creating users"
-    accounts = [["ritvvij.parrikh@pykih.com", "ritvvijparrikh"], ["ab@pykih.com", "amitbadheka"], ["girish.kulkarni@pykih.com", "girishkulkarni"], ["dr@pykih.com", "darpanrawat"], ["ritvij.j@gmail.com", "ritvij.j"]]
+    accounts = [["ritvvij.parrikh@pykih.com", "ritvvijparrikh"], ["ab@pykih.com", "amitbadheka"]]
     accounts.each do |a|
       c = Account.new(email: a[0], username: a[1], password: "indianmonsoon123801", confirmation_sent_at: Time.now)
       c.skip_confirmation!

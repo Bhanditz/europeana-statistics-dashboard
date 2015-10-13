@@ -58,7 +58,6 @@ namespace :ref do
       image_url      = line[4]
       Core::Theme.create!({name: name, config: config,account_id: account_id, sort_order: sort_order, image_url: image_url})
     end
-
     puts '----> Loading Ref::CountryCode'
     Ref::CountryCode.seed
     puts "----> Done"
@@ -67,12 +66,12 @@ namespace :ref do
   task :create_default_db_connection => :environment do |t, args|
     puts "----> Creating Default DB connection"
     name = "Default Database"
-    db_name = Rails.env.production? ? "rumi" : "datastory"
-    host = Rails.env.production? ? "10.64.147.66" : "localhost"
+    db_name = Rails.env.production? ? ENV["db_name"] : "datastory"
+    host = Rails.env.production? ? ENV["host"] : "localhost"
     port = "5432"
     adapter = "postgresql"
-    username = Rails.env.production? ? "rumidbuser" : "developer"
-    password = Rails.env.production? ? "eimGevheurovyur" : "developer"
+    username = Rails.env.production? ? ENV["username"] : "developer"
+    password = Rails.env.production? ? ENV["password"] : "developer"
     db_connection = Core::DbConnection.new({name: name, db_name: db_name, host: host, port: port,adapter: adapter, username: username, password: password})
     db_connection.save!
   end
@@ -100,13 +99,6 @@ namespace :ref do
     end
   end
 
-  task :seed => :environment do |t,args|
-    Rake::Task['ref:load'].invoke
-    Rake::Task['ref:create_default_db_connection'].invoke
-    Rake::Task['ref:create_default_template'].invoke
-    Rake::Task['ref:create_europeana_aggregation_report'].invoke
-  end
-
   task :seed_europeana_production_reports => :environment do |t,args|
     puts "----> Seeding Production Report"
     CSV.read("ref/reports_backup.csv").each_with_index do |line, index|
@@ -117,4 +109,11 @@ namespace :ref do
     end
   end
 
+  task :seed => :environment do |t,args|
+    Rake::Task['ref:load'].invoke
+    Rake::Task['ref:create_default_db_connection'].invoke
+    Rake::Task['ref:create_default_template'].invoke
+    Rake::Task['ref:create_europeana_aggregation_report'].invoke
+    Rake::Task['ref:seed_europeana_production_reports'].invoke
+  end
 end

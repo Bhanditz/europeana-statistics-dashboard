@@ -8,9 +8,6 @@ Rails.application.routes.draw do
     get "revoke_session", on: :member
     
     namespace :core do
-      resources :account_emails do
-        get "confirmation", "resend_confirmation", on: :member
-      end
       resources :permissions
       resources :projects do
         get "members", on: :member

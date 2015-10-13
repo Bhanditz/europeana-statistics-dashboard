@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
       end
     end
     if @account.blank? 
-      @account = current_account  if controller_name == "projects" and action_name == "new" or controller_name == "account_emails"
+      @account = current_account  if controller_name == "projects" and action_name == "new"
     end
   end
   

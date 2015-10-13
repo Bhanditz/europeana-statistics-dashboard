@@ -40,7 +40,6 @@ class Account < ActiveRecord::Base
   #ASSOCIATIONS  
   has_many :permissions, class_name: "Core::Permission", foreign_key: :account_id, dependent: :destroy
   has_many :core_tokens, class_name: "Core::Token", dependent: :destroy
-  has_many :core_account_emails,class_name: "Core::AccountEmail" ,foreign_key: :account_id, dependent: :destroy
 
   def owners
     self.owners_u.joins(:account)
