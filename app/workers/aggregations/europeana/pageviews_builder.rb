@@ -55,21 +55,41 @@ class Aggregations::Europeana::PageviewsBuilder
         Core::TimeAggregation.create_aggregations(mediums_data,"monthly",aggregation_id,"Impl::Aggregation","visits","medium")
 
         #Fetching Countries
-        country_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "country")
+        country_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "country","pageviews")
         Core::TimeAggregation.create_aggregations(country_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","country") unless country_output.nil?
 
         #Fetching Languages
-        language_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "language")
+        language_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "language","pageviews")
         Core::TimeAggregation.create_aggregations(language_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","language") unless language_output.nil?
 
-        #Fetching Mobile Categories
-        category_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "deviceCategory")
+        #Fetching Device Categories
+        category_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "deviceCategory","pageviews")
         Core::TimeAggregation.create_aggregations(category_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","deviceCategory") unless category_output.nil?
 
-        #Fetching User Types
-        user_type_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "userType")
-        Core::TimeAggregation.create_aggregations(user_type_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","userType") unless user_type_output.nil?
+        #Fetching Device Brands
+        branding_output = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "mobileDeviceBranding","pageviews")
+        Core::TimeAggregation.create_aggregations(branding_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","mobileDeviceBranding") unless branding_output.nil?
 
+        #Fetching User Types for Pageviews
+        user_type_output_for_pageviews = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "userType","pageviews")
+        Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews,"monthly", aggregation_id,"Impl::Aggregation","pageviews","userType") unless user_type_output_for_pageviews.nil?
+
+        #Fetching User Types for Sessions
+        user_type_output_for_sessions = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "userType","sessions")
+        Core::TimeAggregation.create_aggregations(user_type_output_for_sessions,"monthly", aggregation_id,"Impl::Aggregation","sessions","userType") unless user_type_output_for_sessions.nil?
+
+        #Fetching User Types for avgSessionDuration
+        user_type_output_for_avg_session_duration = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "userType","avgSessionDuration")
+        Core::TimeAggregation.create_aggregations(user_type_output_for_avg_session_duration,"monthly", aggregation_id,"Impl::Aggregation","avgSessionDuration","userType") unless user_type_output_for_avg_session_duration.nil?
+
+        #Fetching User Types for bounceRate
+        user_type_output_for_bounce_rate = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "userType","bounceRate")
+        Core::TimeAggregation.create_aggregations(user_type_output_for_bounce_rate,"monthly", aggregation_id,"Impl::Aggregation","bounceRate","userType") unless user_type_output_for_bounce_rate.nil?
+
+
+        #Fetching User Types for pageviewsPerSession
+        user_type_output_for_pageviews_per_session = Impl::TopCountriesBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date, nil, "userType","pageviewsPerSession")
+        Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews_per_session,"monthly", aggregation_id,"Impl::Aggregation","pageviewsPerSession","userType") unless user_type_output_for_pageviews_per_session.nil?
 
         #Creating datacast
         media_for_visits_name = "#{aggregation.name} - Media for Visits"
