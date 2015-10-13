@@ -58,16 +58,6 @@ namespace :ref do
       image_url      = line[4]
       Core::Theme.create!({name: name, config: config,account_id: account_id, sort_order: sort_order, image_url: image_url})
     end
-    #header name,template,img,sort_order
-    puts "----> Loading Core::CardLayout"
-    CSV.read("ref/core_card_layouts.csv").each_with_index do |line, index|
-      next if index == 0
-      name = line[0]
-      template = line[1]
-      img = line[2]
-      sort_order = line[3]
-      Core::CardLayout.create({name: name, template: template, img: img, sort_order: sort_order})
-    end
 
     puts '----> Loading Ref::CountryCode'
     Ref::CountryCode.seed
