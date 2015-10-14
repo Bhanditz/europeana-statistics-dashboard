@@ -1,0 +1,11 @@
+
+.previous-sheet
+  %h3= show_project_name(@core_project).html_safe
+  .panel.panel-default.sheet.sub
+    .panel-body
+      = render partial: "core/datacasts/index"
+    .row
+      .col-sm-12
+        -if @pending_datacast_pulls.present? and current_account.present? and @sudo[1]
+          %hr
+          = render partial: "core/datacast_pulls/index", locals: {pending_datacast_pulls: @pending_datacast_pulls}  

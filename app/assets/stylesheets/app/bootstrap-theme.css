@@ -1,0 +1,118 @@
+.table>thead>tr>th.borderless, .table>tbody>tr>th.borderless, .table>tfoot>tr>th.borderless, 
+.table>thead>tr>td.borderless, .table>tbody>tr>td.borderless, .table>tfoot>tr>td.borderless{
+  border-top: 0px;
+}
+
+.csb{
+background-image: none;
+display: hidden;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+ /* GRID PAGE */
+ 
+ ul.nav.nav-tabs.grid {
+     background: #D6D6D6;
+ }
+ 
+ .tab-content.grid{
+     background: #D6D6D6;
+ }
+ 
+ ul.nav.nav-tabs.grid > li{
+     background: #D6D6D6;
+ }
+ 
+ ul.nav.nav-tabs.grid > li a{
+     padding: 5px 10px;
+ }
+ 
+ ul.nav.nav-tabs.grid > li.active{
+     background: #F6F6F6;
+     border: 1px solid #F6F6F6;
+ }
+ 
+ ul.nav.nav-tabs.grid > li.active a{
+     background: #F6F6F6;
+     border: 1px solid #F6F6F6;
+     padding: 5px 10px;
+ }
+ 
+ .tab-content.grid > .tab-pane{
+     background: #F6F6F6;
+ }
+ 
+ /* GRID PAGE */
+
+p.help-block{font-size: 11px; color: gray;}
+
+ /*Make delete link small and red on hover*/
+ 
+ 
+ .well.s {
+     background: white;
+     border: 1px lightgray solid;
+     /*height: 250px;*/
+     -webkit-box-shadow: 2px 2px 15px -4px rgba(52, 50, 50, 0.63);
+     -moz-box-shadow:    2px 2px 15px -4px rgba(52, 50, 50, 0.63);
+     box-shadow:         2px 2px 15px -4px rgba(52, 50, 50, 0.63);
+     padding: 2px 10px;
+     color: gray;
+ }
+ 
+  .well.s:hover{
+      background: #EFE4A9; 
+      border: 1px gray solid;
+      color: black;
+  }
+ 
+ 
+ 
+ 

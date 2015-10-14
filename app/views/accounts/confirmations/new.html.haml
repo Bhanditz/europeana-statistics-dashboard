@@ -1,0 +1,16 @@
+- content_for :title do
+  Resend confirmation instructions · Datastory
+  
+.row
+  .col-sm-4.float_to_center
+    %br
+    %br
+    .panel.panel-default
+      .panel-heading 
+        .panel-title Resend confirmation instructions
+      .panel-body
+        .col-sm-10
+          = simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: {class: "form-horizontal", method: :post}) do |f|
+            = f.input :username, as: :email, autofocus: true, required: true
+            = f.button :submit, "Resend confirmation instructions"
+    = render "accounts/shared/links"

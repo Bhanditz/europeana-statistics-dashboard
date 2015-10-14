@@ -1,0 +1,32 @@
+- content_for :title do
+  Custom Themes · #{@account.username}
+
+.row
+  .col-sm-2= render partial: "accounts/sidebar"
+  .col-sm-10
+    .panel.panel-default
+      .panel-heading= render partial: "core/organisations/topbar"
+      .panel-body
+        %h4 My Custom Themes
+        %div{style: "margin-top: 0px;"}
+          - if @my_core_themes.first.blank?
+            %br
+            %br
+            = link_to "Create your first #{@account.username} theme", new_core_organisation_theme_path, class: "btn btn-lg btn-orange"
+          - else
+            %table.table.table-condensed.table-striped
+              %tbody
+                - @my_core_themes.each do |core_theme|
+                  %tr
+                    %td= link_to core_theme.name.to_s, edit_core_organisation_theme_path(@account, core_theme)
+                    %td= icon_del(core_organisation_theme_path(@account, core_theme))
+        %br
+        %br
+        %hr
+        %h4 Built-in themes
+        .hint These themes are available to you.
+        .well 
+          .no_pointer_for_themes
+            = render partial: 'core_themes'
+            = #@admin_core_themes
+        

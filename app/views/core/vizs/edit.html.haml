@@ -1,0 +1,25 @@
+.container-fluid
+  .row-fluid
+    =simple_form_for(@viz,url: account_core_project_viz_path(@account, @core_project,@viz),method: :put) do |f|
+      .col-sm-3
+        -unless ["Grid","One Number indicators"].include?(@viz.ref_chart.name)
+          = render partial: "live_editor",locals: {f: f}
+      .col-sm-9
+        = f.input :name, id: "name",required: true
+        #filter_container
+        -if ["Grid","One Number indicators"].include?(@viz.ref_chart.name)
+          = @viz.auto_html_div.html_safe
+          .pull-right
+            = f.input :config, as: :hidden, id: "config"
+            = f.submit "Save", id: "core_viz_update", class: "btn btn-lg btn-orange"
+          :javascript
+            var chart_name = "#{@viz.ref_chart.name}";
+        -else
+          #chart_container{"data-filter_present" => "#{@viz.filter_present}", "data-filter_column_name" => @viz.filter_column_name, "data-datacast_identifier" => "#{@viz.core_datacast_identifier}"}
+          .pull-right
+            = f.input :config, as: :hidden, id: "config"
+            = f.submit "Save", id: "core_viz_update", class: "btn btn-lg btn-orange"
+          %br
+          %br
+          %p.thin Click on a theme to customize the chart
+          = render partial: "core/themes/core_themes"

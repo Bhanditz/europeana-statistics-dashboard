@@ -1,0 +1,42 @@
+- content_for :title do
+  #{@core_project.name} · #{@account.username}
+= include_gon
+.panel.panel-default.sheet{"data-intro" => "See all your data sets in your current project here", "data-position" => "bottom"}
+  .panel-body
+    - if 1 == 2
+      .row
+        .col-sm-12
+          %h1.pagetitle{style: "margin-bottom: 0px;"}
+            - if @core_project and !@core_project.nil?    
+              - if !@core_project.is_public
+                = icon_lock
+              = link_to @account.username, _account_path(@account), class: "thin"
+              %span.thin= " / "
+              %b= link_to @core_project.name, _account_project_path(@core_project.account, @core_project), class: "black"
+          - if !@sudo[0]
+            - if @core_project.description.present?
+              %p.lead.gray{style: "border-bottom: 1px dotted gray;"}= @core_project.description
+            - else
+              %br
+          - else
+            %div{style: "color: #aa9c84; margin: 5px 0px 0px 0px;"}= best_in_place @core_project, :description, {path: account_core_project_path(@core_project.account, @core_project), type: :input, html_attrs: {style: "width:100%"}, place_holder: "Add a description"}
+      %hr{style: "margin-bottom: 5px; margin-top: 2px; border-top-color: lightgray;"}
+    = link_to "Reports", account_project_impl_reports_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
+    &nbsp;
+    |
+    &nbsp;
+    = link_to "Datacasts", account_core_project_datacasts_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
+    &nbsp;
+    |
+    &nbsp;
+    = link_to "Visualizations", account_core_project_vizs_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
+    %hr{style: "margin-bottom: 5px; margin-top: 5px; border-top-color: lightgray;"}
+    - if 1 == 2
+      %hr{style: "margin-bottom: 5px; border-top-color: lightgray;"}
+      = render partial: "core/datacasts/index", locals: {core_datacasts: @core_datacasts}
+      %hr{style: "margin-top: 5px; border-top-color: lightgray;"}
+      .row
+        .col-sm-12
+          -if @pending_datacast_pulls.present? and current_account.present? and @sudo[1]
+            %hr
+            = render partial: "core/datacast_pulls/index", locals: {pending_datacast_pulls: @pending_datacast_pulls}
