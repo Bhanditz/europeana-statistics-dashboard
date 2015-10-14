@@ -1,6 +1,0 @@
-.panel.panel-default{style: "margin-bottom: 0px;","data-intro" => "Fill your profile info, set security, create organizations and more here", "data-position" => "bottom"}
-  .panel-heading
-    .panel-title= current_account.username
-  %ul.nav.nav-pills.nav-stacked
-    %li{class: (action_name == "edit" and controller_name == "accounts") ? "active" : nil}= link_to "Profile", _edit_account_path(current_account)
-    %li{class: controller_name == "registrations" ? "active" : nil}= link_to "Security", edit_account_registration_path(current_account)

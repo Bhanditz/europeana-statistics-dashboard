@@ -1,5 +1,0 @@
-name,template,img,sort_order
-Image,"<div class=""pyklayout pyktext""></div>",/card_layout_images/image.jpg,1
-Text,"<div class=""pyklayout pykimage""></div>",/card_layout_images/text.jpg,2
-Table,"<div class=""pyklayout pyknumber""></div>",/card_layout_images/table.jpg,3
-Number,"<div class=""pyklayout pyktable""></div>",/card_layout_images/number.jpg,4
