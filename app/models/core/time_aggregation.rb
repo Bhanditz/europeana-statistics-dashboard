@@ -54,10 +54,14 @@ class Core::TimeAggregation < ActiveRecord::Base
     if a.blank?
       a = create({parent_type: parent_type, parent_id: parent_id, metric: metric, aggregation_level: aggregation_level,aggregation_level_value: aggregation_level_value, value: value})
     else
-      new_value = a.value.to_i + value
-      difference_from_previous_value = a.is_positive_value ? (a.difference_from_previous_value.to_i + new_value) : (-(a.difference_from_previous_value.to_i) + new_value)
-      is_positive_value = (difference_from_previous_value > 0)
-      a.update_attributes(value: new_value, difference_from_previous_value: difference_from_previous_value, is_positive_value: is_positive_value)
+      new_value = a.value.to_f + value
+      if a.aggregation_index > 1
+        prev = where(parent_type: parent_type,parent_id: parent_id, aggregation_level: aggregation_level, metric: metric, aggregation_index: a.aggregation_index - 1).first
+        diff = new_value - prev.value
+      else
+        diff = 0
+      end
+      a.update(value: new_value, difference_from_previous_value: diff.abs, is_positive_value: (diff > 0))
     end
     a
   end
@@ -108,14 +112,14 @@ class Core::TimeAggregation < ActiveRecord::Base
 
 
   def before_create_set
-    previous = Core::TimeAggregation.where(parent_type: self.parent_type,parent_id: self.parent_id, aggregation_level: self.aggregation_level, metric: self.metric).last
+    previous = Core::TimeAggregation.where(parent_type: self.parent_type,parent_id: self.parent_id, aggregation_level: self.aggregation_level, metric: self.metric).order(:aggregation_index).last
     if previous.blank?
       self.aggregation_index = 1
     else
       self.aggregation_index = previous.aggregation_index + 1
       diff = (previous.value - self.value).to_i
       self.difference_from_previous_value = diff.abs
-      self.is_positive_value = (diff < 0) 
+      self.is_positive_value = (diff < 0)
     end
     self.aggregation_value_to_display = self.aggregation_value_to_display.blank? ? self.aggregation_level_value.split("_")[1] : self.aggregation_level_value
     true

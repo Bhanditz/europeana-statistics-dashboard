@@ -24,8 +24,7 @@
 
 * For configuring the theme, we can visit [here][4] as a reference. After deciding the configuration, we can take the configuration object and place it in the ref/theme.csv file in the right format.
 * We can change the configurations and then run the command `rake ref:seed` on the terminal. It will load the changes in the db.
-* To restore data from dumps, run the command `psql -d datastory -f data_dumps/datastory.sql` and 
-`psql -d datastory_datasets -f data_dumps/datastory-api.sql`
+* To restore data from dumps, run the command `psql -d datastory -f data_dumps/datastory.sql`
 
 [1]: https://github.com/winebarrel/ruby-jq
 [2]: http://sidekiq.org/

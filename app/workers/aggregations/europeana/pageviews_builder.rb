@@ -102,7 +102,6 @@ class Aggregations::Europeana::PageviewsBuilder
         validate = false
         core_viz = Core::Viz.find_or_create(media_for_visits_datacast.identifier,media_for_visits_datacast.name,ref_chart.combination_code,media_for_visits_datacast.core_project_id,filter_present,filter_column_name,filter_column_d_or_m, validate)
 
-        Aggregations::Europeana::PageviewsBuilder.perform_at(1.week.from_now,aggregation_id,next_start_date, next_end_date)
       rescue => e
         aggregation_output.update_attributes(status: "Failed to fetch pageviews", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed Fetching pageviews", error_messages: e.to_s)

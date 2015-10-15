@@ -78,7 +78,7 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_pageviews_line_chart_query
-    return "Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o join (Select ip.id from impl_providers ip join impl_aggregation_providers iap on ip.id = iap.impl_provider_id and iap.impl_aggregation_id = #{self.id}) as a on impl_parent_id = a.id and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month');"
+    return "Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o join (Select ip.id from impl_providers ip join impl_aggregation_providers iap on ip.id = iap.impl_provider_id and iap.impl_aggregation_id = #{self.id}) as a on impl_parent_id = a.id and genre='pageviews' and impl_parent_type='Impl::Provider') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month');"
   end
 
   def get_pageviews_top_country_query
@@ -154,14 +154,11 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def after_create_set
-    if self.genre == "country" and self.country.nil?
-      country_report = Impl::Aggregation.create_or_find_country_report(self.country,"country", self.core_project_id)
-    elsif ["provider","data_provider"].include?(genre)
-      Aggregations::DatacastsBuilder.perform_async(self.id)
+    if ["provider","data_provider"].include?(genre)
       Aggregations::MediaTypesBuilder.perform_async(self.id)
       Aggregations::WikiProfileBuilder.perform_async(self.id)
+      Aggregations::DatacastsBuilder.perform_async(self.id)
     end
     true
   end
-
 end

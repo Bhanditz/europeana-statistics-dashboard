@@ -27,7 +27,7 @@ class Impl::TrafficBuilder
       page_views_data = page_views.jq(page_view_jq_filter)
       page_views_data = page_views_data.sort_by {|d| [d["year"], d["month"]]}
       Core::TimeAggregation.create_time_aggregations("Impl::Output",provider_pageviews_output.id,page_views_data,"pageviews","quarterly")
-      Core::TimeAggregation.create_time_aggregations("Impl::Output",provider_pageviews_line_chart_output.id, page_viewsviews_data,"pageviews","monthly")
+      Core::TimeAggregation.create_time_aggregations("Impl::Output",provider_pageviews_line_chart_output.id, page_views_data,"pageviews","monthly")
       provider.update_attributes(status: "Building Events", error_messages: nil)
       provider_pageviews_line_chart_output.update_attributes(status: "Built pageviews", error_messages: nil)
       provider_pageviews_output.update_attributes(status: "Built pageviews", error_messages: nil)

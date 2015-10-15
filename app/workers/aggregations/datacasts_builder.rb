@@ -53,13 +53,13 @@ class Aggregations::DatacastsBuilder
         pageviews_line_chart_datacast_query =  aggregation.get_pageviews_line_chart_query
         pageviews_line_chart_datacast = Core::Datacast.create_or_update_by(pageviews_line_chart_datacast_query,core_project_id, core_db_connection_id,pageviews_line_chart_datacast_name)
         pageviews_line_chart_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,pageviews_line_chart_datacast.identifier)
-        Aggregations::VizsBuilder.perform_async(aggregation_id)
 
         # Aggregation Ranks
         aggregation_ranking_datacast_name = "#{aggregation.name} - Rankings"
         aggregation_ranking_datacast_query =  aggregation.get_aggregation_ranking_query
         aggregation_ranking_datacast = Core::Datacast.create_or_update_by(aggregation_ranking_datacast_query,core_project_id, core_db_connection_id,aggregation_ranking_datacast_name)
         aggregation_ranking_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,aggregation_ranking_datacast.identifier)
+        Aggregations::VizsBuilder.perform_async(aggregation_id)
       end
     rescue => e
       aggregation.update_attributes(status: "Failed to build datacast", error_messages: e.to_s)

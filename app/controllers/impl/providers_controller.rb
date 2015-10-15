@@ -27,6 +27,7 @@ class Impl::ProvidersController < ApplicationController
   end
 
   def restart_worker
+    Core::TimeAggregation.where(parent_id: @impl_provider.impl_provider_outputs.pluck(:id)).delete_all
     Impl::TrafficBuilder.perform_async(@impl_provider.id)
     redirect_to :back, notice: t("provider.worker")
   end

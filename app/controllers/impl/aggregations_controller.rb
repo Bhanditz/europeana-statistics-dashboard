@@ -30,7 +30,6 @@ class Impl::AggregationsController < ApplicationController
   end
 
   def update
-    @impl_aggregation.updated_by = current_account.id
     if @impl_aggregation.update(impl_aggregation_params)
       Aggregations::DatacastsBuilder.perform_async(@impl_aggregation.id)
       Aggregations::MediaTypesBuilder.perform_async(@impl_aggregation.id)

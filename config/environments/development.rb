@@ -54,7 +54,7 @@ Rails.application.configure do
   GA_SCOPE=ENV["GA_SCOPE"]
   GA_REFRESH_TOKEN=ENV["GA_REFRESH_TOKEN"]
   GA_IDS=ENV["GA_IDS"]
-
+  GA_ENDPOINT = "https://www.googleapis.com/analytics/v3/data/ga"
   REDIS_HOST = ENV["REDIS_HOST"]
   REDIS_PORT = ENV["REDIS_PORT"]
  

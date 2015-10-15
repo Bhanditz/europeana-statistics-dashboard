@@ -1,0 +1,17 @@
+- if @impl_aggregation.id.present?
+  - url = account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation)
+  - method = "PUT"
+- else
+  - url = account_project_impl_aggregations_path(@core_project.account, @core_project)
+  - method = 'POST'
+
+
+= simple_form_for(@impl_aggregation, url: url, method: method) do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
+    = f.input :name
+    = f.input :genre,collection: [["Provider","provider"],["Data Provider", "data_provider"]], selected: @impl_aggregation.genre ,hint: "Provider, Data Provider", label: "Report type"
+    = f.input :wikiname
+  .form-actions
+    = f.button :submit, "Save"

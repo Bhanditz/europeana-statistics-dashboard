@@ -8,16 +8,16 @@ class Aggregations::VizsBuilder
       aggregation.update_attributes(status: "Building Vizs", error_messages: nil)
       begin
         aggregation.core_datacasts.each do |core_datacast|
-          next if core_datacast.name.include?("Top Digital Objects") or core_datacast.name.include?("Collections") or core_datacast.name.include?("")
+          next if core_datacast.name.include?("Top Digital Objects") or core_datacast.name.include?("Collections")
           genre = core_datacast.name.split(" - ")[1].parameterize("_")
           filter_present, filter_column_name, filter_column_d_or_m = Aggregations::VizsBuilder.get_filters(genre)
           ref_chart = Aggregations::VizsBuilder.get_ref_chart(genre)
           validate = false
           core_viz = Core::Viz.find_or_create(core_datacast.identifier,core_datacast.name,ref_chart.combination_code,core_datacast.core_project_id,filter_present,filter_column_name,filter_column_d_or_m, validate,true)
         end
-        Aggregations::ReportBuilder.perform_async(aggregation_id)
       rescue => e
       end
+      Aggregations::ReportBuilder.perform_async(aggregation_id)
     end
   end
 

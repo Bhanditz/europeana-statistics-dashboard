@@ -17,7 +17,7 @@
             %hr
             %h3= "Preparing data for charts"
             = render partial: "core/datacasts/index", locals: {core_datacasts: @core_datacasts}
-          %hr
+            %hr
           %h3= "Data Pulling"
           = simple_form_for(@impl_provider, url: account_project_impl_aggregation_providers_path(@core_project.account, @core_project, @impl_aggregation), method: "post") do |f|
             = f.error_notification
@@ -62,11 +62,4 @@
           .well
             %h5 Edit Report
             %hr
-            = simple_form_for(@impl_aggregation, url: account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), method: "put") do |f|
-              = f.error_notification
-              .form-inputs
-                = f.input :genre,collection: [["Provider","provider"],["Data Provider", "data_provider"]], selected: @impl_aggregation.genre ,hint: "Provider, Data Provider, Country", label: "Report type"
-                = f.input :name
-                = f.input :wikiname
-              .form-actions
-                = f.button :submit, "Save"
+            = render partial: "impl/aggregations/form"
