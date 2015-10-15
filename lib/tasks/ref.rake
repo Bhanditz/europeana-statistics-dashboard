@@ -10,7 +10,7 @@ namespace :ref do
 
     puts '----> Creating Europeana Project'
 
-    Core::Project.create({account_id: 2, name: "Europeana"})
+    Core::Project.create({account_id: 1, name: "Europeana"})
   
     puts "----> Loading Ref::Chart"
     Ref::Chart.destroy_all
@@ -56,24 +56,22 @@ namespace :ref do
       account_id     = line[2] 
       sort_order     = line[3]
       image_url      = line[4]
-      Core::Theme.create!({name: name, config: config,account_id: account_id, sort_order: sort_order, image_url: image_url})
+      Core::Theme.create({name: name, config: config,account_id: account_id, sort_order: sort_order, image_url: image_url})
     end
     puts '----> Loading Ref::CountryCode'
     Ref::CountryCode.seed
-    puts "----> Done"
   end
 
   task :create_default_db_connection => :environment do |t, args|
     puts "----> Creating Default DB connection"
     name = "Default Database"
-    db_name = Rails.env.production? ? ENV["db_name"] : "datastory"
-    host = Rails.env.production? ? ENV["host"] : "localhost"
-    port = "5432"
+    db_name = Rails.configuration.database_configuration[Rails.env]["database"]
+    host = Rails.configuration.database_configuration[Rails.env]["host"]
+    port = Rails.configuration.database_configuration[Rails.env]["port"]
     adapter = "postgresql"
-    username = Rails.env.production? ? ENV["username"] : "developer"
-    password = Rails.env.production? ? ENV["password"] : "developer"
-    db_connection = Core::DbConnection.new({name: name, db_name: db_name, host: host, port: port,adapter: adapter, username: username, password: password})
-    db_connection.save!
+    username = Rails.configuration.database_configuration[Rails.env]["username"]
+    password = Rails.configuration.database_configuration[Rails.env]["password"]
+    Core::DbConnection.create({name: name, db_name: db_name, host: host, port: port,adapter: adapter, username: username, password: password})
   end
 
   task :create_default_template => :environment do |t,args|
@@ -86,7 +84,7 @@ namespace :ref do
   end
 
   task :create_europeana_aggregation_report => :environment do |t,args|
-    puts "Building Europeana Report"
+    puts "----> Building Europeana Report"
     core_project_id = Core::Project.where(name: "Europeana").first.id
     name = "Europeana"
     genre = "europeana"
