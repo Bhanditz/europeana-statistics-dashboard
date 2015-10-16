@@ -7,7 +7,7 @@ gem 'rails',        '4.2.1'
 gem 'pg'
 gem 'redis'
 gem 'jbuilder',     '~> 2.0' # Build JSON APIs with ease.
-gem 'unicorn'
+gem 'puma'
 gem "haml-rails"
 gem "haml"
 gem 'devise'
