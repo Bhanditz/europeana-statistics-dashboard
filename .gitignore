@@ -26,6 +26,7 @@
 nohup.out
 dump.rdb
 config/database.yml
+/.env
 
 app/assets/javascripts/application/zlib/*.js
 *.pyc

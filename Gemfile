@@ -44,4 +44,5 @@ group :development do
   gem 'spring'
   gem 'annotate', ">=2.6.0"
   gem "rails-erd"
+  gem 'dotenv'
 end
