@@ -25,7 +25,8 @@
 /node_modules
 nohup.out
 dump.rdb
-config/database.yml
+/config/database.yml
+/config/redis.yml
 /.env
 
 app/assets/javascripts/application/zlib/*.js
