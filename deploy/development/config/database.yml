@@ -1,0 +1,12 @@
+pg: &pg
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *pg
+  database: europeana_stats_development
+  host: localhost
+  username: europeana
+  password: super_secret
+  port: 5432
