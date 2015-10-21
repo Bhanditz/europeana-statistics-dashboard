@@ -40,9 +40,9 @@ Rails.application.configure do
   
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
     
-  BASE_URL = "http://127.0.0.1:3000"
+  BASE_URL = ENV['BASE_URL']
   
-  REST_API_ENDPOINT = "http://localhost:9292/v1/"
+  REST_API_ENDPOINT = ENV['REST_API_ENDPOINT']
   
   
   #GA IDS

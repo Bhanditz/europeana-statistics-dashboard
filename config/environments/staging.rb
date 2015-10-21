@@ -84,8 +84,9 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   
   #REDIS_HOST = "datahub-app.o5vvnb.0001.apse1.cache.amazonaws.com"
-  REST_API_ENDPOINT = "http://161.202.0.139:9292/v1/"
-  BASE_URL = 'http://161.202.0.139'
+  BASE_URL = ENV['BASE_URL']
+  
+  REST_API_ENDPOINT = ENV['REST_API_ENDPOINT']
 
   GA_CLIENT_ID=ENV["GA_CLIENT_ID"]
   GA_CLIENT_SECRET=ENV["GA_CLIENT_SECRET"]
