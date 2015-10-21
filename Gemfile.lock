@@ -309,8 +309,6 @@ GEM
       railties (>= 4.2.0, < 5)
     rmagick (2.13.4)
     ruby-graphviz (1.2.2)
-    ruby-jq (0.1.6)
-      multi_json
     ruby_parser (3.7.0)
       sexp_processor (~> 4.1)
     sass (3.2.19)
@@ -386,7 +384,6 @@ DEPENDENCIES
   redcarpet
   redis
   rmagick (= 2.13.4)
-  ruby-jq (= 0.1.6)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   sidekiq

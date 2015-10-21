@@ -1,8 +1,6 @@
 class Aggregations::CollectionsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
-  require 'jq'
-  require 'jq/extend'
 
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)

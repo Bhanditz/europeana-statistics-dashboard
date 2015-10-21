@@ -5,9 +5,8 @@
 
 ### External Gem/Libraries which we use
 
-* [ruby-jq][1]
-* [sidekiq][2]
-* [Pykcharts for charting library][3]
+* [sidekiq][1]
+* [Pykcharts for charting library][2]
 
 ### Getting started with DB setup
 
@@ -22,11 +21,10 @@
         * `default provider report template`
         * `reports from previous versions`
 
-* For configuring the theme, we can visit [here][4] as a reference. After deciding the configuration, we can take the configuration object and place it in the ref/theme.csv file in the right format.
+* For configuring the theme, we can visit [here][3] as a reference. After deciding the configuration, we can take the configuration object and place it in the ref/theme.csv file in the right format.
 * We can change the configurations and then run the command `rake ref:seed` on the terminal. It will load the changes in the db.
 * To restore data from dumps, run the command `psql -d datastory -f data_dumps/datastory.sql`
 
-[1]: https://github.com/winebarrel/ruby-jq
-[2]: http://sidekiq.org/
-[3]: http://pykcharts.com/
-[4]: http://pykcharts.com/tour/pie
+[1]: http://sidekiq.org/
+[2]: http://pykcharts.com/
+[3]: http://pykcharts.com/tour/pie
