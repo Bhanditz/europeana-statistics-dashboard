@@ -1,9 +1,7 @@
 class Aggregations::PageviewTopCountryBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
-  require 'jq'
-  require 'jq/extend'
-  
+
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
     if aggregation.genre == "provider" or aggregation.genre == "data_provider"
@@ -36,8 +34,7 @@ class Aggregations::PageviewTopCountryBuilder
     ga_access_token =  Impl::Provider.get_access_token
     ga_sort = "-#{ga_metrics}"
     ga_max_results = "1"
-    jq_filter = ". | .[] | {country: .[0], #{metric}: .[1]}"
-    ga_data = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}").read)["rows"].jq(jq_filter)
+    ga_data = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}").read)["rows"].map {|a| {"country" => a[0], "#{metric}" => a[1]}}
     return ga_data
   end
 end

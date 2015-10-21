@@ -1,8 +1,6 @@
 class Impl::TrafficBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
-  require 'jq'
-  require 'jq/extend'
 
   def perform(provider_id, user_start_date = "2012-01-01",user_end_date = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"))
     provider = Impl::Provider.find(provider_id)
@@ -16,15 +14,13 @@ class Impl::TrafficBuilder
     ga_dimensions   = "ga:month,ga:year"
     page_view_metrics      = "ga:pageviews"
     page_view_filters      = "ga:hostname=~europeana.eu;ga:pagePath=~/#{provider.provider_id}"
-    page_view_jq_filter    = '. | .[] | {month: .[0],year: .[1], pageviews: .[2]|tonumber}'
     events_metrics    = "ga:totalEvents"
     events_filters    = "#{page_view_filters};ga:eventCategory=~Redirect"
-    events_jq_filter  = '. | .[] | {month: .[0],year: .[1], events: .[2]|tonumber}'
     #Page Views
     begin
       ga_access_token = Impl::Provider.get_access_token
       page_views = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{page_view_metrics}&dimensions=#{ga_dimensions}&filters=#{page_view_filters}").read)["rows"]
-      page_views_data = page_views.jq(page_view_jq_filter)
+      page_views_data = page_views.map{|a| {"month" => a[0], "year"=> a[1], "pageviews" => a[2].to_i}}
       page_views_data = page_views_data.sort_by {|d| [d["year"], d["month"]]}
       Core::TimeAggregation.create_time_aggregations("Impl::Output",provider_pageviews_output.id,page_views_data,"pageviews","quarterly")
       Core::TimeAggregation.create_time_aggregations("Impl::Output",provider_pageviews_line_chart_output.id, page_views_data,"pageviews","monthly")
@@ -40,7 +36,7 @@ class Impl::TrafficBuilder
     begin
       provider_events_output.update_attributes(status: "Building events", error_messages: nil)
       events = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{events_metrics}&dimensions=#{ga_dimensions}&filters=#{events_filters}").read)["rows"]
-      events_data = events.jq(events_jq_filter)
+      events_data = events.map{|a| {"month" => a[0], "year"=> a[1], "events" => a[2].to_i}}
       events_data = events_data.sort_by {|d| [d["year"], d["month"]]}
       Core::TimeAggregation.create_time_aggregations("Impl::Output",provider_events_output.id,events_data,"events","quarterly")
       provider.update_attributes(status: "Processed events", error_messages: nil)

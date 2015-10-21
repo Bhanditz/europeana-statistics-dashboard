@@ -1,9 +1,7 @@
 class Aggregations::Europeana::PageviewsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
-  require 'jq'
-  require 'jq/extend'
-  
+
   def perform(aggregation_id,user_start_date = "2012-01-01",user_end_date = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"))
     aggregation = Impl::Aggregation.find(aggregation_id)
     if aggregation.europeana?
@@ -17,9 +15,8 @@ class Aggregations::Europeana::PageviewsBuilder
         ga_metrics      = "ga:pageviews"
         ga_filters      = "ga:hostname=~europeana.eu"
         ga_access_token = Impl::Provider.get_access_token
-        jq_filter    = '. | .[] | {month: .[0],year: .[1], pageviews: .[2]|tonumber}'
         page_views = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}").read)["rows"]
-        page_views_data = page_views.jq(jq_filter)
+        page_views_data = page_views.map{|a| {"month" => a[0], "year" => a[1], "pageviews" => a[2].to_i}}
         page_views_data = page_views_data.sort_by {|d| [d["year"], d["month"]]}
         Core::TimeAggregation.create_time_aggregations("Impl::Output",aggregation_output.id,page_views_data,"pageviews","monthly")
         aggregation.update_attributes(status: "Fetched pageviews", error_messages: nil)
@@ -48,9 +45,8 @@ class Aggregations::Europeana::PageviewsBuilder
         ga_metrics      = "ga:visits"
         ga_filters      = "ga:hostname=~europeana.eu"
         ga_access_token = Impl::Provider.get_access_token
-        jq_filter    = '. | .[] | {month: .[0],year: .[1],medium: .[2] ,visits: .[3]|tonumber}'
         mediums = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}").read)["rows"]
-        mediums_data = mediums.jq(jq_filter)
+        mediums_data = mediums.map {|a| {"month" => a[0], "year" => a[1], "medium" => a[2], "visits" => a[3]}}
         mediums_data = mediums_data.sort_by {|d| [d["year"], d["month"]]}
         Core::TimeAggregation.create_aggregations(mediums_data,"monthly",aggregation_id,"Impl::Aggregation","visits","medium")
 

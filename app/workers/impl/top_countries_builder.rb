@@ -1,9 +1,6 @@
 class Impl::TopCountriesBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
-  require 'active_support/core_ext/date/calculations'
-  require 'jq'
-  require 'jq/extend'
 
   def perform(provider_id, user_start_date = "2012-01-01",user_end_date = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"))
     provider = Impl::Provider.find(provider_id)
@@ -36,7 +33,7 @@ class Impl::TopCountriesBuilder
     end
     data = JSON.parse(open(query_url).read)['rows']
     if data.present?
-      data = data.jq(". [ ] | {month: .[0], year: .[1], #{extra_dimension}: .[2], #{metric}: .[3]|tonumber}")
+      data = data.map{|a| {"month" => a[0], "year"=> a[1], "#{extra_dimension}" => a[2], "#{metric}" => a[3].to_i}}
       data = data.sort_by {|d| [d["year"], d["month"]]}
     end
     return data
