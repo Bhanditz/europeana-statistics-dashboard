@@ -85,7 +85,9 @@ Rails.application.configure do
   
   #REDIS_HOST = "datahub-app.o5vvnb.0001.apse1.cache.amazonaws.com"
   
-  REST_API_ENDPOINT = ""
+  BASE_URL = ENV['BASE_URL']
+  
+  REST_API_ENDPOINT = ENV['REST_API_ENDPOINT']
   
   #redis_client = Redis.new(:url => "redis://user:PASSWORD@datahub-development.wdzjlu.0001.usw2.cache.amazonaws.com")
   #Resque.redis = redis_client
@@ -98,8 +100,4 @@ Rails.application.configure do
   GA_REFRESH_TOKEN=ENV["GA_REFRESH_TOKEN"]
   GA_IDS=ENV["GA_IDS"]
   GA_ENDPOINT = "https://www.googleapis.com/analytics/v3/data/ga"
-
-  REDIS_HOST = ENV["REDIS_HOST"]
-  REDIS_PORT = ENV["REDIS_PORT"]
-
 end
