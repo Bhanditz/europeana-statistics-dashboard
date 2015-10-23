@@ -1,4 +1,21 @@
 GIT
+  remote: git://github.com/europeana/europeana-styleguide-ruby.git
+  revision: e3b6c0463a69272dd79e0cd63b0e24e27ee1ce26
+  branch: develop
+  specs:
+    europeana-styleguide (0.1.0)
+      activesupport (~> 4.0)
+      mustache (~> 1.0.1)
+      stache (~> 1.1.1)
+
+GIT
+  remote: git://github.com/europeana/stache.git
+  revision: e5ceff86974620d7d7db28018fc29a2c9c24d1d0
+  branch: europeana-styleguide
+  specs:
+    stache (1.1.1)
+
+GIT
   remote: https://github.com/bernat/best_in_place.git
   revision: 1ea07d3f362d63a938eb3b8f2c6c0f2037f86f0f
   specs:
@@ -255,6 +272,7 @@ GEM
     mini_portile (0.6.2)
     minitest (5.7.0)
     multi_json (1.11.1)
+    mustache (1.0.2)
     nestful (1.0.7)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -372,6 +390,7 @@ DEPENDENCIES
   devise
   dotenv
   europeana-api
+  europeana-styleguide!
   foreman
   friendly_id (~> 5.0.0)
   gon (~> 5.2.3)
@@ -395,6 +414,7 @@ DEPENDENCIES
   sidekiq
   simple_form!
   spring
+  stache!
   uglifier (>= 1.3.0)
 
 BUNDLED WITH

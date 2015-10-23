@@ -1,5 +1,5 @@
 class Impl::ReportsController < ApplicationController
-  #include Europeana::Styleguide
+  include Europeana::Styleguide
 
   before_action :sudo_public!, only: [:show, :index]
   before_action :set_impl_report, only: [:show,:edit, :update, :destroy]

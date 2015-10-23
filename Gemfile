@@ -27,6 +27,8 @@ gem 'activerecord-session_store'
 gem 'redcarpet'
 gem 'open4'
 gem 'europeana-api'
+gem 'europeana-styleguide', github: 'europeana/europeana-styleguide-ruby', branch: 'develop'
+gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide' # until upstream merges our pull requests
 
 #Assets related
 gem 'sass-rails',   '~> 4.0.3'
