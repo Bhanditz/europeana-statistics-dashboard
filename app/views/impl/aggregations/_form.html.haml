@@ -11,7 +11,6 @@
   .form-inputs
     = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
     = f.input :name
-    = f.input :genre,collection: [["Provider","provider"],["Data Provider", "data_provider"]], selected: @impl_aggregation.genre ,hint: "Provider, Data Provider", label: "Report type"
-    = f.input :wikiname
+    = f.input :genre,as: :hidden, input_html: {value: "country"}
   .form-actions
     = f.button :submit, "Save"

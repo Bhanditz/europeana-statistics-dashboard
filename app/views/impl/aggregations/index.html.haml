@@ -6,8 +6,7 @@
         .col-sm-9
           .pull-left= link_to "< All Reports", account_project_impl_reports_path(@account, @core_project)
           .clearfix
-          %h4 Aggregations
-          %p.gray Collect data with various provider ids
+          %h4 Country
           .clearfix
           %hr{style: "margin-bottom: 5px; margin-top: 2px; border-top-color: lightgray;"}
           - if @impl_aggregations.present?
@@ -16,8 +15,7 @@
                 %tr
                   %th
                   %th Genre
-                  %th Name
-                  %th Wikiname
+                  %th Country Name
                   %th Status
                   %th
                   %th
@@ -32,7 +30,6 @@
                       -else
                         = impl_aggregation.name
 
-                    %td= impl_aggregation.wikiname
                     %td
                       %strong=impl_aggregation.status
                       - if impl_aggregation.error_messages.present?
@@ -42,6 +39,6 @@
         .col-sm-3
           -if @sudo[1]
             .well
-              %h5 Add new aggregation
+              %h5 Add new Country
               %hr
               = render partial: "impl/aggregations/form"
