@@ -7,7 +7,7 @@ gem 'rails',        '4.2.2'
 gem 'pg'
 gem 'redis'
 gem 'jbuilder',     '~> 2.0' # Build JSON APIs with ease.
-gem 'unicorn'
+gem 'puma'
 gem "haml-rails"
 gem "haml"
 gem 'devise'
@@ -37,10 +37,16 @@ group :doc do
   gem 'sdoc',         '~> 0.4.0'
 end
 
+group :production do
+  gem 'rails_12factor'
+end
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
   gem 'spring'
   gem 'annotate', ">=2.6.0"
   gem "rails-erd"
+  gem 'dotenv'
+  gem 'foreman'
 end

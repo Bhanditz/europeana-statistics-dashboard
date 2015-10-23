@@ -1,1 +1,1 @@
-$redis = Redis.new(:host => REDIS_HOST, :port => REDIS_PORT)
+$redis = Redis.new(Rails.application.config_for(:redis).symbolize_keys)
