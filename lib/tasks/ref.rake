@@ -67,7 +67,7 @@ namespace :ref do
     name = "Default Database"
     db_name = Rails.configuration.database_configuration[Rails.env]["database"]
     host = Rails.configuration.database_configuration[Rails.env]["host"]
-    port = Rails.configuration.database_configuration[Rails.env]["port"]
+    port = Rails.configuration.database_configuration[Rails.env]["port"] || 5432
     adapter = "postgresql"
     username = Rails.configuration.database_configuration[Rails.env]["username"]
     password = Rails.configuration.database_configuration[Rails.env]["password"]
@@ -92,8 +92,11 @@ namespace :ref do
     status = ""
     impl_aggregation = Impl::Aggregation.create({genre: genre, name: name, wikiname: wikiname, status: status, core_project_id: core_project_id })
     if impl_aggregation.id.present?
-      Aggregations::CollectionsBuilder.perform_async(impl_aggregation.id)
-      Aggregations::DatacastsBuilder.perform_at(5.minute.from_now, impl_aggregation.id)
+      Impl::DataProviders::CollectionsBuilder.perform_async(impl_aggregation.id)
+      Impl::DataProviders::DatacastsBuilder.perform_at(5.minute.from_now, impl_aggregation.id)
+    else
+      puts impl_aggregation.error_messages
+      puts "----> FAILED"
     end
   end
 

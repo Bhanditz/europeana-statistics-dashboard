@@ -5,8 +5,6 @@ Rails.application.routes.draw do
   #NORMAL ROUTES --------------------------------------------------------------
 
   resources :accounts do
-    get "revoke_session", on: :member
-    
     namespace :core do
       resources :permissions
       resources :projects do
@@ -30,7 +28,7 @@ Rails.application.routes.draw do
       namespace :impl do
         resources :aggregations do
           get "restart_all_aggregation_workers","datacasts", on: :member
-          resources :providers do
+          resources :data_sets do
             get "restart_worker", on: :member
           end
         end

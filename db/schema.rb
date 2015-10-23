@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151013093731) do
+ActiveRecord::Schema.define(version: 20151022172414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -241,28 +241,45 @@ ActiveRecord::Schema.define(version: 20151013093731) do
     t.datetime "updated_at",               null: false
   end
 
-  create_table "impl_aggregation_providers", force: :cascade do |t|
-    t.integer  "impl_aggregation_id"
-    t.integer  "impl_provider_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+  create_table "impl_aggregation_relations", force: :cascade do |t|
+    t.integer  "impl_parent_id"
+    t.string   "impl_parent_genre"
+    t.integer  "impl_child_id"
+    t.string   "impl_child_genre"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "impl_aggregations", force: :cascade do |t|
     t.integer  "core_project_id"
     t.string   "genre"
     t.string   "name"
-    t.string   "wikiname"
     t.integer  "created_by"
     t.integer  "updated_by"
-    t.integer  "last_requested_at"
-    t.integer  "last_updated_at"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.string   "status"
     t.string   "error_messages"
     t.hstore   "properties"
-    t.string   "country"
+  end
+
+  create_table "impl_data_provider_data_sets", force: :cascade do |t|
+    t.integer  "impl_aggregation_id"
+    t.integer  "impl_data_set_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  create_table "impl_datasets", force: :cascade do |t|
+    t.string   "data_set_id"
+    t.integer  "created_by"
+    t.integer  "updated_by"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.string   "status"
+    t.string   "error_messages"
+    t.integer  "impl_aggregation_id"
+    t.string   "name"
   end
 
   create_table "impl_outputs", force: :cascade do |t|
@@ -276,16 +293,6 @@ ActiveRecord::Schema.define(version: 20151013093731) do
     t.string   "key"
     t.string   "value"
     t.hstore   "properties"
-  end
-
-  create_table "impl_providers", force: :cascade do |t|
-    t.string   "provider_id"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.string   "status"
-    t.string   "error_messages"
   end
 
   create_table "impl_reports", force: :cascade do |t|

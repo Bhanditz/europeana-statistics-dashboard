@@ -9,12 +9,6 @@
       </div>
     </div>
     <div class="clearfix"></div>
-    <div class="col-sm-12">
-      <h4>Ranking In Europeana</h4>
-      <div class="col-sm-7">
-        $RANKINGS_IN_EUROPEANA$
-      </div>
-    </div>
     <div class="col-sm-6">
       <h4>Item Types</h4>
       <p>This chart displays a breakdown of the types of digital objects in this collection.</p>

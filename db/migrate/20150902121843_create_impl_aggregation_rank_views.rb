@@ -37,7 +37,7 @@ class CreateImplAggregationRankViews < ActiveRecord::Migration
                     )
                 ) iap
               ON
-                iap.impl_provider_id = io.impl_parent_id AND io.impl_parent_type::text = 'Impl::Provider'::text AND io.genre::text = 'pageviews'::text
+                iap.impl_provider_id = io.impl_parent_id AND io.impl_parent_type::text = 'Impl::DataSet'::text AND io.genre::text = 'pageviews'::text
             ) impl_join
           ON
             cta.parent_id = impl_join.impl_output_id AND cta.parent_type::text = 'Impl::Output'::text
