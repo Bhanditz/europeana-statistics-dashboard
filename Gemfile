@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.2.2'
 
 #Base
-gem 'rails',        '4.2.1'
+gem 'rails',        '4.2.2'
 gem 'pg'
 gem 'redis'
 gem 'jbuilder',     '~> 2.0' # Build JSON APIs with ease.

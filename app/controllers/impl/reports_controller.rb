@@ -59,9 +59,9 @@ class Impl::ReportsController < ApplicationController
 
   def set_impl_report
     if params[:impl_report_id].present?
-      @impl_report = Impl::Report.friendly.find(params[:impl_report_id])
+      @impl_report = Impl::Report.friendly.find("#{h params[:impl_report_id]}")
     else
-      @impl_report = Impl::Report.friendly.find(params[:id])
+      @impl_report = Impl::Report.friendly.find("#{h params[:id]}")
     end
   end
 

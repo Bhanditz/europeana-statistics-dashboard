@@ -38,7 +38,7 @@ class Core::DatacastPullsController < ApplicationController
   private
     
   def set_datacast_pull
-    @core_datacast_pull = @core_project.core_datacast_pulls.find(params[:id])
+    @core_datacast_pull = @core_project.core_datacast_pulls.find("#{h params[:id]}")
   end
 
   def core_datacast_pull_params

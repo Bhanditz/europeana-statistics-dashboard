@@ -11,8 +11,4 @@ class StaticPagesController < ApplicationController
     end
   end
   
-  def refer
-    redirect_to new_account_registration_path(r: params[:r])
-  end
-  
 end

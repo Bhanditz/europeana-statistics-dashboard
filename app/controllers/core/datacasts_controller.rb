@@ -106,12 +106,12 @@ class Core::DatacastsController < ApplicationController
 
   def upload
     if !core_datacast_params[:table_name]
-      @core_datacast = Core::DataStore.new
+      @core_datacast = Core::Datacast.new
       @datacast_pull = Core::DatacastPull.new
       flash.now.alert = t("datacast.specify_table")
       render :file
     else
-      r = Core::Datacast.upload_tmp_file(core_datacast_params[:file])
+      r = Core::Datacast.upload_tmp_file("#{h core_datacast_params[:file]}")
       if r[1].present?
         alert_message = r[1]
       else
@@ -153,7 +153,7 @@ class Core::DatacastsController < ApplicationController
   private
   
   def set_core_datacast
-    @core_datacast = @core_project.core_datacasts.friendly.find(params[:id])
+    @core_datacast = @core_project.core_datacasts.friendly.find("#{h params[:id]}")
   end
   
   def set_token

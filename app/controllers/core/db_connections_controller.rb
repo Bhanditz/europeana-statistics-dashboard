@@ -44,7 +44,7 @@ class Core::DbConnectionsController < ApplicationController
   private
 
   def set_core_db_connection
-    @core_db_connection = Core::DbConnection.find(params[:id])
+    @core_db_connection = Core::DbConnection.find("#{h params[:id]}")
   end
 
   def core_db_connection_params

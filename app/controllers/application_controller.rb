@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_devise_params, if: :devise_controller?
   before_filter :log_session
   after_filter  :after_filter_set
+  include ERB::Util
 
   #------------------------------------------------------------------------------------------------------------------
 
@@ -26,16 +27,16 @@ class ApplicationController < ActionController::Base
   def set_universal_objects
     if params[:account_id].present?
       begin
-        @account = Account.friendly.find(params[:account_id])
+        @account = Account.friendly.find(h params[:account_id])
         begin
           if controller_name == "projects" and params[:id].present?
-            @core_project = @account.core_projects.where(account_id: @account.id, slug: params[:id]).first
+            @core_project = @account.core_projects.where(account_id: @account.id, slug:"#{h params[:id]}").first
             raise "no project found" if @core_project.nil?
           elsif params[:project_id].present?
-            @core_project = @account.core_projects.where(account_id: @account.id, slug: params[:project_id]).first
+            @core_project = @account.core_projects.where(account_id: @account.id, slug:"#{h params[:project_id]}").first
             raise "no project found" if @core_project.nil?
           elsif params[:core_project_id].present?
-            @core_project = @account.core_projects.where(account_id: @account.id, slug: params[:core_project_id]).first
+            @core_project = @account.core_projects.where(account_id: @account.id, slug:"#{h params[:core_project_id]}").first
             raise "no project found" if @core_project.nil?
           end
         rescue
@@ -46,7 +47,7 @@ class ApplicationController < ActionController::Base
       end
     elsif (controller_name == "accounts" or controller_name == "params") and params[:id].present?
       begin
-        @account = Account.friendly.find(params[:id])
+        @account = Account.friendly.find("#{h params[:id]}")
       rescue
         redirect_to root_url, alert: t("set_universal_objects.no_such_account_2")
       end
@@ -150,7 +151,7 @@ class ApplicationController < ActionController::Base
     
   # Enable DEVISE forms to accept username.
   def configure_devise_params
-    devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:username, :email, :password, :referred_by_account_id)} 
+    devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:username, :email, :password)}
     devise_parameter_sanitizer.for(:sign_in) {|u| u.permit(:username, :password)}
     devise_parameter_sanitizer.for(:account_update) {|u| u.permit(:password, :current_password)}
   end

@@ -72,7 +72,7 @@ class Core::VizsController < ApplicationController
         @chart_slug = @chart_name == "Pulse" ? "pulse" : @chart_name == "Treemap" ? "treemap" : ["panel-of-lines","panel-of-scatters"].include?(chart.slug) ? "panels-of-#{chart.slug.split("-")[2][0..-2]}".tr('-', '_').camelize(:lower) : chart.slug.tr('-', '_').camelize(:lower)
       end
       gon.pykquery_object = @viz.pykquery_object.to_json
-      @all_core_themes = Core::Theme.where(:account_id => [@account.id,nil])
+      @all_core_themes = Core::Theme.where(account_id: [@account.id,nil])
       flash.now.alert = t("u.f")
       render :edit
     end
@@ -90,7 +90,7 @@ class Core::VizsController < ApplicationController
   end
 
   def set_viz
-    @viz = Core::Viz.find(params[:id])
+    @viz = Core::Viz.find("#{h params[:id]}")
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

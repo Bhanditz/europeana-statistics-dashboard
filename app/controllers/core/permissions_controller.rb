@@ -35,7 +35,7 @@ class Core::PermissionsController < ApplicationController
   private
   
   def set_permission
-    @permission = Core::Permission.find(params[:id])
+    @permission = Core::Permission.find("#{h params[:id]}")
   end
 
   def core_permission_params

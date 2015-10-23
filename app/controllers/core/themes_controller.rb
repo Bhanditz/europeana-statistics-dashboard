@@ -73,7 +73,7 @@ class Core::ThemesController < ApplicationController
 
 
   def set_core_theme
-    @core_theme = Core::Theme.find(params[:id])
+    @core_theme = Core::Theme.find("#{h params[:id]}")
   end
 
   def core_theme_params

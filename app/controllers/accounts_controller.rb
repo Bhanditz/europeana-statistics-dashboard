@@ -25,14 +25,8 @@ class AccountsController < ApplicationController
   #------------------------------------------------------------------------------------------------------------------
   # OTHER
   
-  def revoke_session
-    c = Core::Session.where(session_id: params[:s]).first
-    c.destroy
-    redirect_to edit_account_registration_path(current_account), notice: t("d.s")
-  end
-  
   def dashboard
-    @core_projects   = @account.core_projects.includes(:account).page(params[:page_projects]).per(30)
+    @core_projects   = @account.core_projects.includes(:account).page(h params[:page_projects]).per(30)
     core_project_ids = @account.core_projects.pluck(:id).uniq
   end
   

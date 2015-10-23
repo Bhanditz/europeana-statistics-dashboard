@@ -75,7 +75,7 @@ class Core::ProjectsController < ApplicationController
   private
   
   def set_project
-    @core_project = Core::Project.where(account_id: @account.id).friendly.find(params[:id].blank? ? params[:project_id] : params[:id])
+    @core_project = Core::Project.where(account_id: @account.id).friendly.find(params[:id].blank? ? "#{h params[:project_id]}" : "#{h params[:id]}")
   end
 
   def core_project_params

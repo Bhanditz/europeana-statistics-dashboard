@@ -22,7 +22,7 @@ class Core::TokensController < ApplicationController
   private
   
   def set_core_token
-    @core_token = Core::Token.find(params[:id])
+    @core_token = Core::Token.find("#{h params[:id]}")
   end
 
   def core_token_params

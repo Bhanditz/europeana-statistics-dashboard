@@ -118,6 +118,8 @@ var validateQuery = function (query) {
     return false;
   } else if (query.indexOf('truncate') >= 0) {
     return false;
+  } else if (query.indexOf('union') >= 0) {
+    return false;
   } else if (query.indexOf("insert") >= 0){
     return false;
   } else if (query.toLowerCase().indexOf("select") !== 0){
