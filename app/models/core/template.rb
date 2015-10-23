@@ -6,7 +6,7 @@
 #  name               :string
 #  html_content       :text
 #  genre              :string
-#  required_variables :json
+#  required_variables :json             default({})
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #

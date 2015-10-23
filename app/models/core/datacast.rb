@@ -48,6 +48,7 @@ class Core::Datacast < ActiveRecord::Base
   validates :query,presence: true
   validates :table_name,uniqueness: {scope: :core_db_connection_id}, allow_blank: true, allow_nil: true
   validates :identifier, presence: true, uniqueness: true
+  validate :query_only_select
 
   #CALLBACKS
   before_create :before_create_set
@@ -237,11 +238,25 @@ class Core::Datacast < ActiveRecord::Base
   end
 
   def get_auto_html_for_number_indicators
-    return "<div id='#{self.name.parameterize("_")}' data-datacast_identifier='#{self.identifier}' class='card_with_value' ></div>"
+    return "<div id='#{h self.name.parameterize("_")}' data-datacast_identifier='#{h self.identifier}' class='card_with_value' ></div>"
   end
 
   def get_auto_html_for_table
-    return "<div id='#{self.name.parameterize("_")}' data-datacast_identifier='#{self.identifier}' class='box_table' ></div>"
+    return "<div id='#{h self.name.parameterize("_")}' data-datacast_identifier='#{h self.identifier}' class='box_table' ></div>"
+  end
+
+  def query_only_select
+    if self.query.index("Select") != 0
+      self.errors.add(:query,"Illegal query")
+      return false
+    end
+    ["update","drop","truncate","union","insert"].each do |black_word|
+      if self.query.downcase.include?(black_word)
+        self.errors.add(:query,"Illegal query")
+        return false;
+      end
+    end
+    return true
   end
 
   #PRIVATE

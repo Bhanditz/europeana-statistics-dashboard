@@ -96,9 +96,9 @@ class Core::TimeAggregation < ActiveRecord::Base
     end
   end
 
-  def self.create_digital_objects_aggregation(digital_objects_data,aggregation_level, provider_id)
+  def self.create_digital_objects_aggregation(digital_objects_data,aggregation_level, data_provider_id)
     digital_objects_data.each do |d|
-      digital_objects_output = Impl::Output.update_with_custom_attributes(provider_id,"Impl::Provider","top_digital_objects", d["title_url"],d["image_url"],key: "title", value: d["title"])
+      digital_objects_output = Impl::Output.update_with_custom_attributes(data_provider_id,"Impl::Aggregation","top_digital_objects", d["title_url"],d["image_url"],key: "title", value: d["title"])
       month = d["month"]
       year  = d["year"]
       value = d["size"]

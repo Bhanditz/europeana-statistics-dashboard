@@ -30,14 +30,12 @@ class Impl::Output < ActiveRecord::Base
   has_many :country_code, class_name: "Ref::CountryCode", primary_key: "value", foreign_key: "country"
   #VALIDATIONS
   validates :impl_parent_id, presence: :true
-  validates :impl_parent_type, presence: :true, inclusion: {in: ["Impl::Aggregation","Impl::Provider"]}
+  validates :impl_parent_type, presence: :true, inclusion: {in: ["Impl::Aggregation","Impl::Dataset"]}
   validates :genre, presence: :true
   validates :value, uniqueness: {scope: [:key, :impl_parent_id, :impl_parent_type, :genre]}, allow_blank: true, allow_nil: true
 
   #CALLBACKS
   #SCOPES
-  scope :aggregation_output, -> {where(impl_parent_type: "Impl::Aggregation")}
-  scope :provider_output, -> {where(impl_parent_type: "Impl::Provider")}
   scope :collections, -> {where(genre: "collections" )}
   scope :media_types, -> {where(genre: "media_types" )}
   scope :reusable, -> {where(genre: "reusable")}
