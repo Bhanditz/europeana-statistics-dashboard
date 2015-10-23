@@ -8,7 +8,7 @@ Licensed under the EUPL V.1.1. For full details, see [LICENSE.md](LICENSE.md).
 ## Requirements
 
 * Ruby 2.2.2
-* PostgreSQL
+* PostgreSQL *with support for the hstore extension*
 * Redis
 * [Europeana Statistics Grape API][1]
 
