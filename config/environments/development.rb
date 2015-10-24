@@ -38,12 +38,12 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   
-  config.action_mailer.default_url_options = { host: 'localhost:3000' }
     
   BASE_URL = ENV['BASE_URL']
   
   REST_API_ENDPOINT = ENV['REST_API_ENDPOINT']
   
+  config.action_mailer.default_url_options = { host: BASE_URL }
   
   #GA IDS
   GA_CLIENT_ID=ENV["GA_CLIENT_ID"]

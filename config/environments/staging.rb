@@ -83,7 +83,6 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   
-  #REDIS_HOST = "datahub-app.o5vvnb.0001.apse1.cache.amazonaws.com"
   BASE_URL = ENV['BASE_URL']
   
   REST_API_ENDPOINT = ENV['REST_API_ENDPOINT']
