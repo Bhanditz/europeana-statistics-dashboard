@@ -3,7 +3,7 @@
 /%script{:src => "/assets/vizs.js"}
 = include_gon
 .previous-sheet
-  %h3= show_project_name(@core_project).html_safe
+  %h3=h show_project_name(@core_project)
   .panel.panel-default.sheet.sub
     .panel-body
       %h4= "<span class='mega-octicon octicon-broadcast'></span> Visualization".html_safe

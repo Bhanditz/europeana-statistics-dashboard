@@ -26,7 +26,7 @@
           - if @account.url.present?
             %tr
               %td.glyphicon.glyphicon-link
-              %td= link_to @account.url, @account.url, target: "_blank"
+              %td= link_to "#{h @account.url}", @account.url, target: "_blank"
           - if @account.company.present?
             %tr
               %td.glyphicon.glyphicon-briefcase

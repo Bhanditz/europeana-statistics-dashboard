@@ -2,20 +2,16 @@ require 'json'
 class Core::VizsController < ApplicationController
   layout "vizs", except: [:index]
 
-  before_action :sudo_project_member!, except: [:show, :index,:embed]
-  before_action :sudo_public!, only: [:show, :index,:embed]
-  before_action :set_viz, only: [:show, :edit, :update, :destroy, :embed]
+  before_action :sudo_project_member!, except: [:index]
+  before_action :sudo_public!, only: [:index]
+  before_action :set_viz, only: [:edit, :update, :destroy]
   before_action :set_ref_charts, only: [:new, :create]
-  after_action :set_response_header, only: [:embed]
 
   def index
     @vizs = @core_project.vizs.manual.includes(:ref_chart).order(created_at: :desc).page params[:page]
     if @vizs.blank?
       redirect_to new_account_core_project_viz_path(@account, @core_project)
     end
-  end
-
-  def show
   end
 
   def new
@@ -96,10 +92,6 @@ class Core::VizsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def core_viz_params
     params.require(:core_viz).permit(:name,:core_project_id,:core_datacast_identifier,:filter_present, :filter_column_name, :filter_column_d_or_m, :properties, :ref_chart_combination_code)
-  end
-
-  def set_response_header
-    response.headers.except! 'X-Frame-Options'
   end
 
 end

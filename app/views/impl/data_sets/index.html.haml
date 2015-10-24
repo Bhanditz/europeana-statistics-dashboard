@@ -1,6 +1,6 @@
 .previous-sheet
   %h3
-    = show_project_name(@core_project).html_safe
+    =h show_project_name(@core_project)
     %span.gray= " / "
     = link_to "Aggregations", account_project_impl_aggregations_path(@core_project.account, @core_project), class: "thin"
   .panel.panel-default.sheet.sub

@@ -1238,17 +1238,17 @@
 -@data_file = "" if !@data_file.present?
 
 :javascript
-  var data = #{@visualization['config'].to_json}
+  var data = #{h @visualization['config'].to_json}
   , countgroup=1,obj
   , colorRepetation=[]
-  , initializer = #{@initializer}
-  , data_file = "#{@data_file}"
+  , initializer = #{h @initializer}
+  , data_file = "#{h @data_file}"
   , selector = "#chart_container"
   , config_data = {}
   , k
-  , chart_name = "#{@chart_name}"
+  , chart_name = "#{h @chart_name}"
   , genre ="#{h @visualization['genre']}"
   , json_data
-  , map_code = "#{@map_code}"? "#{@map_code}" : "";
+  , map_code = "#{h @map_code}"? "#{h @map_code}" : "";
   data["selector"] = selector;
   data["data"] = data_file;

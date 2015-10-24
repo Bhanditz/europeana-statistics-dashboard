@@ -1,7 +1,7 @@
 =include_gon
 .previous-sheet
   %h3
-    = show_project_name(@core_project).html_safe
+    =h show_project_name(@core_project)
     = " / "
     = link_to "Datacasts", account_core_project_datacasts_path(@core_project.account, @core_project), class: "thin gray"
   .panel.panel-default.sheet.sub
