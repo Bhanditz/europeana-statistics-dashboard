@@ -16,4 +16,5 @@
             = f.error_notification
             = f.input :current_password, as: :password, autocomplete: "off", required: true, hint: "We need your current password to confirm your changes"
             = f.input :password, as: :password, required: true, label: "New Password"
+            = f.input :password_confirmation,required: true, label: "Confirm Password"
             = f.button :submit, "Change Password"

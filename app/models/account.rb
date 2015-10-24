@@ -60,6 +60,7 @@ class Account < ActiveRecord::Base
   validates :email, presence: true, format: {with: Constants::EMAIL}
   validates :url, format: {with: Constants::URL}, allow_blank: true
   validates :gravatar_email_id, format: {with: Constants::EMAIL}, presence: true, on: :update
+  validates_confirmation_of :password
   #SCOPES
   #CUSTOM SCOPES
   #FUNCTIONS
