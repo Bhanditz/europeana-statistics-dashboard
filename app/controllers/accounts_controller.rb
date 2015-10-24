@@ -1,14 +1,9 @@
 class AccountsController < ApplicationController
 
-  before_action :sudo_organisation_owner!, only: [:dashboard, :edit, :update, :revoke_session]
-  before_action :sudo_public!, only: [:show]
-  
+  before_action :sudo_organisation_owner!, only: [:dashboard, :edit, :update]
+
   #------------------------------------------------------------------------------------------------------------------
   # CRUD
-
-  def show
-    @core_projects = @account.core_projects.includes(:account).where(is_public: true)
-  end
 
   def edit
   end
