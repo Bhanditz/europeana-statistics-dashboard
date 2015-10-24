@@ -1247,7 +1247,7 @@
   , config_data = {}
   , k
   , chart_name = "#{@chart_name}"
-  , genre ="#{@visualization['genre']}"
+  , genre ="#{h @visualization['genre']}"
   , json_data
   , map_code = "#{@map_code}"? "#{@map_code}" : "";
   data["selector"] = selector;
