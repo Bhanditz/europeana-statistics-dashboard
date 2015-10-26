@@ -2,8 +2,6 @@
   -if @sudo[1]
     .pull-right
       - if @impl_aggregation.nil? and (@sudo[0] or @sudo[1])
-        = link_to "DB Connections", account_core_project_db_connections_path(@account,@core_project), style: "font-size: 0.6em; font-weight: normal; border-bottom: 1px dotted gray;", class: "black"
-        &nbsp; &nbsp;
         = link_to "Upload Data".html_safe, file_account_core_project_datacasts_path(@core_project.account, @core_project), style: "font-size: 0.6em; font-weight: normal; border-bottom: 1px dotted gray;", class: "black"
         &nbsp; &nbsp;
         = link_to "Create new Query", new_account_core_project_datacast_path(@account, @core_project), id: "dLabel", class: "btn btn-orange btn-sm"

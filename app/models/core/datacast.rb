@@ -98,7 +98,6 @@ class Core::Datacast < ActiveRecord::Base
   end
 
   def self.get_col_datatype(datatype_distribution)
-    # Need to work on it. This is scrappy's code, for reference
     datatype_distribution = datatype_distribution.reject {|k,v| v <= 0}
     possible_types = datatype_distribution.keys
     return "float" if datatype_distribution.has_key?(:float) and (possible_types & [:date, :boolean]).length < 1 and datatype_distribution[:float] > 0

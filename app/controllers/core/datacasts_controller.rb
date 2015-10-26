@@ -17,8 +17,8 @@ class Core::DatacastsController < ApplicationController
 
   def file
     @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
-    @core_datacast = Core::Datacast.new
-    @core_datacast_pull = Core::DatacastPull.new
+    @core_datacast = Core::Datacast.new(table_name: "table_#{SecureRandom.hex(4)}")
+    @core_datacast_pull = Core::DatacastPull.new(table_name: @core_datacast.table_name)
   end
 
   def edit
@@ -40,7 +40,7 @@ class Core::DatacastsController < ApplicationController
     @core_datacast = Core::Datacast.new(core_datacast_params)
     @core_datacast.identifier = SecureRandom.hex(33)
     if @core_datacast.save
-      redirect_to _account_project_path(@account, @core_project), notice: t('c.s')
+      redirect_to account_core_project_datacasts_path(@account, @core_project), notice: t('c.s')
     else
       @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
       flash.now.alert = t('c.f')
@@ -51,7 +51,7 @@ class Core::DatacastsController < ApplicationController
   def update
     if @core_datacast.update(core_datacast_params)
       Core::Datacast::RunWorker.perform_async(@core_datacast.id)
-      redirect_to _account_project_path(@account, @core_project), notice: t('u.s')
+      redirect_to account_core_project_datacasts_path(@account, @core_project), notice: t('u.s')
     else
       flash.now.alert = t('u.f')
       render "edit"
@@ -98,36 +98,29 @@ class Core::DatacastsController < ApplicationController
         Nestful.post REST_API_ENDPOINT + "#{@account.slug}/#{@core_project.slug}/#{@core_datacast.slug}/grid/delete", {:token => @alknfalkfnalkfnadlfkna}, :format => :json
       end
       @core_datacast.destroy
-      redirect_to _account_project_path(@account, @core_project), notice: notice
+      redirect_to account_core_project_datacasts_path(@account, @core_project), notice: t("d.s")
     rescue => e
-      redirect_to _account_project_path(@account, @core_project), alert: e.to_s
+      redirect_to account_core_project_datacasts_path(@account, @core_project), alert: e.to_s
     end
   end
 
   def upload
-    if !core_datacast_params[:table_name]
-      @core_datacast = Core::Datacast.new
-      @datacast_pull = Core::DatacastPull.new
-      flash.now.alert = t("datacast.specify_table")
-      render :file
+    r = Core::Datacast.upload_tmp_file(core_datacast_params[:file])
+    if r[1].present?
+      alert_message = r[1]
     else
-      r = Core::Datacast.upload_tmp_file("#{h core_datacast_params[:file]}")
-      if r[1].present?
-        alert_message = r[1]
-      else
-        @core_datacast = Core::Datacast.upload_or_create_file(r[0].file.path, core_datacast_params[:table_name], @core_project.id,core_datacast_params[:core_db_connection_id],core_datacast_params[:table_name],params[:first_row_header] ? true : false, r[2],@alknfalkfnalkfnadlfkna)
-      end
-      if @core_datacast
-        Core::Datacast::RunWorker.perform_async(@core_datacast.id)
-        redirect_to _account_project_path(@account, @core_project), notice: t('c.s')
-      else
-        @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
-        @core_datacast = Core::Datacast.new
-        @core_datacast_pull = Core::DatacastPull.new
-        @validator = Csvlint::Validator.new( File.new(r[0].file.path), {"header" => params[:first_row_header], "delimiter" => r[2]} )
-        flash.now[:alert] = alert_message || "Failed to upload"
-        render :file
-      end
+      @core_datacast = Core::Datacast.upload_or_create_file(r[0].file.path, core_datacast_params[:table_name], @core_project.id,core_datacast_params[:core_db_connection_id],core_datacast_params[:table_name],params[:first_row_header] ? true : false, r[2],@alknfalkfnalkfnadlfkna)
+    end
+    if @core_datacast
+      Core::Datacast::RunWorker.perform_async(@core_datacast.id)
+      redirect_to account_core_project_datacasts_path(@account, @core_project), notice: t('c.s')
+    else
+      @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
+      @core_datacast = Core::Datacast.new(table_name: core_datacast_params[:table_name])
+      @core_datacast_pull = Core::DatacastPull.new(table_name: core_datacast_params[:table_name])
+      @validator = Csvlint::Validator.new( File.new(r[0].file.path), {"header" => params[:first_row_header], "delimiter" => r[2]} )
+      flash.now[:alert] = alert_message || "Failed to upload"
+      render :file
     end
   end
 
