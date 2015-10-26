@@ -78,7 +78,7 @@ namespace :ref do
     puts "----> Creating Default Template for providers"
     name = "Default Provider Template"
     genre = "providers"
-    required_variables = {"required_variables" => ['$AGGREGATION_WIKIPEDIA_DESCRIPTION$','$COLLECTION_IN_EUROPEANA$','$RANKINGS_IN_EUROPEANA$','$MEDIA_TYPES_CHART$','$REUSABLES_CHART$','$TRAFFIC_CHART$','$LINE_CHART$','$TOP_COUNTRIES_MAP$','$TOP_DIGITAL_OBJECTS$']}
+    required_variables = {"required_variables" => ['$AGGREGATION_WIKIPEDIA_DESCRIPTION$','$COLLECTION_IN_EUROPEANA$','$MEDIA_TYPES_CHART$','$REUSABLES_CHART$','$TRAFFIC_CHART$','$LINE_CHART$','$TOP_COUNTRIES_MAP$','$TOP_DIGITAL_OBJECTS$']}
     html_content = File.open("ref/default_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
   end
@@ -93,7 +93,7 @@ namespace :ref do
     impl_aggregation = Impl::Aggregation.create({genre: genre, name: name, wikiname: wikiname, status: status, core_project_id: core_project_id })
     if impl_aggregation.id.present?
       Impl::DataProviders::CollectionsBuilder.perform_async(impl_aggregation.id)
-      Impl::DataProviders::DatacastsBuilder.perform_at(5.minute.from_now, impl_aggregation.id)
+      Impl::DataProviders::DatacastsBuilder.perform_at(1.minute.from_now, impl_aggregation.id)
     else
       puts impl_aggregation.error_messages
       puts "----> FAILED"

@@ -54,7 +54,7 @@ class Impl::DataProviders::DatacastsBuilder
         pageviews_line_chart_datacast = Core::Datacast.create_or_update_by(pageviews_line_chart_datacast_query,core_project_id, core_db_connection_id,pageviews_line_chart_datacast_name)
         pageviews_line_chart_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,pageviews_line_chart_datacast.identifier)
 
-        Aggregations::VizsBuilder.perform_async(aggregation_id)
+        Impl::DataProviders::VizsBuilder.perform_async(aggregation_id)
       end
     rescue => e
       aggregation.update_attributes(status: "Failed to build datacast", error_messages: e.to_s)

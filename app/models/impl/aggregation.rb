@@ -37,11 +37,12 @@ class Impl::Aggregation < ActiveRecord::Base
   has_many :impl_aggregation_datacasts, class_name: "Impl::AggregationDatacast", foreign_key: "impl_aggregation_id", dependent: :destroy
   has_many :core_datacasts, through: :impl_aggregation_datacasts, dependent: :destroy
   has_many :core_vizs, through: :core_datacasts, dependent: :destroy
+  has_many :impl_outputs, class_name: "Impl::Output", foreign_key: "impl_parent_id", dependent: :destroy
   has_one :impl_report, class_name: "Impl::Report", foreign_key: "impl_aggregation_id", dependent: :destroy
 
   #VALIDATIONS
   validates :core_project_id, presence: true
-  validates :genre, presence: true, inclusion: {in: ["provider","data_provider","country"]}
+  validates :genre, presence: true, inclusion: {in: ["provider","data_provider","country","europeana"]}
   validates :name, presence: true, uniqueness: {scope: ["core_project_id","genre"]}
   
   #CALLBACKS
@@ -64,15 +65,27 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_traffic_query
-    return "Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta. aggregation_level_value, '_',2) as quarter, ta.aggregation_value_to_display as x,ta.metric as group, ta.value as y   from core_time_aggregations as ta, (Select o.id as output_id from impl_outputs o where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id = #{self.id}) and genre in ('pageviews_for_traffic','events_for_traffic')) as b where ta.parent_id = b.output_id order by aggregation_index;"
+    if self.genre == 'data_provider'
+      return "Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta. aggregation_level_value, '_',2) as quarter, ta.aggregation_value_to_display as x,ta.metric as group, ta.value as y from core_time_aggregations as ta, (Select o.id as output_id from impl_outputs o where o.impl_parent_id = #{self.id} and genre in ('pageviews_for_traffic','events_for_traffic')) as b where ta.parent_id = b.output_id order by year, quarter;"
+    else
+      return "Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta. aggregation_level_value, '_',2) as quarter, ta.aggregation_value_to_display as x,ta.metric as group, sum(ta.value) as y from core_time_aggregations as ta, (Select o.id as output_id from impl_outputs o where o.impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")}) and genre in ('pageviews_for_traffic','events_for_traffic')) as b where ta.parent_id = b.output_id  group by split_part(ta.aggregation_level_value,'_',1),split_part(ta. aggregation_level_value, '_',2),ta.aggregation_value_to_display,ta.metric order by year, quarter;"
+    end
   end
 
   def get_digital_objects_query
-    return "Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as quarter, ta.aggregation_value_to_display, ta.metric, ta.value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id = #{self.id}) and genre='top_digital_objects') as b where ta.parent_id = b.output_id order by aggregation_index"
+    if self.genre == 'data_provider'
+      return "Select year,quarter,aggregation_value_to_display, metric,value,image_url,title_url,title  from (Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as quarter, ta.aggregation_value_to_display, ta.metric, sum(ta.value) as value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title, ROW_NUMBER() OVER (PARTITION BY  split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(value) desc) AS row  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id = #{self.id} and genre='top_digital_objects') as b where ta.parent_id = b.output_id group by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), ta.aggregation_value_to_display, ta.metric,ta.aggregation_index, output_properties -> 'image_url', output_properties -> 'title_url', output_value order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), value desc) as final_output where row < 50;"
+    else
+      return "Select year,quarter,aggregation_value_to_display, metric,value,image_url,title_url,title  from (Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as quarter, ta.aggregation_value_to_display, ta.metric, sum(ta.value) as value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title, ROW_NUMBER() OVER (PARTITION BY  split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(value) desc) AS row  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")}) and genre='top_digital_objects') as b where ta.parent_id = b.output_id group by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), ta.aggregation_value_to_display, ta.metric,ta.aggregation_index, output_properties -> 'image_url', output_properties -> 'title_url', output_value order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), value desc) as final_output where row < 50;"
+    end
   end
 
   def get_countries_query
-    return "Select ta.value as size, b.code as iso2 ,split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as quarter from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id in (Select impl_provider_id from impl_aggregation_providers where impl_aggregation_id = #{self.id}) and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id order by aggregation_index;"
+    if self.genre == 'data_provider'
+      return "Select size, iso2, year, quarter from (Select sum(ta.value) as size, b.code as iso2 ,split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as quarter, ROW_NUMBER() over (PARTITION BY split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) Order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(ta.value) desc) as row from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id = #{self.id} and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id  group by b.code ,split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by year, quarter) as final_output where row < 26"
+    else
+      return "Select size, iso2, year, quarter from (Select sum(ta.value) as size, b.code as iso2 ,split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as quarter, ROW_NUMBER() over (PARTITION BY split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) Order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(ta.value) desc) as row from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")}) and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id  group by b.code ,split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by year, quarter) as final_output where row < 26"
+    end
   end
 
   def get_collections_query
@@ -80,7 +93,11 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_pageviews_line_chart_query
-    return "Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o join (Select ip.id from impl_providers ip join impl_aggregation_providers iap on ip.id = iap.impl_provider_id and iap.impl_aggregation_id = #{self.id}) as a on impl_parent_id = a.id and genre='pageviews' and impl_parent_type='Impl::DataSet') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month');"
+    if self.genre == 'data_provider'
+      return "Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id = #{self.id}  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month');"
+    else
+      return "Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")})  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month');"
+    end
   end
 
   def get_pageviews_top_country_query
@@ -180,7 +197,7 @@ class Impl::Aggregation < ActiveRecord::Base
       Impl::DataProviders::DataSetBuilder.perform_at(10.seconds.from_now, self.id)
     end
     Impl::DataProviders::MediaTypesBuilder.perform_at(10.seconds.from_now,self.id)
-    # Impl::DataProviders::DatacastsBuilder.perform_at(10.seconds.from_now,self.id)
+    Impl::DataProviders::DatacastsBuilder.perform_at(20.seconds.from_now,self.id)
     true
   end
 end

@@ -238,11 +238,11 @@ class Core::Datacast < ActiveRecord::Base
   end
 
   def get_auto_html_for_number_indicators
-    return "<div id='#{h self.name.parameterize("_")}' data-datacast_identifier='#{h self.identifier}' class='card_with_value' ></div>"
+    return "<div id='#{self.identifier}' data-datacast_identifier='#{self.identifier}' class='card_with_value' ></div>"
   end
 
   def get_auto_html_for_table
-    return "<div id='#{h self.name.parameterize("_")}' data-datacast_identifier='#{h self.identifier}' class='box_table' ></div>"
+    return "<div id='#{self.identifier}' data-datacast_identifier='#{self.identifier}' class='box_table' ></div>"
   end
 
   def query_only_select
@@ -275,7 +275,7 @@ class Core::Datacast < ActiveRecord::Base
   def after_create_set
     Core::DatacastOutput.create(datacast_identifier: self.identifier, core_datacast_id: self.id)
     unless self.table_name.present?
-      Core::Datacast::RunWorker.perform_async(self.id)
+      Core::Datacast::RunWorker.perform_at(10.second.from_now,self.id)
     end
     true
   end

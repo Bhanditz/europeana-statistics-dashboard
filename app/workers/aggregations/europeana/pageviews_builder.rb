@@ -34,12 +34,6 @@ class Aggregations::Europeana::PageviewsBuilder
         validate = false
         core_viz = Core::Viz.find_or_create(aggregation_datacast.identifier,aggregation_datacast.name,ref_chart.combination_code,aggregation_datacast.core_project_id,filter_present,filter_column_name,filter_column_d_or_m, validate)
 
-        # #Provider Rank Datacast
-        # aggregation_datacast_name = "#{aggregation.name} - Provider Ranks"
-        # aggregation_datacast_query = aggregation.get_top_providers_query(5)
-        # aggregation_datacast = Core::Datacast.create_or_update_by(aggregation_datacast_query,aggregation.core_project_id, Core::DbConnection.default_db.id,aggregation_datacast_name)
-        # aggregation_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,aggregation_datacast.identifier)
-
         #Fetching Visits
         ga_dimensions   = "ga:month,ga:year,ga:medium"
         ga_metrics      = "ga:visits"
@@ -48,6 +42,7 @@ class Aggregations::Europeana::PageviewsBuilder
         mediums = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}").read)["rows"]
         mediums_data = mediums.map {|a| {"month" => a[0], "year" => a[1], "medium" => a[2], "visits" => a[3]}}
         mediums_data = mediums_data.sort_by {|d| [d["year"], d["month"]]}
+
         Core::TimeAggregation.create_aggregations(mediums_data,"monthly",aggregation_id,"Impl::Aggregation","visits","medium")
 
         #Fetching Countries
