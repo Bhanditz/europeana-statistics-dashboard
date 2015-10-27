@@ -413,7 +413,7 @@ Rumali.autoCharts = (function(){
 					html += '</b></span>';
 			html += '<span class=col-sm-12>';
 				html += '<a href='+obj.title_url+' target="_blank">';
-				html += obj.title;
+				html += obj.title.substring(0,50)+"...";
 				html += '</a>';
 				html += '</span>';
 				html += '<span class=col-sm-12><b>';

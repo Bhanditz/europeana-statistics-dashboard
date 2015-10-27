@@ -8,8 +8,8 @@ class Impl::DataProviders::VizsBuilder
       aggregation.update_attributes(status: "Building Vizs", error_messages: nil)
       begin
         aggregation.core_datacasts.each do |core_datacast|
-          next if core_datacast.name.include?("Top Digital Objects") or core_datacast.name.include?("Collections")
-          genre = core_datacast.name.split(" - ")[1].parameterize("_")
+          next if core_datacast.name.include?("Top Digital Objects") or core_datacast.name.include?("- Collections")
+          genre = core_datacast.name.split(" - ").last.parameterize("_")
           filter_present, filter_column_name, filter_column_d_or_m = Impl::DataProviders::VizsBuilder.get_filters(genre)
           ref_chart = Impl::DataProviders::VizsBuilder.get_ref_chart(genre)
           validate = false

@@ -1238,7 +1238,7 @@
 -@data_file = "" if !@data_file.present?
 
 :javascript
-  var data = #{h @visualization['config'].to_json}
+  var data = gon.chart_config
   , countgroup=1,obj
   , colorRepetation=[]
   , initializer = #{h @initializer}

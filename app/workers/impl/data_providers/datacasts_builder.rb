@@ -6,8 +6,16 @@ class Impl::DataProviders::DatacastsBuilder
     aggregation = Impl::Aggregation.find(aggregation_id)
     aggregation.update_attributes(status: "Building Datacasts", error_messages: nil)
     begin
+      raise "'Dismarc' data set" if aggregation.genre == 'data_provider' and aggregation.dismarc_data_set?
+    rescue => e
+      aggregation.update_attributes(status: "Failed", error_messages: e.to_s)
+      return nil
+    end
+    begin
+
       core_project_id = aggregation.core_project_id
       core_db_connection_id = Core::DbConnection.default_db.id
+
 
       # Collections in Europeana
       collections_datacast_name = "#{aggregation.name} - Collections"

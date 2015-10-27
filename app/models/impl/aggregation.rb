@@ -174,6 +174,16 @@ class Impl::Aggregation < ActiveRecord::Base
     return data
   end
 
+  def self.get_ga_data(start_date,end_date, metrics,dimensions,filters,sort)
+    ga_access_token = Impl::DataSet.get_access_token
+    data = []
+    begin
+      data = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{start_date}&end-date=#{end_date}&ids=ga:#{GA_IDS}&metrics=#{metrics}&dimensions=#{dimensions}&filters=#{filters}&sort=#{sort}").read)["rows"]
+    rescue => e
+    end
+    return data
+  end
+
   #PRIVATE
   private
 

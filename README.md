@@ -55,6 +55,8 @@ load the changes to the db.
 To configure the theme, see [PykCharts.js][3] as a reference. After deciding the
 configuration, place it in the file [ref/theme.csv](ref/theme.csv).
 
+After the configuration is replaced in the ref/theme.csv, we run the task `rake ref:load` to make the changes. All the charts created after the change will have that theme by default.
+
 [1]: https://github.com/europeana/europeana-statistics-grape
 [2]: https://github.com/bkeepers/dotenv
 [3]: http://pykcharts.com/tour/pie 
