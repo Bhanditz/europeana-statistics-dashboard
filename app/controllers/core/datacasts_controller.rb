@@ -118,7 +118,7 @@ class Core::DatacastsController < ApplicationController
       @core_db_connections = @core_project.core_db_connections + [Core::DbConnection.default_db]
       @core_datacast = Core::Datacast.new(table_name: core_datacast_params[:table_name])
       @core_datacast_pull = Core::DatacastPull.new(table_name: core_datacast_params[:table_name])
-      @validator = Csvlint::Validator.new( File.new(r[0].file.path), {"header" => params[:first_row_header], "delimiter" => r[2]} )
+      @validator = Csvlint::Validator.new( File.new(core_datacast_params[:file].path), {"header" => params[:first_row_header], "delimiter" => r[2]} )
       flash.now[:alert] = alert_message || "Failed to upload"
       render :file
     end
