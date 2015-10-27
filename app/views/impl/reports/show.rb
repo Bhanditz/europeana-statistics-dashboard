@@ -2,11 +2,17 @@ module Impl
   module Reports
     class Show < Europeana::Styleguide::View
       def page_title
-        'Report'
+        'Welcome'
       end
 
-      def title
-        page_title
+      def navigation
+        { global: {} }
+      end
+
+      def head_links
+        [
+          { rel: 'stylesheet', href: styleguide_url('/css/pro/screen.css'), media: 'all', title: nil }
+        ]
       end
 
       def js_files
