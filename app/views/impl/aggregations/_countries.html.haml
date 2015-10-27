@@ -1,0 +1,40 @@
+%h3
+  Country:
+  = @impl_aggregation.name
+  - if @impl_aggregation.error_messages.present?
+    .hint.red= @impl_aggregation.error_messages
+%hr
+
+%ul.nav.nav-tabs{role: "tablist"}
+  %li.active{role: "presentation"}
+    %a{"aria-controls" => "providers", "data-toggle" => "tab", href: "#providers", role: "tab"} Providers
+  %li{role: "presentation"}
+    %a{"aria-controls" => "data_providers", "data-toggle" => "tab", href: "#data_providers", role: "tab"}Data Providers
+.tab-content
+  #providers.active.tab-pane{role: "tabpanel"}
+    - if @impl_providers.count > 0
+      %table.table.table_condensed
+        %thead
+          %th Name
+          %th
+        - @impl_providers.each do |impl_provider|
+          %tr
+            %td
+              =impl_provider.impl_report.present? ? (link_to impl_provider.name, impl_report_path(impl_provider.impl_report), target: "_blank") : impl_provider.name
+              -if impl_provider.error_messages.present?
+                .red= impl_provider.error_messages
+            %td=link_to "edit", edit_account_project_impl_aggregation_path(@account, @core_project,impl_provider)
+
+  #data_providers.tab-pane{role: "tabpanel"}
+    - if @impl_data_providers.count > 0
+      %table.table.table_condensed
+        %thead
+          %th Name
+          %th
+        - @impl_data_providers.each do |impl_data_provider|
+          %tr
+            %td
+              =impl_data_provider.impl_report.present? ? (link_to impl_data_provider.name, impl_report_path(impl_data_provider.impl_report), target: "_blank") : impl_data_provider.name
+              -if impl_data_provider.error_messages.present?
+                .red= impl_data_provider.error_messages
+            %td=link_to "edit", edit_account_project_impl_aggregation_path(@account, @core_project,impl_data_provider)
