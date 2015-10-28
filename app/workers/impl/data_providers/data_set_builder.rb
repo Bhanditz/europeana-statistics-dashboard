@@ -17,7 +17,7 @@ class Impl::DataProviders::DataSetBuilder
           raise "No data set found"
         end
       rescue => e
-        aggregation.update_attributes(status: "Failed to build data sets", error_messages: e.to_s)
+        data_provider.update_attributes(status: "Failed to build data sets", error_messages: e.to_s)
       end
     end
   end
