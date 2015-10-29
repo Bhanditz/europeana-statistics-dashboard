@@ -31,7 +31,7 @@
           %b= core_datacast.name
           .hint= link_to truncate("#{REST_API_ENDPOINT}datacast/#{core_datacast.identifier}", length: 60, omission: "..."),  "#{REST_API_ENDPOINT}datacast/#{core_datacast.identifier}", target: "_blank"
           - if core_datacast.error.present?
-            .hint{style: "color: red;"}= core_datacast.error.html_safe
+            .hint{style: "color: red;"}=h core_datacast.error
         %td.hint
           - if core_datacast.last_run_at.present?
             = time_ago_in_words(core_datacast.last_run_at)

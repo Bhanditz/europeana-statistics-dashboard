@@ -4,13 +4,23 @@ class Impl::AggregationsController < ApplicationController
   before_action :set_impl_aggregation, only: [:show,:edit, :update, :destroy, :restart_all_aggregation_workers, :datacasts]
 
   def index
-    @impl_aggregations = @core_project.impl_aggregations.country.includes(:impl_report)
+    @impl_aggregations = @core_project.impl_aggregations.countries.includes(:impl_report)
     @impl_aggregation = Impl::Aggregation.new
   end
 
   def edit
-    @impl_providers = @impl_aggregation.impl_providers
-    @core_datacasts = @impl_aggregation.core_datacasts.includes(:core_db_connection).order(updated_at: :desc)
+    if @impl_aggregation.genre == 'country'
+      @impl_providers = @impl_aggregation.child_providers.includes(:impl_report)
+      @impl_data_providers = @impl_aggregation.child_data_providers.includes(:impl_report)
+    elsif @impl_aggregation.genre == "provider"
+      @impl_countries = @impl_aggregation.parent_countries.includes(:impl_report)
+      @impl_data_providers = @impl_aggregation.child_data_providers.includes(:impl_report)
+    else
+      @impl_countries = @impl_aggregation.parent_countries.includes(:impl_report)
+      @impl_providers = @impl_aggregation.parent_providers.includes(:impl_report)
+      @impl_data_sets = @impl_aggregation.impl_data_sets
+      @core_datacasts = @impl_aggregation.core_datacasts
+    end
   end
 
   def show

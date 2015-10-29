@@ -18,6 +18,7 @@
 class Impl::Aggregation < ActiveRecord::Base
   #GEMS
   self.table_name = "impl_aggregations"
+  include ActionView::Helpers::NumberHelper
   
   #CONSTANTS
   #ATTRIBUTES
@@ -53,6 +54,7 @@ class Impl::Aggregation < ActiveRecord::Base
   scope :providers, -> {where(genre: "provider")}
   scope :countries, ->{where(genre: "country")}
   scope :europeana, -> {where(genre: "europeana").first}
+
   #CUSTOM SCOPES
   #FUNCTIONS
 
@@ -184,6 +186,21 @@ class Impl::Aggregation < ActiveRecord::Base
     return data
   end
 
+  def get_data_providers_html
+    return "" if self.genre == "data_provider"
+    html_string = "<table class='table'><thead><th>Name</th><th>Total Collections</th></thead>"
+    self.child_data_providers.includes(:impl_outputs).each do |data_provider|
+      html_string += "<tr><td><a href='#{BASE_URL/data_provider.impl_report.slug}'>#{data_provider.name}</a></td><td>#{ActionView::Helpers::NumberHelper.number_with_delimiter(data_provider.impl_outputs.collections.first.value, delimiter: ".")}</td></tr>"  if (data_provider.impl_outputs.collections.first.present? and data_provider.impl_report.present?)
+    end
+    html_string += "</table>"
+    html_string
+  end
+
+  def is_eligible?
+    return true unless self.genre == "provider"
+    return Impl::Aggregation.data_providers.where(name: self.name).count > 0
+  end
+
   #PRIVATE
   private
 
@@ -206,8 +223,8 @@ class Impl::Aggregation < ActiveRecord::Base
     elsif self.genre='data_provider'
       Impl::DataProviders::DataSetBuilder.perform_at(10.seconds.from_now, self.id)
     end
-    Impl::DataProviders::MediaTypesBuilder.perform_at(10.seconds.from_now,self.id)
-    Impl::DataProviders::DatacastsBuilder.perform_at(20.seconds.from_now,self.id)
+    Impl::DataProviders::MediaTypesBuilder.perform_at(20.seconds.from_now,self.id)
+    Impl::DataProviders::DatacastsBuilder.perform_at(30.seconds.from_now,self.id)
     true
   end
 end

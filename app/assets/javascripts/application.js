@@ -16,10 +16,6 @@
 //= require_tree ./application/nth/
 //= require_tree ./application/app/
 //= require_tree ./application/zlib/
-//= require best_in_place
-//= require best_in_place.jquery-ui
   $(function () {
     $('[data-toggle="popover"]').popover()
   })
-
-  
