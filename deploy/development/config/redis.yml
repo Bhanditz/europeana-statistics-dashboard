@@ -1,6 +1,3 @@
 development:
-  host: <%= ENV['REDIS_HOST'] || 'localhost' %>
-  port: <%= ENV['REDIS_PORT'] || 6379 %>
-  name: <%= ENV['REDIS_NAME'] || 'redis' %>
-  db: <%= ENV['REDIS_DB'] || 0 %>
   namespace: <%= ENV['REDIS_NAMESPACE'] || 'cache' %>
+  url: redis://:<%= ENV['REDIS_PASSWORD'] || '' %>@<%= ENV['REDIS_HOST'] || 'localhost' %>:<%= ENV['REDIS_PORT'] || 6379 %>/<%= ENV['REDIS_DB'] || 0 %>
