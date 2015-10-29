@@ -1,0 +1,44 @@
+.previous-sheet
+  %h3=h show_project_name(@core_project)
+  .panel.panel-default.sheet.sub
+    .panel-body
+      .row
+        .col-sm-9
+          .pull-left= link_to "< All Reports", account_project_impl_reports_path(@account, @core_project)
+          .clearfix
+          %h4 Country
+          .clearfix
+          %hr{style: "margin-bottom: 5px; margin-top: 2px; border-top-color: lightgray;"}
+          - if @impl_aggregations.present?
+            %table.table.table-condensed
+              %thead
+                %tr
+                  %th
+                  %th Genre
+                  %th Country Name
+                  %th Status
+                  %th
+                  %th
+              %tbody
+                - @impl_aggregations.each do |impl_aggregation|
+                  %tr
+                    %td= get_impl_status(impl_aggregation).html_safe
+                    %td= impl_aggregation.genre.titleize
+                    %td
+                      - if impl_aggregation.impl_report.present?
+                        = link_to impl_aggregation.name, impl_report_path(impl_aggregation.impl_report)
+                      -else
+                        = impl_aggregation.name
+
+                    %td
+                      %strong=impl_aggregation.status
+                      - if impl_aggregation.error_messages.present?
+                        .hint= impl_aggregation.error_messages
+                    %td= link_to 'Edit', edit_account_project_impl_aggregation_path(@core_project.account, @core_project, impl_aggregation)
+                    %td= icon_del(account_project_impl_aggregation_path(@core_project.account, @core_project, impl_aggregation))
+        .col-sm-3
+          -if @sudo[1]
+            .well
+              %h5 Add new Country
+              %hr
+              = render partial: "impl/aggregations/form"

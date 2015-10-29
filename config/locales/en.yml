@@ -1,0 +1,81 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+en:
+  hello: "Hello world"
+  c:
+    s: "Successfully created."
+    f: "Failed to create."
+  u:
+    s: "Successfully updated."
+    f: "Failed to update."
+  d:
+    s: "Successfully deleted."
+    m: "Queued for deletion. Pls. refresh your page!"
+    f: "Failed to delete."
+  pd:
+    sudo_organisation_owner!: "Permission Denied. (2)"
+    sudo_project_member!: "Permission Denied. (3)"
+    sudo_project_owner!: "Permission Denied. (4)"
+    sudo_admin!: "Permission Denied. (5)"
+    sudo_public!: "Permission Denied. (6)"
+    sudo_embed!: "Permission Denied. (7)"
+  set_universal_objects:
+    no_such_account_1: "No such account (1)."
+    no_such_account_2: "No such account (2)."
+    no_such_account_3: "No such account (3)."
+    no_such_project: "No such project (1)."
+  publish: "It will be published in a few seconds. Once published, you will see an anchor icon."
+  api:
+    e_401: "Unauthorized."
+    e_400:
+      token: "Token not found."
+      account: "AccountID not found."
+      project: "ProjectID not found."
+    e_404:
+      token: "Token not associated with a account."
+      account: "Account not found."
+      project: "Project not found."
+  confirm:
+    s: "Successfully Confirmed"
+    f: "Something went wrong while confirming the email"
+    mail_sent: "You will receive an email with a confirmation link in a few minutes."
+    pd: "No Such email exist in your account"
+  w:
+    s: "Dataset will be created in a few moments"
+  dict:
+    s: "Dataset set as dictionary. Wait for admin's approval."
+    c: "Dictionary converted back to dataset."
+  dependent:
+    d: "You cannot delete this data set until you delete all dependent %{dependent_to_destroy}. Click here to delete all %{dependent_to_destroy}: <a href=%{url}>%{url}</a>"
+  recalibrate_metadata:
+    s: "Successfully recalibrated metadata"
+    f: "Recalibrating metadata failed"
+  datacast:
+    specify_table: "You need to specify table name"
+    run_worker: "Rerunning the job."
+    changed_d_or_m: "Dimension or Metric changed"
+    col_not_found: "Column not found"
+    validate_query: "Cannot include update','insert','drop','truncate','delete' keywords in query"
+  aggregation:
+    refreshed_all_jobs: "Refreshing all background jobs"
+  provider:
+    worker: "The job is restarting"

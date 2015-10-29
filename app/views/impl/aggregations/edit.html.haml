@@ -1,0 +1,21 @@
+.previous-sheet
+  %h3
+    =h show_project_name(@core_project)
+    %span.gray= " / "
+    = link_to "Reports", account_project_impl_aggregations_path(@core_project.account, @core_project), class: "thin"
+  .panel.panel-default.sheet.sub
+    .panel-body
+      .row
+        .col-sm-9
+          - if @impl_aggregation.genre == "country"
+            = render partial: "impl/aggregations/countries"
+          - elsif @impl_aggregation.genre == "provider"
+            = render partial: "impl/aggregations/providers"
+          -else
+            = render partial: "impl/aggregations/data_providers"
+
+        .col-sm-3
+          .well
+            %h5="Edit #{@impl_aggregation.genre.titleize}"
+            %hr
+            = render partial: "impl/aggregations/form"

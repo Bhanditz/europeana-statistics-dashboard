@@ -1,0 +1,20 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    = image_tag "https://s3-ap-southeast-1.amazonaws.com/ap-southeast-1.datahub.pykih/assets/images/rumi-logo.png"
+
+    %p
+      Hi,
+    %p
+      ="#{@account.username} has registered this email at <a href='#{root_url}'> Europeana <a>. Please click on the following link to confirm the email.".html_safe
+
+      = link_to @confirmation_url_link, @confirmation_url_link
+
+    %br
+    %br
+    The Pykih Team
+    %br
+    = link_to "pykih data visualization", "https://www.pykih.com"
+
