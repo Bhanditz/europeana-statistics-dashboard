@@ -1,6 +1,8 @@
 class Impl::ReportsController < ApplicationController
   include Europeana::Styleguide
 
+  layout :styleguide_aware_layout
+
   before_action :sudo_public!, only: [:show, :index]
   before_action :set_impl_report, only: [:show,:edit, :update, :destroy]
   before_action :set_gon_config_objects,only: [:show,:edit, :update,:new, :create]
@@ -69,4 +71,7 @@ class Impl::ReportsController < ApplicationController
     params.require(:impl_report).permit(:name, :html_content,:core_project_id,:variable_object)
   end
 
+  def styleguide_aware_layout
+    params[:action] == 'show' ? false : 'application'
+  end
 end
