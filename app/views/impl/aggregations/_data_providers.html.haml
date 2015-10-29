@@ -3,6 +3,8 @@
   = @impl_aggregation.name
   - if @impl_aggregation.error_messages.present?
     .red= @impl_aggregation.error_messages
+.pull-right
+  .hint= link_to "Reset Google analytics Data", restart_worker_account_project_impl_aggregation_path(@account,@core_project,@impl_aggregation)
 
 %ul.nav.nav-tabs{role: "tablist"}
   %li.active{role: "presentation"}

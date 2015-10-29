@@ -17,7 +17,13 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
       data_provider.update_attributes(status: "Processed top 10 digital objects")
       next_start_date = (Date.today.at_beginning_of_week).strftime("%Y-%m-%d")
       next_end_date = (Date.today.at_end_of_week).strftime("%Y-%m-%d")
-      # Impl::DataProviders::TrafficBuilder.perform_at(1.week.from_now,data_provider_id,next_start_date, next_end_date)
+      Impl::DataProviders::TrafficBuilder.perform_at(1.week.from_now,data_provider_id,next_start_date, next_end_date)
+      data_provider.parent_providers.each do |provider|
+        Impl::DataProviders::DatacastsBuilder.perform_at(10.seconds.from_now,provider.id)
+      end
+      data_provider.parent_countries.each do |country|
+        Impl::DataProviders::DatacastsBuilder.perform_at(10.seconds.from_now,country.id)
+      end
     rescue => e
       data_provider.update_attributes(status: "Failed to build top digital objects",error_messages: e.to_s)
     end

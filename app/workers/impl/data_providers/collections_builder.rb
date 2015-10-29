@@ -12,7 +12,7 @@ class Impl::DataProviders::CollectionsBuilder
         europeana_query = aggregation.europeana? ? "*:*" : CGI.escape("#{aggregation.genre.upcase}:\"#{(aggregation.name)}\"")
         collections =  JSON.parse(Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{europeana_query}&rows=0").body)
         if collections["totalResults"].present?
-          aggregation_output.update_attributes(status: "Processed Collections", key: "total_results", value: collections["totalResults"], content: "digital objects in europeana", title: "Total Collections")
+          aggregation_output.update_attributes(status: "Processed Collections", key: "total_results", value: collections["totalResults"], content: "", title: "Total Collections")
           aggregation.update_attributes(status: "Processed Collections")
         else
           raise "No Collections detected"

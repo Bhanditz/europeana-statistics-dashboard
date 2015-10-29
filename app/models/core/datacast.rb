@@ -245,7 +245,7 @@ class Core::Datacast < ActiveRecord::Base
   end
 
   def query_only_select
-    if self.query.index("Select") != 0
+    if self.query.downcase.index("select") != 0
       self.errors.add(:query,"Illegal query")
       return false
     end
@@ -261,6 +261,10 @@ class Core::Datacast < ActiveRecord::Base
   #PRIVATE
   
   private
+
+  def should_generate_new_friendly_id?
+    name_changed?
+  end
   
   def before_create_set
     self.number_of_rows = 0

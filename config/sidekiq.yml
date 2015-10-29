@@ -1,6 +1,6 @@
-:concurrency: 30
+:concurrency: 20
 :verbose: true
 production:
-  :concurrency: 30
+  :concurrency: 15
 :queues:
   - default

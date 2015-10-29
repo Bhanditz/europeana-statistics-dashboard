@@ -77,5 +77,6 @@ en:
     validate_query: "Cannot include update','insert','drop','truncate','delete' keywords in query"
   aggregation:
     refreshed_all_jobs: "Refreshing all background jobs"
+    not_data_provider: "You can only reset data for data provider"
   provider:
     worker: "The job is restarting"

@@ -6,7 +6,7 @@ class Impl::DataProviders::ReportBuilder
     aggregation = Impl::Aggregation.find(aggregation_id)
     aggregation.update_attributes(status: "Building Report", error_messages: nil)
     begin
-      core_template = Core::Template.default_provider_template
+      core_template = aggregation.genre == "data_provider" ? Core::Template.default_data_provider_template : aggregation.genre == "provider" ? Core::Template.default_provider_template : Core::Template.default_country_template
       variable_object = {}
       core_vizs = aggregation.core_vizs
       required_variables = core_template.required_variables["required_variables"]
@@ -29,6 +29,24 @@ class Impl::DataProviders::ReportBuilder
       reusable_content_key = required_variables.shift
       reusable_content_value = core_vizs.reusable.first.auto_html_div
       variable_object[reusable_content_key] = reusable_content_value
+
+      if aggregation.genre != 'data_provider'
+        if aggregation.genre == "country"
+          #Putting Top Providers
+          providers_variable_key = required_variables.shift
+          providers_variable_value = aggregation.get_providers_html
+          variable_object[providers_variable_key] = providers_variable_value
+        else
+          #Putting Top Countries
+          countries_key = required_variables.shift
+          countries_value = aggregation.get_countries_html
+          variable_object[countries_key] = countries_value
+        end
+        #Putting Top Data Providers
+        data_providers_key = required_variables.shift
+        data_providers_value = aggregation.get_data_providers_html
+        variable_object[data_providers_key] = data_providers_value
+      end
 
       #Putting Traffic
       traffic_content_key = required_variables.shift

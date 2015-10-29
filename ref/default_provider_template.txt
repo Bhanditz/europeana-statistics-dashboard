@@ -1,0 +1,63 @@
+<div>
+  <div class="row">
+    <div class="col-sm-12">
+      $AGGREGATION_WIKIPEDIA_DESCRIPTION$
+    </div>
+    <div class="col-sm-12">
+      <h4>Total digital collections in Europeana</h4>
+      <div class="col-sm-3">
+        $COLLECTION_IN_EUROPEANA$
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-sm-6">
+      <h4>Item Types</h4>
+      <p>This chart displays a breakdown of the types of digital objects in this collection.</p>
+      $MEDIA_TYPES_CHART$
+    </div>
+    <div class="col-sm-6">
+      <h4>Open for Re-Use</h4>
+      <p>This chart displays what percentage of the collection is open for re-use.</p>
+      $REUSABLES_CHART$
+    </div>
+    <div class='clearfix'></div>
+    <div class="col-sm-6">
+      <h4>Top countries</h4>
+      <p>This chart displays what percentage of the collection is open for re-use.</p>
+      $TOP_COUNTRIES$
+    </div>
+    <div class="col-sm-6">
+      <h4>Top data providers</h4>
+      <p>This chart displays what percentage of the collection is open for re-use.</p>
+      $TOP_DATA_PROVIDERS$
+    </div>
+    <div class='clearfix'></div>
+    <div class="col-sm-12">
+      <p>Use the the year filter below to filter all of the charts under it.</p>
+      <span>
+        Select year to view collection statistics on a per-year basis:
+        <span id="id_year_filters"></span>
+      </span>
+      <h4>Views & Click-Throughs</h4>
+      <p>This chart displays the views of the collection on the Europeana.eu website together with the number of times a user clicked through to the website of the data provider. Click-throughs are not measured prior to April 2012. (Filter chart by year above)</p>
+      $TRAFFIC_CHART$
+    </div>
+    <div class="col-sm-12">
+      <h4>Line Chart for Page view</h4>
+      <p>This is a test visualization</p>
+      $LINE_CHART$
+    </div>
+    <div class="col-sm-12">
+      <h4>Top 25 Countries</h4>
+      <p>This chart displays the top 25 countries that generated the most views for this collection on Europeana.eu website. (Filter chart by year above and by quarter below)</p>
+      <span id="id_quarter_filters"></span>
+      </br>
+      $TOP_COUNTRIES_MAP$
+    </div>
+    <div class="col-sm-12">
+      <h4>Top 10 Digital Objects</h4>
+      <p>The list below displays the top 10 digital objects from the collection that generated the most views on Europeana.eu. (Filter list by year and quarter above)</p>
+      $TOP_DIGITAL_OBJECTS$
+    </div>
+  </div>
+</div>

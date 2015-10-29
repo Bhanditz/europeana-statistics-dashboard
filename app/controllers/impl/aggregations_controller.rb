@@ -19,8 +19,8 @@ class Impl::AggregationsController < ApplicationController
       @impl_countries = @impl_aggregation.parent_countries.includes(:impl_report)
       @impl_providers = @impl_aggregation.parent_providers.includes(:impl_report)
       @impl_data_sets = @impl_aggregation.impl_data_sets
-      @core_datacasts = @impl_aggregation.core_datacasts
     end
+    @core_datacasts = @impl_aggregation.core_datacasts
   end
 
   def show
@@ -39,11 +39,9 @@ class Impl::AggregationsController < ApplicationController
 
   def update
     if @impl_aggregation.update(impl_aggregation_params)
-      # Impl::DataProviders::DatacastsBuilder.perform_async(@impl_aggregation.id)
-      # Impl::DataProviders::MediaTypesBuilder.perform_async(@impl_aggregation.id)
       redirect_to edit_account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), notice: t("u.s")
     else
-      render "impl/data_sets/index"
+      render :edit
     end
   end
 
@@ -53,7 +51,11 @@ class Impl::AggregationsController < ApplicationController
   end
 
   def restart_all_aggregation_workers
-    @impl_aggregation.restart_all_jobs
+    notice = t("aggregation.not_data_provider")
+    if @impl_aggregation.genre == 'data_providers'
+      @impl_aggregation.restart_all_jobs
+      notice =t("aggregation.refreshed_all_jobs")
+    end
     redirect_to edit_account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), notice: t("aggregation.refreshed_all_jobs")
   end
 

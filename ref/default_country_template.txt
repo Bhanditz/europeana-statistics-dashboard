@@ -4,6 +4,7 @@
       $AGGREGATION_WIKIPEDIA_DESCRIPTION$
     </div>
     <div class="col-sm-12">
+      <h4>Total digital collections in Europeana</h4>
       <div class="col-sm-3">
         $COLLECTION_IN_EUROPEANA$
       </div>
@@ -19,6 +20,20 @@
       <p>This chart displays what percentage of the collection is open for re-use.</p>
       $REUSABLES_CHART$
     </div>
+
+    <div class='clearfix'></div>
+    <div class="col-sm-6">
+      <h4>Top providers</h4>
+      <p>This chart displays what percentage of the collection from providers.</p>
+      $TOP_PROVIDERS$
+    </div>
+    <div class="col-sm-6">
+      <h4>Top data providers</h4>
+      <p>This chart displays what percentage of the collection from data providers.</p>
+      $TOP_DATA_PROVIDERS$
+    </div>
+    <div class='clearfix'></div>
+
     <div class="col-sm-12">
       <p>Use the the year filter below to filter all of the charts under it.</p>
       <span>

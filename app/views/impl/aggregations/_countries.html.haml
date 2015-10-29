@@ -10,6 +10,8 @@
     %a{"aria-controls" => "providers", "data-toggle" => "tab", href: "#providers", role: "tab"} Providers
   %li{role: "presentation"}
     %a{"aria-controls" => "data_providers", "data-toggle" => "tab", href: "#data_providers", role: "tab"}Data Providers
+  %li{role: "presentation"}
+    %a{"aria-controls" => "datacasts", "data-toggle" => "tab", href: "#datacasts", role: "tab"}Datacasts
 .tab-content
   #providers.active.tab-pane{role: "tabpanel"}
     - if @impl_providers.count > 0
@@ -38,3 +40,6 @@
               -if impl_data_provider.error_messages.present?
                 .red= impl_data_provider.error_messages
             %td=link_to "edit", edit_account_project_impl_aggregation_path(@account, @core_project,impl_data_provider)
+  #datacasts.tab-pane{role: 'tabpanel'}
+    - if @core_datacasts.count > 0
+      = render partial: "core/datacasts/index", locals: {core_datacasts: @core_datacasts}
