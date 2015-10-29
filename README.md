@@ -1,9 +1,10 @@
 # Europeana Statistics Dashboard
 
+[![security](https://hakiri.io/github/europeana/europeana-statistics-dashboard/master.svg)](https://hakiri.io/github/europeana/europeana-statistics-dashboard/master) [![Dependency Status](https://gemnasium.com/europeana/europeana-statistics-dashboard.svg)](https://gemnasium.com/europeana/europeana-statistics-dashboard)
+
 ## License
 
 Licensed under the EUPL V.1.1. For full details, see [LICENSE.md](LICENSE.md).
-
 
 ## Requirements
 

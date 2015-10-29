@@ -65,12 +65,12 @@ namespace :ref do
   task :create_default_db_connection => :environment do |t, args|
     puts "----> Creating Default DB connection"
     name = "Default Database"
-    db_name = Rails.configuration.database_configuration[Rails.env]["database"]
-    host = Rails.configuration.database_configuration[Rails.env]["host"]
-    port = Rails.configuration.database_configuration[Rails.env]["port"] || 5432
+    db_name = ActiveRecord::Base.configurations[Rails.env]["database"]
+    host = ActiveRecord::Base.configurations[Rails.env]["host"]
+    port = ActiveRecord::Base.configurations[Rails.env]["port"] || 5432
     adapter = "postgresql"
-    username = Rails.configuration.database_configuration[Rails.env]["username"]
-    password = Rails.configuration.database_configuration[Rails.env]["password"]
+    username = ActiveRecord::Base.configurations[Rails.env]["username"]
+    password = ActiveRecord::Base.configurations[Rails.env]["password"]
     Core::DbConnection.create({name: name, db_name: db_name, host: host, port: port,adapter: adapter, username: username, password: password})
   end
 

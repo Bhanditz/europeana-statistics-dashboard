@@ -21,6 +21,8 @@ gem 'gon', '~> 5.2.3'
 gem 'sidekiq'
 gem 'activerecord-session_store'
 gem 'redcarpet'
+gem 'europeana-styleguide', github: 'europeana/europeana-styleguide-ruby', branch: 'develop'
+gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide' # until upstream merges our pull requests
 
 #Assets related
 gem 'uglifier',     '>= 1.3.0'
