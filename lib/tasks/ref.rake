@@ -75,7 +75,6 @@ namespace :ref do
   end
 
   task :create_default_template => :environment do |t,args|
-    Core::Template.delete_all
     puts "----> Creating Default Template for data providers"
     name = "Default Data Provider Template"
     genre = "data_providers"
@@ -97,21 +96,15 @@ namespace :ref do
 
   end
 
-  task :create_europeana_aggregation_report => :environment do |t,args|
-    puts "----> Building Europeana Report"
+  task :create_or_update_europeana_aggregation_report => :environment do |t,args|
+    puts "----> Building Europeana"
     core_project_id = Core::Project.where(name: "Europeana").first.id
     name = "Europeana"
     genre = "europeana"
-    wikiname = nil
     status = ""
-    impl_aggregation = Impl::Aggregation.create({genre: genre, name: name, wikiname: wikiname, status: status, core_project_id: core_project_id })
-    if impl_aggregation.id.present?
-      Impl::DataProviders::CollectionsBuilder.perform_async(impl_aggregation.id)
-      Impl::DataProviders::DatacastsBuilder.perform_at(1.minute.from_now, impl_aggregation.id)
-    else
-      puts impl_aggregation.error_messages
-      puts "----> FAILED"
-    end
+    impl_aggregation = Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id })
+    Impl::DataProviders::CollectionsBuilder.perform_async(impl_aggregation.id)
+    Impl::DataProviders::DatacastsBuilder.perform_at(1.minute.from_now, impl_aggregation.id)
   end
 
   task :seed_europeana_production_reports => :environment do |t,args|
@@ -128,7 +121,7 @@ namespace :ref do
     Rake::Task['ref:load'].invoke
     Rake::Task['ref:create_default_db_connection'].invoke
     Rake::Task['ref:create_default_template'].invoke
-    Rake::Task['ref:create_europeana_aggregation_report'].invoke
+    Rake::Task['ref:create_or_update_europeana_aggregation_report'].invoke
     Rake::Task['ref:seed_europeana_production_reports'].invoke
   end
 end

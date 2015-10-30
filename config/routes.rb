@@ -27,8 +27,7 @@ Rails.application.routes.draw do
     resources :projects do
       namespace :impl do
         resources :aggregations do
-          get "restart_all_aggregation_workers","datacasts", on: :member
-          get "restart_worker", on: :member
+          get "restart_all_aggregation_workers","datacasts","restart_worker","reset_country_data", on: :member
         end
         resources :reports, except: [:show]
       end

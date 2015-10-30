@@ -122,6 +122,7 @@ class Impl::Aggregation < ActiveRecord::Base
   def get_aggregated_filters
     filter = "ga:hostname=~europeana.eu;"
     impl_data_sets = self.impl_data_sets
+    return filter if impl_data_sets.count == 0
     last_id = impl_data_sets.last.id
     impl_data_sets.each do |p|
       filter += "ga:pagePath=~/#{p.data_set_id.strip}/#{p.id == last_id ? "" : ","}"
@@ -257,6 +258,7 @@ class Impl::Aggregation < ActiveRecord::Base
       Impl::Country::ProviderBuilder.perform_at(10.seconds.from_now, self.id)
     elsif self.genre='data_provider'
       Impl::DataProviders::DataSetBuilder.perform_at(10.seconds.from_now, self.id)
+      Impl::DataProviders::TrafficBuilder.perform_at(10.seconds.from_now,self.id)
     end
     Impl::DataProviders::MediaTypesBuilder.perform_at(20.seconds.from_now,self.id)
     Impl::DataProviders::DatacastsBuilder.perform_at(30.seconds.from_now,self.id)

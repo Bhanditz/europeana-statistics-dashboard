@@ -17,8 +17,6 @@ class Impl::Country::ProviderBuilder
             if data_providers['facets'].present?
               data_providers = data_providers['facets'].first
             else
-              puts "http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{query}&rows=0&profile=facets,params&facet=DATA_PROVIDER"
-              puts "------------------"
               next
             end
             if data_providers['fields'].present?
@@ -31,7 +29,7 @@ class Impl::Country::ProviderBuilder
           end
         end
       rescue => e
-        country.update_attributes(status: "Failed to build collections", error_messages: e.to_s)
+        country.update_attributes(status: "Failed to build providers", error_messages: e.to_s)
       end
     end
   end
