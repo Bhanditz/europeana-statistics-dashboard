@@ -1,3 +1,4 @@
+
 # Europeana Statistics Dashboard
 
 [![security](https://hakiri.io/github/europeana/europeana-statistics-dashboard/master.svg)](https://hakiri.io/github/europeana/europeana-statistics-dashboard/master) [![Dependency Status](https://gemnasium.com/europeana/europeana-statistics-dashboard.svg)](https://gemnasium.com/europeana/europeana-statistics-dashboard)
@@ -61,3 +62,4 @@ After the configuration is replaced in the ref/theme.csv, we run the task `rake 
 [1]: https://github.com/europeana/europeana-statistics-grape
 [2]: https://github.com/bkeepers/dotenv
 [3]: http://pykcharts.com/tour/pie 
+
