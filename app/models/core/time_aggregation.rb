@@ -40,12 +40,14 @@ class Core::TimeAggregation < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
   def self.create_time_aggregations(parent_type,parent_id,data,metric,aggregation_level)
-    data.each do |d|
-      value = d[metric]
-      month = d["month"]
-      year  = d["year"]
-      aggregation_level_value = Core::TimeAggregation.fetch_aggregation_value(aggregation_level,year,month)
-      time_aggregation = Core::TimeAggregation.create_or_update(parent_type, parent_id, metric, aggregation_level, aggregation_level_value, value)
+    if data.size > 0
+      data.each do |d|
+        value = d[metric]
+        month = d["month"]
+        year  = d["year"]
+        aggregation_level_value = Core::TimeAggregation.fetch_aggregation_value(aggregation_level,year,month)
+        time_aggregation = Core::TimeAggregation.create_or_update(parent_type, parent_id, metric, aggregation_level, aggregation_level_value, value)
+      end
     end
   end
 
@@ -86,13 +88,15 @@ class Core::TimeAggregation < ActiveRecord::Base
   end
 
   def self.create_aggregations(data,aggregation_level,parent_id,parent_type,metric,output_type)
-    data.each do |c|
-      parent_output = Impl::Output.find_or_create(parent_id,parent_type,"top_#{output_type.pluralize}",key: output_type,value: c[output_type])
-      month = c["month"]
-      year  = c["year"]
-      value = c[metric]
-      aggregation_level_value = Core::TimeAggregation.fetch_aggregation_value(aggregation_level,year,month)
-      time_aggregation = Core::TimeAggregation.create_or_update("Impl::Output", parent_output.id, metric, aggregation_level, aggregation_level_value, value)
+    if data.size > 0
+      data.each do |c|
+        parent_output = Impl::Output.find_or_create(parent_id,parent_type,"top_#{output_type.pluralize}",key: output_type,value: c[output_type])
+        month = c["month"]
+        year  = c["year"]
+        value = c[metric]
+        aggregation_level_value = Core::TimeAggregation.fetch_aggregation_value(aggregation_level,year,month)
+        time_aggregation = Core::TimeAggregation.create_or_update("Impl::Output", parent_output.id, metric, aggregation_level, aggregation_level_value, value)
+      end
     end
   end
 

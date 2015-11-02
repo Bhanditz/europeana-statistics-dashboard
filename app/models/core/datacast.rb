@@ -58,12 +58,11 @@ class Core::Datacast < ActiveRecord::Base
   scope :ready, ->{where("properties->'error' != ?","''").where.not(last_run_at: nil)}
   scope :media_type, -> {where("core_datacasts.name LIKE '%Media Types'")}
   scope :reusable, -> {where("core_datacasts.name LIKE '%Reusables'")}
-  scope :traffic, -> {where("core_datacasts.name LIKE '%Traffic'")}
   scope :top_country, -> {where("core_datacasts.name LIKE '%Top Countries'")}
   scope :top_digital_objects, -> {where("core_datacasts.name LIKE '%Top Digital Objects'")}
   scope :collections, -> {where("core_datacasts.name LIKE '%Collections'")}
   scope :line_charts, -> {where("core_datacasts.name LIKE '%Line Chart'")}
-
+  scope :top_search_terms, -> {where("core_datacasts.name LIKE '%- Search Terms'")}
   #CUSTOM SCOPES
   #OTHER
   #FUNCTIONS
@@ -156,7 +155,6 @@ class Core::Datacast < ActiveRecord::Base
     query = "Select * from #{table_name}"
     d = Core::Datacast.new({query: query, name: file_name, core_project_id: _core_project_id, core_db_connection_id: _core_db_connection_id, identifier: SecureRandom.hex(33), table_name: table_name })
     if d.save
-      puts d.id
       grid_data = []
       is_everything_saved_properly = false
       begin
@@ -181,7 +179,6 @@ class Core::Datacast < ActiveRecord::Base
       if is_everything_saved_properly
         return d
       else
-        puts d.errors.messages
         d.destroy
         return nil
       end
@@ -278,7 +275,7 @@ class Core::Datacast < ActiveRecord::Base
   def after_create_set
     Core::DatacastOutput.create(datacast_identifier: self.identifier, core_datacast_id: self.id)
     unless self.table_name.present?
-      Core::Datacast::RunWorker.perform_at(10.second.from_now,self.id)
+      Core::Datacast::RunWorker.perform_async(self.id)
     end
     true
   end

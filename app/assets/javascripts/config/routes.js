@@ -1,12 +1,6 @@
-window.onload = function () {      
-  $("#loader .centered").slideUp(function(){
-    $("#loader").fadeOut(function(){
-      $("#loader").remove();
-    });
-  });
-  
-  var html_body_id = document.getElementsByTagName("body")[0].id
-  switch (html_body_id) {
+window.onload = function () {
+
+  switch (gon.scopejs) {
     case "scopejs_themes_new":
     case "scopejs_themes_create":
     case "scopejs_themes_edit":
@@ -55,6 +49,7 @@ window.onload = function () {
       Rumali.newArticleCreate();
     case "scopejs_reports_show": //need to break it into 2 switch cases
       Rumali.buildCharts.loadReportChart();
+      setTimeout(function(){ $(".maincontent").css('height',$("main").height()); }, 3000);
     case "scopejs_reports_new":
     case "scopejs_reports_create":
     case "scopejs_reports_edit":

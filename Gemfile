@@ -26,6 +26,8 @@ gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide' # until
 
 #Assets related
 gem 'uglifier',     '>= 1.3.0'
+gem 'sass-rails', '~> 5.0.0'
+gem 'susy'
 
 group :doc do
   gem 'sdoc',         '~> 0.4.0'

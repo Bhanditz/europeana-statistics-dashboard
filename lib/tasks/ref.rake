@@ -78,22 +78,21 @@ namespace :ref do
     puts "----> Creating Default Template for data providers"
     name = "Default Data Provider Template"
     genre = "data_providers"
-    required_variables = {"required_variables" => ['$AGGREGATION_WIKIPEDIA_DESCRIPTION$','$COLLECTION_IN_EUROPEANA$','$MEDIA_TYPES_CHART$','$REUSABLES_CHART$','$TRAFFIC_CHART$','$LINE_CHART$','$TOP_COUNTRIES_MAP$','$TOP_DIGITAL_OBJECTS$']}
+    required_variables = {"required_variables" => ['$DATA_PROVIDER_NAME$','$WIKIPEDIA_LINK$','$MEDIA_TYPE_DONUT_CHART$','$ITEM_VIEWS_LINE_CHART$','$TOP_DIGITAL_OBJECTS$','$TOP_COUNTRIES_TABLE$']}
     html_content = File.open("ref/default_data_provider_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
     puts "----> Creating Default Template for providers"
     name = "Default Provider Template"
     genre = "providers"
-    required_variables = {"required_variables" => ['$AGGREGATION_WIKIPEDIA_DESCRIPTION$','$COLLECTION_IN_EUROPEANA$','$MEDIA_TYPES_CHART$','$REUSABLES_CHART$','$TOP_COUNTRIES$','$TOP_DATA_PROVIDERS$','$TRAFFIC_CHART$','$LINE_CHART$','$TOP_COUNTRIES_MAP$','$TOP_DIGITAL_OBJECTS$']}
+    required_variables = {"required_variables" => ['$PROVIDER_NAME$','$WIKIPEDIA_LINK$','$MEDIA_TYPE_DONUT_CHART$','$ITEM_VIEWS_LINE_CHART$','$TOP_DIGITAL_OBJECTS$','$TOP_COUNTRIES_TABLE$']}
     html_content = File.open("ref/default_provider_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
     puts "----> Creating Default Template for countries"
     name = "Default Country Template"
     genre = "country"
-    required_variables = {"required_variables" => ['$AGGREGATION_WIKIPEDIA_DESCRIPTION$','$COLLECTION_IN_EUROPEANA$','$MEDIA_TYPES_CHART$','$REUSABLES_CHART$','$TOP_PROVIDERS$','$TOP_DATA_PROVIDERS$','$TRAFFIC_CHART$','$LINE_CHART$','$TOP_COUNTRIES_MAP$','$TOP_DIGITAL_OBJECTS$']}
+    required_variables = {"required_variables" => ['$COUNTRY_NAME$','$MEDIA_TYPES_CHART$','$ITEM_VIEWS_CHART$','$TOP_DIGITAL_OBJECTS$','$TOP SEARCH TERMS$','$Total_VISITS$','$Total_PAGEVIEWS$','$REUSABLES_CHART$','$TOTAL_PROVIDERS_COUNT$','$TOP_COUNTRIES_TABLE$']}
     html_content = File.open("ref/default_country_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
-
   end
 
   task :create_or_update_europeana_aggregation_report => :environment do |t,args|
@@ -102,9 +101,9 @@ namespace :ref do
     name = "Europeana"
     genre = "europeana"
     status = ""
-    impl_aggregation = Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id })
-    Impl::DataProviders::CollectionsBuilder.perform_async(impl_aggregation.id)
-    Impl::DataProviders::DatacastsBuilder.perform_at(1.minute.from_now, impl_aggregation.id)
+    impl_aggregation = Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
+    # Impl::DataProviders::CollectionsBuilder.perform_async(impl_aggregation.id)
+    # Impl::DataProviders::DatacastsBuilder.perform_async(impl_aggregation.id)
   end
 
   task :seed_europeana_production_reports => :environment do |t,args|

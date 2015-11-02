@@ -55,6 +55,7 @@ class ApplicationController < ActionController::Base
     if @account.blank? 
       @account = current_account  if controller_name == "projects" and action_name == "new"
     end
+    gon.scopejs = "scopejs_#{controller_name}_#{action_name}"
   end
   
   # LOCKING this method. Do not change. 

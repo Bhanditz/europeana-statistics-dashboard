@@ -11,7 +11,8 @@ module Impl
 
       def head_links
         [
-          { rel: 'stylesheet', href: styleguide_url('/css/pro/screen.css'), media: 'all', title: nil }
+          { rel: 'stylesheet', href: styleguide_url('/css/pro/screen.css'), media: 'all', title: nil },
+          { rel: 'stylesheet', href: asset_path("europeana.css"), media: 'all', title: nil}
         ]
       end
 

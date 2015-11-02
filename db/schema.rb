@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151029115059) do
+ActiveRecord::Schema.define(version: 20151102205335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -340,111 +340,6 @@ ActiveRecord::Schema.define(version: 20151029115059) do
     t.string   "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "table_2509da0c", force: :cascade do |t|
-    t.string "street",    limit: 255
-    t.string "city",      limit: 255
-    t.string "zip",       limit: 255
-    t.string "state",     limit: 255
-    t.string "beds",      limit: 255
-    t.string "baths",     limit: 255
-    t.string "sq__ft",    limit: 255
-    t.string "type",      limit: 255
-    t.string "sale_date", limit: 255
-    t.string "price",     limit: 255
-    t.string "latitude",  limit: 255
-    t.string "longitude", limit: 255
-  end
-
-  create_table "table_626c4df0", force: :cascade do |t|
-    t.string "street",    limit: 255
-    t.string "city",      limit: 255
-    t.string "zip",       limit: 255
-    t.string "state",     limit: 255
-    t.string "beds",      limit: 255
-    t.string "baths",     limit: 255
-    t.string "sq__ft",    limit: 255
-    t.string "type",      limit: 255
-    t.string "sale_date", limit: 255
-    t.string "price",     limit: 255
-    t.string "latitude",  limit: 255
-    t.string "longitude", limit: 255
-  end
-
-  create_table "table_996a64e6", force: :cascade do |t|
-    t.string "street",    limit: 255
-    t.string "city",      limit: 255
-    t.string "zip",       limit: 255
-    t.string "state",     limit: 255
-    t.string "beds",      limit: 255
-    t.string "baths",     limit: 255
-    t.string "sq__ft",    limit: 255
-    t.string "type",      limit: 255
-    t.string "sale_date", limit: 255
-    t.string "price",     limit: 255
-    t.string "latitude",  limit: 255
-    t.string "longitude", limit: 255
-  end
-
-  create_table "table_a8b2fcdd", force: :cascade do |t|
-    t.string "street",    limit: 255
-    t.string "city",      limit: 255
-    t.string "zip",       limit: 255
-    t.string "state",     limit: 255
-    t.string "beds",      limit: 255
-    t.string "baths",     limit: 255
-    t.string "sq__ft",    limit: 255
-    t.string "type",      limit: 255
-    t.string "sale_date", limit: 255
-    t.string "price",     limit: 255
-    t.string "latitude",  limit: 255
-    t.string "longitude", limit: 255
-  end
-
-  create_table "table_b049bf70", force: :cascade do |t|
-    t.string "street",    limit: 255
-    t.string "city",      limit: 255
-    t.string "zip",       limit: 255
-    t.string "state",     limit: 255
-    t.string "beds",      limit: 255
-    t.string "baths",     limit: 255
-    t.string "sq__ft",    limit: 255
-    t.string "type",      limit: 255
-    t.string "sale_date", limit: 255
-    t.string "price",     limit: 255
-    t.string "latitude",  limit: 255
-    t.string "longitude", limit: 255
-  end
-
-  create_table "table_d55d9fce", force: :cascade do |t|
-    t.string "street",    limit: 255
-    t.string "city",      limit: 255
-    t.string "zip",       limit: 255
-    t.string "state",     limit: 255
-    t.string "beds",      limit: 255
-    t.string "baths",     limit: 255
-    t.string "sq__ft",    limit: 255
-    t.string "type",      limit: 255
-    t.string "sale_date", limit: 255
-    t.string "price",     limit: 255
-    t.string "latitude",  limit: 255
-    t.string "longitude", limit: 255
-  end
-
-  create_table "table_fa33534c", force: :cascade do |t|
-    t.string "street",    limit: 255
-    t.string "city",      limit: 255
-    t.string "zip",       limit: 255
-    t.string "state",     limit: 255
-    t.string "beds",      limit: 255
-    t.string "baths",     limit: 255
-    t.string "sq__ft",    limit: 255
-    t.string "type",      limit: 255
-    t.string "sale_date", limit: 255
-    t.string "price",     limit: 255
-    t.string "latitude",  limit: 255
-    t.string "longitude", limit: 255
   end
 
 end

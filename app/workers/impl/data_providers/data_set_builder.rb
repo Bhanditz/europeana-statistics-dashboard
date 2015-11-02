@@ -13,6 +13,7 @@ class Impl::DataProviders::DataSetBuilder
             d_set = Impl::DataSet.find_or_create(data_set['label'])
             data_provider_data_set = Impl::DataProviderDataSet.create({impl_aggregation_id: data_provider_id,impl_data_set_id: d_set.id })
           end
+          Impl::DataProviders::TrafficBuilder.perform_async(data_provider_id)
         else
           raise "No data set found"
         end

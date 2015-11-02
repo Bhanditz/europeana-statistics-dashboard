@@ -231,6 +231,7 @@ var createChart = function (data,chart_id,chart_key,api) {
 	} else {
 		initializer_api = getApiFromString(api);
 		config.selector = "#"+chart_id
+		config.background_color = ""
 		var k = new initializer_api(config)
 		k.execute();
 	}

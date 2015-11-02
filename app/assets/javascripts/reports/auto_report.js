@@ -19,16 +19,16 @@ Rumali.autoCharts = (function(){
 		content_data.content = $('.top_digital_objects');//custom code
 		card_data.cards = $('.card_with_value');//card layout
 		table_data.tables = $('.box_table');//tables within boxes.
-
 		var charts_length = chart_data.charts.length,
 			index = 0,
 			digital_api,
 			cards_length = card_data.cards.length,
-			table_length = table_data.tables.length;
+			table_length = table_data.tables.length,
+			top_search_terms = $('.top_search_terms');
 		chart_data.year_no = gon.selected_year;
 		chart_data.quarter_no = gon.selected_quarter;
-		loadYearMenuBar();//year filter
-		loadQuarterMenuBar();//quarter filter
+		// loadYearMenuBar();//year filter
+		// loadQuarterMenuBar();//quarter filter
 		//loop to consider pykih charts loop
 		for(;index<charts_length;index++){
 			var api_data = chart_data.charts[index].dataset.api; //Getting api data attribute of the chart
@@ -36,6 +36,10 @@ Rumali.autoCharts = (function(){
 				case 'PykCharts.oneD.pie'://pie chart
 					loadOnedPie(chart_data.charts[index],chart_data.year_no,chart_data.quarter_no);//load one d pie chart
 					break;
+				case 'PykCharts.oneD.donut':
+					loadOnedDonut(chart_data.charts[index],chart_data.year_no,chart_data.quarter_no);//load one d pie chart
+					break;
+
 				case 'PykCharts.multiD.column'://multi-dimensional column chart.
 					loadMultiDCol(chart_data.charts[index],chart_data.year_no,chart_data.quarter_no); //loading multi d column chart 
 					break;
@@ -43,6 +47,7 @@ Rumali.autoCharts = (function(){
 					loadMultiDGroupedCol(chart_data.charts[index],chart_data.year_no,chart_data.quarter_no); //loading multi d grouped column chart 
 					break;
 				case 'PykCharts.multiD.multiSeriesLine':
+					// debugger;
 					loadMultiSeriesLine(chart_data.charts[index]);
 					break;
 				case 'PykCharts.maps.oneLayer'://topojson chart.
@@ -67,6 +72,9 @@ Rumali.autoCharts = (function(){
 		}
 		loadTop10digitalObject(content_data.content[0],chart_data.year_no,chart_data.quarter_no);
 		//Get top 10 digital objects for the current year and quarter.
+		if (gon.genre == "country"){
+			loadTopSearchTerms(top_search_terms[0]);
+		}
 	}
 	//Set up the data for one d chart and then call function for pykchart.
 	var loadOnedPie = function(obj,year,quarter){
@@ -87,7 +95,7 @@ Rumali.autoCharts = (function(){
 				removeErrorDiv($(obj).attr('id'));
 			}
 
-				callPykChart(data);
+			callPykChart(data);
 
 		}
 
@@ -96,8 +104,6 @@ Rumali.autoCharts = (function(){
 				selector: selector,//Getting id for the element as expected by the pykihcharts.
 				data:data,
 				//Api for fetching the data.
-		      	chart_width: 400,
-		      	export_enable: "no",
 		      	tooltip_enable: "yes" //enabling tool tip for the gven chart
 				};
 
@@ -115,6 +121,49 @@ Rumali.autoCharts = (function(){
 		}
 	}
 
+	var loadOnedDonut = function(obj,year,quarter){
+
+		var selector = "#"+ $(obj).attr('id');
+
+		var filterData = function(data,year,quarter){
+
+			if(!chart_data.onedpie){
+				chart_data.onedpie = data;
+			}
+
+			if(data.length <= 0){
+				createErrorDiv($(obj).attr('id'));
+
+			}
+			else{
+				removeErrorDiv($(obj).attr('id'));
+			}
+
+			callPykChart(data);
+
+		}
+
+		var callPykChart = function(data){
+			var oned_obj = {
+				selector: selector,//Getting id for the element as expected by the pykihcharts.
+				data:data,
+				//Api for fetching the data.
+		      	tooltip_enable: "yes" //enabling tool tip for the gven chart
+				};
+
+			var chartobj = new PykCharts.oneD.electionDonut(
+					oned_obj
+				);
+
+			chartobj.execute(); 
+		}
+		if(!chart_data.onedpie){
+			utility.getJSON(global_obj.datacast_url+ obj.dataset.datacast_identifier,this,filterData);
+		}
+		else{
+			filterData(chart_data.onedpie,year,quarter);
+		}
+	}
 	//Set up the data for multi d chart and then call the function for pykchart no filters required
 	var loadMultiDCol = function(obj,year,quarter){
 		var selector = "#"+ $(obj).attr('id');
@@ -141,11 +190,8 @@ Rumali.autoCharts = (function(){
 				selector: selector,//Getting id for the element as expected by the pykihcharts.
 				data:data,
 				//Api for fetching the data.
-		      	export_enable: "no",//don't enable export
-		        axis_x_pointer_position: "bottom", //put x-axis at bottom
-		        tooltip_enable: "yes", //enabling tool tip for the gven chart
-		        chart_width: 400
-				};
+		    tooltip_enable: "yes", //enabling tool tip for the gven chart
+		   };
 
 			var chartobj = new PykCharts.multiD.column(
 					multid_obj
@@ -193,10 +239,8 @@ Rumali.autoCharts = (function(){
 				selector: selector,//Getting id for the element as expected by the pykihcharts.
 				data:data,
 				//Api for fetching the data.
-		      	export_enable: "no",
 		      	axis_x_pointer_position: "bottom", //put x-axis at bottom
-		      	tooltip_enable: "yes" //enabling tool tip for the gven chart
-				};
+		    };
 
 			var chartobj = new PykCharts.multiD.groupedColumn(
 					multidgrouped_obj
@@ -216,32 +260,25 @@ Rumali.autoCharts = (function(){
 
 	var loadMultiSeriesLine = function(obj){
 
-		var selector = "#"+ $(obj).attr('id'),
-			filter_data;
+		var selector = "#"+ $(obj).attr('id');
+		// var filterData = function(data){
 
-		var filterData = function(data){
+		// 	current_year = gon.selected_year;
 
-			current_year = gon.selected_year;
+		// 	if(!country_chart_data){
+		// 		country_chart_data = data;
+		// 		//Setting up country data
+		// 	}
 
-			if(!country_chart_data){
+		// 	if(filter_data.length <= 0){
+		// 		createErrorDiv($(obj).attr('id'));
+		// 	}
+		// 	else{
+		// 		removeErrorDiv($(obj).attr('id'));
+		// 	}
+		// 	callPykChart(data);
 
-				country_chart_data = data;
-				//Setting up country data
-			}
-
-			filter_data = _.filter(country_chart_data, function(obj){
-				return ((+obj.year  === current_year)||(+obj.year === current_year - 1))
-			});
-
-			if(filter_data.length <= 0){
-				createErrorDiv($(obj).attr('id'));
-			}
-			else{
-				removeErrorDiv($(obj).attr('id'));
-			}
-			callPykChart(filter_data);
-
-		}
+		// }
 
 		var callPykChart = function(data){
 			var loadonedmap_obj = {
@@ -260,10 +297,10 @@ Rumali.autoCharts = (function(){
 		}
 
 		if(!country_chart_data){
-			utility.getJSON(rumi_api_endpoint + 'datacast/'+ obj.dataset.datacast_identifier,this,filterData);
+			utility.getJSON(rumi_api_endpoint + 'datacast/'+ obj.dataset.datacast_identifier,this,callPykChart);
 		}
 		else{
-			filterData(country_chart_data);
+			callPykChart(country_chart_data);
 		}
 	}
 
@@ -274,51 +311,51 @@ Rumali.autoCharts = (function(){
 
 		var filterData = function(data,year,quarter){
 
-			if(!chart_data.maps){
-				chart_data.maps = data; //Saving the data once so that we don't need to call service again.
-			}
-			//If future data is being fetched show current record instead.
-			while(year >= gon.selected_year && quarter > gon.selected_quarter){
-				quarter--;
-				if(quarter < 0){
-					year--;
-					quarter = gon.selected_quarter;
-				}
-			}
+			// if(!chart_data.maps){
+			// 	chart_data.maps = data; //Saving the data once so that we don't need to call service again.
+			// }
+			// //If future data is being fetched show current record instead.
+			// while(year >= gon.selected_year && quarter > gon.selected_quarter){
+			// 	quarter--;
+			// 	if(quarter < 0){
+			// 		year--;
+			// 		quarter = gon.selected_quarter;
+			// 	}
+			// }
 
-			chart_data.year_no = year;
-			chart_data.quarter_no = quarter;
+			// chart_data.year_no = year;
+			// chart_data.quarter_no = quarter;
 
-			quarter_val = 'Q'+quarter;
+			// quarter_val = 'Q'+quarter;
 
-			if(!chart_data.onelayer[year]){
-				chart_data.onelayer[year]=[];
-			}
-			if(!chart_data.onelayer[year][quarter]){
-				chart_data.onelayer[year][quarter] = {};
+			// if(!chart_data.onelayer[year]){
+			// 	chart_data.onelayer[year]=[];
+			// }
+			// if(!chart_data.onelayer[year][quarter]){
+			// 	chart_data.onelayer[year][quarter] = {};
 
-				filter_data = _.filter(chart_data.maps, function(obj){ return ((obj.year  == year) && (obj.quarter  == quarter_val)) });
+			// 	filter_data = _.filter(chart_data.maps, function(obj){ return ((obj.year  == year) && (obj.quarter  == quarter_val)) });
 
-				filter_data = _.sortBy(filter_data,function(obj){
-						return (parseInt(obj.size))*(-1);
-					});
+			// 	filter_data = _.sortBy(filter_data,function(obj){
+			// 			return (parseInt(obj.size))*(-1);
+			// 		});
 
-				filter_data = _.first(filter_data,25);
+			// 	filter_data = _.first(filter_data,25);
 
-				chart_data.onelayer[year][quarter] = filter_data;
+			// 	chart_data.onelayer[year][quarter] = filter_data;
 
-			}
-			//If data is not available then call the database to fetch the data.
-			//We need to show only top 25 countries.
+			// }
+			// //If data is not available then call the database to fetch the data.
+			// //We need to show only top 25 countries.
 
-			if(chart_data.onelayer[year][quarter].length <= 0){
-				createErrorDiv($(obj).attr('id'));
-			}
-			else{
-				//Removing error div in case data is correct
-				removeErrorDiv($(obj).attr('id'));
-			}
-			callPykChart(chart_data.onelayer[year][quarter]);	
+			// if(chart_data.onelayer[year][quarter].length <= 0){
+			// 	createErrorDiv($(obj).attr('id'));
+			// }
+			// else{
+			// 	//Removing error div in case data is correct
+			// 	removeErrorDiv($(obj).attr('id'));
+			// }
+			callPykChart(data);	
 		}
 		var callPykChart = function(data){
 
@@ -350,7 +387,8 @@ Rumali.autoCharts = (function(){
 			utility.getJSON(global_obj.datacast_url+ obj.dataset.datacast_identifier,this,filterData);
 		}
 		else{
-			filterData(chart_data.maps,year,quarter);
+			// filterData(chart_data.maps,year,quarter);
+			callPykChart(chart_data.maps);
 		}
 	}
 
@@ -384,7 +422,7 @@ Rumali.autoCharts = (function(){
 			filter_data = _.sortBy(filter_data,function(obj){
 				return parseInt(obj.value)*-1;
 			});
-			filter_data = _.first(filter_data,10);
+			filter_data = _.first(filter_data,100);
 			renderHTMLForDigitalObj(filter_data);
 		}
 
@@ -392,7 +430,11 @@ Rumali.autoCharts = (function(){
 			var index=0,
 			length = 0,
 			html='';
-			length = data.length > 10 ? 10 : data.length;
+			if (gon.genre == "country"){
+				length = data.length > 100 ? 100 : data.length;
+			} else {
+				length = data.length > 25 ? 25 : data.length;
+			}
 			for(index=0;index<length;index++){
 				html += setInnerHTML(data[index],index);
 			}
@@ -430,28 +472,25 @@ Rumali.autoCharts = (function(){
 		}	
 	}
 
-	//Load the loadMultiDGroupedCol and loadMapOneLayer for the passed year no
+	var loadTopSearchTerms = function(obj){
+		var selector = "#"+ $(obj).attr('id');
 
-	//Load year filter
-	var loadYearMenuBar = function(){
-		var initial_year = 2012;//Assumption that data will be coming only 2012 onwards so as to save on performance hit.
-		var final_year = gon.selected_year;
-		var html_string = '';
-		for(var year_no = initial_year;year_no <= final_year;year_no++){//apply space after using style guide
-			html_string = html_string + '<span id = id_year_filters_yearno_'+year_no+' onclick="Rumali.autoCharts.filterDataYear('+
-				year_no+')">'+year_no+'</span>';
+		//setting up inner html content for the top 10 digital items
+		var setInnerHTML = function(data){
+			var html = '<table>';
+			html += '<thead><th>Keyword</th><th>Count</th></thead>'
+			html += '<tbody>';
+			d_length = data.length;
+			for(i=0;i<d_length;i++){
+				html += '<tr><td><span class="keyword_tooltip" data-toggle="tooltip" data-placement="bottom" title="'+data[i].output_value+'">'+data[i].output_value.substring(0,50)+'...'+'</span></td><td>'+data[i].value+'</td></tr>'
+			}
+			html += '</tbody>';
+			html += '</table>'
+			$(selector).html(html);
 		}
-		document.getElementById('id_year_filters').innerHTML = html_string;
-	}
-
-	//Load quarter filter
-	var loadQuarterMenuBar = function(){
-		var html_string = '';
-		html_string = '<span id = id_quarter_filters_quarterno_1 onclick="Rumali.autoCharts.filterQuarterData(1)">Q1</span>'
-					+'<span id = id_quarter_filters_quarterno_2 onclick="Rumali.autoCharts.filterQuarterData(2)">Q2</span>'
-					+'<span id = id_quarter_filters_quarterno_3 onclick="Rumali.autoCharts.filterQuarterData(3)">Q3</span>'
-					+'<span id = id_quarter_filters_quarterno_4 onclick="Rumali.autoCharts.filterQuarterData(4)">Q4</span>';
-		document.getElementById('id_quarter_filters').innerHTML = html_string;
+		if(!content_data.search_terms){
+			utility.getJSON(global_obj.datacast_url+ obj.dataset.datacast_identifier,this,setInnerHTML);
+		}
 	}
 
 	//Load error div in case data is not present
@@ -464,49 +503,6 @@ Rumali.autoCharts = (function(){
 	//removing a div for error
 	var removeErrorDiv = function(selector){
 		$('#error_'+selector).remove();
-	}
-
-	var loadTopCountryCard = function(obj,year,quarter){
-		var title = "",
-			country_name = "",
-			total_views = 0,
-			content = "",
-			filter_data,
-			quarter_val;
-
-
-		var filterData = function(data,year,quarter){
-			if(!chart_data.maps){
-				chart_data.maps = data; //Saving the data once so that we don't need to call service again.
-			}
-
-			quarter_val = 'Q'+quarter;
-
-		
-			filter_data = _.filter(chart_data.maps, function(obj){ 
-				return  ((+obj.year  === year) && (obj.quarter  === quarter_val)); 
-			});
-
-				
-			filter_data = _.max(filter_data, function(obj){ 
-				return +obj.size; //To check numeric value instead of string value.
-			});
-
-			title = "Top Views",
-			country_name = filter_data.iso2,
-			total_views = filter_data.size,
-			content = '<i>*previous month\'s data</i>';
-
-		}
-
-		//The data to be shown on the card
-		if(!chart_data.maps){
-			//If data is not available then call the database to fetch the data.
-			utitlity.getJSON(global_obj.datacast_url+ obj.dataset.datacast_identifier,this,filterData);
-		}
-		else{
-			filterData(chart_data.maps,year,quarter);
-		}
 	}
 
 	var renderHTMLForCard = function(data,id){

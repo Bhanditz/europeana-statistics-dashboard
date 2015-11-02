@@ -1,6 +1,5 @@
 - content_for :title do
   #{@core_project.name} · #{@account.username}
-= include_gon
 .panel.panel-default.sheet{"data-intro" => "See all your data sets in your current project here", "data-position" => "bottom"}
   .panel-body
     = link_to "Reports", account_project_impl_reports_path(@account, @core_project), style: "border-bottom: dotted 1px gray"

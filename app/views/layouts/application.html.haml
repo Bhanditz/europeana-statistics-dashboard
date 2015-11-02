@@ -2,6 +2,7 @@
 %html
   %head
     %title= (yield(:title).empty? ? "Europeana" : yield(:title))
+    = include_gon
     :javascript
       var rumi_api_endpoint = "#{REST_API_ENDPOINT}";
     = stylesheet_link_tag 'application', media: 'all'
