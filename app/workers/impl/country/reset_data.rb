@@ -13,9 +13,9 @@ class Impl::Country::ResetData
       time_lag = 10
       country.child_data_providers.each do |data_provider|
         data_provider.impl_outputs.destroy_all
-        Impl::DataProviders::MediaTypesBuilder.perform_at(10.second.from_now,data_provider.id)
-        Impl::DataProviders::TrafficBuilder.perform_at(10.second.from_now,data_provider.id)
-        Impl::DataProviders::DatacastsBuilder.perform_at(10.second.from_now,data_provider.id)
+        Impl::DataProviders::MediaTypesBuilder.perform_async(data_provider.id)
+        Impl::DataProviders::TrafficBuilder.perform_async(data_provider.id)
+        Impl::DataProviders::DatacastsBuilder.perform_async(data_provider.id)
         time_lag += 10
       end
     rescue => e
