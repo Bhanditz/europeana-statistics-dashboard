@@ -37,6 +37,7 @@ Rumali.autoCharts = (function(){
 					loadOnedPie(chart_data.charts[index],chart_data.year_no,chart_data.quarter_no);//load one d pie chart
 					break;
 				case 'PykCharts.oneD.donut':
+				case 'PykCharts.oneD.electionDonut':
 					loadOnedDonut(chart_data.charts[index],chart_data.year_no,chart_data.quarter_no);//load one d pie chart
 					break;
 
@@ -191,6 +192,8 @@ Rumali.autoCharts = (function(){
 				data:data,
 				//Api for fetching the data.
 		    tooltip_enable: "yes", //enabling tool tip for the gven chart
+		    axis_x_tick_format: "string",
+		    chart_color: ["#009413"]
 		   };
 
 			var chartobj = new PykCharts.multiD.column(

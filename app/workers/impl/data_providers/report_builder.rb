@@ -98,7 +98,7 @@ class Impl::DataProviders::ReportBuilder
 
   def self.get_data_provider_object(aggregation)
     variable_object = {}
-    core_template = Core::Template.default_data_provider_template
+    core_template = aggregation.genre == "data_provider" ? Core::Template.default_data_provider_template : Core::Template.default_provider_template
     required_variables = core_template.required_variables['required_variables']
     core_vizs = aggregation.core_vizs
 
@@ -154,7 +154,7 @@ class Impl::DataProviders::ReportBuilder
 
     #MEDIA TYPES
     media_type_key = required_variables.shift
-    media_type_value = core_vizs.media_type.first.auto_html_div
+    media_type_value = core_vizs.media_type_donut_chart.first.auto_html_div
     variable_object[media_type_key] = media_type_value
 
     #ITEM VIEWS

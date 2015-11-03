@@ -127,8 +127,23 @@ Rumali.manualCharts = (function(){
 	}
 	//Render html for table value
 	var renderHTMLforTableValue = function(sum,diff_in_value_in_percentage,value_contribution_for_europeana){
-		var string = '<span class="col-sm-12">';
+		var string = '<span class="col-sm-12">', cond_class = '';
+		cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.no_change);
+		string += '<span class='+cond_class+' data-toggle="tooltip" data-placement="bottom" data-original-title="'+utility.tooltipLayout(diff_in_value_in_percentage)+'">';
+		string += utility.applyConditionalFormatting(sum);
+		string += '</span>';
+		string += '</span>';
+		return string;	
+	}
+
+	var renderHTMLforTableValuePercent = function(sum,diff_in_value_in_percentage,value_contribution_for_europeana){
+		var string = ''+value_contribution_for_europeana+' %';
+		return string;	
+	}
+
+	var renderHTMLforTableValueDifference = function(sum,diff_in_value_in_percentage,value_contribution_for_europeana){
 		var cond_class = '';
+		
 		if(+diff_in_value_in_percentage > 0){
 			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.positive);
 		}
@@ -136,16 +151,12 @@ Rumali.manualCharts = (function(){
 			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.negative);
 		}
 		else{
-			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.no_change);	
+			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.no_change);
 		}
-
-		string += '<span class='+cond_class+' data-toggle="tooltip" data-placement="bottom" data-original-title="'+utility.tooltipLayout(diff_in_value_in_percentage)+'">';
-		string += utility.applyConditionalFormatting(sum);
-		string += '</span>(';
-		string += value_contribution_for_europeana+'%)';
-		string += '</span>';
+		var string = '<span class='+cond_class+'>'+diff_in_value_in_percentage+'</span> %';
 		return string;	
 	}
+
 
 	var renderContentForProviderRanking = function(filter_data){
 		var title ='',
@@ -166,20 +177,26 @@ Rumali.manualCharts = (function(){
 			diff_in_value_in_percentage = filter_data[i].diff_in_value_in_percentage;
 			value_contribution_for_europeana = filter_data[i].contribution_to_europeana;
 			htmlcontent += '<span class = "col-sm-12 border_top">';
-				htmlcontent += '<span class = "col-sm-5 text-center">';
+				htmlcontent += '<span class = "col-sm-4 text-center">';
 				//Title logic
 				htmlcontent += utility.renderHTMLforTableTitle(title);
 				htmlcontent += '</span>';
 
-				htmlcontent += '<span class = "col-sm-3 text-center">';
+				htmlcontent += '<span class = "col-sm-2">';
 				//Ranking logic
 				htmlcontent += renderHTMLforTableRank(rank_for_europeana,rank_for_europeana_diff);
 			
 				htmlcontent += '</span>';
 
-				htmlcontent += '<span class = "col-sm-4 text-right">';
+				htmlcontent += '<span class = "col-sm-2">';
 				//value logic
 				htmlcontent += renderHTMLforTableValue(sum,diff_in_value_in_percentage,value_contribution_for_europeana);
+				htmlcontent += '</span>';
+				htmlcontent += '<span class = "col-sm-2">';
+				htmlcontent += renderHTMLforTableValueDifference(sum,diff_in_value_in_percentage,value_contribution_for_europeana);
+				htmlcontent += '</span>';
+				htmlcontent += '<span class = "col-sm-2">';
+				htmlcontent += renderHTMLforTableValuePercent(sum,diff_in_value_in_percentage,value_contribution_for_europeana);
 				htmlcontent += '</span>';
 			htmlcontent += '</span>';
 		}
@@ -202,22 +219,24 @@ Rumali.manualCharts = (function(){
 
 			htmlcontent += '<span class = "col-sm-12 box_layout border_top">';
 				htmlcontent += '<span class = "col-sm-12 box_layout_header_span">';
-					htmlcontent += '<span class = "col-sm-5 box_layout_header"><b>Provider Name';
+					htmlcontent += '<span class = "col-sm-4 box_layout_header"><b>Provider Name';
 					htmlcontent += '</b></span>';	
-					htmlcontent += '<span class = "col-sm-3 box_layout_header"><b>Rank';
+					htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Rank';
 					htmlcontent += '</b></span>';
-					htmlcontent += '<span class = "col-sm-4 box_layout_header"><b>Value';
+					htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Total pageviews';
+					htmlcontent += '</b></span>';
+					htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Difference from previous month';
+					htmlcontent += '</b></span>';
+					htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Contribution to Europeana';
 					htmlcontent += '</b></span>';
 
 				htmlcontent += '<span class = "col-sm-12">';
 					htmlcontent += '<span class = "col-sm-5"></span>';
-					htmlcontent += '<span class = "col-sm-3 box_layout_header_subtitle">Europeana</span>';
 				htmlcontent += '</span>';
 				htmlcontent += '<span id="id_provider_rank_content">';
 
 				htmlcontent += '</span>';
 				htmlcontent += '<span class = "col-sm-12 border_top box_layout_header_subtitle">';
-				htmlcontent += '* % in value indicates contribution to Europeana.';
 				htmlcontent += '</span>';
 
 			htmlcontent += '</span>';

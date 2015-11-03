@@ -39,10 +39,10 @@ class Impl::DataProviders::DatacastsBuilder
 
         if aggregation.genre == "country"
           # Media Types
-          media_type_datacast_name = "#{aggregation.name} - Media Types"
-          media_type_datacast_query = aggregation.get_static_query("media_type")
+          media_type_datacast_name = "#{aggregation.name} - Media Type Donut Chart"
+          media_type_datacast_query = aggregation.get_media_type_donut_chart_query
           media_type_datacast = Core::Datacast.create_or_update_by(media_type_datacast_query,core_project_id,core_db_connection_id,media_type_datacast_name)
-          aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,media_type_datacast.identifier)
+          media_type_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,media_type_datacast.identifier)
 
           # Item View
           item_views_datacast_name = "#{aggregation.name} - Item View"

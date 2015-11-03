@@ -15,9 +15,9 @@ class Impl::DataProviders::VizsBuilder
           validate = false
           core_viz = Core::Viz.find_or_create(core_datacast.identifier,core_datacast.name,ref_chart.combination_code,core_datacast.core_project_id,filter_present,filter_column_name,filter_column_d_or_m, validate,true)
         end
+        Impl::DataProviders::ReportBuilder.perform_async(aggregation_id)
       rescue => e
       end
-      Impl::DataProviders::ReportBuilder.perform_async(aggregation_id)
     end
   end
 
@@ -35,7 +35,7 @@ class Impl::DataProviders::VizsBuilder
   end
 
   def self.get_ref_chart(genre)
-    ref_slugs = {"media_types" =>"column","reusables" =>"pie","top_countries" => "one-layer-map", "line_chart" => "multi-series-line","item_view" => "column","visits" => "one-number-indicator","providers_count" => "one-number-indicator","media_type_donut_chart" => "donut","item_view_line_chart" => "multi-series-line","working_media_link" => "one-number-indicator"}
+    ref_slugs = {"media_types" =>"column","reusables" =>"pie","top_countries" => "one-layer-map", "line_chart" => "multi-series-line","item_view" => "column","visits" => "one-number-indicator","providers_count" => "one-number-indicator","media_type_donut_chart" => "election-donut","item_view_line_chart" => "multi-series-line","working_media_link" => "one-number-indicator"}
     ref_chart = Ref::Chart.find_by(slug: ref_slugs[genre])
     return ref_chart
   end

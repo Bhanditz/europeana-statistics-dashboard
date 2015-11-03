@@ -43,7 +43,6 @@ class Impl::DataProviders::TrafficBuilder
       Core::TimeAggregation.create_time_aggregations("Impl::Output",data_provider_visits_output.id,visits_data,"visits","monthly")
       data_provider.update_attributes(status: "Processed visits", error_messages: nil)
       data_provider_visits_output.update_attributes(status: "Built visits", error_messages: nil)
-      puts "-----------------coming here---------------"
       Impl::DataProviders::TopCountriesBuilder.perform_async(data_provider_id,user_start_date,user_end_date)
     rescue => e
       data_provider_visits_output.update_attributes(status: "Failed to build visits", error_messages: e.to_s)
