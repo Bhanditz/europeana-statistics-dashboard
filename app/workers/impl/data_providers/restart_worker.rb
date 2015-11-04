@@ -2,9 +2,13 @@ class Impl::DataProviders::RestartWorker
   include Sidekiq::Worker
   sidekiq_options backtrace: true
   
-  def perform(data_provider_id)
-    data_provider = Impl::Aggregation.data_providers.find(data_provider_id)
-    Core::TimeAggregation.where(parent_id: p.impl_outputs.pluck(:id)).delete_all
-    Impl::DataProviders::TrafficBuilder.perform_async(p.id)
+  def perform(aggregation_id)
+    aggregation = Impl::Aggregation.find(aggregation_id)
+    aggregation.impl_outputs.destroy_all
+    if aggregation.genre == "data_provider"
+      Impl::DataProviders::TrafficBuilder.perform_async(aggregation_id)
+    end
+    Impl::DataProviders::MediaTypesBuilder.perform_async(aggregation_id)
+    Impl::DataProviders::DatacastsBuilder.perform_async(aggregation_id) unless aggregation.genre == "data_provider"
   end
 end

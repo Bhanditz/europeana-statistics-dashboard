@@ -19,13 +19,18 @@
         %thead
           %th Name
           %th
+          %th
         - @impl_providers.each do |impl_provider|
           %tr
             %td
               =impl_provider.impl_report.present? ? (link_to impl_provider.name, impl_report_path(impl_provider.impl_report), target: "_blank") : impl_provider.name
               -if impl_provider.error_messages.present?
                 .red= impl_provider.error_messages
+              -else
+                .hint= impl_provider.status
             %td=link_to "edit", edit_account_project_impl_aggregation_path(@account, @core_project,impl_provider)
+            - if impl_provider.error_messages.present?
+              %td= link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, restart_worker_account_project_impl_aggregation_path(@account, @core_project, impl_provider)
 
   #data_providers.tab-pane{role: "tabpanel"}
     - if @impl_data_providers.count > 0
@@ -33,13 +38,18 @@
         %thead
           %th Name
           %th
+          %th
         - @impl_data_providers.each do |impl_data_provider|
           %tr
             %td
               =impl_data_provider.impl_report.present? ? (link_to impl_data_provider.name, impl_report_path(impl_data_provider.impl_report), target: "_blank") : impl_data_provider.name
               -if impl_data_provider.error_messages.present?
                 .red= impl_data_provider.error_messages
+              -else
+                .hint= impl_data_provider.status
             %td=link_to "edit", edit_account_project_impl_aggregation_path(@account, @core_project,impl_data_provider)
+            - if impl_data_provider.error_messages.present?
+              %td= link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, restart_worker_account_project_impl_aggregation_path(@account, @core_project, impl_data_provider)
   #datacasts.tab-pane{role: 'tabpanel'}
     - if @core_datacasts.count > 0
       = render partial: "core/datacasts/index", locals: {core_datacasts: @core_datacasts}

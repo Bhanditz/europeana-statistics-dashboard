@@ -1,7 +1,7 @@
 class Impl::AggregationsController < ApplicationController
   
   before_action :sudo_project_member!
-  before_action :set_impl_aggregation, only: [:show,:edit, :update, :destroy, :restart_all_aggregation_workers, :datacasts,:reset_country_data]
+  before_action :set_impl_aggregation, only: [:show,:edit, :update, :destroy, :restart_worker, :datacasts,:reset_country_data]
 
   def index
     @impl_aggregations = @core_project.impl_aggregations.countries.includes(:impl_report)
@@ -50,13 +50,9 @@ class Impl::AggregationsController < ApplicationController
     redirect_to account_project_impl_aggregations_path(@core_project.account, @core_project), notice: t("d.s")
   end
 
-  def restart_all_aggregation_workers
-    notice = t("aggregation.not_data_provider")
-    if @impl_aggregation.genre == 'data_providers'
-      @impl_aggregation.restart_all_jobs
-      notice =t("aggregation.refreshed_all_jobs")
-    end
-    redirect_to edit_account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), notice: t("aggregation.refreshed_all_jobs")
+  def restart_worker
+    @impl_aggregation.restart_all_jobs
+    redirect_to :back, notice: t("aggregation.refreshed_all_jobs")
   end
 
   def reset_country_data
