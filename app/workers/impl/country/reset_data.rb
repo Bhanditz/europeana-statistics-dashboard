@@ -3,10 +3,6 @@ class Impl::Country::ResetData
   sidekiq_options backtrace: true
   
   def perform(country_id)
-    europeana_aggregation_id = Impl::Aggregation.europeana.id
-    Aggregations::Europeana::PageviewsBuilder.perform_async(europeana_aggregation_id)
-    Impl::DataProviders::CollectionsBuilder.perform_async(europeana_aggregation_id)
-    Impl::DataProviders::DatacastsBuilder.perform_async(europeana_aggregation_id)
     country = Impl::Aggregation.countries.find(country_id)
     country.update_attributes(status: "Resetting data for country", error_messages: nil)
     begin
