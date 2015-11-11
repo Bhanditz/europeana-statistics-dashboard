@@ -22,6 +22,7 @@ Rumali.autoCharts = (function(){
 		var charts_length = chart_data.charts.length,
 			index = 0,
 			digital_api,
+			id,
 			cards_length = card_data.cards.length,
 			table_length = table_data.tables.length,
 			top_search_terms = $('.top_search_terms');
@@ -56,13 +57,13 @@ Rumali.autoCharts = (function(){
 		}
 		index = 0;
 		for(;index<cards_length;index++){//rendering card layout.
-			var id = card_data.cards[index].id;
+			id = card_data.cards[index].id;
 			//common utlity function
 			utility.getJSONForCard(global_obj.datacast_url+ card_data.cards[index].dataset.datacast_identifier,id,renderHTMLForCard);
 		}
 		index = 0;
 		for(;index<table_length;index++){//rendering a table.
-			var id = table_data.tables[index].id;
+			id = table_data.tables[index].id;
 			//id which specifies on which html tag table needs to be rendered.
 			utility.getJSONforTable(global_obj.datacast_url+table_data.tables[index].dataset.datacast_identifier,id,renderHTMLForTable);
 			//renderHTMLForTable(table_json,i);
@@ -72,7 +73,7 @@ Rumali.autoCharts = (function(){
 		if (gon.genre == "country" || gon.genre == "europeana"){
 			loadTopSearchTerms(top_search_terms[0]);
 		}
-	}
+	};
 	//Set up the data for one d chart and then call function for pykchart.
 	var loadOnedPie = function(obj){
 
@@ -116,7 +117,7 @@ Rumali.autoCharts = (function(){
 		else{
 			filterData(chart_data.onedpie);
 		}
-	}
+	};
 
 	var loadOnedDonut = function(obj){
 
@@ -160,7 +161,7 @@ Rumali.autoCharts = (function(){
 		else{
 			filterData(chart_data.onedpie);
 		}
-	}
+	};
 	//Set up the data for multi d chart and then call the function for pykchart no filters required
 	var loadMultiDCol = function(obj){
 		var selector = "#"+ $(obj).attr('id');
@@ -206,7 +207,7 @@ Rumali.autoCharts = (function(){
 		else{
 			filterData(chart_data.multidcol);
 		}
-	}
+	};
 	//Set up the data for multi d grouped chart and then call the function for pykchart
 
 	var loadMultiSeriesLine = function(obj){
@@ -235,7 +236,7 @@ Rumali.autoCharts = (function(){
 		else{
 			callPykChart(country_chart_data);
 		}
-	}
+	};
 
 	var loadMapOneLayer = function (obj) {
 
@@ -272,22 +273,21 @@ Rumali.autoCharts = (function(){
 		else{
 			callPykChart(chart_data.maps);
 		}
-	}
+	};
 
 	//Function to load top 10 digital objects.
 	var loadTop10digitalObject = function(obj,filter_details){
 		var selector = "#"+ $(obj).attr('id'),
 			filter_data;
 
-		if($("#digital_objects_filter_field").length == 0){
-				var str = $('<h3 class="sel_filters" id="digital_objects_filter_field"><span class="active" data-filter_details = "current_month">This Month</span> - <span data-filter_details = "prev_month">Last Month</span> - <span data-filter_details = "current_year">Year So Far</span> - <span data-filter_details = "prev_year">Previous Year</span></h3>');
-				$(str).find('span').on('click', function (){
-						$(this).addClass('active').siblings('.active').removeClass('active');
-						Rumali.autoCharts.filterTopDigitalObjectsData($(this).attr('data-filter_details'));
-				});
-				$(selector).before(str);
+		if($("#digital_objects_filter_field").length === 0){
+			var str = $('<h3 class="sel_filters" id="digital_objects_filter_field"><span class="active" data-filter_details = "current_month">This Month</span> - <span data-filter_details = "prev_month">Last Month</span> - <span data-filter_details = "current_year">Year So Far</span> - <span data-filter_details = "prev_year">Previous Year</span></h3>');
+			$(str).find('span').on('click', function (){
+					$(this).addClass('active').siblings('.active').removeClass('active');
+					Rumali.autoCharts.filterTopDigitalObjectsData($(this).attr('data-filter_details'));
+			});
+			$(selector).before(str);
 		}
-
 		var filterData = function(data,filter_details){
 			if(!content_data.top10digital){
 				content_data.top10digital = data; //Saving the data once so that we don't need to call service again.
@@ -310,7 +310,6 @@ Rumali.autoCharts = (function(){
 					filter_data = _.filter(content_data.top10digital, function(obj){ return ((parseInt(obj.year,10)  == gon.selected_year) && (obj.month == gon.current_month))});
 					break;
 			}
-			console.log(filter_data)
 			filter_data = _.sortBy(filter_data,function(obj){
 				return parseInt(obj.value)*-1;
 			});
@@ -362,7 +361,7 @@ Rumali.autoCharts = (function(){
 		else{
 			filterData(content_data.top10digital,filter_details);
 		}	
-	}
+	};
 
 	var loadTopSearchTerms = function(obj){
 		var selector = "#"+ $(obj).attr('id');
@@ -383,7 +382,7 @@ Rumali.autoCharts = (function(){
 		if(!content_data.search_terms){
 			utility.getJSON(global_obj.datacast_url+ obj.dataset.datacast_identifier,this,setInnerHTML);
 		}
-	}
+	};
 
 	//Load error div in case data is not present
 	var createErrorDiv = function(selector,custommesg){
@@ -391,11 +390,11 @@ Rumali.autoCharts = (function(){
 		var defaultmesg = 'Data not available';
 		var error_html =  "<span id=error_"+selector+">"+(custommesg ? custommesg : defaultmesg)+"</span>";
 		$(error_html).insertBefore("#"+selector);
-	}
+	};
 	//removing a div for error
 	var removeErrorDiv = function(selector){
 		$('#error_'+selector).remove();
-	}
+	};
 
 	var renderHTMLForCard = function(data,id){
 		//id,title,key,value,content
@@ -460,23 +459,11 @@ Rumali.autoCharts = (function(){
 		for(i=0;i<data.length;i++){
 
 			title = data[i].metric;
-
-			/* Add it when it is applied
-			rank_for_country = data[i].rank_for_country;
-			*/
-
 			rank_for_europeana = data[i].rank_for_europeana;
 			rank_for_europeana_diff = data[i].diff_in_rank_for_europeana;
-
 			value = data[i].value_of_last_month;
-
-			/* Add it when it is applied
-			value_contribution_for_country = data[i].value_contribution_for_country;
-			*/
 			value_contribution_for_europeana = data[i].contribution_to_europeana;
-
 			diff_value = data[i].diff_value;
-
 			htmlcontent += '<span class = "col-sm-12 border_top">';
 			htmlcontent += '<span class = "col-sm-3 text-center">';
 			//Title logic
