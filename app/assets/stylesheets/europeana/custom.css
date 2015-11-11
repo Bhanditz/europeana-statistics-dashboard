@@ -94,7 +94,7 @@ h2 {
  	font: "Open Sans","Arial",sans-serif; 
 }
 h3 { 
-	font-size: 1rem (=16px);
+	font-size: 1rem;
   color: #4D4D4D;
   font: "Open Sans","Arial",sans-serif;
 }
@@ -123,3 +123,6 @@ table{
 .pyk-tooltip{
 	width:15rem;
 }
+
+#digital_objects_filter_field span {cursor:pointer}
+#digital_objects_filter_field span.active {cursor:default; text-decoration: underline;}

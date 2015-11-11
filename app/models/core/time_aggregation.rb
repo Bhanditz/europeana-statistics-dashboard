@@ -56,7 +56,7 @@ class Core::TimeAggregation < ActiveRecord::Base
     if a.blank?
       a = create({parent_type: parent_type, parent_id: parent_id, metric: metric, aggregation_level: aggregation_level,aggregation_level_value: aggregation_level_value, value: value})
     else
-      new_value = a.value.to_f + value
+      new_value = a.value.to_f + value.to_f
       if a.aggregation_index > 1
         prev = where(parent_type: parent_type,parent_id: parent_id, aggregation_level: aggregation_level, metric: metric, aggregation_index: a.aggregation_index - 1).first
         diff = new_value - prev.value

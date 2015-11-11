@@ -46,7 +46,7 @@ class Impl::DataProviders::ItemViews
 
     begin
       #Media display output
-      metric_dimensions = "#{ga_dimensions},ga:medium"
+      media_dimensions = "#{ga_dimensions},ga:medium"
       media_display_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","media_display")
       media_display_output.update_attributes(status: "Building media display", error_messages: nil)
       media_display_metrics = "ga:totalEvents"

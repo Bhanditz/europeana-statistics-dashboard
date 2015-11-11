@@ -102,6 +102,7 @@ namespace :ref do
     genre = "europeana"
     status = ""
     impl_aggregation = Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
+    Aggregations::Europeana::PageviewsBuilder.perform_async(impl_aggregation.id)
     Impl::DataProviders::CollectionsBuilder.perform_async(impl_aggregation.id)
     Impl::DataProviders::DatacastsBuilder.perform_async(impl_aggregation.id)
   end

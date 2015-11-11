@@ -18,7 +18,7 @@ class Impl::DataProviders::CollectionsBuilder
           raise "No Collections detected"
         end
         if aggregation.europeana?
-          Aggregations::Europeana::PageviewsBuilder.perform_async(aggregation_id)
+          Aggregations::Europeana::PageviewsBuilder.perform_at(1.week.from_now, aggregation_id)
           Impl::DataProviders::CollectionsBuilder.perform_at(1.week.from_now, aggregation_id)
         else
           Impl::DataProviders::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)

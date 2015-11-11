@@ -33,7 +33,7 @@ Rumali.utility = (function () {
 	var getJSON = function(url,context,callbackfn){
 		$.getJSON(url) //jquery function to parse url and get data in done method.
 			.done(function(data){
-					callbackfn(data,gon.selected_year,gon.selected_quarter);	
+					callbackfn(data,"current_month");
 			});
 	}
 
@@ -61,7 +61,6 @@ Rumali.utility = (function () {
 	
 	var calculateChangeFromPreviousValue = function(value,diff_value){
 
-		
 		var tooltip = (+diff_value/((+value)-(+diff_value)) * 100).toFixed(2) 
 		tooltip += '% change from the previous month.'; 
 		//rendering html for the tooltip.

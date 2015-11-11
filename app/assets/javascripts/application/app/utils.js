@@ -56,7 +56,7 @@ var largeDropDown = function(id,values,length){
 
 //Set up the data json once so that we don't need to call service again.It is saved in return_data object
 var getJSON = function(url,callbackfn){
-  var args = arguments;
+	var args = arguments;
   if (Rumali.data_objects[url]) {
 		if (args[2] && args[3] && args[4] && args[5]) {
 			callbackfn(Rumali.data_objects[url],args[2],args[3],args[4],args[5]);
@@ -129,22 +129,22 @@ var renderHTMLForCard = function(data,id,col_sm){
 }
 
 var applyConditionalFormatting = function(value){
-		var result = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		return result;
+	var result = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	return result;
 }
 var applyConditionalCssPositiveOrNegative = function(value){
-		if(value === 1){
-			return 'positive_value_css';
-		}
-		else if(value === 2){
-			return 'negative_value_css';
-		}
-		else if(value === 3){
-			return 'no_class';
-		}
-		else{
-			return 'no_class';
-		}
+	if(value === 1){
+		return 'positive_value_css';
+	}
+	else if(value === 2){
+		return 'negative_value_css';
+	}
+	else if(value === 3){
+		return 'no_class';
+	}
+	else{
+		return 'no_class';
+	}
 		//Convert it to switch case
 }
 var filterChart = function(data,column_name,column_value){
