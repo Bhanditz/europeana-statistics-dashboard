@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.2.2'
 
 #Base
-gem 'rails',        '4.2.4'
+gem 'rails','4.2.3'
 gem 'pg'
 gem 'redis'
 gem 'puma'
@@ -11,7 +11,6 @@ gem "haml-rails"
 gem "haml"
 gem 'devise'
 gem 'friendly_id', '~> 5.0.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
-gem "fog-aliyun", '0.0.10'
 gem "nestful"
 gem "simple_form"
 gem 'kaminari'
