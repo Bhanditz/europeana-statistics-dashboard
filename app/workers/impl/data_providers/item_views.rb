@@ -53,7 +53,7 @@ class Impl::DataProviders::ItemViews
       media_display_filters = "#{data_provider.get_aggregated_filters};ga:eventCategory==Europeana Lightbox"
       media_display_data = Impl::Aggregation.get_ga_data(ga_start_date,ga_end_date, media_display_metrics,media_dimensions,media_display_filters,"ga:year,ga:month")
       media_display_data = media_display_data.map{|a| {"month" => a[0], "year"=> a[1],"medium" => a[2],"totalEvents" => a[2].to_i}}
-      Core::TimeAggregation.create_aggregations(media_display_data,"monthly",aggregation_id, "Impl::Aggregation","totalEvents","medium")
+      Core::TimeAggregation.create_aggregations(media_display_data,"monthly",data_provider_id, "Impl::Aggregation","totalEvents","medium")
       media_display_output.update_attributes(status: "Processed media display")
       data_provider.update_attributes(status: "Processed media display")
     rescue => e
