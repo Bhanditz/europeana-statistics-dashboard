@@ -400,6 +400,7 @@ DEPENDENCIES
   devise
   dotenv
   europeana-styleguide!
+  fog-aliyun (= 0.0.10)
   foreman
   friendly_id (~> 5.0.0)
   gon (~> 5.2.3)

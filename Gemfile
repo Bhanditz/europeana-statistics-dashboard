@@ -11,6 +11,7 @@ gem "haml-rails"
 gem "haml"
 gem 'devise'
 gem 'friendly_id', '~> 5.0.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
+gem "fog-aliyun", '0.0.10'
 gem "nestful"
 gem "simple_form"
 gem 'kaminari'
