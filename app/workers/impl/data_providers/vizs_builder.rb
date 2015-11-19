@@ -17,6 +17,7 @@ class Impl::DataProviders::VizsBuilder
         end
         Impl::DataProviders::ReportBuilder.perform_async(aggregation_id)
       rescue => e
+        aggregation.update_attributes(status: "Failed to build Vizs", error_messages: e.to_s)
       end
     end
   end
