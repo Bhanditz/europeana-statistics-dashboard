@@ -51,7 +51,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
         rescue => e
           next
         end
-        next if digital_object_europeana_data.nil?
+        next if ((digital_object_europeana_data.nil?) or (digital_object_europeana_data["success"] == false))
         image_url = digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'].present? ? digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'] : "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
         begin
           title = digital_object_europeana_data["object"]["proxies"][0]['dcTitle'].first[1].first
