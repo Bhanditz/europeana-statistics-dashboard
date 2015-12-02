@@ -296,7 +296,7 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_data_providers_count_query
-    return "Select count(*) as value, '' as key, '' as content, 'Total Institutions' as title, '' as diff_in_value from impl_aggregation_relations where impl_parent_genre='country' and impl_child_genre='data_providers' and impl_parent_id = '#{self.id}'"
+    return "Select count(*) as value, '' as key, '' as content, 'Total Institutions' as title, '' as diff_in_value from impl_aggregation_relations where impl_parent_genre='country' and impl_child_genre='data_provider' and impl_parent_id = '#{self.id}'"
   end
 
   #PRIVATE
