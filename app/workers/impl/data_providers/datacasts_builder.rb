@@ -75,7 +75,7 @@ class Impl::DataProviders::DatacastsBuilder
 
           #Provider Count
           providers_count_datacast_name = "#{aggregation.name} - Providers Count"
-          providers_count_datacast_query =  aggregation.get_providers_count_query
+          providers_count_datacast_query =  aggregation.get_data_providers_count_query
           providers_count_datacast = Core::Datacast.create_or_update_by(providers_count_datacast_query,core_project_id, core_db_connection_id,providers_count_datacast_name)
           providers_count_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,providers_count_datacast.identifier)
 
