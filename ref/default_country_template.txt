@@ -1,28 +1,15 @@
-<div>
+<div class='row'>
   <h1> $COUNTRY_NAME$ </h1>
-  <div class="col-sm-8">
-    <div class="col-sm-6">
-      <h2 >Total number of items</h2>
-      $MEDIA_TYPES_CHART$
+  </br>
+
+  <div class='row'>
+    <div class="col-sm-8">
+      <h2>Total pageviews in throughout the years</h2>
+      $Total_PAGEVIEWS$
     </div>
-    <div class="col-sm-6">
-      <h2 >Number of Item views</h2>
-      $ITEM_VIEWS_CHART$
-    </div>
-    <div class='col-sm-12'>
-      <h2>Top 100 Digital Objects</h2>
-      <p>The list below displays the top 100 digital objects from the collection that generated the most views on Europeana.eu.</p>
-      $TOP_DIGITAL_OBJECTS$
-    </div>
-    <div class='col-sm-12'>
-      <h2>Top Search Terms</h2>
-      $TOP SEARCH TERMS$
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class='col-sm-12'>
+    <div class='col-sm-4'>
       <h2>Total collections per country</h2>
-      <p>This page provides insights  into activity per country. Europeana works with institutions from all European countries.</p>
+      <p>This page provides insights into activity per country. The data shown here is data from all institutions from this country combined.</p>
       <div class='col-sm-6'>
         <ul>
           <li><p>Austria</p></li>
@@ -67,30 +54,42 @@
           <li><p>Israel</p></li>
         </ul>
       </div>
-    </div>
-    <div class="col-sm-12">
-      <h2>Total visits in current year</h2>
-      $Total_VISITS$
-    </div>
-    <div class="col-sm-12">
-      <h2>Total pageviews in current year</h2>
-      $Total_PAGEVIEWS$
-    </div>
-    <div class="col-sm-12">
-      <h2>Open for Re-Use</h2>
-      <p>This chart displays what percentage of the collection is open for re-use.</p>
-      $REUSABLES_CHART$
-    </div>
-    <div class="col-sm-12">
-      <h2>Institutions working with Europeana</h2>
-      <p>This chart displays the institutions working with Europeana</p>
-      $TOTAL_PROVIDERS_COUNT$
+
+      <div class="col-sm-12">
+        <h2>Institutions working with Europeana</h2>
+        <p>This chart displays the institutions working with Europeana</p>
+        $TOTAL_PROVIDERS_COUNT$
+      </div>
     </div>
   </div>
 
-  <div class="col-sm-7">
-    <h2>Top 10 Countries</h2>
-    <p>This chart displays the top 10 countries that generated the most views for this collection on Europeana.eu website.</p>
-    $TOP_COUNTRIES_TABLE$
+  <div class='row'>
+    <div class='col-sm-8'>
+      <div class='col-sm-12'>
+        <h2>Top 25 Digital Objects</h2>
+        <p>The list below displays the top 25 digital objects from the collection that generated the most views on Europeana.eu.</p>
+        $TOP_DIGITAL_OBJECTS$
+      </div>
+    </div>
+    <div class='col-sm-4'>
+      <div class="col-sm-12">
+        <h2 >Total number of items</h2>
+        $MEDIA_TYPES_CHART$
+      </div>
+      <div class="col-sm-12">
+        <h2>Open for Re-Use</h2>
+        <p>This chart displays what percentage of the collection is open for re-use.</p>
+        $REUSABLES_CHART$
+      </div>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class="col-sm-7">
+      <h2>Top 10 Countries</h2>
+      <p>This chart displays the top 10 countries that generated the most views for this collection on Europeana.eu website.</p>
+      $TOP_COUNTRIES_TABLE$
+    </div>
   </div>
 </div>
+

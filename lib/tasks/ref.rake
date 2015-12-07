@@ -11,7 +11,7 @@ namespace :ref do
     puts '----> Creating Europeana Project'
 
     Core::Project.create({account_id: 1, name: "Europeana"})
-  
+
     puts "----> Loading Ref::Chart"
     Ref::Chart.destroy_all
     #headers name,slug,description,img_small,img_data_mapping,api,sort_order,genre,combination_code,source,file_path,map
@@ -30,14 +30,14 @@ namespace :ref do
       file_path        = line[10]
       map              = JSON.parse(line[11]).to_json
 
-      Ref::Chart.create!({ 
-                name: name, 
-                slug: slug, 
+      Ref::Chart.create!({
+                name: name,
+                slug: slug,
                 description: description,
-                img_small: img_small, 
-                img_data_mapping: img_data_mapping, 
-                api: api, 
-                sort_order: sort_order, 
+                img_small: img_small,
+                img_data_mapping: img_data_mapping,
+                api: api,
+                sort_order: sort_order,
                 genre: genre,
                 combination_code: cc_code,
                 source: source,
@@ -53,7 +53,7 @@ namespace :ref do
       next if index == 0 #skipping header
       name           = line[0]
       config         = JSON.parse(line[1]).to_json
-      account_id     = line[2] 
+      account_id     = line[2]
       sort_order     = line[3]
       image_url      = line[4]
       Core::Theme.create({name: name, config: config,account_id: account_id, sort_order: sort_order, image_url: image_url})
@@ -90,7 +90,7 @@ namespace :ref do
     puts "----> Creating Default Template for countries"
     name = "Default Country Template"
     genre = "country"
-    required_variables = {"required_variables" => ['$COUNTRY_NAME$','$MEDIA_TYPES_CHART$','$ITEM_VIEWS_CHART$','$TOP_DIGITAL_OBJECTS$','$TOP SEARCH TERMS$','$Total_VISITS$','$Total_PAGEVIEWS$','$REUSABLES_CHART$','$TOTAL_PROVIDERS_COUNT$','$TOP_COUNTRIES_TABLE$']}
+    required_variables = {"required_variables" => ["$COUNTRY_NAME$","$Total_PAGEVIEWS$","$TOTAL_PROVIDERS_COUNT$","$TOP_DIGITAL_OBJECTS$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
     html_content = File.open("ref/default_country_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
   end
