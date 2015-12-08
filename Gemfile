@@ -23,7 +23,7 @@ gem 'activerecord-session_store'
 gem 'redcarpet'
 gem 'europeana-styleguide', github: 'europeana/europeana-styleguide-ruby', branch: 'develop'
 gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide' # until upstream merges our pull requests
-
+gem 'dotenv-rails'
 
 #Assets related
 gem 'uglifier',     '>= 1.3.0'
@@ -46,6 +46,5 @@ group :development do
   gem 'spring'
   gem 'annotate', ">=2.6.0"
   gem "rails-erd"
-  gem 'dotenv-rails'
   gem 'foreman'
 end
