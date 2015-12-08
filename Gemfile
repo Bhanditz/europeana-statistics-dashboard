@@ -24,6 +24,7 @@ gem 'redcarpet'
 gem 'europeana-styleguide', github: 'europeana/europeana-styleguide-ruby', branch: 'develop'
 gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide' # until upstream merges our pull requests
 
+
 #Assets related
 gem 'uglifier',     '>= 1.3.0'
 gem 'sass-rails', '~> 5.0.0'
@@ -35,6 +36,8 @@ end
 
 group :production do
   gem 'rails_12factor'
+  #For Hosting, Once Richard Comes, we can revert it back to puma
+  gem "unicorn"
 end
 
 group :development do

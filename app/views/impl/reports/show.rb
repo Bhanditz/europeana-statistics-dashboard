@@ -26,8 +26,12 @@ module Impl
           },
           {
             path: asset_path('reports.js')
+          },
+          {
+            path: styleguide_url('/js/dist/require.js'),
+            data_main: styleguide_url('/js/dist/main/main-collections.js')
           }
-        ] + super
+        ]
       end
 
       def js_vars
