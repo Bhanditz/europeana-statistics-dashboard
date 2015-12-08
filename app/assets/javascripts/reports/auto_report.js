@@ -321,11 +321,7 @@ Rumali.autoCharts = (function(){
 			var index=0,
 			length = 0,
 			html='';
-			if (gon.genre == "country" || gon.genre == 'europeana'){
-				length = data.length > 100 ? 100 : data.length;
-			} else {
-				length = data.length > 25 ? 25 : data.length;
-			}
+			length = data.length > 25 ? 25 : data.length;
 			for(index=0;index<length;index++){
 				html += setInnerHTML(data[index],index);
 			}

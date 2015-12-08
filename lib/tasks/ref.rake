@@ -78,13 +78,13 @@ namespace :ref do
     puts "----> Creating Default Template for data providers"
     name = "Default Data Provider Template"
     genre = "data_providers"
-    required_variables = {"required_variables" => ['$DATA_PROVIDER_NAME$','$WIKIPEDIA_LINK$','$MEDIA_TYPE_DONUT_CHART$','$ITEM_VIEWS_LINE_CHART$','$TOP_DIGITAL_OBJECTS$','$TOP_COUNTRIES_TABLE$']}
+    required_variables = {"required_variables" => ["$DATA_PROVIDER_NAME$","$Total_PAGEVIEWS$","$TOP_DIGITAL_OBJECTS$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
     html_content = File.open("ref/default_data_provider_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
     puts "----> Creating Default Template for providers"
     name = "Default Provider Template"
     genre = "providers"
-    required_variables = {"required_variables" => ['$PROVIDER_NAME$','$WIKIPEDIA_LINK$','$MEDIA_TYPE_DONUT_CHART$','$ITEM_VIEWS_LINE_CHART$','$TOP_DIGITAL_OBJECTS$','$TOP_COUNTRIES_TABLE$']}
+    required_variables = {"required_variables" => ["$PROVIDER_NAME$","$Total_PAGEVIEWS$","$TOTAL_PROVIDERS_COUNT$","$TOP_DIGITAL_OBJECTS$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
     html_content = File.open("ref/default_provider_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
     puts "----> Creating Default Template for countries"

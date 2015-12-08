@@ -57,7 +57,7 @@
 
       <div class="col-sm-12">
         <h2>Institutions working with Europeana</h2>
-        <p>This chart displays the institutions working with Europeana</p>
+        <p>This displays the institutions working with Europeana</p>
         $TOTAL_PROVIDERS_COUNT$
       </div>
     </div>

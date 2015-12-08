@@ -1,30 +1,51 @@
-<div>
+<div class='row'>
   <h1> $PROVIDER_NAME$ </h1>
-  <p>
-    $WIKIPEDIA_LINK$
-  </p>
-  <div class="col-sm-4">
-    <h2>Total Number of Items, per media type</h2>
-    $MEDIA_TYPE_DONUT_CHART$
+  </br>
+
+  <div class='row'>
+    <div class="col-sm-8">
+      <h2>Total pageviews in throughout the years</h2>
+      $Total_PAGEVIEWS$
+    </div>
+    <div class='col-sm-4'>
+      <h2>Aggregator view</h2>
+      <p>Europeana currently has collection data from more than 3.500 cultural institutions from all over Europe. An institution can provide multiple collections and the data shown here is for all collections combined.</p>
+
+      <div class="col-sm-12">
+        <h2>Institutions working with Europeana</h2>
+        <p>This displays the institutions working with Europeana</p>
+        $TOTAL_PROVIDERS_COUNT$
+      </div>
+    </div>
   </div>
-  <div class="col-sm-4">
-    <h2>Traffic over time - No. of Item views</h2>
-    $ITEM_VIEWS_LINE_CHART$
+
+  <div class='row'>
+    <div class='col-sm-8'>
+      <div class='col-sm-12'>
+        <h2>Top 25 Digital Objects</h2>
+        <p>The list below displays the top 25 digital objects from the collection that generated the most views on Europeana.eu.</p>
+        $TOP_DIGITAL_OBJECTS$
+      </div>
+    </div>
+    <div class='col-sm-4'>
+      <div class="col-sm-12">
+        <h2 >Total number of items</h2>
+        $MEDIA_TYPES_CHART$
+      </div>
+      <div class="col-sm-12">
+        <h2>Open for Re-Use</h2>
+        <p>This chart displays what percentage of the collection is open for re-use.</p>
+        $REUSABLES_CHART$
+      </div>
+    </div>
   </div>
-  <div class="col-sm-4">
-    <h2>Aggregator Report</h2>
-    <p>
-      There are 70 aggregators, who collect material from institutions - so they act as intermediaries between  museums, etc. and the Europeana platform.
-    </p>
-  </div>
-  <div class="col-sm-12">
-    <h2>Top 25 item views</h2>
-    <p>The list below displays the top 30 digital objects from the collection that generated the most views on Europeana.eu.</p>
-    $TOP_DIGITAL_OBJECTS$
-  </div>
-  <div class='col-sm-12'>
-    <h2>Top 10 Countries</h2>
-    <p>This chart displays the top countries that generated the most views for this collection on Europeana.eu website.</p>
-    $TOP_COUNTRIES_TABLE$
+
+  <div class='row'>
+    <div class="col-sm-7">
+      <h2>Top 10 Countries</h2>
+      <p>This chart displays the top 10 countries that generated the most views for this collection on Europeana.eu website.</p>
+      $TOP_COUNTRIES_TABLE$
+    </div>
   </div>
 </div>
+
