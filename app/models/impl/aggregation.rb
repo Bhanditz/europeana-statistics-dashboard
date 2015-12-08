@@ -295,7 +295,7 @@ class Impl::Aggregation < ActiveRecord::Base
     return Impl::Aggregation.data_providers.where(name: self.name).count > 0
   end
 
-  def get_providers_count_query
+  def get_data_providers_count_query
     return "Select count(*) as value, '' as key, '' as content, 'Total Institutions' as title, '' as diff_in_value from impl_aggregation_relations where impl_parent_genre='#{self.genre}' and impl_child_genre='data_provider' and impl_parent_id = '#{self.id}'"
   end
 

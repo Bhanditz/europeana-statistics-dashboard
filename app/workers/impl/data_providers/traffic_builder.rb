@@ -23,7 +23,7 @@ class Impl::DataProviders::TrafficBuilder
     begin
       page_view_filters  = data_provider.get_aggregated_filters
       ga_access_token = Impl::DataSet.get_access_token
-      page_views = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{page_view_metrics}&dimensions=#{ga_dimensions}&filters=#{page_view_filters}").read)["rows"]
+      page_views = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{page_view_metrics}&dimensions=#{ga_dimensions}&filters=#{page_view_filters}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
       page_views_data = page_views.map{|a| {"month" => a[0], "year"=> a[1], "pageviews" => a[2].to_i}}
       page_views_data = page_views_data.sort_by {|d| [d["year"], d["month"]]}
       Core::TimeAggregation.create_time_aggregations("Impl::Output",data_provider_pageviews_output.id, page_views_data,"pageviews","monthly")
@@ -37,7 +37,7 @@ class Impl::DataProviders::TrafficBuilder
     begin
       visits_filters   = "#{page_view_filters}"
       data_provider_visits_output.update_attributes(status: "Building visits", error_messages: nil)
-      visits = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{visits_metrics}&dimensions=#{ga_dimensions}&filters=#{visits_filters}").read)["rows"]
+      visits = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{visits_metrics}&dimensions=#{ga_dimensions}&filters=#{visits_filters}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
       visits_data = visits.map{|a| {"month" => a[0], "year"=> a[1], "visits" => a[2].to_i}}
       visits_data = visits_data.sort_by {|d| [d["year"], d["month"]]}
       Core::TimeAggregation.create_time_aggregations("Impl::Output",data_provider_visits_output.id,visits_data,"visits","monthly")

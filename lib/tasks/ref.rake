@@ -90,7 +90,7 @@ namespace :ref do
     puts "----> Creating Default Template for countries"
     name = "Default Country Template"
     genre = "country"
-    required_variables = {"required_variables" => ["$COUNTRY_NAME$","$Total_PAGEVIEWS$","$TOTAL_PROVIDERS_COUNT$","$TOP_DIGITAL_OBJECTS$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
+    required_variables = {"required_variables" => ["$COUNTRY_NAME$","$Total_PAGEVIEWS$","$TOP_DIGITAL_OBJECTS$","$TOTAL_PROVIDERS_COUNT$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
     html_content = File.open("ref/default_country_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
   end
