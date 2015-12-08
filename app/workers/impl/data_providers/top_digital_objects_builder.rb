@@ -41,7 +41,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     ga_filters  = data_provider.get_aggregated_filters
     ga_start_date = start_date
     ga_end_date = end_date
-    top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}").read)["rows"]
+    top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
     if top_digital_objects_per_quarter.present?
       top_digital_objects_per_quarter.each do |digital_object|
         page_path = digital_object[0].split("/")
@@ -51,7 +51,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
         rescue => e
           next
         end
-        next if digital_object_europeana_data.nil?
+        next if ((digital_object_europeana_data.nil?) or (digital_object_europeana_data["success"] == false))
         image_url = digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'].present? ? digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'] : "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
         begin
           title = digital_object_europeana_data["object"]["proxies"][0]['dcTitle'].first[1].first

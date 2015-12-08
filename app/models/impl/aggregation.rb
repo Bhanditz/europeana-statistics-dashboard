@@ -205,7 +205,7 @@ class Impl::Aggregation < ActiveRecord::Base
       else
       query_url = "https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&sort=#{ga_sort}"
     end
-    data = JSON.parse(open(query_url).read)
+    data = JSON.parse(open(query_url, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)
     if data["totalResults"].to_i > 0
       data = data['rows']
       if data.present?
@@ -222,7 +222,7 @@ class Impl::Aggregation < ActiveRecord::Base
     ga_access_token = Impl::DataSet.get_access_token
     data = []
     begin
-      data = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{start_date}&end-date=#{end_date}&ids=ga:#{GA_IDS}&metrics=#{metrics}&dimensions=#{dimensions}&filters=#{filters}&sort=#{sort}").read)["rows"]
+      data = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{start_date}&end-date=#{end_date}&ids=ga:#{GA_IDS}&metrics=#{metrics}&dimensions=#{dimensions}&filters=#{filters}&sort=#{sort}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
     rescue => e
     end
     return data
@@ -296,7 +296,7 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_providers_count_query
-    return "Select count(*) as value, '' as key, '' as content, 'Total Institutions' as title, '' as diff_in_value from impl_aggregation_relations where impl_parent_genre='country' and impl_child_genre='provider' and impl_parent_id = '#{self.id}'"
+    return "Select count(*) as value, '' as key, '' as content, 'Total Institutions' as title, '' as diff_in_value from impl_aggregation_relations where impl_parent_genre='#{self.genre}' and impl_child_genre='data_provider' and impl_parent_id = '#{self.id}'"
   end
 
   #PRIVATE
