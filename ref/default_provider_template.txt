@@ -8,9 +8,8 @@
       $Total_PAGEVIEWS$
     </div>
     <div class='col-sm-4'>
-      <h2>Single provider view</h2>
-      <p>Europeana currently has collection data from more than 3.500 cultural institutions from all over Europe. An institution can provide multiple collections and the data shown here is for all collections combined.</p>
-
+      <h2>Aggregator view</h2>
+      <p>It’s the aggregators who do the data harvesting from cultural heritage organizations. They serve as intermediaries between the institutions and Europeana. The data shown here is data from all institutions that provided through this aggregator combined.</p>
       <div class="col-sm-12">
         <h2>Institutions working with Europeana</h2>
         <p>This displays the institutions working with Europeana</p>
