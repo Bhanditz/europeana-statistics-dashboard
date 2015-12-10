@@ -8,7 +8,7 @@
       $Total_PAGEVIEWS$
     </div>
     <div class='col-sm-4'>
-      <h2>Aggregator view</h2>
+      <h2>Single provider view</h2>
       <p>Europeana currently has collection data from more than 3.500 cultural institutions from all over Europe. An institution can provide multiple collections and the data shown here is for all collections combined.</p>
 
       <div class="col-sm-12">
