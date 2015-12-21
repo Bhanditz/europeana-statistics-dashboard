@@ -16,7 +16,7 @@ class Aggregations::Europeana::VizBuilder
           validate = false
           core_viz = Core::Viz.find_or_create(core_datacast.identifier,core_datacast.name,ref_chart.combination_code,core_datacast.core_project_id,filter_present,filter_column_name,filter_column_d_or_m, validate,true)
         end
-        Aggregations::Europeana::ReportBuilder.perform_async(aggregation_id)
+        Aggregations::Europeana::ReportBuilder.perform_async
       rescue => e
         aggregation.update_attributes(status: "Failed to build Vizs", error_messages: e.to_s)
       end

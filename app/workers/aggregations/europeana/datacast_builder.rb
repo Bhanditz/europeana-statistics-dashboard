@@ -58,7 +58,7 @@ class Aggregations::Europeana::DatacastBuilder
       top_countries_datacast = Core::Datacast.create_or_update_by(top_countries_datacast_query,core_project_id,core_db_connection_id,top_countries_datacast_name)
       top_countries_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,top_countries_datacast.identifier)
 
-      Aggregations::Europeana::VizBuilder.perform_async(aggregation.id)
+      Aggregations::Europeana::VizBuilder.perform_async
       aggregation.update_attributes(status: "Created all datacasts")
     rescue => e
       aggregation.update_attributes(status: "Failed to build datacast", error_messages: e.to_s)
