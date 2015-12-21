@@ -46,9 +46,6 @@ Rumali.manualCharts = (function(){
 		var htmlcontent = '';
 		//step 1 : get json
 		var filter_data_multid_col = [];
-
-
-
 		//get selector id
 		var selector; 
 		//load pykchart
@@ -185,9 +182,7 @@ Rumali.manualCharts = (function(){
 				htmlcontent += '<span class = "col-sm-2">';
 				//Ranking logic
 				htmlcontent += renderHTMLforTableRank(rank_for_europeana,rank_for_europeana_diff);
-			
 				htmlcontent += '</span>';
-
 				htmlcontent += '<span class = "col-sm-2">';
 				//value logic
 				htmlcontent += renderHTMLforTableValue(sum,diff_in_value_in_percentage,value_contribution_for_europeana);
@@ -211,50 +206,30 @@ Rumali.manualCharts = (function(){
 			filter_data = [],
 			original_data = data;
 
-		htmlcontent += '<h3 class="ranking_header">Provider Rankings.</h3>'
-
 		filter_data = utility.filterData(data,'metric','pageviews');
 
-		htmlcontent += utility.renderFilter(data,'metric','id_dropdown_provider_rank');//attribute name over which dropdown should be created.	
-
-			htmlcontent += '<span class = "col-sm-12 box_layout border_top">';
-				htmlcontent += '<span class = "col-sm-12 box_layout_header_span">';
-					htmlcontent += '<span class = "col-sm-4 box_layout_header"><b>Provider Name';
-					htmlcontent += '</b></span>';	
-					htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Rank';
-					htmlcontent += '</b></span>';
-					htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Total pageviews';
-					htmlcontent += '</b></span>';
-					htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Difference from previous month';
-					htmlcontent += '</b></span>';
-					htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Contribution to Europeana';
-					htmlcontent += '</b></span>';
-
-				htmlcontent += '<span class = "col-sm-12">';
-					htmlcontent += '<span class = "col-sm-5"></span>';
-				htmlcontent += '</span>';
-				htmlcontent += '<span id="id_provider_rank_content">';
-
-				htmlcontent += '</span>';
-				htmlcontent += '<span class = "col-sm-12 border_top box_layout_header_subtitle">';
-				htmlcontent += '</span>';
-
-			htmlcontent += '</span>';
-
+		htmlcontent += '<span class = "col-sm-12 box_layout border_top">';
+		htmlcontent += '<span class = "col-sm-12 box_layout_header_span">';
+		htmlcontent += '<span class = "col-sm-4 box_layout_header"><b>Provider Name';
+		htmlcontent += '</b></span>';
+		htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Rank';
+		htmlcontent += '</b></span>';
+		htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Total pageviews';
+		htmlcontent += '</b></span>';
+		htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Difference from previous month';
+		htmlcontent += '</b></span>';
+		htmlcontent += '<span class = "col-sm-2 box_layout_header"><b>Contribution to Europeana';
+		htmlcontent += '</b></span>';
+		htmlcontent += '<span class = "col-sm-12">';
+		htmlcontent += '<span class = "col-sm-5"></span>';
+		htmlcontent += '</span>';
+		htmlcontent += '<span id="id_provider_rank_content">';
+		htmlcontent += '</span>';
+		htmlcontent += '<span class = "col-sm-12 border_top box_layout_header_subtitle">';
+		htmlcontent += '</span>';
+		htmlcontent += '</span>';
 		$('#'+id).html(htmlcontent);
-
-		$('#id_dropdown_provider_rank').val('pageviews');
-
 		$('#id_provider_rank_content').html(renderContentForProviderRanking(filter_data));
-
-		$('#id_dropdown_provider_rank').change(function() {
-			filter_data = utility.filterData(original_data,'metric',this.options[this.selectedIndex].text);
-			$('#id_provider_rank_content').html(renderContentForProviderRanking(filter_data));			
-			
-			assignTooltip();
-			
-		});
-
 		assignTooltip();
 	}
 

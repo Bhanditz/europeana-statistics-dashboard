@@ -228,59 +228,40 @@ class Impl::Aggregation < ActiveRecord::Base
     return data
   end
 
-  def get_data_providers_html
-    return "" if self.genre == "data_provider"
+  def self.get_data_providers_html
     data_providers = []
-    html_string = "<table class='table'><thead><th>Name</th><th>Total Collections</th></thead>"
-    self.child_data_providers.includes(:impl_outputs).where(impl_outputs: {genre: "collections"}).order("impl_outputs.value desc").limit(10).each do |data_provider|
-      data_providers << {slug: data_provider.name.parameterize("-"),  name: data_provider.name, value: data_provider.impl_outputs.collections.first.value}
+    html_string = "<table class='table'><thead><th>Name</th></thead>"
+    self.data_providers.includes(:impl_outputs).each do |data_provider|
+      data_providers << {slug: data_provider.name.parameterize("-"),  name: data_provider.name}
     end
-    data_providers = data_providers.sort_by{|k| -k[:value].to_i}
     data_providers.each do |d|
-      html_string += "<tr><td><a href='#{BASE_URL}/#{d[:slug]}'>#{d[:name]}</a></td><td>#{ActiveSupport::NumberHelper::number_to_delimited(d[:value], delimiter: ",")}</td></tr>"
+      html_string += "<tr><td><a href='#{BASE_URL}/#{d[:slug]}'>#{d[:name]}</a></td></tr>"
     end
     html_string += "</table>"
     html_string
   end
 
-  def get_providers_html
-    return "" if self.genre == "providers"
+  def self.get_providers_html
     providers = []
-    html_string = "<table class='table'><thead><th>Name</th><th>Total Items</th></thead>"
-    self.child_providers.includes(:impl_outputs).where(impl_outputs: {genre: "collections"}).order("impl_outputs.value desc").limit(10).each do |provider|
-      providers << {slug: provider.name.parameterize("-"),  name: provider.name, value: provider.impl_outputs.collections.first.value}
+    html_string = "<table class='table'><thead><th>Name</th></thead>"
+    self.providers.includes(:impl_outputs).each do |provider|
+      providers << {slug: provider.name.parameterize("-"),  name: provider.name}
     end
-    providers = providers.sort_by{|k| -k[:value].to_i}
     providers.each do |d|
-      html_string += "<tr><td><a href='#{BASE_URL}/#{d[:slug]}'>#{d[:name]}</a></td><td>#{ActiveSupport::NumberHelper::number_to_delimited(d[:value], delimiter: ",")}</td></tr>"
-    end
-    html_string += "</table>"
-    html_string
-  end
-
-  def get_countries_html
-    return "" if self.genre == "country"
-    providers = []
-    html_string = "<table class='table'><thead><th>Name</th><th>Total Items</th></thead>"
-    self.parent_countries.includes(:impl_outputs).where(impl_outputs: {genre: "collections"}).order("impl_outputs.value desc").limit(10).each do |provider|
-      providers << {slug: provider.name.parameterize("-"),  name: provider.name, value: provider.impl_outputs.collections.first.value}
-    end
-    providers = providers.sort_by{|k| -k[:value].to_i}
-    providers.each do |d|
-      html_string += "<tr><td><a href='#{BASE_URL}/#{d[:slug]}'>#{d[:name]}</a></td><td>#{ActiveSupport::NumberHelper::number_to_delimited(d[:value], delimiter: ",")}</td></tr>"
+      html_string += "<tr><td><a href='#{BASE_URL}/#{d[:slug]}'>#{d[:name]}</a></td></tr>"
     end
     html_string += "</table>"
     html_string
   end
 
   def self.get_countries_html
-    html_string = "<table class='table'><thead><th>Country name</th><th>Total Collections</th></thead>"
+    html_string = "<table class='table'><thead><th>Country name</th></thead>"
     countries = []
-    self.countries.includes(:impl_outputs).where(impl_outputs: {genre: "collections"}).each do |country|
-      countries << {slug: country.impl_report.present? ? country.impl_report.slug : country.name.parameterize("-"), name: country.name, value: country.impl_outputs.collections.first.value}
+    self.countries.includes(:impl_outputs).each do |country|
+      countries << {slug: country.impl_report.present? ? country.impl_report.slug : country.name.parameterize("-"), name: country.name}
     end
-    countries.sort_by!{|k| -k[:value].to_i}
-    countries.each{|d| html_string += "<tr><td><a href='#{BASE_URL}/#{d[:slug]}'>#{d[:name]}</a></td><td>#{ActiveSupport::NumberHelper::number_to_delimited(d[:value], delimiter: ",")}</td></tr>"}
+    countries.each{|d| html_string += "<tr><td><a href='#{BASE_URL}/#{d[:slug]}'>#{d[:name]}</a></td></tr>"}
+    html_string += "</table>"
     return html_string
   end
 
@@ -297,6 +278,11 @@ class Impl::Aggregation < ActiveRecord::Base
 
   def get_data_providers_count_query
     return "Select count(*) as value, '' as key, '' as content, 'Total Institutions' as title, '' as diff_in_value from impl_aggregation_relations where impl_parent_genre='#{self.genre}' and impl_child_genre='data_provider' and impl_parent_id = '#{self.id}'"
+  end
+
+  def self.get_providers_hit_list_query
+    this_month = Date.today.at_beginning_of_month
+    return "SELECT impl_aggregation_name,'pageviews' as metric,sum,CAST ((diff*1.00/(case when (sum - diff) = 0 then 1 else (sum - diff) end)) * 100 as Decimal(10,4)) as diff_in_value_in_percentage,rank_for_europeana,diff_in_rank_for_europeana,CAST (contribution_to_europeana as Decimal(10,4)) FROM impl_aggregation_rank_of_pageviews where (year='#{this_month.year}' and month='#{Date::MONTHNAMES[this_month.month]}') and (rank_for_europeana <= 25) order by rank_for_europeana;"
   end
 
   #PRIVATE
@@ -318,7 +304,7 @@ class Impl::Aggregation < ActiveRecord::Base
     # Aggregations::WikiProfileBuilder.perform_async(self.id)
     if self.genre == 'country'
       Impl::Country::ProviderBuilder.perform_async(self.id)
-    elsif self.genre=='data_provider'
+    elsif self.genre =='data_provider'
       Impl::DataProviders::DataSetBuilder.perform_async(self.id)
     end
     Impl::DataProviders::MediaTypesBuilder.perform_async(self.id)

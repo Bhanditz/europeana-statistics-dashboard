@@ -1,7 +1,8 @@
 class Impl::AggregationsController < ApplicationController
   
-  before_action :sudo_project_member!
+  before_action :sudo_project_member!, except: [:providers,:data_providers,:countries,:provider_hit_list]
   before_action :set_impl_aggregation, only: [:show,:edit, :update, :destroy, :restart_worker, :datacasts,:reset_country_data]
+  layout :styleguide_aware_layout
 
   def index
     @impl_aggregations = @core_project.impl_aggregations.countries.includes(:impl_report)
@@ -62,6 +63,23 @@ class Impl::AggregationsController < ApplicationController
     redirect_to edit_account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), notice: t("aggregation.refreshed_all_jobs")
   end
 
+  def providers
+    @impl_aggregations = Impl::Aggregation.providers
+  end
+
+  def data_providers
+    @impl_aggregations = Impl::Aggregation.data_providers
+  end
+
+  def countries
+    @impl_aggregations = Impl::Aggregation.countries
+  end
+
+  def provider_hit_list
+    @core_datacast = Core::Datacast.find_by_name("Europeana Provider Hit List")
+  end
+
+
   private
 
     def set_impl_aggregation
@@ -70,5 +88,9 @@ class Impl::AggregationsController < ApplicationController
 
     def impl_aggregation_params
       params.require(:impl_aggregation).permit(:core_project_id, :genre, :name, :wikiname, :created_by, :updated_by, :last_requested_at, :last_updated_at, :provider_ids)
+    end
+
+    def styleguide_aware_layout
+      ["providers","data_providers","countries","provider_hit_list"].include?(action_name) ? false : 'application'
     end
 end

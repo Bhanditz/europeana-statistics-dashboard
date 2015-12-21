@@ -54,6 +54,8 @@ window.onload = function () {
     case "scopejs_reports_edit":
     case "scopejs_reports_update":
       Rumali.reportsNewPage();
+    case "scopejs_aggregations_provider_hit_list":
+      Rumali.manualCharts.loadReportChart();
     default:
   }
 };

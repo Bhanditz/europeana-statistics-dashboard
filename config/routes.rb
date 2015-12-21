@@ -39,6 +39,10 @@ Rails.application.routes.draw do
   get 'switch_user' => 'switch_user#set_current_user'
   get 'approve/account/:id' => "accounts#change_approval"  
   get "/new", to: "core/projects#new", as: "_new_project"
+  get "/providers", to: "impl/aggregations#providers", as: "providers"
+  get "/data_providers", to: "impl/aggregations#data_providers", as: "data_providers"
+  get "/countries", to: "impl/aggregations#countries", as: "countries"
+  get "/provider_hit_list", to: "impl/aggregations#provider_hit_list", as: "provider_hit_list"
   get "/:impl_report_id", to: "impl/reports#show", as: "impl_report"
 
   #
