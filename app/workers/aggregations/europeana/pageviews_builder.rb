@@ -23,17 +23,6 @@ class Aggregations::Europeana::PageviewsBuilder
         aggregation_output.update_attributes(status: "Fetched Pageviews", error_messages: nil)
         next_start_date = (Date.today.at_beginning_of_week).strftime("%Y-%m-%d")
         next_end_date = (Date.today.at_end_of_week).strftime("%Y-%m-%d")
-        #Creating datacast
-        aggregation_datacast_name = "#{aggregation.name} - Pageviews per year"
-        aggregation_datacast_query = Impl::Aggregation.get_europeana_query("pageviews")
-        aggregation_datacast = Core::Datacast.create_or_update_by(aggregation_datacast_query,aggregation.core_project_id, Core::DbConnection.default_db.id,aggregation_datacast_name)
-        aggregation_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,aggregation_datacast.identifier)
-        #Creating Vizs
-        filter_present, filter_column_name, filter_column_d_or_m = false, nil, nil
-        ref_chart = Ref::Chart.find_by_slug("column")
-        validate = false
-        core_viz = Core::Viz.find_or_create(aggregation_datacast.identifier,aggregation_datacast.name,ref_chart.combination_code,aggregation_datacast.core_project_id,filter_present,filter_column_name,filter_column_d_or_m, validate)
-
         #Fetching Visits
         ga_dimensions   = "ga:month,ga:year,ga:medium"
         ga_metrics      = "ga:visits"
@@ -44,35 +33,6 @@ class Aggregations::Europeana::PageviewsBuilder
         mediums_data = mediums_data.sort_by {|d| [d["year"], d["month"]]}
 
         Core::TimeAggregation.create_aggregations(mediums_data,"monthly",aggregation_id,"Impl::Aggregation","visits","medium")
-
-        #Item Views
-        ga_dimensions = "ga:month,ga:year"
-        item_views_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","item_views")
-        item_views_output.update_attributes(status: "Building item views", error_messages: nil)
-        item_views_filters = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/record/"
-        item_views_metrics = "ga:pageviews"
-        item_views_data = Impl::Aggregation.get_ga_data(ga_start_date,ga_end_date,item_views_metrics,ga_dimensions,item_views_filters,"ga:year,ga:month")
-        item_views_data = item_views_data.map{|a| {"month" => a[0], "year"=> a[1], "pageviews" => a[2].to_i}}
-        Core::TimeAggregation.create_time_aggregations("Impl::Output",item_views_output.id, item_views_data,"pageviews","monthly")
-
-        #Click throughs
-        click_through_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","click_throughs")
-        click_through_output.update_attributes(status: "Building click throughs", error_messages: nil)
-        click_through_metrics = "ga:totalEvents"
-        click_through_filters = "ga:hostname=~europeana.eu;ga:eventCategory=~Europeana Redirect"
-        click_through_data = Impl::Aggregation.get_ga_data(ga_start_date,ga_end_date, click_through_metrics,ga_dimensions,click_through_filters,"ga:year,ga:month")
-        click_through_data = click_through_data.map{|a| {"month" => a[0], "year"=> a[1], "totalEvents" => a[2].to_i}}
-        Core::TimeAggregation.create_time_aggregations("Impl::Output",click_through_output.id, click_through_data,"totalEvents","monthly")
-
-        #Media display output
-        media_dimensions = "#{ga_dimensions},ga:medium"
-        media_display_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","media_display")
-        media_display_output.update_attributes(status: "Building media display", error_messages: nil)
-        media_display_metrics = "ga:totalEvents"
-        media_display_filters = "ga:hostname=~europeana.eu;ga:eventCategory==Europeana Lightbox"
-        media_display_data = Impl::Aggregation.get_ga_data(ga_start_date,ga_end_date, media_display_metrics,media_dimensions,media_display_filters,"ga:year,ga:month")
-        media_display_data = media_display_data.map{|a| {"month" => a[0], "year"=> a[1],"medium" => a[2],"totalEvents" => a[2].to_i}}
-        Core::TimeAggregation.create_aggregations(media_display_data,"monthly",aggregation_id, "Impl::Aggregation","totalEvents","medium")
 
         #Fetching Countries
         country_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "country","pageviews")
@@ -110,18 +70,7 @@ class Aggregations::Europeana::PageviewsBuilder
         #Fetching User Types for pageviewsPerSession
         user_type_output_for_pageviews_per_session = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","pageviewsPerSession")
         Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews_per_session,"monthly", aggregation_id,"Impl::Aggregation","pageviewsPerSession","userType") unless user_type_output_for_pageviews_per_session.nil?
-
-        #Creating datacast
-        media_for_visits_name = "#{aggregation.name} - Media for Visits"
-        media_for_visits_query = aggregation.get_media_for_visits_query
-        media_for_visits_datacast = Core::Datacast.create_or_update_by(media_for_visits_query,aggregation.core_project_id, Core::DbConnection.default_db.id,media_for_visits_name)
-        aggregation_media_for_visits = Impl::AggregationDatacast.find_or_create(aggregation.id,media_for_visits_datacast.identifier)
-        #Creating Vizs
-        filter_present, filter_column_name, filter_column_d_or_m = true, "year", "m"
-        ref_chart = Ref::Chart.find_by_slug("pie")
-        validate = false
-        core_viz = Core::Viz.find_or_create(media_for_visits_datacast.identifier,media_for_visits_datacast.name,ref_chart.combination_code,media_for_visits_datacast.core_project_id,filter_present,filter_column_name,filter_column_d_or_m, validate)
-
+        Aggregations::Europeana::DatacastBuilder.perform_async(aggregation_id)
       rescue => e
         aggregation_output.update_attributes(status: "Failed to fetch pageviews", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed Fetching pageviews", error_messages: e.to_s)

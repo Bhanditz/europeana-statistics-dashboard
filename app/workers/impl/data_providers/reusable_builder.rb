@@ -4,12 +4,12 @@ class Impl::DataProviders::ReusableBuilder
 
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
-    if  ["country","provider","data_provider"].include?(aggregation.genre)
+    if  ["country","provider","data_provider","europeana"].include?(aggregation.genre)
       aggregation.update_attributes(status: "Building Reusables", error_messages: nil)
       aggregation_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","reusable")
       aggregation_output.update_attributes(status: "Building Reusables", error_messages: nil)
       begin
-        europeana_query = CGI.escape("#{aggregation.genre.upcase}:\"#{(aggregation.name)}\"")
+        europeana_query = aggregation.europeana? ? "*:*" : CGI.escape("#{aggregation.genre.upcase}:\"#{(aggregation.name)}\"")
         reusables = Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{europeana_query}&facet=REUSABILITY&profile=facets&rows=0")
         if reusables["facets"].present? and reusables["facets"].first.present? and reusables["facets"].first['fields'].present?
           reusable_data =  reusables["facets"].first['fields'].map{|a| {a["label"] => a["count"].to_i}}
@@ -20,7 +20,12 @@ class Impl::DataProviders::ReusableBuilder
         else
           raise "No reusable detected"
         end
-        Impl::DataProviders::CollectionsBuilder.perform_async(aggregation_id)
+        if aggregation.europeana?
+          Aggregations::Europeana::PageviewsBuilder.perform_at(1.week.from_now, aggregation_id)
+          Impl::DataProviders::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)
+        else
+          Impl::DataProviders::CollectionsBuilder.perform_async(aggregation_id)
+        end
       rescue => e
         aggregation_output.update_attributes(status: "Failed to build reusables", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed to build reusables", error_messages: e.to_s)

@@ -66,18 +66,12 @@ class Impl::Aggregation < ActiveRecord::Base
     end
   end
 
-  def get_traffic_query
-    if self.genre == 'data_provider'
-      return "Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta. aggregation_level_value, '_',2) as quarter, ta.aggregation_value_to_display as x,ta.metric as group, ta.value as y from core_time_aggregations as ta, (Select o.id as output_id from impl_outputs o where o.impl_parent_id = #{self.id} and genre in ('pageviews_for_traffic','events_for_traffic')) as b where ta.parent_id = b.output_id order by year, quarter;"
-    else
-      return "Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta. aggregation_level_value, '_',2) as quarter, ta.aggregation_value_to_display as x,ta.metric as group, sum(ta.value) as y from core_time_aggregations as ta, (Select o.id as output_id from impl_outputs o where o.impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")}) and genre in ('pageviews_for_traffic','events_for_traffic')) as b where ta.parent_id = b.output_id  group by split_part(ta.aggregation_level_value,'_',1),split_part(ta. aggregation_level_value, '_',2),ta.aggregation_value_to_display,ta.metric order by year, quarter;"
-    end
-  end
-
   def get_digital_objects_query
     year = Date.today.year
     if self.genre == 'data_provider'
       return "Select year,month, value,image_url,title_url,title  from (Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as month, sum(ta.value) as value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title, ROW_NUMBER() OVER (PARTITION BY  split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(value) desc) AS row  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id = #{self.id} and genre='top_digital_objects') as b where ta.parent_id = b.output_id group by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), ta.aggregation_value_to_display, ta.metric,ta.aggregation_index, output_properties -> 'image_url', output_properties -> 'title_url', output_value order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), value desc) as final_output where row < 25 and year in ('#{year}','#{year - 1 }');"
+    elsif self.genre == "europeana"
+      return "Select year,month, value,image_url,title_url,title  from (Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as month, sum(ta.value) as value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title, ROW_NUMBER() OVER (PARTITION BY  split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(value) desc) AS row  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where genre='top_digital_objects') as b where ta.parent_id = b.output_id group by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), ta.aggregation_value_to_display, ta.metric,ta.aggregation_index, output_properties -> 'image_url', output_properties -> 'title_url', output_value order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), value desc) as final_output where row < 25 and year in ('#{year}','#{year - 1 }');"
     else
       return "Select year,month, value,image_url,title_url,title  from (Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as month, sum(ta.value) as value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title, ROW_NUMBER() OVER (PARTITION BY  split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(value) desc) AS row  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")}) and genre='top_digital_objects') as b where ta.parent_id = b.output_id group by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), ta.aggregation_value_to_display, ta.metric,ta.aggregation_index, output_properties -> 'image_url', output_properties -> 'title_url', output_value order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), value desc) as final_output where row < 25 and year in ('#{year}','#{year - 1 }');"
     end
@@ -85,7 +79,7 @@ class Impl::Aggregation < ActiveRecord::Base
 
 
   def get_countries_query
-    if self.genre == 'data_provider'
+    if self.genre == 'data_provider' or self.genre == "europeana"
       return "Select sum(ta.value) as size, b.code as iso2 from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id = #{self.id} and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{Date.today.year}' group by b.code order by size desc limit 10"
     else
       return "Select sum(ta.value) as size, b.code as iso2 from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")}) and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{Date.today.year}' group by b.code order by size desc limit 10"
@@ -105,40 +99,16 @@ class Impl::Aggregation < ActiveRecord::Base
     end
   end
 
-  def get_pageviews_top_country_query
-    return "Select key,value,properties -> 'title' as title, properties -> 'content' as content from impl_outputs where impl_parent_type = 'Impl::Aggregation' and impl_parent_id = '#{self.id}' and genre='top_pageviews_country';"
-  end
-
-  def get_users_top_country_query
-    return "Select key,value,properties -> 'title' as title, properties -> 'content' as content from impl_outputs where impl_parent_type = 'Impl::Aggregation' and impl_parent_id = '#{self.id}' and genre='top_users_country';"
-  end
-
-  def get_item_views_query
-    if self.genre == 'data_provider'
-      return "Select split_part(ta.aggregation_level_value,'_',1) as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id = #{self.id}  and genre='item_views') as b  on parent_type='Impl::Output' and parent_id = output_id group by split_part(ta.aggregation_level_value,'_',1) order by split_part(ta.aggregation_level_value,'_',1)"
+  def get_pageviews_query
+    if self.genre == 'data_provider' or self.genre == "europeana"
+      return "Select split_part(ta.aggregation_level_value,'_',1) as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id = #{self.id}  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by split_part(ta.aggregation_level_value,'_',1) order by split_part(ta.aggregation_level_value,'_',1)"
     else
-      return "Select split_part(ta.aggregation_level_value,'_',1) as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")})  and genre='item_views') as b  on parent_type='Impl::Output' and parent_id = output_id group by split_part(ta.aggregation_level_value,'_',1) order by split_part(ta.aggregation_level_value,'_',1);"
-    end
-  end
-
-  def get_search_terms_query
-    if self.genre == 'data_provider'
-      return "Select sum(ta.value) as value,output_value from core_time_aggregations ta, (Select o.id as output_id, o.value as output_value from impl_outputs o where o.impl_parent_id = #{self.id} and genre='top_searchKeywords') as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{Date.today.year}' group by output_value order by value desc limit 10"
-    else
-      return "Select sum(ta.value) as value,output_value from core_time_aggregations ta, (Select o.id as output_id, o.value as output_value from impl_outputs o where o.impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")}) and genre='top_searchKeywords') as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{Date.today.year}' group by output_value order by value desc limit 10"
+      return "Select split_part(ta.aggregation_level_value,'_',1) as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")})  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by split_part(ta.aggregation_level_value,'_',1) order by split_part(ta.aggregation_level_value,'_',1);"
     end
   end
 
   def get_media_type_donut_chart_query
     return "Select key as name, value as weight from impl_static_attributes where impl_output_id in (Select o.id from impl_aggregations a, impl_outputs o where a.id = #{self.id} and o.genre='media_type' and o.impl_parent_id = a.id)"
-  end
-
-  def get_item_views_line_chart_query
-    if self.genre == 'data_provider'
-      return "Select split_part(ta.aggregation_level_value,'_',2) as x,output_genre as name, sum(ta.value) as y from core_time_aggregations as ta, (Select o.id as output_id,o.genre as output_genre from impl_outputs o where o.impl_parent_id = #{self.id} and genre in ('item_views','click_throughs')) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{Date.today.year}' group by output_genre, split_part(ta.aggregation_level_value,'_',2) order by to_date(split_part(ta.aggregation_level_value,'_',2),'MONTH');"
-    else
-      return "Select split_part(ta.aggregation_level_value,'_',2) as x,output_genre as name, sum(ta.value) as y from core_time_aggregations as ta, (Select o.id as output_id,o.genre as output_genre from impl_outputs o where o.impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")}) and genre in ('item_views','click_throughs')) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{Date.today.year}' group by output_genre,split_part(ta.aggregation_level_value,'_',2) order by to_date(split_part(ta.aggregation_level_value,'_',2),'MONTH');"
-    end
   end
 
   def restart_all_jobs
@@ -148,11 +118,6 @@ class Impl::Aggregation < ActiveRecord::Base
   def top_digital_objects_auto_html
     datacast = self.core_datacasts.top_digital_objects.first
     return "<div id='#{datacast.name.parameterize("_")}' data-datacast_identifier='#{datacast.identifier}' class='top_digital_objects'></div>"
-  end
-
-  def top_search_terms_auto_html
-    datacast = self.core_datacasts.top_search_terms.first
-    return "<div id='#{datacast.name.parameterize("_")}' data-datacast_identifier='#{datacast.identifier}' class='top_search_terms'></div>"
   end
 
   def get_aggregated_filters
@@ -283,6 +248,11 @@ class Impl::Aggregation < ActiveRecord::Base
   def self.get_providers_hit_list_query
     this_month = Date.today.at_beginning_of_month
     return "SELECT impl_aggregation_name,'pageviews' as metric,sum,CAST ((diff*1.00/(case when (sum - diff) = 0 then 1 else (sum - diff) end)) * 100 as Decimal(10,4)) as diff_in_value_in_percentage,rank_for_europeana,diff_in_rank_for_europeana,CAST (contribution_to_europeana as Decimal(10,4)) FROM impl_aggregation_rank_of_pageviews where (year='#{this_month.year}' and month='#{Date::MONTHNAMES[this_month.month]}') and (rank_for_europeana <= 25) order by rank_for_europeana;"
+  end
+
+  def get_aggregations_count_query(genre=nil)
+    return "" if ["country","data_provider","provider"].include?(genre) and self.genre != "europeana"
+    return "Select count(*) as value, '' as key, '' as content, 'Total #{genre.titleize}' as title, '' as diff_in_value from impl_aggregations where genre='#{genre}'"
   end
 
   #PRIVATE

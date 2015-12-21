@@ -17,12 +17,7 @@ class Impl::DataProviders::CollectionsBuilder
         else
           raise "No Collections detected"
         end
-        if aggregation.europeana?
-          Aggregations::Europeana::PageviewsBuilder.perform_at(1.week.from_now, aggregation_id)
-          Impl::DataProviders::CollectionsBuilder.perform_at(1.week.from_now, aggregation_id)
-        else
-          Impl::DataProviders::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)
-        end
+        Impl::DataProviders::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)
       rescue => e
         aggregation_output.update_attributes(status: "Failed to build collections", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed to build collections", error_messages: e.to_s)

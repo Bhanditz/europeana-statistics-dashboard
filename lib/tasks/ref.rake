@@ -93,6 +93,12 @@ namespace :ref do
     required_variables = {"required_variables" => ["$COUNTRY_NAME$","$Total_PAGEVIEWS$","$TOP_DIGITAL_OBJECTS$","$TOTAL_PROVIDERS_COUNT$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
     html_content = File.open("ref/default_country_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
+    puts "----> Creating Default Template for Europeana"
+    name = "Default Europeana Template"
+    genre = "europeana"
+    required_variables = {"required_variables" => ["$Total_PAGEVIEWS$","$TOP_DIGITAL_OBJECTS$","$TOTAL_COUNTRIES_COUNT$","$TOTAL_PROVIDERS_COUNT$","$TOTAL_DATA_PROVIDERS_COUNT$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
+    html_content = File.open("ref/default_europeana_template.txt").read.gsub(/\n(\s+|)/,' ')
+    Core::Template.create_or_update(name,html_content,genre,required_variables)
   end
 
   task :create_or_update_europeana_aggregation_report => :environment do |t,args|
@@ -103,8 +109,7 @@ namespace :ref do
     status = ""
     impl_aggregation = Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
     Aggregations::Europeana::PageviewsBuilder.perform_async(impl_aggregation.id)
-    Impl::DataProviders::CollectionsBuilder.perform_async(impl_aggregation.id)
-    Impl::DataProviders::DatacastsBuilder.perform_async(impl_aggregation.id)
+    Impl::DataProviders::MediaTypesBuilder.perform_async(impl_aggregation.id)
   end
 
   task :seed_europeana_production_reports => :environment do |t,args|
