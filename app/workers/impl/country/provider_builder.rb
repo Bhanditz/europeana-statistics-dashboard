@@ -7,7 +7,7 @@ class Impl::Country::ProviderBuilder
     if country.genre == 'country'
       country.update_attributes(status: "Building Providers", error_messages: nil)
       begin
-        all_providers =  JSON.parse(Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=COUNTRY:#{country.name.downcase}&rows=0&profile=facets,params&facet=PROVIDER").body)['facets'].first
+        all_providers =  JSON.parse(Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=COUNTRY:\"#{country.name.downcase}\"&rows=0&profile=facets,params&facet=PROVIDER").body)['facets'].first
         if all_providers.present? and all_providers['fields'].present?
           all_providers['fields'].each do |provider|
             provider = Impl::Aggregation.create_or_find_aggregation(provider['label'],'provider',country.core_project_id)
