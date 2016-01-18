@@ -281,7 +281,7 @@ Rumali.autoCharts = (function(){
 			filter_data;
 
 		if($("#digital_objects_filter_field").length === 0){
-			var str = $('<h3 class="sel_filters" id="digital_objects_filter_field"><span class="active" data-filter_details = "current_month">This Month</span> - <span data-filter_details = "prev_month">Last Month</span> - <span data-filter_details = "current_year">Year So Far</span> - <span data-filter_details = "prev_year">Previous Year</span></h3>');
+			var str = $('<h3 class="sel_filters" id="digital_objects_filter_field"><span class="active" data-filter_details = "december">December-2015</span>&nbsp;&nbsp;<span data-filter_details = "november">November-2015</span>&nbsp;&nbsp;<span data-filter_details = "2015">2015</span>&nbsp;&nbsp;<span data-filter_details = "2014">2014</span></h3>');
 			$(str).find('span').on('click', function (){
 					$(this).addClass('active').siblings('.active').removeClass('active');
 					Rumali.autoCharts.filterTopDigitalObjectsData($(this).attr('data-filter_details'));
@@ -297,17 +297,17 @@ Rumali.autoCharts = (function(){
 			// chart_data.year_no = year;
 			// chart_data.month = month;
 			switch(filter_details) {
-				case "prev_month":
-					filter_data = _.filter(content_data.top10digital, function(obj){ return ((parseInt(obj.year,10)  == gon.selected_year) && (obj.month == gon.prev_month))});
+				case "november":
+					filter_data = _.filter(content_data.top10digital, function(obj){ return ((parseInt(obj.year,10)  == ("2015")) && (obj.month == "November"))});
 					break;
-				case "current_year":
-					filter_data = _.filter(content_data.top10digital, function(obj){ return (parseInt(obj.year,10)  == gon.selected_year)});
+				case "2015":
+					filter_data = _.filter(content_data.top10digital, function(obj){ return (parseInt(obj.year,10)  == "2015")});
 					break;
-				case "prev_year":
-					filter_data = _.filter(content_data.top10digital, function(obj){ return (parseInt(obj.year,10)  == (gon.selected_year - 1))});
+				case "2014":
+					filter_data = _.filter(content_data.top10digital, function(obj){ return (parseInt(obj.year,10)  == "2014")});
 					break;
 				default:
-					filter_data = _.filter(content_data.top10digital, function(obj){ return ((parseInt(obj.year,10)  == gon.selected_year) && (obj.month == gon.current_month))});
+					filter_data = _.filter(content_data.top10digital, function(obj){ return ((parseInt(obj.year,10)  == "2015") && (obj.month == "December"))});
 					break;
 			}
 			filter_data = _.sortBy(filter_data,function(obj){
@@ -342,7 +342,11 @@ Rumali.autoCharts = (function(){
 					html += '</b></span>';
 			html += '<span class=col-sm-12>';
 				html += '<a href='+obj.title_url+' target="_blank">';
-				html += obj.title.substring(0,50)+"...";
+				if (obj.title) {
+					html += obj.title.substring(0,50)+"...";
+				} else {
+					html += "...";
+				}
 				html += '</a>';
 				html += '</span>';
 				html += '<span class=col-sm-12><b>';

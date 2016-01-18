@@ -16,12 +16,6 @@ class Impl::DataProviders::DatacastsBuilder
       core_project_id = aggregation.core_project_id
       core_db_connection_id = Core::DbConnection.default_db.id
 
-      # # Collections in Europeana
-      # collections_datacast_name = "#{aggregation.name} - Collections"
-      # collections_datacast_query = aggregation.get_collections_query
-      # collections_datacast = Core::Datacast.create_or_update_by(collections_datacast_query,core_project_id,core_db_connection_id,collections_datacast_name)
-      # aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,collections_datacast.identifier)
-
       unless aggregation.europeana?
         
         # Top Countries
@@ -62,7 +56,7 @@ class Impl::DataProviders::DatacastsBuilder
           providers_count_datacast = Core::Datacast.create_or_update_by(providers_count_datacast_query,core_project_id, core_db_connection_id,providers_count_datacast_name)
           providers_count_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,providers_count_datacast.identifier)
         end
-        Impl::DataProviders::VizsBuilder.perform_async(aggregation_id)
+        # Impl::DataProviders::VizsBuilder.perform_async(aggregation_id)
         aggregation.update_attributes(status: "Created all datacasts")
       end
     rescue => e

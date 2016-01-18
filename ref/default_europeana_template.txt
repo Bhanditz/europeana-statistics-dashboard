@@ -20,19 +20,19 @@
         <p>This displays the countries working with Europeana</p>
         $TOTAL_COUNTRIES_COUNT$
       </div>
-
+      </br>
       <div class="col-sm-12">
-        <h2>Aggregations working with Europeana</h2>
-        <p>This displays the aggregations working with Europeana</p>
+        <h2>Aggregators working with Europeana</h2>
+        <p>This displays the aggregators working with Europeana</p>
         $TOTAL_PROVIDERS_COUNT$
       </div>
-
+      </br>
       <div class="col-sm-12">
         <h2>Institutions working with Europeana</h2>
         <p>This displays the institutions working with Europeana</p>
         $TOTAL_DATA_PROVIDERS_COUNT$
       </div>
-
+      </br>
       <div class="col-sm-12">
         <h2 >Total number of items</h2>
         $MEDIA_TYPES_CHART$

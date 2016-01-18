@@ -67,7 +67,7 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_digital_objects_query
-    year = Date.today.year
+    year = 2015 #Date.today.year
     if self.genre == 'data_provider'
       return "Select year,month, value,image_url,title_url,title  from (Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as month, sum(ta.value) as value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title, ROW_NUMBER() OVER (PARTITION BY  split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(value) desc) AS row  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id = #{self.id} and genre='top_digital_objects') as b where ta.parent_id = b.output_id group by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), ta.aggregation_value_to_display, ta.metric,ta.aggregation_index, output_properties -> 'image_url', output_properties -> 'title_url', output_value order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), value desc) as final_output where row < 25 and year in ('#{year}','#{year - 1 }');"
     elsif self.genre == "europeana"
@@ -79,10 +79,11 @@ class Impl::Aggregation < ActiveRecord::Base
 
 
   def get_countries_query
+    year = 2015 #Date.today.year
     if self.genre == 'data_provider' or self.genre == "europeana"
-      return "Select sum(ta.value) as size, b.code as iso2 from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id = #{self.id} and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{Date.today.year}' group by b.code order by size desc limit 10"
+      return "Select sum(ta.value) as size, b.code as iso2 from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id = #{self.id} and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{year}' group by b.code order by size desc limit 10"
     else
-      return "Select sum(ta.value) as size, b.code as iso2 from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")}) and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{Date.today.year}' group by b.code order by size desc limit 10"
+      return "Select sum(ta.value) as size, b.code as iso2 from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")}) and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{year}' group by b.code order by size desc limit 10"
     end
   end
 
@@ -92,10 +93,12 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_pageviews_line_chart_query
+    year = 2015 #Date.today.year
+    month = "December" #Date::MONTHNAMES[Date.today.month]
     if self.genre == 'data_provider'
-      return "Select * from (Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id = #{self.id}  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month')) as final_output where (year::integer < #{Date.today.year} or x <> '#{Date::MONTHNAMES[Date.today.month]}');"
+      return "Select * from (Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id = #{self.id}  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month')) as final_output where (year::integer < #{year} or x <> '#{month}');"
     else
-      return "Select * from (Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")})  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month')) as final_output where (year::integer < #{Date.today.year} or x <> '#{Date::MONTHNAMES[Date.today.month]}');"
+      return "Select * from (Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")})  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month')) as final_output where (year::integer < #{year} or x <> '#{month}');"
     end
   end
 
@@ -231,7 +234,7 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_total_visits_query
-    year  = Date.today.year
+    year = 2015 #Date.today.year
     return "Select sum(value) as value, '' as key, '' as content, 'Total Visits in #{year}' as title, '' as diff_in_value from core_time_aggregations where parent_id in (Select io.id as output_id from impl_outputs io join impl_aggregations ia on impl_parent_id=ia.id and ia.id in (#{self.child_data_providers.pluck(:id).join(",")}) and io.genre='visits') and split_part(aggregation_level_value,'_',1)='#{year}'"
   end
 
@@ -246,8 +249,9 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def self.get_providers_hit_list_query
-    this_month = Date.today.at_beginning_of_month
-    return "SELECT impl_aggregation_name,'pageviews' as metric,sum,CAST ((diff*1.00/(case when (sum - diff) = 0 then 1 else (sum - diff) end)) * 100 as Decimal(10,4)) as diff_in_value_in_percentage,rank_for_europeana,diff_in_rank_for_europeana,CAST (contribution_to_europeana as Decimal(10,4)) FROM impl_aggregation_rank_of_pageviews where (year='#{this_month.year}' and month='#{Date::MONTHNAMES[this_month.month]}') and (rank_for_europeana <= 25) order by rank_for_europeana;"
+    year = 2015 #Date.today.year
+    month = "December" #Date::MONTHNAMES[Date.today.month]
+    return "SELECT impl_aggregation_name,'pageviews' as metric,sum,CAST ((diff*1.00/(case when (sum - diff) = 0 then 1 else (sum - diff) end)) * 100 as Decimal(10,4)) as diff_in_value_in_percentage,rank_for_europeana,diff_in_rank_for_europeana,CAST (contribution_to_europeana as Decimal(10,4)) FROM impl_aggregation_rank_of_pageviews where (year='#{year}' and month='#{month}') and (rank_for_europeana <= 25) order by rank_for_europeana;"
   end
 
   def get_aggregations_count_query(genre=nil)
@@ -257,12 +261,6 @@ class Impl::Aggregation < ActiveRecord::Base
 
   #PRIVATE
   private
-
-  def self.get_current_and_prev_date
-    current_date = Date.today.at_beginning_of_month
-    prev_date = (current_date - 1)
-    return current_date, prev_date
-  end
 
   def before_create_set
     self.status = "In queue"

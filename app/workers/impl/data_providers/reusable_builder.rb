@@ -21,8 +21,8 @@ class Impl::DataProviders::ReusableBuilder
           raise "No reusable detected"
         end
         if aggregation.europeana?
-          Aggregations::Europeana::PageviewsBuilder.perform_at(1.week.from_now, aggregation_id)
-          Impl::DataProviders::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)
+          # Aggregations::Europeana::PageviewsBuilder.perform_at(1.week.from_now, aggregation_id)
+          # Impl::DataProviders::MediaTypesBuilder.perform_at(1.week.from_now, aggregation_id)
         else
           Impl::DataProviders::CollectionsBuilder.perform_async(aggregation_id)
         end

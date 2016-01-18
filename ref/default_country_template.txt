@@ -16,51 +16,8 @@
     </div>
     <div class='col-sm-4'>
       <h2>Total collections per country</h2>
-      <p>This page provides insights into activity per country. The data shown here is data from all institutions from this country combined.</p>
-      <div class='col-sm-6'>
-        <ul>
-          <li><p>Austria</p></li>
-          <li><p>Belgium</p></li>
-          <li><p>Bulgaria</p></li>
-          <li><p>Croatia</p></li>
-          <li><p>Cyprus</p></li>
-          <li><p>Czech Republic</p></li>
-          <li><p>Denmark</p></li>
-          <li><p>Estonia</p></li>
-          <li><p>Finland</p></li>
-          <li><p>France</p></li>
-          <li><p>Germany</p></li>
-          <li><p>Greece</p></li>
-          <li><p>Hungary</p></li>
-          <li><p>Ireland</p></li>
-          <li><p>Italy</p></li>
-          <li><p>Latvia</p></li>
-          <li><p>Lithuania</p></li>
-          <li><p>Luxembourg</p></li>
-        </ul>
-      </div>
-      <div class='col-sm-6'>
-        <ul>
-          <li><p>Malta</p></li>
-          <li><p>Netherlands</p></li>
-          <li><p>Poland</p></li>
-          <li><p>Portugal</p></li>
-          <li><p>Romania</p></li>
-          <li><p>Slovakia</p></li>
-          <li><p>Slovenia</p></li>
-          <li><p>Spain</p></li>
-          <li><p>Sweden</p></li>
-          <li><p>United Kingdom</p></li>
-          <li><p>Switzerland</p></li>
-          <li><p>Norway</p></li>
-          <li><p>Serbia</p></li>
-          <li><p>Ukraine</p></li>
-          <li><p>Iceland</p></li>
-          <li><p>Turkey</p></li>
-          <li><p>Russia</p></li>
-          <li><p>Israel</p></li>
-        </ul>
-      </div>
+      <p>This page provides insights into activity per country. The data shown here is data from all institutions from this country combined. </p>
+
 
       <div class="col-sm-12">
         <h2>Institutions working with Europeana</h2>

@@ -17,7 +17,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
       data_provider.update_attributes(status: "Processed top 10 digital objects")
       next_start_date = (Date.today.at_beginning_of_week).strftime("%Y-%m-%d")
       next_end_date = (Date.today.at_end_of_week).strftime("%Y-%m-%d")
-      Impl::DataProviders::TrafficBuilder.perform_at(1.week.from_now,data_provider_id,next_start_date, next_end_date)
+      #Impl::DataProviders::TrafficBuilder.perform_at(1.week.from_now,data_provider_id,next_start_date, next_end_date)
       Impl::DataProviders::DatacastsBuilder.perform_async(data_provider_id)
       data_provider.parent_providers.each do |provider|
         Impl::DataProviders::DatacastsBuilder.perform_async(provider.id)
