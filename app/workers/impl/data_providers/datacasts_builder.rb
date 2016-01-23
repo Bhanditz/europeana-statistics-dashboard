@@ -1,7 +1,7 @@
 class Impl::DataProviders::DatacastsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
-  
+
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
     aggregation.update_attributes(status: "Building Datacasts", error_messages: nil)
@@ -17,7 +17,7 @@ class Impl::DataProviders::DatacastsBuilder
       core_db_connection_id = Core::DbConnection.default_db.id
 
       unless aggregation.europeana?
-        
+
         # Top Countries
         top_countries_datacast_name = "#{aggregation.name} - Top Countries"
         top_countries_datacast_query = aggregation.get_countries_query
@@ -56,7 +56,7 @@ class Impl::DataProviders::DatacastsBuilder
           providers_count_datacast = Core::Datacast.create_or_update_by(providers_count_datacast_query,core_project_id, core_db_connection_id,providers_count_datacast_name)
           providers_count_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,providers_count_datacast.identifier)
         end
-        # Impl::DataProviders::VizsBuilder.perform_async(aggregation_id)
+        Impl::DataProviders::VizsBuilder.perform_async(aggregation_id)
         aggregation.update_attributes(status: "Created all datacasts")
       end
     rescue => e

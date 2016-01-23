@@ -15,7 +15,7 @@ class Aggregations::Europeana::PageviewsBuilder
         ga_metrics      = "ga:pageviews"
         ga_filters      = "ga:hostname=~europeana.eu"
         ga_access_token = Impl::DataSet.get_access_token
-        page_views = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}").read)["rows"]
+        page_views = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
         page_views_data = page_views.map{|a| {"month" => a[0], "year" => a[1], "pageviews" => a[2].to_i}}
         page_views_data = page_views_data.sort_by {|d| [d["year"], d["month"]]}
         Core::TimeAggregation.create_time_aggregations("Impl::Output",aggregation_output.id,page_views_data,"pageviews","monthly")
@@ -28,7 +28,7 @@ class Aggregations::Europeana::PageviewsBuilder
         ga_metrics      = "ga:visits"
         ga_filters      = "ga:hostname=~europeana.eu"
         ga_access_token = Impl::DataSet.get_access_token
-        mediums = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}").read)["rows"]
+        mediums = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
         mediums_data = mediums.map {|a| {"month" => a[0], "year" => a[1], "medium" => a[2], "visits" => a[3]}}
         mediums_data = mediums_data.sort_by {|d| [d["year"], d["month"]]}
 
@@ -71,10 +71,53 @@ class Aggregations::Europeana::PageviewsBuilder
         user_type_output_for_pageviews_per_session = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","pageviewsPerSession")
         Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews_per_session,"monthly", aggregation_id,"Impl::Aggregation","pageviewsPerSession","userType") unless user_type_output_for_pageviews_per_session.nil?
         Aggregations::Europeana::DatacastBuilder.perform_async(aggregation_id)
+
+        #Top Digital Objects
+        top_digital_objects = Aggregations::Europeana::PageviewsBuilder.fetch_data_for_all_quarters_between(user_start_date, user_end_date)
+        Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects,"monthly", aggregation.id)
+
       rescue => e
         aggregation_output.update_attributes(status: "Failed to fetch pageviews", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed Fetching pageviews", error_messages: e.to_s)
       end
     end
   end
+
+
+  def self.fetch_data_for_all_quarters_between(start_date, end_date)
+    top_digital_objects_data = []
+    ga_access_token = Impl::DataSet.get_access_token
+    europeana_base_url = "http://europeana.eu/api/v2/"
+    base_title_url = "http://www.europeana.eu/portal/record/"
+    ga_metrics="ga:pageviews"
+    ga_dimensions="ga:pagePath,ga:month,ga:year"
+    ga_sort= "-ga:pageviews"
+    ga_filters  = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/record/"
+    ga_start_date = start_date
+    ga_end_date = end_date
+    top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
+    if top_digital_objects_per_quarter.present?
+      top_digital_objects_per_quarter.each do |digital_object|
+        page_path = digital_object[0].split("/")
+        size = digital_object[3].to_i
+        begin
+          digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split(".")[0]}.json?wskey=api2demo&profile=full").read)
+        rescue => e
+          next
+        end
+        next if ((digital_object_europeana_data.nil?) or (digital_object_europeana_data["success"] == false))
+        image_url = digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'].present? ? digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'] : "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
+        begin
+          title = digital_object_europeana_data["object"]["proxies"][0]['dcTitle'].first[1].first
+        rescue => e
+          title = "No Title Found"
+        end
+        title_middle_url = digital_object_europeana_data["object"]['europeanaAggregation']['about'].split("/")
+        title_url = "#{base_title_url}#{title_middle_url[3]}/#{title_middle_url[4]}.html"
+        top_digital_objects_data << {"image_url" => image_url, "title" => title, "title_url" => title_url, "size" => size, "year" => digital_object[2], "month" =>digital_object[1] }
+      end
+    end
+    return top_digital_objects_data
+  end
+
 end
