@@ -43,7 +43,7 @@ Rumali.autoCharts = (function(){
 					break;
 
 				case 'PykCharts.multiD.column'://multi-dimensional column chart.
-					loadMultiDCol(chart_data.charts[index]); //loading multi d column chart 
+					loadMultiDCol(chart_data.charts[index]); //loading multi d column chart
 					break;
 				case 'PykCharts.multiD.multiSeriesLine':
 					loadMultiSeriesLine(chart_data.charts[index]);
@@ -109,7 +109,7 @@ Rumali.autoCharts = (function(){
 					oned_obj
 				);
 
-			chartobj.execute(); 
+			chartobj.execute();
 		}
 		if(!chart_data.onedpie){
 			utility.getJSON(global_obj.datacast_url+ obj.dataset.datacast_identifier,this,filterData);
@@ -153,7 +153,7 @@ Rumali.autoCharts = (function(){
 					oned_obj
 				);
 
-			chartobj.execute(); 
+			chartobj.execute();
 		}
 		if(!chart_data.onedpie){
 			utility.getJSON(global_obj.datacast_url+ obj.dataset.datacast_identifier,this,filterData);
@@ -264,7 +264,7 @@ Rumali.autoCharts = (function(){
 						loadonedmap_obj
 					);
 
-			chartobj.execute(); 
+			chartobj.execute();
 		}
 
 		if(!chart_data.maps){
@@ -288,7 +288,24 @@ Rumali.autoCharts = (function(){
 			});
 			$(selector).before(str);
 		}
+
 		var filterData = function(data,filter_details){
+			function aggregate_data(data, aggregate_by, aggregate_on) {
+				var grouped_data = _.groupBy(data, function(obj) { return obj[aggregate_by]; }),
+					keys = Object.keys(grouped_data),
+					group,
+					value,
+					aggregated_data = [];
+				for(var i =0, length = keys.length; i < length; i++) {
+					group = grouped_data[keys[i]];
+					value = _.reduce(group, function(memo, obj){ return memo + parseInt(obj[aggregate_on], 10); }, 0);
+					var clone = JSON.parse(JSON.stringify(group[0]))
+					clone[aggregate_on] = value + "";
+					aggregated_data.push(clone);
+				}
+				return aggregated_data;
+			}
+
 			if(!content_data.top10digital){
 				content_data.top10digital = data; //Saving the data once so that we don't need to call service again.
 			}
@@ -302,9 +319,11 @@ Rumali.autoCharts = (function(){
 					break;
 				case "2015":
 					filter_data = _.filter(content_data.top10digital, function(obj){ return (parseInt(obj.year,10)  == "2015")});
+					filter_data = aggregate_data(filter_data, "title_url", "value");
 					break;
 				case "2014":
 					filter_data = _.filter(content_data.top10digital, function(obj){ return (parseInt(obj.year,10)  == "2014")});
+					filter_data = aggregate_data(filter_data, "title_url", "value");
 					break;
 				default:
 					filter_data = _.filter(content_data.top10digital, function(obj){ return ((parseInt(obj.year,10)  == "2015") && (obj.month == "December"))});
@@ -360,7 +379,7 @@ Rumali.autoCharts = (function(){
 		}
 		else{
 			filterData(content_data.top10digital,filter_details);
-		}	
+		}
 	};
 
 	var loadTopSearchTerms = function(obj){
@@ -505,7 +524,7 @@ Rumali.autoCharts = (function(){
 		if(rank_for_europeana_diff > 0){
 			string += '<span class="'+utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.negative)+'">';
 			string += rank_for_europeana_diff + ' &#9660;';
-		} 
+		}
 		else if(rank_for_europeana_diff < 0){
 			string += '<span class="'+utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.positive)+'">';
 			string += (rank_for_europeana_diff*-1)+ ' &#9652;';
@@ -533,12 +552,12 @@ Rumali.autoCharts = (function(){
 			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.negative);
 		}
 		else{
-			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.no_change);	
+			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.no_change);
 		}
 		string += '<span class='+cond_class+' data-toggle="tooltip" data-placement="bottom" data-original-title="'+utility.calculateChangeFromPreviousValue(value,diff_value)+'">';
 		string += utility.applyConditionalFormatting(value);
 		string += '</span>(';
-		//assiging value and conditional css to it. 
+		//assiging value and conditional css to it.
 		/* Add it later
 		string += '('+(value_contribution_for_country)+'% / '
 		*/
