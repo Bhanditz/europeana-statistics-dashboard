@@ -10,7 +10,7 @@ class Aggregations::Europeana::PageviewsBuilder
       aggregation_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","pageviews")
       aggregation_output.update_attributes(status: "Fetching pageviews", error_messages: nil)
       begin
-        ga_start_date   = aggregation.last_updated_at.strftime("%Y-%m-%d") || "2012-01-01"
+        ga_start_date   = aggregation.last_updated_at.present? ? aggregation.last_updated_at.strftime("%Y-%m-%d") : "2012-01-01"
         ga_end_date     = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d")
         ga_dimensions   = "ga:month,ga:year"
         ga_metrics      = "ga:pageviews"
