@@ -13,7 +13,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     data_provider.update_attributes(status: "Building top digital objects", error_messages: nil)
     begin
 
-      top_digital_objects = Impl::DataProviders::TopDigitalObjectsBuilder.fetch_data_for_all_quarters_between(aggregation.last_updated_at.present? ? aggregation.last_updated_at.strftime("%Y-%m-%d") : "2012-01-01", (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"), data_provider)
+      top_digital_objects = Impl::DataProviders::TopDigitalObjectsBuilder.fetch_data_for_all_quarters_between(data_provider.last_updated_at.present? ? data_provider.last_updated_at.strftime("%Y-%m-%d") : "2012-01-01", (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"), data_provider)
       Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects,"monthly", data_provider_id)
       data_provider.update_attributes(status: "Processed top 10 digital objects")
       Impl::DataProviders::DatacastsBuilder.perform_async(data_provider_id)
