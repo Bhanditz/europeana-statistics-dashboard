@@ -5,7 +5,7 @@ class AddCols123ToImplAggregation < ActiveRecord::Migration
       impl_output = d.impl_outputs.where(genre: 'pageviews').first
       if impl_output.present?
         last_updated = impl_output.core_time_aggregations.order("split_part(aggregation_level_value,'_',1) desc, to_date(split_part(aggregation_level_value,'_',2),'Month') desc").first
-        if last_updated_at.present?
+        if last_updated.present?
           last_updated_at = Date.parse(last_updated.aggregation_level_value.split("_").join(" ")).at_end_of_month
           d.update_column(:last_updated_at, last_updated_at)
         end
