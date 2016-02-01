@@ -21,7 +21,7 @@ class Impl::DataProviderDataSet < ActiveRecord::Base
   belongs_to :impl_data_set, class_name: "Impl::DataSet", foreign_key: "impl_data_set_id"
   #VALIDATIONS
   validates :impl_data_set_id, presence: :true
-  validates :impl_aggregation_id, presence: :true
+  validates :impl_aggregation_id, presence: :true, uniqueness: {scope: :impl_data_set_id}
 
   #CALLBACKS
   before_create :before_create_set

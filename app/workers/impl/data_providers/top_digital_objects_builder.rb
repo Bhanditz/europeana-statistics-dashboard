@@ -2,7 +2,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
-  def perform(data_provider_id, user_start_date = "2012-01-01",user_end_date = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"))
+  def perform(data_provider_id)
     data_provider = Impl::Aggregation.data_providers.find(data_provider_id)
     begin
       raise "'Dismarc' data set" if data_provider.dismarc_data_set?
@@ -12,12 +12,10 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     end
     data_provider.update_attributes(status: "Building top digital objects", error_messages: nil)
     begin
-      top_digital_objects = Impl::DataProviders::TopDigitalObjectsBuilder.fetch_data_for_all_quarters_between(user_start_date, user_end_date, data_provider)
+
+      top_digital_objects = Impl::DataProviders::TopDigitalObjectsBuilder.fetch_data_for_all_quarters_between(aggregation.last_upated_at || "2012-01-01", (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"), data_provider)
       Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects,"monthly", data_provider_id)
       data_provider.update_attributes(status: "Processed top 10 digital objects")
-      next_start_date = (Date.today.at_beginning_of_week).strftime("%Y-%m-%d")
-      next_end_date = (Date.today.at_end_of_week).strftime("%Y-%m-%d")
-      #Impl::DataProviders::TrafficBuilder.perform_at(1.week.from_now,data_provider_id,next_start_date, next_end_date)
       Impl::DataProviders::DatacastsBuilder.perform_async(data_provider_id)
       data_provider.parent_providers.each do |provider|
         Impl::DataProviders::DatacastsBuilder.perform_async(provider.id)
@@ -41,7 +39,8 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     ga_filters  = data_provider.get_aggregated_filters
     ga_start_date = start_date
     ga_end_date = end_date
-    top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
+    ga_max_results = data_provider.last_upated_at.present? ? 100 : 1000
+    top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
     if top_digital_objects_per_quarter.present?
       top_digital_objects_per_quarter.each do |digital_object|
         page_path = digital_object[0].split("/")

@@ -69,12 +69,6 @@ class AddIndexes < ActiveRecord::Migration
 		  USING btree
 		  (impl_parent_id, impl_parent_type);")
 
-		#Impl::StaticAttribute
-		execute("CREATE INDEX impl_static_attributes_index
-		  ON impl_static_attributes
-		  USING btree
-		  (impl_output_id);");
-
 		#Ref::Chart
 		execute("CREATE INDEX ref_charts_index
 		  ON ref_charts

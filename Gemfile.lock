@@ -98,6 +98,7 @@ GEM
     celluloid-supervision (0.20.5)
       timers (>= 4.1.1)
     choice (0.2.0)
+    chronic (0.10.2)
     coderay (1.1.0)
     colorize (0.7.7)
     connection_pool (2.2.0)
@@ -393,6 +394,8 @@ GEM
     uuidtools (2.1.5)
     warden (1.2.3)
       rack (>= 1.0)
+    whenever (0.9.4)
+      chronic (>= 0.6.3)
     xml-simple (1.1.5)
 
 PLATFORMS
@@ -432,6 +435,7 @@ DEPENDENCIES
   susy
   uglifier (>= 1.3.0)
   unicorn
+  whenever
 
 BUNDLED WITH
    1.10.6

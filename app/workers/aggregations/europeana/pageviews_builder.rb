@@ -2,15 +2,15 @@ class Aggregations::Europeana::PageviewsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
-  def perform(aggregation_id,user_start_date = "2012-01-01",user_end_date = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"))
-    aggregation = Impl::Aggregation.find(aggregation_id)
+  def perform
+    aggregation = Impl::Aggregation.europeana
     if aggregation.europeana?
       aggregation.update_attributes(status: "Fetching pageviews", error_messages: nil)
       aggregation_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","pageviews")
       aggregation_output.update_attributes(status: "Fetching pageviews", error_messages: nil)
       begin
-        ga_start_date   = user_start_date
-        ga_end_date     = user_end_date
+        ga_start_date   = aggregation.last_upated_at || "2012-01-01"
+        ga_end_date     = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d")
         ga_dimensions   = "ga:month,ga:year"
         ga_metrics      = "ga:pageviews"
         ga_filters      = "ga:hostname=~europeana.eu"
@@ -70,12 +70,12 @@ class Aggregations::Europeana::PageviewsBuilder
         #Fetching User Types for pageviewsPerSession
         user_type_output_for_pageviews_per_session = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","pageviewsPerSession")
         Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews_per_session,"monthly", aggregation_id,"Impl::Aggregation","pageviewsPerSession","userType") unless user_type_output_for_pageviews_per_session.nil?
-        Aggregations::Europeana::DatacastBuilder.perform_async(aggregation_id)
 
         #Top Digital Objects
-        top_digital_objects = Aggregations::Europeana::PageviewsBuilder.fetch_data_for_all_quarters_between(user_start_date, user_end_date)
+        top_digital_objects = Aggregations::Europeana::PageviewsBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date)
         Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects,"monthly", aggregation.id)
 
+        Aggregations::Europeana::PropertiesBuilder.perform_async
       rescue => e
         aggregation_output.update_attributes(status: "Failed to fetch pageviews", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed Fetching pageviews", error_messages: e.to_s)

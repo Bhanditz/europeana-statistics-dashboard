@@ -2,7 +2,7 @@ class Impl::DataProviders::TrafficBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
-  def perform(data_provider_id, user_start_date = "2012-01-01",user_end_date = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"))
+  def perform(data_provider_id)
     data_provider = Impl::Aggregation.data_providers.find(data_provider_id)
     begin
       raise "'Dismarc' data set" if data_provider.dismarc_data_set?
@@ -14,8 +14,9 @@ class Impl::DataProviders::TrafficBuilder
     data_provider_pageviews_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","pageviews")
     data_provider_visits_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","visits")
     data_provider_pageviews_output.update_attributes(status: "Building Pageviews", error_messages: nil)
-    ga_start_date   = user_start_date
-    ga_end_date     = user_end_date
+    ga_start_date = aggregation.last_upated_at || "2012-01-01"
+    ga_end_date   = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d")
+
     ga_dimensions   = "ga:month,ga:year"
     page_view_metrics      = "ga:pageviews"
     visits_metrics    = "ga:visits"
@@ -43,7 +44,7 @@ class Impl::DataProviders::TrafficBuilder
       Core::TimeAggregation.create_time_aggregations("Impl::Output",data_provider_visits_output.id,visits_data,"visits","monthly")
       data_provider.update_attributes(status: "Processed visits", error_messages: nil)
       data_provider_visits_output.update_attributes(status: "Built visits", error_messages: nil)
-      Impl::DataProviders::TopCountriesBuilder.perform_async(data_provider_id,user_start_date,user_end_date)
+      Impl::DataProviders::TopCountriesBuilder.perform_async(data_provider_id)
     rescue => e
       data_provider_visits_output.update_attributes(status: "Failed to build visits", error_messages: e.to_s)
       data_provider.update_attributes(status: "Failed to build visits", error_messages: e.to_s)

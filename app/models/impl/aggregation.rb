@@ -13,6 +13,7 @@
 #  status          :string
 #  error_messages  :string
 #  properties      :hstore
+#  last_updated_at :date
 #
 
 class Impl::Aggregation < ActiveRecord::Base
@@ -59,15 +60,12 @@ class Impl::Aggregation < ActiveRecord::Base
   #FUNCTIONS
 
   def get_static_query(genre)
-    if genre == "reusable"
-      return "Select key as name, value as weight from impl_static_attributes where impl_output_id in (Select o.id from impl_aggregations a, impl_outputs o where a.id = #{self.id} and o.genre='#{genre}'and o.impl_parent_id = #{self.id})"
-    else
-      return "Select key as x, value as y from impl_static_attributes where impl_output_id in (Select o.id from impl_aggregations a, impl_outputs o where a.id = #{self.id} and o.genre='#{genre}'and o.impl_parent_id = #{self.id})"
-    end
+    today = Date.today
+    return "Select name, value as weight from core_time_aggregations INNER JOIN (Select id as impl_output_id, value as name from impl_outputs where impl_parent_id = #{self.id} and genre = 'top_#{genre.pluralize}') as io on parent_id = impl_output_id and parent_type = 'Impl::Output' where aggregation_level_value = '#{today.year}_#{Date::MONTHNAMES[today.month]}'"
   end
 
   def get_digital_objects_query
-    year = 2015 #Date.today.year
+    year = Date.today.year
     if self.genre == 'data_provider' or self.genre == "europeana"
       return "Select year,month, value,image_url,title_url,title  from (Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as month, sum(ta.value) as value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title, ROW_NUMBER() OVER (PARTITION BY  split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(value) desc) AS row  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id = #{self.id} and genre='top_digital_objects') as b where ta.parent_id = b.output_id group by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), ta.aggregation_value_to_display, ta.metric,ta.aggregation_index, output_properties -> 'image_url', output_properties -> 'title_url', output_value order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), value desc) as final_output where row < 25 and year in ('#{year}','#{year - 1 }');"
     else
@@ -77,7 +75,7 @@ class Impl::Aggregation < ActiveRecord::Base
 
 
   def get_countries_query
-    year = 2015 #Date.today.year
+    year = Date.today.year
     if self.genre == 'data_provider' or self.genre == "europeana"
       return "Select sum(ta.value) as size, b.code as iso2 from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id = #{self.id} and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{year}' group by b.code order by size desc limit 10"
     else
@@ -91,25 +89,13 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_pageviews_line_chart_query
-    year = 2015 #Date.today.year
-    month = "December" #Date::MONTHNAMES[Date.today.month]
-    if self.genre == 'data_provider'
-      return "Select * from (Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id = #{self.id}  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month')) as final_output where (year::integer < #{year} or x <> '#{month}');"
-    else
-      return "Select * from (Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")})  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month')) as final_output where (year::integer < #{year} or x <> '#{month}');"
-    end
-  end
-
-  def get_pageviews_query
+    year = Date.today.year
+    month = Date::MONTHNAMES[Date.today.month]
     if self.genre == 'data_provider' or self.genre == "europeana"
-      return "Select split_part(ta.aggregation_level_value,'_',1) as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id = #{self.id}  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by split_part(ta.aggregation_level_value,'_',1) order by split_part(ta.aggregation_level_value,'_',1)"
+      return "Select name, x,y from (Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id = #{self.id}  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month')) as final_output where (year::integer < #{year} or x <> '#{month}');"
     else
-      return "Select split_part(ta.aggregation_level_value,'_',1) as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")})  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by split_part(ta.aggregation_level_value,'_',1) order by split_part(ta.aggregation_level_value,'_',1);"
+      return "Select name, x,y from (Select split_part(ta.aggregation_level_value,'_',1) as year,split_part(ta.aggregation_level_value,'_',1) as name,aggregation_value_to_display as x,sum(ta.value) as y  from core_time_aggregations ta join (Select o.id as output_id from impl_outputs o where impl_parent_id in (#{self.child_data_providers.pluck(:id).join(",")})  and genre='pageviews') as b  on parent_type='Impl::Output' and parent_id = output_id group by ta.aggregation_level_value,aggregation_value_to_display order by split_part(ta.aggregation_level_value,'_',1),to_date(aggregation_value_to_display,'Month')) as final_output where (year::integer < #{year} or x <> '#{month}');"
     end
-  end
-
-  def get_media_type_donut_chart_query
-    return "Select key as name, value as weight from impl_static_attributes where impl_output_id in (Select o.id from impl_aggregations a, impl_outputs o where a.id = #{self.id} and o.genre='media_type' and o.impl_parent_id = a.id)"
   end
 
   def restart_all_jobs
@@ -253,8 +239,9 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def get_aggregations_count_query(genre=nil)
-    return "" if ["country","data_provider","provider"].include?(genre) and self.genre != "europeana"
-    return "Select count(*) as value, '' as key, '' as content, 'Total #{genre.titleize}' as title, '' as diff_in_value from impl_aggregations where genre='#{genre}'"
+    return "" if self.genre != 'europeana' and ["country","provider","data_provider"].include?(genre)
+    today = Date.today
+    return "Select cta.value, '' as key, '' as content, 'Total #{genre.titleize.pluralize}' as title, '' as diff_in_value,io.genre  from impl_outputs io INNER JOIN  core_time_aggregations cta on parent_id = io.id and parent_type = 'Impl::Output' and io.impl_parent_id = 1 and genre = 'top_#{genre}_counts' and split_part(aggregation_level_value,'_',1) = '#{today.year}' and split_part(aggregation_level_value,'_',2) = '#{Date::MONTHNAMES[today.month]}'"
   end
 
   #PRIVATE

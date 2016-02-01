@@ -108,8 +108,7 @@ namespace :ref do
     genre = "europeana"
     status = ""
     impl_aggregation = Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
-    Aggregations::Europeana::PageviewsBuilder.perform_async(impl_aggregation.id)
-    Impl::DataProviders::MediaTypesBuilder.perform_async(impl_aggregation.id)
+    Aggregations::Europeana::PageviewsBuilder.perform_async
   end
 
   task :seed_europeana_production_reports => :environment do |t,args|

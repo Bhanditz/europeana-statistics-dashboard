@@ -25,7 +25,6 @@ class Impl::Output < ActiveRecord::Base
   store_accessor :properties, :image_url, :title_url, :title, :content
   #ASSOCIATIONS
   belongs_to :impl_parent,polymorphic: :true
-  has_many :impl_static_attributes, class_name: "Impl::StaticAttribute", foreign_key: "impl_output_id", dependent: :destroy
   has_many :core_time_aggregations,->{where(parent_type: 'Impl::Output')} ,class_name: "Core::TimeAggregation", foreign_key: "parent_id", dependent: :destroy
   has_many :country_code, class_name: "Ref::CountryCode", primary_key: "value", foreign_key: "country"
   #VALIDATIONS

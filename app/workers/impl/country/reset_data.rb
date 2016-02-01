@@ -10,13 +10,12 @@ class Impl::Country::ResetData
       country.child_providers.each do |provider|
         provider.impl_outputs.destroy_all
       end
-      time_lag = 10
       country.child_data_providers.each do |data_provider|
+        data_provider.update_column(last_updated_at: nil)
         data_provider.impl_outputs.destroy_all
         Impl::DataProviders::MediaTypesBuilder.perform_async(data_provider.id)
         Impl::DataProviders::TrafficBuilder.perform_async(data_provider.id)
         Impl::DataProviders::DatacastsBuilder.perform_async(data_provider.id)
-        time_lag += 10
       end
     rescue => e
       country.update_attributes(status: "Failed to reset data", error_messages: e.to_s)

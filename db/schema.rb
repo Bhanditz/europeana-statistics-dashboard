@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160122095118) do
+ActiveRecord::Schema.define(version: 20160131190716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -272,6 +272,7 @@ ActiveRecord::Schema.define(version: 20160122095118) do
     t.string   "status"
     t.string   "error_messages"
     t.hstore   "properties"
+    t.date     "last_updated_at"
   end
 
   add_index "impl_aggregations", ["genre"], name: "impl_aggregation_genre_index", using: :btree
@@ -329,16 +330,6 @@ ActiveRecord::Schema.define(version: 20160122095118) do
   end
 
   add_index "impl_reports", ["slug"], name: "index_impl_reports_on_slug", unique: true, using: :btree
-
-  create_table "impl_static_attributes", force: :cascade do |t|
-    t.integer  "impl_output_id"
-    t.string   "key"
-    t.string   "value"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
-  add_index "impl_static_attributes", ["impl_output_id"], name: "impl_static_attributes_index", using: :btree
 
   create_table "ref_charts", force: :cascade do |t|
     t.string  "name"

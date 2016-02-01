@@ -68,7 +68,7 @@ Rumali.autoCharts = (function(){
 			utility.getJSONforTable(global_obj.datacast_url+table_data.tables[index].dataset.datacast_identifier,id,renderHTMLForTable);
 			//renderHTMLForTable(table_json,i);
 		}
-		loadTop10digitalObject(content_data.content[0],"current_month");
+		loadTop10digitalObject(content_data.content[0],gon.selected_year +"_"+gon.current_month);
 		//Get top 10 digital objects for the current year and quarter.
 		if (gon.genre == "country" || gon.genre == "europeana"){
 			loadTopSearchTerms(top_search_terms[0]);
@@ -281,12 +281,23 @@ Rumali.autoCharts = (function(){
 			filter_data;
 
 		if($("#digital_objects_filter_field").length === 0){
-			var str = $('<h3 class="sel_filters" id="digital_objects_filter_field"><span class="active" data-filter_details = "december">December-2015</span>&nbsp;&nbsp;<span data-filter_details = "november">November-2015</span>&nbsp;&nbsp;<span data-filter_details = "2015">2015</span>&nbsp;&nbsp;<span data-filter_details = "2014">2014</span></h3>');
-			$(str).find('span').on('click', function (){
-					$(this).addClass('active').siblings('.active').removeClass('active');
-					Rumali.autoCharts.filterTopDigitalObjectsData($(this).attr('data-filter_details'));
+			var month_arr = ['January','February','March','April','May','June','July','August','September','October','November','December'], i,prev_year = gon.selected_year - 1; 
+			select_string = "<select id='filter-select'>";
+			select_string += "<option class='filter_top_digital_objects' data-filter_details='"+prev_year+"'>ALL of "+(gon.selected_year-1 )+"</option>"; 
+			for(i = 0; i < 12; i++) {
+			  select_string += "<option class='filter_top_digital_objects' data-filter_details='"+prev_year+"_"+month_arr[i]+"'>"+month_arr[i]+"</option>";
+			}
+			select_string += "</select>";
+			var str = $('<h3 class="sel_filters" id="digital_objects_filter_field">'+select_string+'&nbsp;&nbsp;<span class="filters" data-filter_details = "2014">2014</span>&nbsp;&nbsp;<span class="filters" data-filter_details = "2016">2016</span></h3>');
+			$(str).find('span.filters').on('click', function (){
+				$(this).addClass('active').siblings('.active').removeClass('active');
+				Rumali.autoCharts.filterTopDigitalObjectsData($(this).attr("data-filter_details"));
 			});
-			$(selector).before(str);
+			$(str).find("select").on('change',function (){
+				$("span.filters").removeClass("active");
+				Rumali.autoCharts.filterTopDigitalObjectsData($("#"+this.id +" option:selected").attr("data-filter_details"));
+			});
+			$(selector).before(str)
 		}
 
 		var filterData = function(data,filter_details){
@@ -310,29 +321,18 @@ Rumali.autoCharts = (function(){
 				content_data.top10digital = data; //Saving the data once so that we don't need to call service again.
 			}
 
-			//If future data is being fetched show current record instead.
-			// chart_data.year_no = year;
-			// chart_data.month = month;
-			switch(filter_details) {
-				case "november":
-					filter_data = _.filter(content_data.top10digital, function(obj){ return ((parseInt(obj.year,10)  == ("2015")) && (obj.month == "November"))});
-					break;
-				case "2015":
-					filter_data = _.filter(content_data.top10digital, function(obj){ return (parseInt(obj.year,10)  == "2015")});
-					filter_data = aggregate_data(filter_data, "title_url", "value");
-					break;
-				case "2014":
-					filter_data = _.filter(content_data.top10digital, function(obj){ return (parseInt(obj.year,10)  == "2014")});
-					filter_data = aggregate_data(filter_data, "title_url", "value");
-					break;
-				default:
-					filter_data = _.filter(content_data.top10digital, function(obj){ return ((parseInt(obj.year,10)  == "2015") && (obj.month == "December"))});
-					break;
+			var year = filter_details.split("_")[0],
+				month = filter_details.split("_")[1];
+			if (typeof month !== "undefined") {
+				filter_data = _.filter(content_data.top10digital, function(obj){ return (obj.year  == year) && (obj.month == month)});
+			} else {
+				filter_data = _.filter(content_data.top10digital, function(obj){ return (obj.year  == year)});
+				filter_data = aggregate_data(filter_data, "title_url", "value");
 			}
 			filter_data = _.sortBy(filter_data,function(obj){
 				return parseInt(obj.value)*-1;
 			});
-			filter_data = _.first(filter_data,100);
+			filter_data = _.first(filter_data,25);
 			renderHTMLForDigitalObj(filter_data);
 		}
 
