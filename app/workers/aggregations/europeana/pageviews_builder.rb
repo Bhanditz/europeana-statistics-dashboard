@@ -38,37 +38,37 @@ class Aggregations::Europeana::PageviewsBuilder
         Core::TimeAggregation.create_aggregations(country_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","country") unless country_output.nil?
 
         #Fetching Languages
-        language_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "language","pageviews")
-        Core::TimeAggregation.create_aggregations(language_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","language") unless language_output.nil?
+        # language_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "language","pageviews")
+        # Core::TimeAggregation.create_aggregations(language_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","language") unless language_output.nil?
 
         #Fetching Device Categories
-        category_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "deviceCategory","pageviews")
-        Core::TimeAggregation.create_aggregations(category_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","deviceCategory") unless category_output.nil?
+        # category_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "deviceCategory","pageviews")
+        # Core::TimeAggregation.create_aggregations(category_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","deviceCategory") unless category_output.nil?
 
         #Fetching Device Brands
-        branding_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "mobileDeviceBranding","pageviews")
-        Core::TimeAggregation.create_aggregations(branding_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","mobileDeviceBranding") unless branding_output.nil?
+        # branding_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "mobileDeviceBranding","pageviews")
+        # Core::TimeAggregation.create_aggregations(branding_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","mobileDeviceBranding") unless branding_output.nil?
 
         #Fetching User Types for Pageviews
-        user_type_output_for_pageviews = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","pageviews")
-        Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews,"monthly", aggregation_id,"Impl::Aggregation","pageviews","userType") unless user_type_output_for_pageviews.nil?
+        # user_type_output_for_pageviews = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","pageviews")
+        # Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews,"monthly", aggregation_id,"Impl::Aggregation","pageviews","userType") unless user_type_output_for_pageviews.nil?
 
         #Fetching User Types for Sessions
-        user_type_output_for_sessions = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","sessions")
-        Core::TimeAggregation.create_aggregations(user_type_output_for_sessions,"monthly", aggregation_id,"Impl::Aggregation","sessions","userType") unless user_type_output_for_sessions.nil?
+        # user_type_output_for_sessions = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","sessions")
+        # Core::TimeAggregation.create_aggregations(user_type_output_for_sessions,"monthly", aggregation_id,"Impl::Aggregation","sessions","userType") unless user_type_output_for_sessions.nil?
 
         #Fetching User Types for avgSessionDuration
-        user_type_output_for_avg_session_duration = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","avgSessionDuration")
-        Core::TimeAggregation.create_aggregations(user_type_output_for_avg_session_duration,"monthly", aggregation_id,"Impl::Aggregation","avgSessionDuration","userType") unless user_type_output_for_avg_session_duration.nil?
+        # user_type_output_for_avg_session_duration = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","avgSessionDuration")
+        # Core::TimeAggregation.create_aggregations(user_type_output_for_avg_session_duration,"monthly", aggregation_id,"Impl::Aggregation","avgSessionDuration","userType") unless user_type_output_for_avg_session_duration.nil?
 
         #Fetching User Types for bounceRate
-        user_type_output_for_bounce_rate = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","bounceRate")
-        Core::TimeAggregation.create_aggregations(user_type_output_for_bounce_rate,"monthly", aggregation_id,"Impl::Aggregation","bounceRate","userType") unless user_type_output_for_bounce_rate.nil?
+        # user_type_output_for_bounce_rate = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","bounceRate")
+        # Core::TimeAggregation.create_aggregations(user_type_output_for_bounce_rate,"monthly", aggregation_id,"Impl::Aggregation","bounceRate","userType") unless user_type_output_for_bounce_rate.nil?
 
 
         #Fetching User Types for pageviewsPerSession
-        user_type_output_for_pageviews_per_session = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","pageviewsPerSession")
-        Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews_per_session,"monthly", aggregation_id,"Impl::Aggregation","pageviewsPerSession","userType") unless user_type_output_for_pageviews_per_session.nil?
+        # user_type_output_for_pageviews_per_session = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","pageviewsPerSession")
+        # Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews_per_session,"monthly", aggregation_id,"Impl::Aggregation","pageviewsPerSession","userType") unless user_type_output_for_pageviews_per_session.nil?
 
         #Top Digital Objects
         top_digital_objects = Aggregations::Europeana::PageviewsBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date)

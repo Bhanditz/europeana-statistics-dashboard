@@ -17,8 +17,8 @@ namespace :scheduled_jobs  do
 
 
     europeana = Impl::Aggregation.europeana
-    Aggregations::Europeana::DatacastBuilder.perform_async
     Impl::DataProviders::MediaTypesBuilder.perform_async(europeana.id)
     Aggregations::Europeana::PageviewsBuilder.perform_async
+    Aggregations::Europeana::DatacastBuilder.perform_async
   end
 end
