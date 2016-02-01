@@ -7,12 +7,12 @@ namespace :scheduled_jobs  do
 
     Impl::Aggregation.providers.each do |d|
       Impl::DataProviders::MediaTypesBuilder.perform_async(d.id)
-      Impl::DataProviders::DataSetBuilder.perform_async(d.id)
+      Impl::DataProviders::DatacastsBuilder.perform_async(d.id)
     end
 
     Impl::Aggregation.countries.each do |d|
       Impl::DataProviders::MediaTypesBuilder.perform_async(d.id)
-      Impl::DataProviders::DataSetBuilder.perform_async(d.id)
+      Impl::DataProviders::DatacastsBuilder.perform_async(d.id)
     end
 
 
