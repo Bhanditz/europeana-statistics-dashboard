@@ -12,7 +12,7 @@ class Impl::DataProviders::TopCountriesBuilder
     end
     data_provider.update_attributes(status: "Building top 25 countries", error_messages: nil)
     begin
-      start_date = aggregation.last_upated_at || "2012-01-01"
+      start_date = aggregation.last_updated_at.strftime("%Y-%m-%d") || "2012-01-01"
       end_date   = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d")
 
       country_output = Impl::Aggregation.fetch_GA_data_between(start_date, end_date, data_provider, "country","pageviews")
