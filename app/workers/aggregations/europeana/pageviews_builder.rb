@@ -21,8 +21,6 @@ class Aggregations::Europeana::PageviewsBuilder
         Core::TimeAggregation.create_time_aggregations("Impl::Output",aggregation_output.id,page_views_data,"pageviews","monthly")
         aggregation.update_attributes(status: "Fetched pageviews", error_messages: nil)
         aggregation_output.update_attributes(status: "Fetched Pageviews", error_messages: nil)
-        next_start_date = (Date.today.at_beginning_of_week).strftime("%Y-%m-%d")
-        next_end_date = (Date.today.at_end_of_week).strftime("%Y-%m-%d")
         #Fetching Visits
         ga_dimensions   = "ga:month,ga:year,ga:medium"
         ga_metrics      = "ga:visits"
@@ -76,6 +74,7 @@ class Aggregations::Europeana::PageviewsBuilder
         Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects,"monthly", aggregation.id)
 
         Aggregations::Europeana::PropertiesBuilder.perform_async
+        aggregation.updated_attributes(status: "Fetched data successfully", last_updated_at: Date.today)
       rescue => e
         aggregation_output.update_attributes(status: "Failed to fetch pageviews", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed Fetching pageviews", error_messages: e.to_s)

@@ -23,6 +23,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
       data_provider.parent_countries.each do |country|
         Impl::DataProviders::DatacastsBuilder.perform_async(country.id)
       end
+      data_provider.updated(status: "Built top digital objects", last_updated_at: Date.today)
     rescue => e
       data_provider.update_attributes(status: "Failed to build top digital objects",error_messages: e.to_s)
     end
