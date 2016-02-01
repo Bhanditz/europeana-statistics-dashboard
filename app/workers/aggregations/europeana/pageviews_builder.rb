@@ -4,6 +4,7 @@ class Aggregations::Europeana::PageviewsBuilder
 
   def perform
     aggregation = Impl::Aggregation.europeana
+    aggregation_id = aggregation.id
     if aggregation.europeana?
       aggregation.update_attributes(status: "Fetching pageviews", error_messages: nil)
       aggregation_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","pageviews")
