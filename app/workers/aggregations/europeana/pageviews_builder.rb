@@ -74,7 +74,7 @@ class Aggregations::Europeana::PageviewsBuilder
         Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects,"monthly", aggregation.id)
 
         Aggregations::Europeana::PropertiesBuilder.perform_async
-        aggregation.updated_attributes(status: "Fetched data successfully", last_updated_at: Date.today)
+        aggregation.update_attributes(status: "Fetched data successfully", last_updated_at: Date.today)
       rescue => e
         aggregation_output.update_attributes(status: "Failed to fetch pageviews", error_messages: e.to_s)
         aggregation.update_attributes(status: "Failed Fetching pageviews", error_messages: e.to_s)
