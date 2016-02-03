@@ -43,11 +43,11 @@ class Impl::DataProviders::DatacastsBuilder
         reusable_datacast = Core::Datacast.create_or_update_by(reusable_datacast_query,core_project_id,core_db_connection_id,reusable_datacast_name)
         aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,reusable_datacast.identifier)
 
-        # Line Chart
-        pageviews_line_chart_datacast_name = "#{aggregation.name} - Line Chart"
-        pageviews_line_chart_datacast_query =  aggregation.get_pageviews_line_chart_query
-        pageviews_line_chart_datacast = Core::Datacast.create_or_update_by(pageviews_line_chart_datacast_query,core_project_id, core_db_connection_id,pageviews_line_chart_datacast_name)
-        pageviews_line_chart_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,pageviews_line_chart_datacast.identifier)
+        # Item View
+        item_views_datacast_name = "#{aggregation.name} - Item View"
+        item_views_datacast_query =  aggregation.get_item_views_query
+        item_views_datacast = Core::Datacast.create_or_update_by(item_views_datacast_query,core_project_id, core_db_connection_id,item_views_datacast_name)
+        item_views_aggregation_datacast = Impl::AggregationDatacast.find_or_create(aggregation.id,item_views_datacast.identifier)
 
         unless aggregation.genre == "data_provider"
           #Provider Count

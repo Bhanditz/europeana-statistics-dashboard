@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131190716) do
+ActiveRecord::Schema.define(version: 20160202111844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -240,6 +240,15 @@ ActiveRecord::Schema.define(version: 20160131190716) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
+  create_table "impl_aggregation_data_sets", force: :cascade do |t|
+    t.integer  "impl_aggregation_id"
+    t.integer  "impl_data_set_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "impl_aggregation_data_sets", ["impl_aggregation_id", "impl_data_set_id"], name: "impl_aggregation_data_sets_index", using: :btree
+
   create_table "impl_aggregation_datacasts", force: :cascade do |t|
     t.integer  "impl_aggregation_id"
     t.string   "core_datacast_identifier"
@@ -276,15 +285,6 @@ ActiveRecord::Schema.define(version: 20160131190716) do
   end
 
   add_index "impl_aggregations", ["genre"], name: "impl_aggregation_genre_index", using: :btree
-
-  create_table "impl_data_provider_data_sets", force: :cascade do |t|
-    t.integer  "impl_aggregation_id"
-    t.integer  "impl_data_set_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-  end
-
-  add_index "impl_data_provider_data_sets", ["impl_aggregation_id", "impl_data_set_id"], name: "impl_data_provider_data_sets_index", using: :btree
 
   create_table "impl_datasets", force: :cascade do |t|
     t.string   "data_set_id"

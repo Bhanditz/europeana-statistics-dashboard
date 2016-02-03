@@ -1,3 +1,25 @@
+# == Schema Information
+#
+# Table name: accounts
+#
+#  id                     :integer          not null, primary key
+#  username               :string
+#  email                  :string           default(""), not null
+#  slug                   :string
+#  properties             :hstore
+#  encrypted_password     :string           default(""), not null
+#  reset_password_token   :string
+#  confirmation_token     :string
+#  unconfirmed_email      :string
+#  created_at             :datetime
+#  updated_at             :datetime
+#  authentication_token   :string
+#  devis                  :hstore
+#  sign_in_count          :integer
+#  confirmation_sent_at   :datetime
+#  reset_password_sent_at :datetime
+#
+
 class AccountsController < ApplicationController
 
   before_action :sudo_organisation_owner!, only: [:dashboard, :edit, :update]

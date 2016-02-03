@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
   devise_for :accounts, :controllers => { :registrations => 'core/registrations' }, :path => 'accounts', :path_names => {:sign_up => 'secret_signup_only'}
 
   #NORMAL ROUTES --------------------------------------------------------------

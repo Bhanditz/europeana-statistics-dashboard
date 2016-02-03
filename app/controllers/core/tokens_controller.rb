@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: core_tokens
+#
+#  id              :integer          not null, primary key
+#  account_id      :integer
+#  core_project_id :integer
+#  api_token       :string
+#  name            :string
+#  created_at      :datetime
+#  updated_at      :datetime
+#  created_by      :integer
+#  updated_by      :integer
+#
+
 class Core::TokensController < ApplicationController
   
   before_action :sudo_project_member!

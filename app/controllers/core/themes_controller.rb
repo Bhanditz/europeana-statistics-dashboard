@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: core_themes
+#
+#  id         :integer          not null, primary key
+#  account_id :integer
+#  name       :string
+#  sort_order :integer
+#  config     :json
+#  image_url  :text
+#  created_by :integer
+#  updated_by :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Core::ThemesController < ApplicationController
     
   before_action :sudo_organisation_owner!

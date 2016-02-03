@@ -23,8 +23,8 @@ class Impl::DataSet < ActiveRecord::Base
   #ATTRIBUTES
   #ACCESSORS
   #ASSOCIATIONS
-  has_many :impl_data_provider_data_sets, class_name: "Impl::DataProviderDataSet", foreign_key: "impl_data_set_id",dependent: :destroy
-  has_many :impl_data_providers,through: :impl_data_provider_data_sets
+  has_many :impl_aggregation_data_sets, class_name: "Impl::AggregationDataSet", foreign_key: "impl_data_set_id",dependent: :destroy
+  has_many :impl_aggregations,through: :impl_aggregation_data_sets
   #VALIDATIONS
   validates :name, presence: :true, uniqueness: true
   validates :data_set_id, uniqueness: true
@@ -74,5 +74,5 @@ class Impl::DataSet < ActiveRecord::Base
   def after_create_set
     true
   end
-  
+
 end

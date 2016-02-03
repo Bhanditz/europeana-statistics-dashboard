@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: core_permissions
+#
+#  id              :integer          not null, primary key
+#  account_id      :integer
+#  role            :string
+#  email           :string
+#  status          :string
+#  invited_at      :datetime
+#  created_at      :datetime
+#  updated_at      :datetime
+#  is_owner_team   :boolean
+#  created_by      :integer
+#  updated_by      :integer
+#  core_project_id :integer
+#
+
 # LOCKING this class. Do not change. 
 # Module: Access-Control
 # Author: Ritvvij Parrikh

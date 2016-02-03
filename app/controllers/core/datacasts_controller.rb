@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: core_datacasts
+#
+#  id                     :integer          not null, primary key
+#  core_project_id        :integer
+#  core_db_connection_id  :integer
+#  name                   :string
+#  identifier             :string
+#  properties             :hstore
+#  created_by             :integer
+#  updated_by             :integer
+#  created_at             :datetime
+#  updated_at             :datetime
+#  params_object          :json             default({})
+#  column_properties      :json             default({})
+#  last_run_at            :datetime
+#  last_data_changed_at   :datetime
+#  count_of_queries       :integer
+#  average_execution_time :float
+#  size                   :float
+#  slug                   :string
+#  table_name             :string
+#
+
 class Core::DatacastsController < ApplicationController
   
   before_action :sudo_project_member!

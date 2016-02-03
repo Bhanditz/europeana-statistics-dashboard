@@ -3,7 +3,7 @@ class Impl::DataProviders::TrafficBuilder
   sidekiq_options backtrace: true
 
   def perform(data_provider_id)
-    data_provider = Impl::Aggregation.data_providers.find(data_provider_id)
+    data_provider = Impl::Aggregation.find(data_provider_id)
     begin
       raise "'Dismarc' data set" if data_provider.dismarc_data_set?
     rescue => e

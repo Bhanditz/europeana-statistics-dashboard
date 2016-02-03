@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: core_datacast_pulls
+#
+#  id                    :integer          not null, primary key
+#  core_project_id       :integer
+#  file_url              :text
+#  first_row_header      :boolean
+#  status                :string
+#  error_messages        :text
+#  created_by            :integer
+#  updated_by            :integer
+#  created_at            :datetime
+#  updated_at            :datetime
+#  core_db_connection_id :integer
+#  table_name            :string
+#
+
 class Core::DatacastPullsController < ApplicationController
   before_action :sudo_project_member!, only: [:create,:edit,:update,:destroy]
   before_action :set_datacast_pull, only: [:edit,:update,:destroy]

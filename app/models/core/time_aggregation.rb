@@ -56,14 +56,14 @@ class Core::TimeAggregation < ActiveRecord::Base
     if a.blank?
       a = create({parent_type: parent_type, parent_id: parent_id, metric: metric, aggregation_level: aggregation_level,aggregation_level_value: aggregation_level_value, value: value})
     else
-      # new_value = a.value.to_f + value.to_f
-      # if a.aggregation_index > 1
-      #   prev = where(parent_type: parent_type,parent_id: parent_id, aggregation_level: aggregation_level, metric: metric, aggregation_index: a.aggregation_index - 1).first
-      #   diff = new_value - prev.value
-      # else
-      #   diff = 0
-      # end
-      # a.update(value: new_value, difference_from_previous_value: diff.abs, is_positive_value: (diff > 0))
+      new_value = value.to_f
+      if a.aggregation_index > 1
+        prev = where(parent_type: parent_type,parent_id: parent_id, aggregation_level: aggregation_level, metric: metric, aggregation_index: a.aggregation_index - 1).first
+        diff = new_value - prev.value
+      else
+        diff = 0
+      end
+      a.update(value: new_value, difference_from_previous_value: diff.abs, is_positive_value: (diff > 0))
     end
     a
   end

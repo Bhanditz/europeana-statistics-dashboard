@@ -3,13 +3,13 @@ source 'https://rubygems.org'
 ruby '2.2.2'
 
 #Base
-gem 'rails','4.2.3'
+gem 'rails','4.2.5.1'
 gem 'pg'
 gem 'redis'
 gem 'puma'
 gem "haml-rails"
 gem "haml"
-gem 'devise'
+gem 'devise', '3.5.5'
 gem 'friendly_id', '~> 5.0.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 gem "nestful"
 gem "simple_form"
@@ -25,6 +25,10 @@ gem 'europeana-styleguide', github: 'europeana/europeana-styleguide-ruby', branc
 gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide' # until upstream merges our pull requests
 gem 'dotenv-rails'
 gem 'whenever'
+
+#For Sidekiq Web
+gem 'redis-namespace'
+gem 'sinatra', :require => nil
 
 #Assets related
 gem 'uglifier',     '>= 1.3.0'

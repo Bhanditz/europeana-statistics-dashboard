@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: impl_aggregations
+#
+#  id              :integer          not null, primary key
+#  core_project_id :integer
+#  genre           :string
+#  name            :string
+#  created_by      :integer
+#  updated_by      :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  status          :string
+#  error_messages  :string
+#  properties      :hstore
+#  last_updated_at :date
+#
+
 class Impl::AggregationsController < ApplicationController
   
   before_action :sudo_project_member!, except: [:providers,:data_providers,:countries,:provider_hit_list]

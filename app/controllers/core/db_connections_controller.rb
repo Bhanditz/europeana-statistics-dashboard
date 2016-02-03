@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: core_db_connections
+#
+#  id              :integer          not null, primary key
+#  name            :string
+#  adapter         :string
+#  properties      :hstore
+#  created_by      :integer
+#  updated_by      :integer
+#  created_at      :datetime
+#  updated_at      :datetime
+#  core_project_id :integer
+#
+
 class Core::DbConnectionsController < ApplicationController
   
   before_action :sudo_project_member!  

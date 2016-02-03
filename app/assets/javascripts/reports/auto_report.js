@@ -294,7 +294,7 @@ Rumali.autoCharts = (function(){
 				Rumali.autoCharts.filterTopDigitalObjectsData($(this).attr("data-filter_details"));
 			});
 			$(str).find("select").on('change',function (){
-				$("span.filters").removeClass("active");
+				$("span.filters.active").removeClass("active");
 				Rumali.autoCharts.filterTopDigitalObjectsData($("#"+this.id +" option:selected").attr("data-filter_details"));
 			});
 			$(selector).before(str)

@@ -5,10 +5,7 @@ class Impl::DataProviders::RestartWorker
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
     aggregation.impl_outputs.destroy_all
-    if aggregation.genre == "data_provider"
-      Impl::DataProviders::TrafficBuilder.perform_async(aggregation_id)
-    end
+    Impl::DataProviders::TrafficBuilder.perform_async(aggregation_id)
     Impl::DataProviders::MediaTypesBuilder.perform_async(aggregation_id)
-    Impl::DataProviders::DatacastsBuilder.perform_async(aggregation_id) unless aggregation.genre == "data_provider"
   end
 end
