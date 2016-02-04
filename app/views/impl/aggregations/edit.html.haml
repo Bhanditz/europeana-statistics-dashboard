@@ -19,6 +19,3 @@
             %h5="Edit #{@impl_aggregation.genre.titleize}"
             %hr
             = render partial: "impl/aggregations/form"
-.pull-right
-  %br
-  = link_to ".", reset_country_data_account_project_impl_aggregation_path(@account,@core_project,@impl_aggregation),style: "cursor:default"

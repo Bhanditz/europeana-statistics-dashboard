@@ -74,13 +74,6 @@ class Impl::AggregationsController < ApplicationController
     redirect_to :back, notice: t("aggregation.refreshed_all_jobs")
   end
 
-  def reset_country_data
-    if @impl_aggregation.genre == "country"
-      Impl::Country::ResetData.perform_async(@impl_aggregation.id)
-    end
-    redirect_to edit_account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), notice: t("aggregation.refreshed_all_jobs")
-  end
-
   def providers
     @impl_aggregations = Impl::Aggregation.providers
   end
