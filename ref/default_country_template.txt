@@ -39,7 +39,7 @@
   <div class='row'>
     <div class="col-sm-12">
       <h2>Top 10 Countries</h2>
-      <p>This chart displays the top 10 countries that generated the most views for this collection on Europeana.eu website.</p>
+      <p>This chart displays the top 10 countries that generated the most views for this collection on Europeana.eu website for the current year.</p>
       $TOP_COUNTRIES_TABLE$
     </div>
   </div>

@@ -42,11 +42,11 @@ class Core::Viz < ActiveRecord::Base
   after_create :after_create_set
 
   #SCOPES
-  scope :media_type, -> {where("core_vizs.name LIKE '%Media Types'")}
-  scope :reusable, -> {where("core_vizs.name LIKE '%Reusables'")}
-  scope :top_country, -> {where("core_vizs.name LIKE '%Top Countries'")}
-  scope :traffic, -> {where("core_vizs.name LIKE '%Traffic'")}
-  scope :line_chart, -> {where("core_vizs.name LIKE '%Line Chart'")}
+  scope :media_type, -> {where("core_vizs.name LIKE '%- Media Types'")}
+  scope :reusable, -> {where("core_vizs.name LIKE '%- Reusables'")}
+  scope :top_country, -> {where("core_vizs.name LIKE '%- Top Countries'")}
+  scope :traffic, -> {where("core_vizs.name LIKE '%- Traffic'")}
+  scope :line_chart, -> {where("core_vizs.name LIKE '%- Line Chart'")}
   scope :item_view, -> {where("core_vizs.name LIKE '%Item View'")}
   scope :total_visits, -> {where("core_vizs.name LIKE '%- Visits'")}
   scope :provider_counts, -> {where("core_vizs.name LIKE '%- Providers Count'")}
