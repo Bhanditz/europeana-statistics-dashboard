@@ -111,7 +111,7 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def dismarc_data_set?
-    return self.impl_data_sets.pluck(:name).uniq.include?("2023601_Ag_DE_DISMARC") and self.genre == "data_provider"
+    return (self.impl_data_sets.pluck(:name).uniq.include?("2023601_Ag_DE_DISMARC") and self.genre == "data_provider")
   end
 
   def self.create_or_find_aggregation(name, genre, core_project_id)
