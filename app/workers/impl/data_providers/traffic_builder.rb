@@ -33,6 +33,7 @@ class Impl::DataProviders::TrafficBuilder
     rescue => e
       data_provider_pageviews_output.update_attributes(status: "Failed to build pageviews", error_messages: e.to_s)
       data_provider.update_attributes(status: "Failed to build pageviews", error_messages: e.to_s)
+      return nil
     end
     #Visits
     begin
@@ -48,6 +49,7 @@ class Impl::DataProviders::TrafficBuilder
     rescue => e
       data_provider_visits_output.update_attributes(status: "Failed to build visits", error_messages: e.to_s)
       data_provider.update_attributes(status: "Failed to build visits", error_messages: e.to_s)
+      return nil
     end
   end
 end

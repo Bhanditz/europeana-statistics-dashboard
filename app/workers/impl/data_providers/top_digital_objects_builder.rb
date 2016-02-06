@@ -13,7 +13,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     data_provider.update_attributes(status: "Building top digital objects", error_messages: nil)
     begin
 
-      top_digital_objects = Impl::DataProviders::TopDigitalObjectsBuilder.fetch_data_for_all_quarters_between(data_provider.last_updated_at.present? ? data_provider.last_updated_at.strftime("%Y-%m-%d") : "2014-01-01", (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d"), data_provider)
+      top_digital_objects = Impl::DataProviders::TopDigitalObjectsBuilder.fetch_data_for_all_quarters_between(data_provider.last_updated_at.present? ? data_provider.last_updated_at.strftime("%Y-%m-%d") : "2014-01-01", (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d"), data_provider)
       Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects,"monthly", data_provider_id)
       data_provider.update_attributes(status: "Processed top 10 digital objects")
       Impl::DataProviders::DatacastsBuilder.perform_async(data_provider_id)
@@ -33,11 +33,11 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     ga_filters  = data_provider.get_aggregated_filters
     looper = Date.parse(start_date)
     end_date = Date.parse(end_date)
-    ga_max_results = 30
+    ga_max_results = 1000
     while looper < end_date
       ga_access_token = Impl::DataSet.get_access_token
       ga_start_date = looper.strftime("%Y-%m-%d")
-      looper = ((looper.at_end_of_month) > end_date) ? (end_date) : (looper.at_end_of_month)
+      looper = ((looper.at_end_of_year) > end_date) ? (end_date) : (looper.at_end_of_year)
       ga_end_date = looper.strftime("%Y-%m-%d")
       top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
       if top_digital_objects_per_quarter.present?
