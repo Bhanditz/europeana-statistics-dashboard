@@ -175,7 +175,7 @@ class Impl::Aggregation < ActiveRecord::Base
       data_providers = []
       html_string = "<table class='table'><thead><th>Name</th></thead>"
       self.data_providers.includes(:impl_outputs).order(:name).each do |data_provider|
-        data_providers << {slug: data_provider.name.parameterize("-"),  name: data_provider.name}
+        data_providers << {slug: data_provider.impl_report.present? ? data_provider.impl_report.slug : data_provider.name.parameterize("-"),  name: data_provider.name}
       end
       data_providers.each do |d|
         html_string += "<tr><td><a href='#{BASE_URL}/dataprovider/#{d[:slug]}'>#{d[:name]}</a></td></tr>"
@@ -193,7 +193,7 @@ class Impl::Aggregation < ActiveRecord::Base
       providers = []
       html_string = "<table class='table'><thead><th>Name</th></thead>"
       self.providers.includes(:impl_outputs).order(:name).each do |provider|
-        providers << {slug: provider.name.parameterize("-"),  name: provider.name}
+        providers << {slug: provider.impl_report.present? ? provider.impl_report.slug : provider.name.parameterize("-"),  name: provider.name}
       end
       providers.each do |d|
         html_string += "<tr><td><a href='#{BASE_URL}/provider/#{d[:slug]}'>#{d[:name]}</a></td></tr>"
