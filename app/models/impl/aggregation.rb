@@ -169,39 +169,54 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def self.get_data_providers_html
-    data_providers = []
-    html_string = "<table class='table'><thead><th>Name</th></thead>"
-    self.data_providers.includes(:impl_outputs).each do |data_provider|
-      data_providers << {slug: data_provider.name.parameterize("-"),  name: data_provider.name}
+    if $redis.get("data_providers_html").present?
+      html_string = $redis.get("data_providers_html")
+    else
+      data_providers = []
+      html_string = "<table class='table'><thead><th>Name</th></thead>"
+      self.data_providers.includes(:impl_outputs).order(:name).each do |data_provider|
+        data_providers << {slug: data_provider.name.parameterize("-"),  name: data_provider.name}
+      end
+      data_providers.each do |d|
+        html_string += "<tr><td><a href='#{BASE_URL}/dataprovider/#{d[:slug]}'>#{d[:name]}</a></td></tr>"
+      end
+      html_string += "</table>"
+      $redis.set("data_providers_html", html_string)
     end
-    data_providers.each do |d|
-      html_string += "<tr><td><a href='#{BASE_URL}/#{d[:slug]}'>#{d[:name]}</a></td></tr>"
-    end
-    html_string += "</table>"
     html_string
   end
 
   def self.get_providers_html
-    providers = []
-    html_string = "<table class='table'><thead><th>Name</th></thead>"
-    self.providers.includes(:impl_outputs).each do |provider|
-      providers << {slug: provider.name.parameterize("-"),  name: provider.name}
+    if $redis.get("providers_html").present?
+      html_string = $redis.get("providers_html")
+    else
+      providers = []
+      html_string = "<table class='table'><thead><th>Name</th></thead>"
+      self.providers.includes(:impl_outputs).order(:name).each do |provider|
+        providers << {slug: provider.name.parameterize("-"),  name: provider.name}
+      end
+      providers.each do |d|
+        html_string += "<tr><td><a href='#{BASE_URL}/provider/#{d[:slug]}'>#{d[:name]}</a></td></tr>"
+      end
+      html_string += "</table>"
+      $redis.set("providers_html", html_string)
     end
-    providers.each do |d|
-      html_string += "<tr><td><a href='#{BASE_URL}/#{d[:slug]}'>#{d[:name]}</a></td></tr>"
-    end
-    html_string += "</table>"
     html_string
   end
 
   def self.get_countries_html
-    html_string = "<table class='table'><thead><th>Country name</th></thead>"
-    countries = []
-    self.countries.includes(:impl_outputs).each do |country|
-      countries << {slug: country.impl_report.present? ? country.impl_report.slug : country.name.parameterize("-"), name: country.name}
+    if $redis.get("countries_html").present?
+      html_string = $redis.get("countries_html")
+    else
+      html_string = "<table class='table'><thead><th>Country name</th></thead>"
+      countries = []
+      self.countries.includes(:impl_outputs).order(:name).each do |country|
+        countries << {slug: country.impl_report.present? ? country.impl_report.slug : country.name.parameterize("-"), name: country.name}
+      end
+      countries.each{|d| html_string += "<tr><td><a href='#{BASE_URL}/country/#{d[:slug]}'>#{d[:name]}</a></td></tr>"}
+      html_string += "</table>"
+      $redis.set("countries_html", html_string)
     end
-    countries.each{|d| html_string += "<tr><td><a href='#{BASE_URL}/#{d[:slug]}'>#{d[:name]}</a></td></tr>"}
-    html_string += "</table>"
     return html_string
   end
 

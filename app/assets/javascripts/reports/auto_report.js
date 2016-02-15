@@ -102,9 +102,10 @@ Rumali.autoCharts = (function(){
 				selector: selector,//Getting id for the element as expected by the pykihcharts.
 				data:data,
 				//Api for fetching the data.
-		      	tooltip_enable: "yes" //enabling tool tip for the gven chart
+		      	tooltip_enable: "yes", //enabling tool tip for the gven chart
+		      	//shade_color: "#1A8AC7","#095F90","#4BC0F0"]
+		      	shade_color: "#4BC0F0"
 				};
-
 			var chartobj = new PykCharts.oneD.pie(
 					oned_obj
 				);
@@ -146,7 +147,9 @@ Rumali.autoCharts = (function(){
 				selector: selector,//Getting id for the element as expected by the pykihcharts.
 				data:data,
 				//Api for fetching the data.
-		      	tooltip_enable: "yes" //enabling tool tip for the gven chart
+		      	tooltip_enable: "yes",//enabling tool tip for the gven chart
+						shade_color: "#4BC0F0"
+				
 				};
 
 			var chartobj = new PykCharts.oneD.electionDonut(
@@ -218,7 +221,9 @@ Rumali.autoCharts = (function(){
 			var loadonedmap_obj = {
 					selector: selector,//Getting id for the element as expected by the pykihcharts.
 					data:data,
-					chart_color: ["#B0E2FF","#60AFFE"],
+					color_mode: "color",
+					//chart_color: ["#B0E2FF","#60AFFE"],
+					chart_color: ["#1A8AC7","#095F90","#4BC0F0"],
 					data_sort_enable: "no",
 					axis_x_time_value_datatype:"month",
 				};
@@ -256,8 +261,12 @@ Rumali.autoCharts = (function(){
 			      	//palette_color:"Red",
 			      	//total_no_of_colors: 5,
 			      	default_color:["#E4E4E4"],//,
-			      	saturation_color: "#255AEE",
-			      	color_mode: "saturation"
+					    color_mode: "saturation",
+							//chart_color: ["#B0E2FF","#60AFFE"],
+							saturation_color: "#4BC0F0",
+					
+			      	// saturation_color: "#255AEE",
+			      	// color_mode: "saturation"
 				};
 
 			var chartobj = new PykCharts.maps.oneLayer(

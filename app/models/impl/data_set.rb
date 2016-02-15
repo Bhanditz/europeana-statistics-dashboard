@@ -67,7 +67,7 @@ class Impl::DataSet < ActiveRecord::Base
 
   def before_create_set
     self.status = "In queue"
-    self.data_set_id = self.name.split("_")[0]
+    self.data_set_id = self.name.split("_")[0].gsub(/[^0-9,.]/,"")
     true
   end
 

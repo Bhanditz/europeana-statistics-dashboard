@@ -36,18 +36,29 @@ Rails.application.routes.draw do
     end
   end
 
+
   #CUSTOM PUBLIC URLs --------------------------------------------------------------
   
   get 'switch_user' => 'switch_user#set_current_user'
   get 'approve/account/:id' => "accounts#change_approval"  
   get "/new", to: "core/projects#new", as: "_new_project"
   get "/providers", to: "impl/aggregations#providers", as: "providers"
-  get "/data_providers", to: "impl/aggregations#data_providers", as: "data_providers"
+  get "/dataproviders", to: "impl/aggregations#data_providers", as: "data_providers"
   get "/countries", to: "impl/aggregations#countries", as: "countries"
   get "/provider_hit_list", to: "impl/aggregations#provider_hit_list", as: "provider_hit_list"
-  get "/:impl_report_id", to: "impl/reports#show", as: "impl_report"
 
-  #
+  namespace :dataprovider,module: false  do
+    get ":impl_report_id", to: "impl/reports#show", as: "impl_report", genre: "data_provider"
+  end
+
+  namespace :country,module: false do
+    get ":impl_report_id", to: "impl/reports#show", as: "impl_report", genre: "country"
+  end
+
+  namespace :provider,module: false do
+    get ":impl_report_id", to: "impl/reports#show", as: "impl_report", genre: "provider"
+  end
+
   get "/:account_id/projects", to: "accounts#show", as: "_account", :defaults => { :content => "projects" }
   get "/:account_id/dashboard", to: "accounts#dashboard", as: "dashboard"
   get "/:account_id/edit", to: "accounts#edit", as: "_edit_account"
