@@ -41,6 +41,7 @@ class Core::Datacast < ActiveRecord::Base
   belongs_to :core_db_connection, class_name: "Core::DbConnection", foreign_key: "core_db_connection_id"
   has_one :core_datacast_output, class_name: "Core::DatacastOutput", foreign_key: "datacast_identifier", primary_key: "identifier", dependent: :destroy
   has_many :core_vizs, class_name: "Core::Viz", foreign_key: "core_datacast_identifier", primary_key: "identifier"
+  has_many :impl_aggregation_datacasts, class_name: "Impl::AggregationDatacast", foreign_key: "core_datacast_identifier", primary_key: "identifier"
   #VALIDATIONS
   validates :name, presence: true
   validates :core_project_id, presence: true

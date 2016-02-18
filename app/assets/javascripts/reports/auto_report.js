@@ -286,27 +286,46 @@ Rumali.autoCharts = (function(){
 
 	//Function to load top 10 digital objects.
 	var loadTop10digitalObject = function(obj,filter_details){
-		var selector = "#"+ $(obj).attr('id'),
+		var month_arr = ['January','February','March','April','May','June','July','August','September','October','November','December'], i,prev_year = gon.selected_year - 1,current_month_index = month_arr.indexOf(gon.current_month) + 2, 
+			selector = "#"+ $(obj).attr('id'),
 			filter_data;
 
 		if($("#digital_objects_filter_field").length === 0){
-			var month_arr = ['January','February','March','April','May','June','July','August','September','October','November','December'], i,prev_year = gon.selected_year - 1; 
-			select_string = "<select id='filter-select'>";
-			select_string += "<option class='filter_top_digital_objects' data-filter_details='"+prev_year+"'>ALL of "+(gon.selected_year-1 )+"</option>"; 
+			select_month_string = "<select id='filter-month-select' class='filter_top_digital_objects'>",select_year_string = "<select id='filter-year-select' class='filter_top_digital_objects'>";
+			select_month_string += "<option value=''>Full year</option><option value='' disabled='disabled'>- - - - - - - -</option>"; 
 			for(i = 0; i < 12; i++) {
-			  select_string += "<option class='filter_top_digital_objects' data-filter_details='"+prev_year+"_"+month_arr[i]+"'>"+month_arr[i]+"</option>";
+			  select_month_string += "<option value='"+month_arr[i]+"'>"+month_arr[i]+"</option>";
 			}
-			select_string += "</select>";
-			var str = $('<h3 class="sel_filters" id="digital_objects_filter_field">'+select_string+'&nbsp;&nbsp;<span class="filters" data-filter_details = "2014">2014</span>&nbsp;&nbsp;<span class="filters" data-filter_details = "2016">2016</span></h3>');
-			$(str).find('span.filters').on('click', function (){
-				$(this).addClass('active').siblings('.active').removeClass('active');
-				Rumali.autoCharts.filterTopDigitalObjectsData($(this).attr("data-filter_details"));
+			select_month_string += "</select>";
+			for(i=2014;i <= gon.selected_year; i++) {
+				select_year_string += "<option value='"+i+"' "+((i == gon.selected_year - 1) ? 'selected' : '')+">"+i+"</option>"; 
+			}
+			select_year_string += "</select>";
+			var str = $('<h3 class="sel_filters" id="digital_objects_filter_field"><h5 style="display:inline">Show results for </h5>&nbsp;&nbsp;'+select_month_string+'&nbsp;&nbsp;<h5 style="display:inline"> of </h5>&nbsp;&nbsp;'+select_year_string+'</h3>');
+			$(selector).before(str);
+			$("select.filter_top_digital_objects").on('change',function (){
+				var month_gt_current_month = $("select#filter-month-select").find("option:gt("+current_month_index+")"),
+				year = $('select#filter-year-select option:selected').val(),
+				selected_month =  $('select#filter-month-select option:selected'),
+				month = selected_month.val()	;
+				if(year == gon.selected_year) {
+					month_gt_current_month.each(function(){$(this).prop("disabled",true)});
+					if( month_gt_current_month.first().index() < selected_month.index() ){
+						month = '';
+						$('select#filter-month-select').find("option").first().prop("selected",true)
+					}
+				} else {
+					if (month_gt_current_month[0].disabled == true) {
+				   	month_gt_current_month.each(function(){$(this).prop("disabled",false)});
+					}
+				}
+				filter = year;
+				if (typeof month !== "undefined" && month !== "") {
+					filter  += '_'+  month;
+				}
+				debugger;
+				Rumali.autoCharts.filterTopDigitalObjectsData(filter);
 			});
-			$(str).find("select").on('change',function (){
-				$("span.filters.active").removeClass("active");
-				Rumali.autoCharts.filterTopDigitalObjectsData($("#"+this.id +" option:selected").attr("data-filter_details"));
-			});
-			$(selector).before(str)
 		}
 
 		var filterData = function(data,filter_details){

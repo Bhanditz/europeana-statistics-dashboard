@@ -34,8 +34,7 @@ class Core::VizsController < ApplicationController
   end
 
   def new
-    ids_to_exclude = Impl::AggregationDatacast.all.pluck(:core_datacast_identifier).uniq
-    @core_datacasts = @core_project.core_datacasts.where.not(identifier: ids_to_exclude).ready.order(created_at: :desc)
+    @core_datacasts = @core_project.core_datacasts.ready.order(created_at: :desc).find_by_sql("Select * from core_datacasts where not EXISTS (Select impl_aggregation_datacasts.core_datacast_identifier from impl_aggregation_datacasts where core_datacasts.identifier=impl_aggregation_datacasts.core_datacast_identifier);")
     @viz = Core::Viz.new
     @ref_charts =  Ref::Chart.where.not(slug: "grid")
     default_theme = Core::Theme.admin.where(name: "Default").first.config
