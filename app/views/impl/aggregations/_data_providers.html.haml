@@ -24,7 +24,7 @@
         - @impl_countries.each do |impl_country|
           %tr
             %td
-              =impl_country.impl_report.present? ? (link_to impl_country.name, impl_report_path(impl_country.impl_report), target: "_blank") : impl_country.name
+              =impl_country.impl_report.present? ? (link_to impl_country.name, country_impl_report_path(impl_country.impl_report), target: "_blank") : impl_country.name
               -if impl_country.error_messages.present?
                 .red= impl_country.error_messages
               -else
@@ -43,7 +43,7 @@
         - @impl_providers.each do |impl_provider|
           %tr
             %td
-              =impl_provider.impl_report.present? ? (link_to impl_provider.name, impl_report_path(impl_provider.impl_report), target: "_blank") : impl_provider.name
+              =impl_provider.impl_report.present? ? (link_to impl_provider.name, provider_impl_report_path(impl_provider.impl_report), target: "_blank") : impl_provider.name
               -if impl_provider.error_messages.present?
                 .red= impl_provider.error_messages
               -else
