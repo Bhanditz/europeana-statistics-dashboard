@@ -26,7 +26,7 @@
                     %td= impl_aggregation.genre.titleize
                     %td
                       - if impl_aggregation.impl_report.present?
-                        = link_to impl_aggregation.name, impl_report_path(impl_aggregation.impl_report)
+                        = link_to impl_aggregation.name, country_impl_report_path(impl_aggregation.impl_report)
                       -else
                         = impl_aggregation.name
 
