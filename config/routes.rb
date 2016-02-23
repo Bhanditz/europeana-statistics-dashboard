@@ -24,7 +24,7 @@ Rails.application.routes.draw do
       end
     end
   end
-  
+
   resources :accounts do
     resources :projects do
       namespace :impl do
@@ -38,9 +38,9 @@ Rails.application.routes.draw do
 
 
   #CUSTOM PUBLIC URLs --------------------------------------------------------------
-  
+
   get 'switch_user' => 'switch_user#set_current_user'
-  get 'approve/account/:id' => "accounts#change_approval"  
+  get 'approve/account/:id' => "accounts#change_approval"
   get "/new", to: "core/projects#new", as: "_new_project"
   get "/providers", to: "impl/aggregations#providers", as: "providers"
   get "/dataproviders", to: "impl/aggregations#data_providers", as: "data_providers"
@@ -49,15 +49,15 @@ Rails.application.routes.draw do
   get "/europeana", to: "impl/reports#show", as: "europeana_report", genre: "europeana", impl_report_id: "europeana"
 
   namespace :dataprovider,module: false  do
-    get ":impl_report_id", to: "impl/reports#show", as: "impl_dataprovider_report", genre: "data_provider"
+    get ":impl_report_id", to: "impl/reports#show", as: "impl_report", genre: "data_provider"
   end
 
   namespace :country,module: false do
-    get ":impl_report_id", to: "impl/reports#show", as: "impl_provider_report", genre: "country"
+    get ":impl_report_id", to: "impl/reports#show", as: "impl_report", genre: "country"
   end
 
   namespace :provider,module: false do
-    get ":impl_report_id", to: "impl/reports#show", as: "impl_country_report", genre: "provider"
+    get ":impl_report_id", to: "impl/reports#show", as: "impl_report", genre: "provider"
   end
 
   namespace :europeana, module: false do
