@@ -12,7 +12,7 @@ class Aggregations::Europeana::ReportBuilder
         html_content.gsub!(key, value.to_s)
       end
 
-      a = Impl::Report.create_or_update(aggregation.name, aggregation.id, core_template.id, html_content, variable_object, true)
+      a = Impl::Report.create_or_update(aggregation.name, aggregation.id, core_template.id, html_content, variable_object, true,aggregation.name.parameterize("-"))
       aggregation.update_attributes(status: "Report built", error_messages: nil)
     rescue => e
       aggregation.update_attributes(status: "Failed to build report", error_messages: e.to_s)
