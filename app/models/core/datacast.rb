@@ -24,7 +24,7 @@
 #
 
 class Core::Datacast < ActiveRecord::Base
-  
+
   self.table_name = "core_datacasts"
 
   #GEMS
@@ -32,7 +32,7 @@ class Core::Datacast < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged
   #CONSTANTS
-  #ATTRIBUTES  
+  #ATTRIBUTES
   #ACCESSORS
   store_accessor :properties, :query, :method, :refresh_frequency, :error, :fingerprint, :format, :number_of_rows, :number_of_columns
 
@@ -42,6 +42,7 @@ class Core::Datacast < ActiveRecord::Base
   has_one :core_datacast_output, class_name: "Core::DatacastOutput", foreign_key: "datacast_identifier", primary_key: "identifier", dependent: :destroy
   has_many :core_vizs, class_name: "Core::Viz", foreign_key: "core_datacast_identifier", primary_key: "identifier"
   has_many :impl_aggregation_datacasts, class_name: "Impl::AggregationDatacast", foreign_key: "core_datacast_identifier", primary_key: "identifier"
+  has_many :impl_aggregations, through: :impl_aggregation_datacasts
   #VALIDATIONS
   validates :name, presence: true
   validates :core_project_id, presence: true
@@ -54,7 +55,7 @@ class Core::Datacast < ActiveRecord::Base
   #CALLBACKS
   before_create :before_create_set
   after_create :after_create_set
-  
+
   #SCOPES
   scope :ready, ->{where("properties->'error' != ?","''").where.not(last_run_at: nil)}
   scope :media_type, -> {where("core_datacasts.name LIKE '%Media Types'")}
@@ -131,27 +132,27 @@ class Core::Datacast < ActiveRecord::Base
       return false
     end
   end
-  
+
   def self.upload_tmp_file(_data)
     uploader = CsvFileUploader.new
     if uploader.cache!(_data)
       file_path = uploader.file.path
       file_size = uploader.file.size
       if !file_path or file_size < 1
-        return [uploader, "File is empty.", nil] 
+        return [uploader, "File is empty.", nil]
       end
     else
       return [uploader, "File is not uploaded.", nil]
     end
-    headers = File.open(file_path, &:readline) 
-    begin 
+    headers = File.open(file_path, &:readline)
+    begin
       column_separator = ["\t", "|", ";", ","].sort_by{|separator| headers.count(separator)}.last
     rescue => e
       return [uploader, e.to_s, nil]
     end
     return [uploader, nil, column_separator]
   end
-  
+
   def self.upload_or_create_file(file_path, file_name, _core_project_id,_core_db_connection_id ,table_name,first_row_header, column_separator,token)
     query = "Select * from #{table_name}"
     d = Core::Datacast.new({query: query, name: file_name, core_project_id: _core_project_id, core_db_connection_id: _core_db_connection_id, identifier: SecureRandom.hex(33), table_name: table_name })
@@ -187,7 +188,7 @@ class Core::Datacast < ActiveRecord::Base
       return nil
     end
   end
-  
+
   def self.insert_into_grid(projectname, username, filename, token, grid_data)
     begin
       response = Nestful.post REST_API_ENDPOINT + "#{username}/#{projectname}/#{filename}/row/batch_add", {token: token, data: grid_data }, :format => :json
@@ -257,13 +258,13 @@ class Core::Datacast < ActiveRecord::Base
   end
 
   #PRIVATE
-  
+
   private
 
   def should_generate_new_friendly_id?
     name_changed?
   end
-  
+
   def before_create_set
     self.number_of_rows = 0
     self.method = "get"
