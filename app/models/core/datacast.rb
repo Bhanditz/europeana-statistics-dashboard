@@ -41,8 +41,8 @@ class Core::Datacast < ActiveRecord::Base
   belongs_to :core_db_connection, class_name: "Core::DbConnection", foreign_key: "core_db_connection_id"
   has_one :core_datacast_output, class_name: "Core::DatacastOutput", foreign_key: "datacast_identifier", primary_key: "identifier", dependent: :destroy
   has_many :core_vizs, class_name: "Core::Viz", foreign_key: "core_datacast_identifier", primary_key: "identifier"
-  has_many :impl_aggregation_datacasts, class_name: "Impl::AggregationDatacast", foreign_key: "core_datacast_identifier", primary_key: "identifier"
-  has_many :impl_aggregations, through: :impl_aggregation_datacasts
+  has_one :impl_aggregation_datacast, class_name: "Impl::AggregationDatacast", foreign_key: "core_datacast_identifier", primary_key: "identifier"
+  has_one :impl_aggregation, through: :impl_aggregation_datacast
   #VALIDATIONS
   validates :name, presence: true
   validates :core_project_id, presence: true
@@ -58,13 +58,13 @@ class Core::Datacast < ActiveRecord::Base
 
   #SCOPES
   scope :ready, ->{where("properties->'error' != ?","''").where.not(last_run_at: nil)}
-  scope :media_type, -> {where("core_datacasts.name LIKE '%Media Types'")}
-  scope :reusable, -> {where("core_datacasts.name LIKE '%Reusables'")}
-  scope :top_country, -> {where("core_datacasts.name LIKE '%Top Countries'")}
-  scope :top_digital_objects, -> {where("core_datacasts.name LIKE '%Top Digital Objects'")}
-  scope :collections, -> {where("core_datacasts.name LIKE '%Collections'")}
-  scope :line_charts, -> {where("core_datacasts.name LIKE '%Line Chart'")}
-  scope :top_search_terms, -> {where("core_datacasts.name LIKE '%- Search Terms'")}
+  scope :media_type, -> {where("core_datacasts.name LIKE '% - Media Types'")}
+  scope :reusable, -> {where("core_datacasts.name LIKE '% - Reusables'")}
+  scope :top_country, -> {where("core_datacasts.name LIKE '% - Top Countries'")}
+  scope :top_digital_objects, -> {where("core_datacasts.name LIKE '% - Top Digital Objects'")}
+  scope :collections, -> {where("core_datacasts.name LIKE '% - Collections'")}
+  scope :line_charts, -> {where("core_datacasts.name LIKE '% - Line Chart'")}
+  scope :top_search_terms, -> {where("core_datacasts.name LIKE '% - Search Terms'")}
   #CUSTOM SCOPES
   #OTHER
   #FUNCTIONS

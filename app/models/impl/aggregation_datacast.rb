@@ -12,7 +12,7 @@
 class Impl::AggregationDatacast < ActiveRecord::Base
   #GEMS
   self.table_name = "impl_aggregation_datacasts"
-  
+
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
@@ -21,7 +21,7 @@ class Impl::AggregationDatacast < ActiveRecord::Base
   belongs_to :core_datacast, class_name: "Core::Datacast", foreign_key: "core_datacast_identifier", primary_key: "identifier"
   #VALIDATIONS
   validates :impl_aggregation_id, presence: true
-  validates :core_datacast_identifier, presence: true
+  validates :core_datacast_identifier, presence: true, uniqueness: true
 
   #CALLBACKS
   #SCOPES

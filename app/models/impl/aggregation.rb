@@ -45,7 +45,7 @@ class Impl::Aggregation < ActiveRecord::Base
   #VALIDATIONS
   validates :core_project_id, presence: true
   validates :genre, presence: true, inclusion: {in: ["provider","data_provider","country","europeana"]}
-  validates :name, presence: true, uniqueness: {scope: ["core_project_id","genre"]}
+  validates :name, presence: true, uniqueness: {scope: :genre}
 
   #CALLBACKS
   before_create :before_create_set
