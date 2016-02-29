@@ -5,7 +5,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
   def perform(data_provider_id)
     data_provider = Impl::Aggregation.find(data_provider_id)
     begin
-      raise "'Dismarc' data set" if data_provider.dismarc_data_set?
+      raise "Blacklist data set" if data_provider.blacklist_data_set?
     rescue => e
       data_provider.update_attributes(status: "Failed", error_messages: e.to_s)
       return nil
