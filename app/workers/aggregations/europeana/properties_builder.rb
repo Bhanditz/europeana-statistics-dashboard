@@ -9,12 +9,12 @@ class Aggregations::Europeana::PropertiesBuilder
       begin
         ["COUNTRY","PROVIDER","DATA_PROVIDER"].each do |property|
           p_down = property.downcase
-          properties = JSON.parse(Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=*:*&rows=0&profile=facets,params&facet=#{property}").body)
+          properties = JSON.parse(Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=SQkKyghXb&query=*:*&rows=0&profile=facets,params&facet=#{property}").body)
           if properties["facets"].present? and properties["facets"].first.present? and properties["facets"].first['fields'].present?
             a = properties["facets"].first['fields']
             properties_data = [{"month" => Date.today.month, "year" => Date.today.year, "#{p_down}_count" => p_down, "value" => a.count}]
             Core::TimeAggregation.create_aggregations(properties_data,"monthly", aggregation.id,"Impl::Aggregation","value","#{p_down}_count")
-            aggregation.update_attributes(status: "Processed Reusables")  
+            aggregation.update_attributes(status: "Processed Reusables")
           else
             raise "No #{property.downcase} detected"
           end

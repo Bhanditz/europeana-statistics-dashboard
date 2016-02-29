@@ -7,7 +7,7 @@ class Impl::DataProviders::MediaTypesBuilder
     aggregation.update_attributes(status: "Building Media Types", error_messages: nil)
     begin
       europeana_query = aggregation.europeana? ? "*:*" : CGI.escape("#{aggregation.genre.upcase}:\"#{(aggregation.name)}\"")
-      media_types =  Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=api2demo&query=#{europeana_query}&facet=TYPE&profile=facets&rows=0")
+      media_types =  Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=SQkKyghXb&query=#{europeana_query}&facet=TYPE&profile=facets&rows=0")
       if media_types["facets"].present? and media_types["facets"].first.present? and media_types["facets"].first["fields"].present?
         media_type_data =  media_types["facets"].first["fields"].map{|a| {"month" => Date.today.month, "year" => Date.today.year, "media_type" => a["label"], "value" => a["count"].to_i}}
         Core::TimeAggregation.create_aggregations(media_type_data,"monthly", aggregation_id,"Impl::Aggregation","value","media_type")
