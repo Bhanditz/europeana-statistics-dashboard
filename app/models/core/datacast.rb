@@ -75,8 +75,8 @@ class Core::Datacast < ActiveRecord::Base
     else
       if a.query != q
         a.update_attributes(query: q)
-        Core::Datacast::RunWorker.perform_async(a.id) unless a.table_name.present?
       end
+      Core::Datacast::RunWorker.perform_async(a.id) unless a.table_name.present?
     end
     a
   end
