@@ -17,7 +17,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
       Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects,"monthly", data_provider_id)
       data_provider.update_attributes(status: "Processed top 10 digital objects")
       Impl::DataProviders::DatacastsBuilder.perform_async(data_provider_id)
-      data_provider.update_attributes(status: "Built top digital objects", last_updated_at: Date.today.at_beginning_of_week - 1)
+      data_provider.update_attributes(status: "Built top digital objects", last_updated_at: Date.today.at_beginning_of_month - 1)
     rescue => e
       data_provider.update_attributes(status: "Failed to build top digital objects",error_messages: e.to_s)
     end
