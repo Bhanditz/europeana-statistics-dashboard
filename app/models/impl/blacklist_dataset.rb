@@ -13,7 +13,7 @@ class Impl::BlacklistDataset < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
-  def self.get_backlist_datasets
+  def self.get_blacklist_datasets
   	if $redis.get("blacklist_datasets")
   		blacklist_datasets = JSON.parse($redis.get("blacklist_datasets"))
   	else

@@ -111,7 +111,7 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def blacklist_data_set?
-    return (self.genre == "data_provider" and (self.impl_data_sets.pluck(:name).uniq & Constants::BLACKLIST_DATASETS).present?)
+    return (self.genre == "data_provider" and (self.impl_data_sets.pluck(:name).uniq & Impl::BlacklistDataset.get_blacklist_datasets).present?)
   end
 
   def self.create_or_find_aggregation(name, genre, core_project_id)
