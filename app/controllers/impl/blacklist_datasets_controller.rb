@@ -20,6 +20,7 @@ class Impl::BlacklistDatasetsController < ApplicationController
 	def destroy
 		@blacklist_dataset = Impl::BlacklistDataset.find(params[:id])
 		@blacklist_dataset.destroy
+		$redis.set("blacklist_datasets",Impl::BlacklistDataset.all.pluck(:dataset))
 		redirect_to :back, notice: t("d.s")
 	end
 
