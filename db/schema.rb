@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160205092953) do
+ActiveRecord::Schema.define(version: 20160308052908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -285,6 +285,12 @@ ActiveRecord::Schema.define(version: 20160205092953) do
   end
 
   add_index "impl_aggregations", ["genre"], name: "impl_aggregation_genre_index", using: :btree
+
+  create_table "impl_blacklist_datasets", force: :cascade do |t|
+    t.string   "dataset"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "impl_datasets", force: :cascade do |t|
     t.string   "data_set_id"

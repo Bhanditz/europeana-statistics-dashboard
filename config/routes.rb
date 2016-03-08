@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         resources :aggregations do
           get "restart_all_aggregation_workers","datacasts","restart_worker","reset_country_data", on: :member
         end
+        resources :blacklist_datasets, only: [:index,:create,:destroy]
         resources :reports, except: [:show]
       end
     end
