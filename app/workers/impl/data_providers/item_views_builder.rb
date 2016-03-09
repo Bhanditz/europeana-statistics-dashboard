@@ -11,8 +11,8 @@ class Impl::DataProviders::ItemViewsBuilder
       return nil
     end
     data_provider.update_attributes(status: "Building item views", error_messages: nil)
-    ga_start_date = data_provider.last_updated_at.present? ? data_provider.last_updated_at.strftime("%Y-%m-%d") : "2012-01-01"
-    ga_end_date   = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d")
+    ga_start_date = data_provider.last_updated_at.present? ? (data_provider.last_updated_at+1).strftime("%Y-%m-%d") : "2012-01-01"
+    ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
     ga_dimensions = "ga:month,ga:year"
     begin
       #Item Views

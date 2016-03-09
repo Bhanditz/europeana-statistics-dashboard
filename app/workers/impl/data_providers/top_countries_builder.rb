@@ -12,8 +12,8 @@ class Impl::DataProviders::TopCountriesBuilder
     end
     data_provider.update_attributes(status: "Building top 25 countries", error_messages: nil)
     begin
-      start_date = data_provider.last_updated_at.present? ? data_provider.last_updated_at.strftime("%Y-%m-%d") : "2012-01-01"
-      end_date   = (Date.today.at_beginning_of_week - 1).strftime("%Y-%m-%d")
+      start_date = data_provider.last_updated_at.present? ? (data_provider.last_updated_at+1).strftime("%Y-%m-%d") : "2012-01-01"
+      end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
       country_output = Impl::Aggregation.fetch_GA_data_between(start_date, end_date, data_provider, "country","pageviews")
       Core::TimeAggregation.create_aggregations(country_output,"monthly", data_provider_id,"Impl::Aggregation","pageviews","country") unless country_output.nil?
       data_provider.update_attributes(status: "Processed top 25 countries")
