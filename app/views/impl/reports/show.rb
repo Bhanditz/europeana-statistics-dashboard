@@ -67,37 +67,37 @@ module Impl
       protected
 
       def get_report_charts
-        #@impl_report.variable_object
-        {
-          main_chart: {
-            title: "Total pageviews in throughout the years",
-            id: "spain_-_line_chart",
-            api: "PykCharts.multiD.multiSeriesLine",
-            datacast_identifier: "73a218cfeeafbc4db46bca62340d9e931da4fa6b959629cece30dc531f0ccfba5a",
-            class: 'd3-pykcharts'
-          },
-          topcountries:{
-            title: "Top 25 Countries",
-            id: "spain_-_top_countries",
-            api: "PykCharts.maps.oneLayer",
-            datacast_identifier: "1a08e1be9ff9bbb728521df12cb86bd8ab95d510d37fcf37e8d529b8e3b75e98d5",
-            class: 'd3-pykcharts',
-          },
-          total_items: {
-            title: "Total number of items",
-            id: "spain_-_media_type_donut_chart",
-            api: "PykCharts.oneD.electionDonut",
-            datacast_identifier: "99c1e6eeda0363af1f368e07efcc6c0e5a214d57491a4946142e8f1c406bd313c8",
-            class: 'd3-pykcharts',
-          },
-          open_for_reuse: {
-            title: "Open for Re-use",
-            id: "spain_-_reusables",
-            api: "PykCharts.oneD.pie",
-            datacast_identifier: "8a8e60211b3a0c21b7da1ec8fb9a7c0226387e7675f90b0db563d657fd2ff678a6",
-            class: 'd3-pykcharts',
-          }
-        }
+        @impl_report.variable_object
+        # {
+        #   main_chart: {
+        #     title: "Total pageviews in throughout the years",
+        #     id: "spain_-_line_chart",
+        #     api: "PykCharts.multiD.multiSeriesLine",
+        #     datacast_identifier: "73a218cfeeafbc4db46bca62340d9e931da4fa6b959629cece30dc531f0ccfba5a",
+        #     class: 'd3-pykcharts'
+        #   },
+        #   topcountries:{
+        #     title: "Top 25 Countries",
+        #     id: "spain_-_top_countries",
+        #     api: "PykCharts.maps.oneLayer",
+        #     datacast_identifier: "1a08e1be9ff9bbb728521df12cb86bd8ab95d510d37fcf37e8d529b8e3b75e98d5",
+        #     class: 'd3-pykcharts',
+        #   },
+        #   total_items: {
+        #     title: "Total number of items",
+        #     id: "spain_-_media_type_donut_chart",
+        #     api: "PykCharts.oneD.electionDonut",
+        #     datacast_identifier: "99c1e6eeda0363af1f368e07efcc6c0e5a214d57491a4946142e8f1c406bd313c8",
+        #     class: 'd3-pykcharts',
+        #   },
+        #   open_for_reuse: {
+        #     title: "Open for Re-use",
+        #     id: "spain_-_reusables",
+        #     api: "PykCharts.oneD.pie",
+        #     datacast_identifier: "8a8e60211b3a0c21b7da1ec8fb9a7c0226387e7675f90b0db563d657fd2ff678a6",
+        #     class: 'd3-pykcharts',
+        #   }
+        # }
       end
 
       def get_data_providers
