@@ -12,7 +12,7 @@ module Impl
       def css_files
         [
           { path: styleguide_url('/css/statistics/screen.css'), media: 'all', title: nil },
-          { path: asset_path("europeana.css"), media: 'all', title: nil}
+          { path: asset_path("europeana.css"), media: 'all', title: nil},
         ]
       end
 
@@ -26,6 +26,9 @@ module Impl
           },
           {
             path: asset_path('reports.js')
+          },
+          {
+            path: "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"
           },
           {
             path: styleguide_url('/js/dist/require.js'),
