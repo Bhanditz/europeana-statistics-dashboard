@@ -76,27 +76,27 @@ namespace :ref do
 
   task :create_default_template => :environment do |t,args|
     puts "----> Creating Default Template for data providers"
-    name = "Default Data Provider Template"
-    genre = "data_providers"
-    required_variables = {"required_variables" => ["$DATA_PROVIDER_NAME$","$Total_PAGEVIEWS$","$TOP_DIGITAL_OBJECTS$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
-    html_content = File.open("ref/default_data_provider_template.txt").read.gsub(/\n(\s+|)/,' ')
-    Core::Template.create_or_update(name,html_content,genre,required_variables)
-    puts "----> Creating Default Template for providers"
-    name = "Default Provider Template"
-    genre = "providers"
-    required_variables = {"required_variables" => ["$PROVIDER_NAME$","$Total_PAGEVIEWS$","$TOTAL_PROVIDERS_COUNT$","$TOP_DIGITAL_OBJECTS$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
-    html_content = File.open("ref/default_provider_template.txt").read.gsub(/\n(\s+|)/,' ')
-    Core::Template.create_or_update(name,html_content,genre,required_variables)
-    puts "----> Creating Default Template for countries"
-    name = "Default Country Template"
-    genre = "country"
-    required_variables = {"required_variables" => ["$COUNTRY_NAME$","$Total_PAGEVIEWS$","$TOP_DIGITAL_OBJECTS$","$TOTAL_PROVIDERS_COUNT$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
-    html_content = File.open("ref/default_country_template.txt").read.gsub(/\n(\s+|)/,' ')
-    Core::Template.create_or_update(name,html_content,genre,required_variables)
-    puts "----> Creating Default Template for Europeana"
+    # name = "Default Data Provider Template"
+    # genre = "data_providers"
+    # required_variables = {"required_variables" => ["$DATA_PROVIDER_NAME$","$Total_PAGEVIEWS$","$TOP_DIGITAL_OBJECTS$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
+    # html_content = File.open("ref/default_data_provider_template.txt").read.gsub(/\n(\s+|)/,' ')
+    # Core::Template.create_or_update(name,html_content,genre,required_variables)
+    # puts "----> Creating Default Template for providers"
+    # name = "Default Provider Template"
+    # genre = "providers"
+    # required_variables = {"required_variables" => ["$PROVIDER_NAME$","$Total_PAGEVIEWS$","$TOTAL_PROVIDERS_COUNT$","$TOP_DIGITAL_OBJECTS$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
+    # html_content = File.open("ref/default_provider_template.txt").read.gsub(/\n(\s+|)/,' ')
+    # Core::Template.create_or_update(name,html_content,genre,required_variables)
+    # puts "----> Creating Default Template for countries"
+    # name = "Default Country Template"
+    # genre = "country"
+    # required_variables = {"required_variables" => ["$COUNTRY_NAME$","$Total_PAGEVIEWS$","$TOP_DIGITAL_OBJECTS$","$TOTAL_PROVIDERS_COUNT$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
+    # html_content = File.open("ref/default_country_template.txt").read.gsub(/\n(\s+|)/,' ')
+    # Core::Template.create_or_update(name,html_content,genre,required_variables)
+    # puts "----> Creating Default Template for Europeana"
     name = "Default Europeana Template"
     genre = "europeana"
-    required_variables = {"required_variables" => ["$Total_PAGEVIEWS$","$TOP_DIGITAL_OBJECTS$","$TOTAL_COUNTRIES_COUNT$","$TOTAL_PROVIDERS_COUNT$","$TOTAL_DATA_PROVIDERS_COUNT$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]}
+    required_variables = {"required_variables" => ["main_chart","topcountries","total_items","open_for_reuse"]}
     html_content = File.open("ref/default_europeana_template.txt").read.gsub(/\n(\s+|)/,' ')
     Core::Template.create_or_update(name,html_content,genre,required_variables)
   end

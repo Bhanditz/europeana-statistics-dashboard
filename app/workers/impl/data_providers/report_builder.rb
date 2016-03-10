@@ -33,14 +33,11 @@ class Impl::DataProviders::ReportBuilder
 
   def self.get_data_provider_object(aggregation)
     variable_object = {}
-    core_template = aggregation.genre == 'data_provider' ? Core::Template.default_data_provider_template : aggregation.genre == "provider" ? Core::Template.default_provider_template : Core::Template.default_country_template
+    core_template = aggregation.genre == Core::Template.default_europeana_template
     required_variables = core_template.required_variables['required_variables']
     core_vizs = aggregation.core_vizs
-    #["$COUNTRY_NAME$","$Total_PAGEVIEWS$","$TOTAL_PROVIDERS_COUNT$","$TOP_DIGITAL_OBJECTS$","$MEDIA_TYPES_CHART$","$REUSABLES_CHART$","$TOP_COUNTRIES_TABLE$"]
-    #COUNTRY NAME
-    country_name_key = required_variables.shift
-    country_name_value = aggregation.name.titleize
-    variable_object[country_name_key] = country_name_value
+    #["main_chart","topcountries","total_items","open_for_reuse"]
+    #Aashutosh change from here
 
     #"$Total_PAGEVIEWS$"
     line_chart_content_key = required_variables.shift

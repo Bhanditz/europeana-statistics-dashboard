@@ -102,10 +102,12 @@ Rumali.autoCharts = (function(){
 				selector: selector,//Getting id for the element as expected by the pykihcharts.
 				data:data,
 				//Api for fetching the data.
-		      	tooltip_enable: "yes", //enabling tool tip for the gven chart
-		      	//shade_color: "#1A8AC7","#095F90","#4BC0F0"]
-		      	shade_color: "#4BC0F0"
-				};
+      	tooltip_enable: "yes", //enabling tool tip for the gven chart
+      	//shade_color: "#1A8AC7","#095F90","#4BC0F0"]
+      	shade_color: "#4BC0F0",
+      	"pointer_size": 28,
+      	"label_size": 28,
+			};
 			var chartobj = new PykCharts.oneD.pie(
 					oned_obj
 				);
@@ -147,9 +149,11 @@ Rumali.autoCharts = (function(){
 				selector: selector,//Getting id for the element as expected by the pykihcharts.
 				data:data,
 				//Api for fetching the data.
-		      	tooltip_enable: "yes",//enabling tool tip for the gven chart
-						shade_color: "#4BC0F0"
-				
+	      	tooltip_enable: "yes",//enabling tool tip for the gven chart
+					shade_color: "#4BC0F0",
+					"pointer_size": 25,
+    			"label_size": 25,
+    			"donut_show_total_at_center_size": 30,
 				};
 
 			var chartobj = new PykCharts.oneD.electionDonut(
@@ -226,8 +230,8 @@ Rumali.autoCharts = (function(){
 					chart_color: ["#1A8AC7","#095F90","#4BC0F0"],
 					data_sort_enable: "no",
 					axis_x_time_value_datatype:"month",
+					chart_width: 1200
 				};
-
 			var chartobj = new PykCharts.multiD.multiSeriesLine(
 						loadonedmap_obj
 					);
@@ -264,7 +268,7 @@ Rumali.autoCharts = (function(){
 					    color_mode: "saturation",
 							//chart_color: ["#B0E2FF","#60AFFE"],
 							saturation_color: "#4BC0F0",
-					
+
 			      	// saturation_color: "#255AEE",
 			      	// color_mode: "saturation"
 				};
@@ -286,19 +290,19 @@ Rumali.autoCharts = (function(){
 
 	//Function to load top 10 digital objects.
 	var loadTop10digitalObject = function(obj,filter_details){
-		var month_arr = ['January','February','March','April','May','June','July','August','September','October','November','December'], i,prev_year = gon.selected_year - 1,current_month_index = month_arr.indexOf(gon.current_month) + 2, 
+		var month_arr = ['January','February','March','April','May','June','July','August','September','October','November','December'], i,prev_year = gon.selected_year - 1,current_month_index = month_arr.indexOf(gon.current_month) + 2,
 			selector = "#"+ $(obj).attr('id'),
 			filter_data;
 
 		if($("#digital_objects_filter_field").length === 0){
 			select_month_string = "<select id='filter-month-select' class='filter_top_digital_objects'>",select_year_string = "<select id='filter-year-select' class='filter_top_digital_objects'>";
-			select_month_string += "<option value=''>Full year</option><option value='' disabled='disabled'>- - - - - - - -</option>"; 
+			select_month_string += "<option value=''>Full year</option><option value='' disabled='disabled'>- - - - - - - -</option>";
 			for(i = 0; i < 12; i++) {
 			  select_month_string += "<option value='"+month_arr[i]+"'>"+month_arr[i]+"</option>";
 			}
 			select_month_string += "</select>";
 			for(i=2014;i <= gon.selected_year; i++) {
-				select_year_string += "<option value='"+i+"' "+((i == gon.selected_year - 1) ? 'selected' : '')+">"+i+"</option>"; 
+				select_year_string += "<option value='"+i+"' "+((i == gon.selected_year - 1) ? 'selected' : '')+">"+i+"</option>";
 			}
 			select_year_string += "</select>";
 			var str = $('<h3 class="sel_filters" id="digital_objects_filter_field"><h5 style="display:inline">Show results for </h5>&nbsp;&nbsp;'+select_month_string+'&nbsp;&nbsp;<h5 style="display:inline"> of </h5>&nbsp;&nbsp;'+select_year_string+'</h3>');
@@ -323,7 +327,6 @@ Rumali.autoCharts = (function(){
 				if (typeof month !== "undefined" && month !== "") {
 					filter  += '_'+  month;
 				}
-				debugger;
 				Rumali.autoCharts.filterTopDigitalObjectsData(filter);
 			});
 		}
