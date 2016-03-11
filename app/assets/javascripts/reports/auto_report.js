@@ -277,7 +277,6 @@ Rumali.autoCharts = (function(){
 			filter_data;
 
 		$("select.js-filter_top_digital_objects").on('change',function (){
-			debugger;
 			var month_gt_current_month = $("select#filter-month-select").find("option:gt("+current_month_index+")"),
 			year = $('select#filter-year-select option:selected').val(),
 			selected_month =  $('select#filter-month-select option:selected'),
@@ -299,6 +298,7 @@ Rumali.autoCharts = (function(){
 			}
 			Rumali.autoCharts.filterTopDigitalObjectsData(filter);
 		});
+
 		var filterData = function(data,filter_details){
 			function aggregate_data(data, aggregate_by, aggregate_on) {
 				var grouped_data = _.groupBy(data, function(obj) { return obj[aggregate_by]; }),
@@ -318,16 +318,19 @@ Rumali.autoCharts = (function(){
 
 			var year = filter_details.split("_")[0],
 				month = filter_details.split("_")[1];
+
 			if (typeof month !== "undefined") {
 				filter_data = _.filter(data, function(obj){ return (obj.year  == year) && (obj.month == month)});
 			} else {
 				filter_data = _.filter(data, function(obj){ return (obj.year  == year)});
 				filter_data = aggregate_data(filter_data, "title_url", "value");
 			}
+
 			filter_data = _.sortBy(filter_data,function(obj){
 				return parseInt(obj.value)*-1;
 			});
 			filter_data = _.first(filter_data,25);
+
 			renderHTMLForDigitalObj(transformFilterData(filter_data));
 		}
 

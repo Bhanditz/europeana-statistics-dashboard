@@ -16,7 +16,6 @@
 //};
 
 var Handsontable = function (rootElement, userSettings) {
-  debugger;
   userSettings = userSettings || {};
   var instance = new Handsontable.Core(rootElement, userSettings);
   instance.init();
@@ -9471,7 +9470,7 @@ Handsontable.hooks.register('afterColumnSort');
     }
 
     this.render();
-    
+
     /* jshint ignore:end */
   }
 
