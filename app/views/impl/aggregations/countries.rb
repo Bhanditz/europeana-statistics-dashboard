@@ -18,27 +18,10 @@ module Impl
       def js_files
         [
           {
-            path: asset_path('application.js')
-          },
-          {
-            path: asset_path('accounts.js')
-          },
-          {
-            path: asset_path('reports.js')
-          },
-          {
             path: styleguide_url('/js/dist/require.js'),
             data_main: styleguide_url('/js/dist/main/main-statistics.js')
           }
         ]
-      end
-
-      def js_vars
-        [
-          {
-            name: 'rumi_api_endpoint', value: REST_API_ENDPOINT
-          }
-        ] + super
       end
 
       def content
@@ -50,7 +33,7 @@ module Impl
       end
 
       def title
-        "All country reports"
+        "All Country Reports"
       end
 
     end
