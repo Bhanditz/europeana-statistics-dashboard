@@ -173,10 +173,10 @@ class Impl::Aggregation < ActiveRecord::Base
     if $redis.get("data_providers_json").present?
       json = JSON.parse($redis.get("data_providers_json"))
     else
-      self.data_providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) ORDER BY impl_aggregations.name;").each do |data_provider|
+      self.data_providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='data_provider' ORDER BY impl_aggregations.name;").each do |data_provider|
           obj = {
             url: "#{BASE_URL}/dataprovider/#{data_provider.impl_report.slug}",
-            text: "#{data_provider.name}"
+            text: "#{data_provider.name.titleize}"
           }
           json << obj
       end
@@ -201,10 +201,10 @@ class Impl::Aggregation < ActiveRecord::Base
     if $redis.get("providers_json").present?
       json = JSON.parse($redis.get("providers_json"))
     else
-      self.providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) ORDER BY impl_aggregations.name;").each do |provider|
+      self.providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='provider' ORDER BY impl_aggregations.name;").each do |provider|
         obj = {
           url: "#{BASE_URL}/provider/#{provider.impl_report.slug}",
-          text: "#{provider.name}"
+          text: "#{provider.name.titleize}"
         }
         json << obj
       end
@@ -231,10 +231,10 @@ class Impl::Aggregation < ActiveRecord::Base
     if $redis.get("countries_json").present?
       json = JSON.parse($redis.get("countries_json"))
     else
-      self.countries.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) ORDER BY impl_aggregations.name;").each do |country|
+      self.find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='country' ORDER BY impl_aggregations.name;").each do |country|
         obj = {
           url: "#{BASE_URL}/country/#{country.impl_report.slug}",
-          text: "#{country.name}"
+          text: "#{country.name.titleize}"
         }
         json << obj
       end

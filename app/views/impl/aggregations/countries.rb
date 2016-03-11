@@ -9,9 +9,9 @@ module Impl
         { global: {} }
       end
 
-      def head_links
+      def css_files
         [
-          { rel: 'stylesheet', href: styleguide_url('/css/statistics/screen.css'), media: 'all', title: nil}
+          { path: styleguide_url('/css/statistics/screen.css'), media: 'all', title: nil }
         ]
       end
 
@@ -49,47 +49,8 @@ module Impl
         }
       end
 
-      def footer
-        {
-          "linklist1":
-            {
-              "title": "More info",
-              "items":
-              [
-                {
-                  "text": "News",
-                  "url": "http://google.com"
-                },
-
-                {
-                  "text": "Contact",
-                  "url": "http://google.com"
-                },
-                false
-              ]
-            },
-            "linklist2": false,
-            "subfooter": {
-                "items": [
-                    {
-                        "text": "Home",
-                        "url": "./"
-                    },
-                    {
-                        "text": "About us",
-                        "url": "./"
-                    },
-                    {
-                        "text": "Terms of use & policies",
-                        "url": "http://europeana.eu/portal/rights/terms-and-policies.html"
-                    },
-                    {
-                        "text": "Sitemap",
-                        "url": "./"
-                    }
-                ]
-            }
-        }
+      def title
+        "All country reports"
       end
 
     end
