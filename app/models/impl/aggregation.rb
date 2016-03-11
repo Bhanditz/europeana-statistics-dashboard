@@ -168,48 +168,91 @@ class Impl::Aggregation < ActiveRecord::Base
     return data
   end
 
-  def self.get_data_providers_html
-    if $redis.get("data_providers_html").present?
-      html_string = $redis.get("data_providers_html")
+  def self.get_data_providers_json
+    json = []
+    if $redis.get("data_providers_json").present?
+      json = JSON.parse($redis.get("data_providers_json"))
     else
-      html_string = "<table class='table'><thead><th>Name</th></thead>"
-      self.data_providers.includes(:impl_outputs).order(:name).each do |data_provider|
-        html_string += "<tr><td><a href='#{BASE_URL}/dataprovider/#{data_provider.impl_report.slug}'>#{data_provider.name}</a></td></tr>" if data_provider.impl_report.present?
+      self.data_providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) ORDER BY impl_aggregations.name;").each do |data_provider|
+          obj = {
+            url: "#{BASE_URL}/dataprovider/#{data_provider.impl_report.slug}",
+            text: "#{data_provider.name}"
+          }
+          json << obj
       end
-      html_string += "</table>"
-      $redis.set("data_providers_html", html_string)
+      $redis.set("data_providers_json", json.to_json)
     end
-    html_string
+    json
+    # if $redis.get("data_providers_html").present?
+    #   html_string = $redis.get("data_providers_html")
+    # else
+    #   html_string = "<table class='table'><thead><th>Name</th></thead>"
+    #   self.data_providers.includes(:impl_outputs).order(:name).each do |data_provider|
+    #     html_string += "<tr><td><a href='#{BASE_URL}/dataprovider/#{data_provider.impl_report.slug}'>#{data_provider.name}</a></td></tr>" if data_provider.impl_report.present?
+    #   end
+    #   html_string += "</table>"
+    #   $redis.set("data_providers_html", html_string)
+    # end
+    # html_string
   end
 
-  def self.get_providers_html
-    if $redis.get("providers_html").present?
-      html_string = $redis.get("providers_html")
+  def self.get_providers_json
+    json = []
+    if $redis.get("providers_json").present?
+      json = JSON.parse($redis.get("providers_json"))
     else
-      html_string = "<table class='table'><thead><th>Name</th></thead>"
-      self.providers.includes(:impl_outputs).order(:name).each do |provider|
-        html_string += "<tr><td><a href='#{BASE_URL}/provider/#{provider.impl_report.slug}'>#{provider.name}</a></td></tr>" if provider.impl_report.present?
+      self.providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) ORDER BY impl_aggregations.name;").each do |provider|
+        obj = {
+          url: "#{BASE_URL}/provider/#{provider.impl_report.slug}",
+          text: "#{provider.name}"
+        }
+        json << obj
       end
-      providers.each do |d|
-      end
-      html_string += "</table>"
-      $redis.set("providers_html", html_string)
+      $redis.set("providers_json", json.to_json)
     end
-    html_string
+    json
+    # if $redis.get("providers_html").present?
+    #   html_string = $redis.get("providers_html")
+    # else
+    #   html_string = "<table class='table'><thead><th>Name</th></thead>"
+    #   self.providers.includes(:impl_outputs).order(:name).each do |provider|
+    #     html_string += "<tr><td><a href='#{BASE_URL}/provider/#{provider.impl_report.slug}'>#{provider.name}</a></td></tr>" if provider.impl_report.present?
+    #   end
+    #   providers.each do |d|
+    #   end
+    #   html_string += "</table>"
+    #   $redis.set("providers_html", html_string)
+    # end
+    # html_string
   end
 
-  def self.get_countries_html
-    if $redis.get("countries_html").present?
-      html_string = $redis.get("countries_html")
+  def self.get_countries_json
+    json = []
+    if $redis.get("countries_json").present?
+      json = JSON.parse($redis.get("countries_json"))
     else
-      html_string = "<table class='table'><thead><th>Country name</th></thead>"
-      self.countries.includes(:impl_outputs).order(:name).each do |country|
-        html_string += "<tr><td><a href='#{BASE_URL}/country/#{country.impl_report.slug}'>#{country.name}</a></td></tr>" if country.impl_report.present?
+      self.countries.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) ORDER BY impl_aggregations.name;").each do |country|
+        obj = {
+          url: "#{BASE_URL}/country/#{country.impl_report.slug}",
+          text: "#{country.name}"
+        }
+        json << obj
       end
-      html_string += "</table>"
-      $redis.set("countries_html", html_string)
+      $redis.set("countries_json", json.to_json)
     end
-    return html_string
+    json
+
+    # if $redis.get("countries_html").present?
+    #   html_string = $redis.get("countries_html")
+    # else
+    #   html_string = "<table class='table'><thead><th>Country name</th></thead>"
+    #   self.countries.includes(:impl_outputs).order(:name).each do |country|
+    #     html_string += "<tr><td><a href='#{BASE_URL}/country/#{country.impl_report.slug}'>#{country.name}</a></td></tr>" if country.impl_report.present?
+    #   end
+    #   html_string += "</table>"
+    #   $redis.set("countries_html", html_string)
+    # end
+    # return html_string
   end
 
   def get_total_visits_query

@@ -11,8 +11,8 @@ module Impl
 
       def head_links
         [
-          { rel: 'stylesheet', href: styleguide_url('/css/pro/screen.css'), media: 'all', title: nil },
-          { rel: 'stylesheet', href: asset_path("europeana.css"), media: 'all', title: nil}
+          { path: styleguide_url('/css/statistics/screen.css'), media: 'all', title: nil },
+          { path: asset_path("europeana.css"), media: 'all', title: nil},
         ]
       end
 
@@ -46,7 +46,7 @@ module Impl
         @mustache_content ||= begin
           {
             title: page_title,
-            text: helpers.include_gon.html_safe + Impl::Aggregation.get_data_providers_html.html_safe
+            # text: helpers.include_gon.html_safe + Impl::Aggregation.get_data_providers_json.html_safe
           }
         end
       end

@@ -127,10 +127,6 @@ module Impl
           description: "The total number of institutions working with Europeana."
         }
       end
-
-      def markdown
-        @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML)
-      end
     end
   end
 end

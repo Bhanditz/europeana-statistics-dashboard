@@ -11,8 +11,7 @@ module Impl
 
       def head_links
         [
-          { rel: 'stylesheet', href: styleguide_url('/css/pro/screen.css'), media: 'all', title: nil },
-          { rel: 'stylesheet', href: asset_path("europeana.css"), media: 'all', title: nil}
+          { rel: 'stylesheet', href: styleguide_url('/css/statistics/screen.css'), media: 'all', title: nil}
         ]
       end
 
@@ -29,7 +28,7 @@ module Impl
           },
           {
             path: styleguide_url('/js/dist/require.js'),
-            data_main: styleguide_url('/js/dist/main/main-collections.js')
+            data_main: styleguide_url('/js/dist/main/main-statistics.js')
           }
         ]
       end
@@ -43,12 +42,54 @@ module Impl
       end
 
       def content
-        @mustache_content ||= begin
-          {
-            title: page_title,
-            text: helpers.include_gon.html_safe + Impl::Aggregation.get_countries_html.html_safe
+        {
+          links:{
+            items: Impl::Aggregation.get_countries_json
           }
-        end
+        }
+      end
+
+      def footer
+        {
+          "linklist1":
+            {
+              "title": "More info",
+              "items":
+              [
+                {
+                  "text": "News",
+                  "url": "http://google.com"
+                },
+
+                {
+                  "text": "Contact",
+                  "url": "http://google.com"
+                },
+                false
+              ]
+            },
+            "linklist2": false,
+            "subfooter": {
+                "items": [
+                    {
+                        "text": "Home",
+                        "url": "./"
+                    },
+                    {
+                        "text": "About us",
+                        "url": "./"
+                    },
+                    {
+                        "text": "Terms of use & policies",
+                        "url": "http://europeana.eu/portal/rights/terms-and-policies.html"
+                    },
+                    {
+                        "text": "Sitemap",
+                        "url": "./"
+                    }
+                ]
+            }
+        }
       end
 
     end
