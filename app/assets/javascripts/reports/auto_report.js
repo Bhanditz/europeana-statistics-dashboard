@@ -335,8 +335,8 @@ Rumali.autoCharts = (function(){
 		}
 
 		var renderHTMLForDigitalObj = function(data){
-			//var source = $("#top25-template").html(),
-			var source = '{{#each this}}<li><div class="listitem media"><img class="listitem-image media-figure" src="{{ image_root }}{{ image }}" alt="{{ title }}"><div class="media-body">{{#if url}}<a href="{{ url }}"><h3>{{ title }}</h3></a>{{else}}<h3>{{ title }}</h3>{{/if}}<div class="listitem-text">{{ description }}</div>{{#if extra }}<div class="listitem-extra">{{ extra }}</div>{{/if}}</div></div></li>{{/each}}',
+			var source = $("#top25-template").html();
+			// var source = '{{#each this}}<li><div class="listitem media"><img class="listitem-image media-figure" src="{{ image_root }}{{ image }}" alt="{{ title }}"><div class="media-body">{{#if url}}<a href="{{ url }}"><h3>{{ title }}</h3></a>{{else}}<h3>{{ title }}</h3>{{/if}}<div class="listitem-text">{{ description }}</div>{{#if extra }}<div class="listitem-extra">{{ extra }}</div>{{/if}}</div></div></li>{{/each}}',
 			template = Handlebars.compile(source);
 			$("ol.results-list").html(template(data));
 		}
