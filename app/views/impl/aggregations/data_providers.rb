@@ -11,8 +11,7 @@ module Impl
 
       def head_links
         [
-          { path: styleguide_url('/css/statistics/screen.css'), media: 'all', title: nil },
-          { path: asset_path("europeana.css"), media: 'all', title: nil},
+          { path: styleguide_url('/css/statistics/screen.css'), media: 'all', title: nil }
         ]
       end
 
@@ -29,7 +28,7 @@ module Impl
           },
           {
             path: styleguide_url('/js/dist/require.js'),
-            data_main: styleguide_url('/js/dist/main/main-collections.js')
+            data_main: styleguide_url('/js/dist/main/main-statistics.js')
           }
         ]
       end
@@ -43,12 +42,11 @@ module Impl
       end
 
       def content
-        @mustache_content ||= begin
-          {
-            title: page_title,
-            # text: helpers.include_gon.html_safe + Impl::Aggregation.get_data_providers_json.html_safe
+        {
+          links:{
+            items: Impl::Aggregation.get_data_providers_json
           }
-        end
+        }
       end
     end
   end
