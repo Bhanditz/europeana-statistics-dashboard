@@ -19,21 +19,21 @@ Rumali.manualCharts = (function(){
 
 		for(index = 0;index < length;index++){
 			var api_data = charts_array[index].dataset.api; //Getting api data attribute of the chart
-			
-			switch(api_data){//Every chart type should have corresponding case. 
-				
+
+			switch(api_data){//Every chart type should have corresponding case.
+
 				case 'PykCharts.multiD.column':
 					loadMultiDCol(charts_array[index]);
-					break;	
+					break;
 				case 'PykCharts.oneD.pie':
-					loadOnedPie(charts_array[index]);	
-				
+					loadOnedPie(charts_array[index]);
+
 			}
 		}
 
-		provider_rank = $('.box_table')[0];//Fetching class for provider rank table.
-		id = provider_rank.id;//Getting id for the class.
-		utility.getJSONforTable(global_obj.datacast_url+provider_rank.dataset.datacast_identifier,id,renderHTMLForTable);
+		// provider_rank = $('.box_table')[0];//Fetching class for provider rank table.
+		// id = provider_rank.id;//Getting id for the class.
+		// utility.getJSONforTable(global_obj.datacast_url+provider_rank.dataset.datacast_identifier,id,renderHTMLForTable);
 
 	}
 
@@ -42,12 +42,12 @@ Rumali.manualCharts = (function(){
 
 	//Generic function for loading any manual multi-d column chart.
 	var loadMultiDCol = function(data){
-		
+
 		var htmlcontent = '';
 		//step 1 : get json
 		var filter_data_multid_col = [];
 		//get selector id
-		var selector; 
+		var selector;
 		//load pykchart
 		var callPykChart = function(){
 
@@ -62,13 +62,13 @@ Rumali.manualCharts = (function(){
 			var chartobj = new PykCharts.multiD.column(
 					multid_obj
 				);
-			chartobj.execute(); 
+			chartobj.execute();
 		}
 
 		//step 2 : filter the json
 		var filterData = function(url_data){
 			//case 1 : if filter is present in the data
-			//case 2 : if filter is not present in the data	
+			//case 2 : if filter is not present in the data
 
 			if(data.dataset.filter_present === 'false'){
 				filter_data_multid_col = url_data;
@@ -92,21 +92,21 @@ Rumali.manualCharts = (function(){
 		utility.setHTMLheaderForChart('This chart is for pageviews of Europeana', $(data).attr('id')+ "_header");
 
 
-		utility.getJSON(global_obj.datacast_url + data.dataset.datacast_identifier,this,filterData);		
+		utility.getJSON(global_obj.datacast_url + data.dataset.datacast_identifier,this,filterData);
 		//step 3 : load the actual chart.
 	}
 
 	//Rendering string for rank column only
 	renderHTMLforTableRank = function(rank_for_europeana,rank_for_europeana_diff){
-		
+
 		var string = '<span class="col-sm-12">';
-		
+
 		string += '<span class="important_val">';
 		string += rank_for_europeana + '</span>(' ;
 		if(rank_for_europeana_diff > 0){
 			string += '<span class="'+utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.negative)+'">';
 			string += rank_for_europeana_diff + ' &#9660;';
-		} 
+		}
 		else if(rank_for_europeana_diff < 0){
 			string += '<span class="'+utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.positive)+'">';
 			string += (rank_for_europeana_diff*-1)+ ' &#9652;';
@@ -130,17 +130,17 @@ Rumali.manualCharts = (function(){
 		string += utility.applyConditionalFormatting(sum);
 		string += '</span>';
 		string += '</span>';
-		return string;	
+		return string;
 	}
 
 	var renderHTMLforTableValuePercent = function(sum,diff_in_value_in_percentage,value_contribution_for_europeana){
 		var string = ''+value_contribution_for_europeana+' %';
-		return string;	
+		return string;
 	}
 
 	var renderHTMLforTableValueDifference = function(sum,diff_in_value_in_percentage,value_contribution_for_europeana){
 		var cond_class = '';
-		
+
 		if(+diff_in_value_in_percentage > 0){
 			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.positive);
 		}
@@ -151,7 +151,7 @@ Rumali.manualCharts = (function(){
 			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.no_change);
 		}
 		var string = '<span class='+cond_class+'>'+diff_in_value_in_percentage+'</span> %';
-		return string;	
+		return string;
 	}
 
 
@@ -165,7 +165,7 @@ Rumali.manualCharts = (function(){
 			i=0,
 			htmlcontent = '';
 
-		//running loop for each row within the html	
+		//running loop for each row within the html
 		for(i=0;i<filter_data.length;i++){
 			title = filter_data[i].impl_aggregation_name;
 			rank_for_europeana = filter_data[i].rank_for_europeana;
@@ -201,7 +201,7 @@ Rumali.manualCharts = (function(){
 
 	//This is the ranking table object function.
 	var renderHTMLForTable = function(data,id){
-		//Ranking table 
+		//Ranking table
 		var htmlcontent = '',
 			filter_data = [],
 			original_data = data;
@@ -240,7 +240,7 @@ Rumali.manualCharts = (function(){
 	}
 
 	var loadOnedPie = function(data){
-		var selector,selector_header,selector_body,selector_footer; 
+		var selector,selector_header,selector_body,selector_footer;
 		var filter_data_pie = [];
 		var htmlcontent = '';
 		var height = '';
@@ -258,17 +258,17 @@ Rumali.manualCharts = (function(){
 					oned_obj
 				);
 
-			chartobj.execute(); 
+			chartobj.execute();
 
 			var height = chartobj.chart_height * 1.25;
-			
+
 			$(selector).height(height);
 		}
 
 		//step 2 : filter the json
 		var filterData = function(url_data){
 			//case 1 : if filter is present in the data
-			//case 2 : if filter is not present in the data	
+			//case 2 : if filter is not present in the data
 			var html_filter = '';
 
 			if(data.dataset.filter_present === 'false'){
@@ -280,8 +280,8 @@ Rumali.manualCharts = (function(){
 				//Code needs to be written and to be made generic if possible.
 				filter_data_pie = utility.filterData(url_data,data.dataset.filter_column_name,url_data[url_data.length -1][data.dataset.filter_column_name]);
 				callPykChart();
-				html_filter += utility.renderFilter(url_data,data.dataset.filter_column_name,selector_header+"_dropdown");//attribute name over which dropdown should be created.	
-				
+				html_filter += utility.renderFilter(url_data,data.dataset.filter_column_name,selector_header+"_dropdown");//attribute name over which dropdown should be created.
+
 				$('#'+selector_header).html(html_filter);
 
 				$('#'+selector_header+"_dropdown").val(url_data[url_data.length -1][data.dataset.filter_column_name]);
@@ -297,7 +297,7 @@ Rumali.manualCharts = (function(){
 		}
 
 		selector = "#"+ $(data).attr('id');
-		selector_header = $(data).attr('id') + "_head"; 
+		selector_header = $(data).attr('id') + "_head";
 		selector_body =  $(data).attr('id') + "_body";
 		selector_footer = $(data).attr('id') + "_footer";
 
@@ -308,10 +308,10 @@ Rumali.manualCharts = (function(){
 
 		$(selector).html(htmlcontent);
 
-		utility.getJSON(global_obj.datacast_url + data.dataset.datacast_identifier,this,filterData);		
+		utility.getJSON(global_obj.datacast_url + data.dataset.datacast_identifier,this,filterData);
 		//step 3 : load the actual chart.
 	}
 return{
-	loadReportChart:loadReportChart	
+	loadReportChart:loadReportChart
 }
-}());	
+}());

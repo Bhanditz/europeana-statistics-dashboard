@@ -32,7 +32,7 @@ module Impl
           },
           {
             path: styleguide_url('/js/dist/require.js'),
-            data_main: styleguide_url('/js/dist/main/main-collections.js')
+            data_main: styleguide_url('/js/dist/main/main-statistics.js')
           }
         ]
       end
@@ -65,6 +65,10 @@ module Impl
 
       def gon
         helpers.include_gon
+      end
+
+      def bodyclass
+        "europeana_statsdashboard page_dashboard"
       end
 
       protected

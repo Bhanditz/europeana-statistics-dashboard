@@ -2,30 +2,22 @@
 Rumali.autoCharts = (function(){
 	//Global objects to be used within  aggregators report.
 	var chart_data = {},
-		content_data = {},//data for the top 10 digital items,
-	//Loading all the charts with .d3-pykcharts as a class.
-		card_data = {},
 	//Loading all the table boxes
 		table_data = {},
 	//Utility class have functions which have common functions
 		utility = Rumali.utility,
 		global_obj = Rumali.object,
-		country_chart_data = "",
-		current_year = 2012;
+		country_chart_data = "";
 		chart_data.onelayer =[];
 	var loadReportChart = function(){
 		//These are the classes applied by ruby, we need to apply content to these classes.
 		chart_data.charts = $('.d3-pykcharts');//pykcharts
-		content_data.content = $('.top_digital_objects');//custom code
-		card_data.cards = $('.card_with_value');//card layout
 		table_data.tables = $('.box_table');//tables within boxes.
 		var charts_length = chart_data.charts.length,
 			index = 0,
 			digital_api,
 			id,
-			cards_length = card_data.cards.length,
-			table_length = table_data.tables.length,
-			top_search_terms = $('.top_search_terms');
+			table_length = table_data.tables.length;
 		chart_data.year_no = gon.current_year;
 		chart_data.month = gon.current_month;
 		// loadYearMenuBar();//year filter
@@ -56,23 +48,13 @@ Rumali.autoCharts = (function(){
 			}
 		}
 		index = 0;
-		for(;index<cards_length;index++){//rendering card layout.
-			id = card_data.cards[index].id;
-			//common utlity function
-			utility.getJSONForCard(global_obj.datacast_url+ card_data.cards[index].dataset.datacast_identifier,id,renderHTMLForCard);
-		}
-		index = 0;
 		for(;index<table_length;index++){//rendering a table.
 			id = table_data.tables[index].id;
 			//id which specifies on which html tag table needs to be rendered.
 			utility.getJSONforTable(global_obj.datacast_url+table_data.tables[index].dataset.datacast_identifier,id,renderHTMLForTable);
 			//renderHTMLForTable(table_json,i);
 		}
-		loadTop10digitalObject(content_data.content[0],gon.selected_year +"_"+gon.current_month);
-		//Get top 10 digital objects for the current year and quarter.
-		if (gon.genre == "country" || gon.genre == "europeana"){
-			loadTopSearchTerms(top_search_terms[0]);
-		}
+		loadTop10digitalObject(gon.top_digital_objects,(gon.selected_year-1).toString());
 	};
 	//Set up the data for one d chart and then call function for pykchart.
 	var loadOnedPie = function(obj){
@@ -294,43 +276,29 @@ Rumali.autoCharts = (function(){
 			selector = "#"+ $(obj).attr('id'),
 			filter_data;
 
-		if($("#digital_objects_filter_field").length === 0){
-			select_month_string = "<select id='filter-month-select' class='filter_top_digital_objects'>",select_year_string = "<select id='filter-year-select' class='filter_top_digital_objects'>";
-			select_month_string += "<option value=''>Full year</option><option value='' disabled='disabled'>- - - - - - - -</option>";
-			for(i = 0; i < 12; i++) {
-			  select_month_string += "<option value='"+month_arr[i]+"'>"+month_arr[i]+"</option>";
-			}
-			select_month_string += "</select>";
-			for(i=2014;i <= gon.selected_year; i++) {
-				select_year_string += "<option value='"+i+"' "+((i == gon.selected_year - 1) ? 'selected' : '')+">"+i+"</option>";
-			}
-			select_year_string += "</select>";
-			var str = $('<h3 class="sel_filters" id="digital_objects_filter_field"><h5 style="display:inline">Show results for </h5>&nbsp;&nbsp;'+select_month_string+'&nbsp;&nbsp;<h5 style="display:inline"> of </h5>&nbsp;&nbsp;'+select_year_string+'</h3>');
-			$(selector).before(str);
-			$("select.filter_top_digital_objects").on('change',function (){
-				var month_gt_current_month = $("select#filter-month-select").find("option:gt("+current_month_index+")"),
-				year = $('select#filter-year-select option:selected').val(),
-				selected_month =  $('select#filter-month-select option:selected'),
-				month = selected_month.val()	;
-				if(year == gon.selected_year) {
-					month_gt_current_month.each(function(){$(this).prop("disabled",true)});
-					if( month_gt_current_month.first().index() < selected_month.index() ){
-						month = '';
-						$('select#filter-month-select').find("option").first().prop("selected",true)
-					}
-				} else {
-					if (month_gt_current_month[0].disabled == true) {
-				   	month_gt_current_month.each(function(){$(this).prop("disabled",false)});
-					}
+		$("select.js-filter_top_digital_objects").on('change',function (){
+			debugger;
+			var month_gt_current_month = $("select#filter-month-select").find("option:gt("+current_month_index+")"),
+			year = $('select#filter-year-select option:selected').val(),
+			selected_month =  $('select#filter-month-select option:selected'),
+			month = selected_month.val()	;
+			if(year == gon.selected_year) {
+				month_gt_current_month.each(function(){$(this).prop("disabled",true)});
+				if( month_gt_current_month.first().index() < selected_month.index() ){
+					month = '';
+					$('select#filter-month-select').find("option").first().prop("selected",true)
 				}
-				filter = year;
-				if (typeof month !== "undefined" && month !== "") {
-					filter  += '_'+  month;
+			} else {
+				if (month_gt_current_month[0].disabled == true) {
+			   	month_gt_current_month.each(function(){$(this).prop("disabled",false)});
 				}
-				Rumali.autoCharts.filterTopDigitalObjectsData(filter);
-			});
-		}
-
+			}
+			filter = year;
+			if (typeof month !== "undefined" && month !== "") {
+				filter  += '_'+  month;
+			}
+			Rumali.autoCharts.filterTopDigitalObjectsData(filter);
+		});
 		var filterData = function(data,filter_details){
 			function aggregate_data(data, aggregate_by, aggregate_on) {
 				var grouped_data = _.groupBy(data, function(obj) { return obj[aggregate_by]; }),
@@ -348,90 +316,42 @@ Rumali.autoCharts = (function(){
 				return aggregated_data;
 			}
 
-			if(!content_data.top10digital){
-				content_data.top10digital = data; //Saving the data once so that we don't need to call service again.
-			}
-
 			var year = filter_details.split("_")[0],
 				month = filter_details.split("_")[1];
 			if (typeof month !== "undefined") {
-				filter_data = _.filter(content_data.top10digital, function(obj){ return (obj.year  == year) && (obj.month == month)});
+				filter_data = _.filter(data, function(obj){ return (obj.year  == year) && (obj.month == month)});
 			} else {
-				filter_data = _.filter(content_data.top10digital, function(obj){ return (obj.year  == year)});
+				filter_data = _.filter(data, function(obj){ return (obj.year  == year)});
 				filter_data = aggregate_data(filter_data, "title_url", "value");
 			}
 			filter_data = _.sortBy(filter_data,function(obj){
 				return parseInt(obj.value)*-1;
 			});
 			filter_data = _.first(filter_data,25);
-			renderHTMLForDigitalObj(filter_data);
+			renderHTMLForDigitalObj(transformFilterData(filter_data));
 		}
 
 		var renderHTMLForDigitalObj = function(data){
-			var index=0,
-			length = 0,
-			html='';
-			length = data.length > 25 ? 25 : data.length;
-			for(index=0;index<length;index++){
-				html += setInnerHTML(data[index],index);
-			}
-			$(selector).html(html);
+			//var source = $("#top25-template").html(),
+			var source = '{{#each this}}<li><div class="listitem media"><img class="listitem-image media-figure" src="{{ image_root }}{{ image }}" alt="{{ title }}"><div class="media-body">{{#if url}}<a href="{{ url }}"><h3>{{ title }}</h3></a>{{else}}<h3>{{ title }}</h3>{{/if}}<div class="listitem-text">{{ description }}</div>{{#if extra }}<div class="listitem-extra">{{ extra }}</div>{{/if}}</div></div></li>{{/each}}',
+			template = Handlebars.compile(source);
+			$("ol.results-list").html(template(data));
 		}
 
 		//setting up inner html content for the top 10 digital items
-		var setInnerHTML = function(obj,index){
-			var html = '';
-			html += '<span class = "col-sm-'+6+' ten_digital">';
-			html += '<span class= col-sm-3>';
-				html += '<a class=pull-left href='+obj.title_url+' target="_blank">';
-				html += '<img src='+obj.image_url+ ' class="ten_digital_image">';
-				html += '</a></span>';
-			html += '<span class=col-sm-9>';
-				html += '<span class=col-sm-12><b>';
-				html += (index+1)+'.';
-					html += '</b></span>';
-			html += '<span class=col-sm-12>';
-				html += '<a href='+obj.title_url+' target="_blank">';
-				if (obj.title) {
-					html += obj.title.substring(0,50)+"...";
-				} else {
-					html += "...";
-				}
-				html += '</a>';
-				html += '</span>';
-				html += '<span class=col-sm-12><b>';
-				html +=  obj.value +' views';
-				html += '</b></span></span></span>';
-			return html;
-		}
-		if(!content_data.top10digital){
-			//If data is not available then call the database to fetch the data.
-			utility.getJSON(global_obj.datacast_url+ obj.dataset.datacast_identifier,this,filterData);
-		}
-		else{
-			filterData(content_data.top10digital,filter_details);
-		}
-	};
-
-	var loadTopSearchTerms = function(obj){
-		var selector = "#"+ $(obj).attr('id');
-
-		//setting up inner html content for the top 10 digital items
-		var setInnerHTML = function(data,filter_details){
-			var html = '<table>';
-			html += '<thead><th>Keyword</th><th>Count</th></thead>'
-			html += '<tbody>';
-			d_length = data.length;
-			for(i=0;i<d_length;i++){
-				html += '<tr><td><span class="keyword_tooltip" data-toggle="tooltip" data-placement="bottom" title="'+data[i].output_value+'">'+data[i].output_value.substring(0,50)+'...'+'</span></td><td>'+data[i].value+'</td></tr>'
+		var transformFilterData = function(data){
+			var transformed_object = []
+			for(var i=0,length=data.length;i<length;i++){
+				var obj = {}
+				obj.title = data[i].title
+				obj.image = data[i].image_url
+				obj.url = data[i].title_url
+				obj.extra = "Views: "+ data[i].value
+				transformed_object.push(obj)
 			}
-			html += '</tbody>';
-			html += '</table>'
-			$(selector).html(html);
+			return transformed_object;
 		}
-		if(!content_data.search_terms){
-			utility.getJSON(global_obj.datacast_url+ obj.dataset.datacast_identifier,this,setInnerHTML);
-		}
+		filterData(gon.top_digital_objects,filter_details);
 	};
 
 	//Load error div in case data is not present
@@ -446,33 +366,6 @@ Rumali.autoCharts = (function(){
 		$('#error_'+selector).remove();
 	};
 
-	var renderHTMLForCard = function(data,id){
-		//id,title,key,value,content
-		var id = id,
-			title = data[0].title ? data[0].title : '',
-			key = data[0].key ? data[0].key : '<br/>',
-			value = data[0].value ? data[0].value : '',
-			content = data[0].content ? data[0].content : '';
-
-		if(typeof +value === "number"){
-			value = +value;
-			value = utility.applyConditionalFormatting(value);
-		}
-
-
-		var div = $('<div />').appendTo('body');
-		div.attr('id', id);
-		var htmlcontent = '<span class = "col-sm-12 card_layout">';
-		htmlcontent += '<span class= "col-sm-12 card_layout_header_span"><h4 class="card_layout_header"><b>'+title+'</b></h4></span>';
-		htmlcontent += '<span class= "col-sm-12 card_layout_key">'+key+'</b></span>';
-		htmlcontent += '<span class= "col-sm-12 card_layout_value">'+value+'</b></span>';
-		htmlcontent += '<span class= "col-sm-12 card_layout_content">'+content+'</span>';
-		htmlcontent += '</span>';
-
-		$('#'+id).html(htmlcontent);
-	}
-	/*
-	*/
 	var renderHTMLForTable = function(data,id){
 		var i =0,
 			title = '',
@@ -598,7 +491,7 @@ Rumali.autoCharts = (function(){
 	}
 
 	var filterTopDigitalObjectsData = function(filter_details){
-		loadTop10digitalObject(content_data.content[0],filter_details);
+		loadTop10digitalObject(gon.top_digital_objects,filter_details);
 	};
 
 	return{
