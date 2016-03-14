@@ -32,19 +32,19 @@ Rails.application.configure do
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
-  config.assets.precompile += ['accounts.js', 'core_projects.js', 
-                               'core_themes.js', 'data_stores.js', 'vizs.js',"datacast.js", "articles.js", "reports.js", "europeana.css"]
+  config.assets.precompile += ['accounts.js', 'core_projects.js',
+                               'core_themes.js', 'data_stores.js', 'vizs.js',"datacast.js", "articles.js", "reports.js", "europeana.css", "ga.js"]
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  
-    
+
+
   BASE_URL = ENV['BASE_URL']
-  
+
   REST_API_ENDPOINT = ENV['REST_API_ENDPOINT']
-  
+
   config.action_mailer.default_url_options = { host: BASE_URL }
-  
+
   #GA IDS
   GA_CLIENT_ID=ENV["GA_CLIENT_ID"]
   GA_CLIENT_SECRET=ENV["GA_CLIENT_SECRET"]
@@ -52,4 +52,25 @@ Rails.application.configure do
   GA_REFRESH_TOKEN=ENV["GA_REFRESH_TOKEN"]
   GA_IDS=ENV["GA_IDS"]
   GA_ENDPOINT = "https://www.googleapis.com/analytics/v3/data/ga"
+
+
+  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.smtp_settings = {
+    :user_name => ENV['MAIL_USERNAME'],
+    :password => ENV['MAIL_PASSWORD'],
+    :domain => ENV['MAIL_DOMAIN'],
+    :address => ENV['MAIL_ADDRESS'],
+    :port => ENV['MAIL_PORT'],
+    :authentication =>:plain,
+    :enable_starttls_auto => true
+  }
+
+  ActionMailer::Base.default_options = {
+    :from => ENV['MAIL_FROM']
+  }
+
+
+
+
+
 end

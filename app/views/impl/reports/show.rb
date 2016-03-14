@@ -28,6 +28,9 @@ module Impl
             path: asset_path('reports.js')
           },
           {
+            path:Rails.env.production? ? asset_path("ga.js") : ""
+          },
+          {
             path: styleguide_url('/js/dist/require.js'),
             data_main: styleguide_url('/js/dist/main/main-statistics.js')
           }

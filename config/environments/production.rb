@@ -60,9 +60,9 @@ Rails.application.configure do
 
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-  config.assets.precompile += ['accounts.js', 'core_projects.js', 
-                               'core_themes.js', 'data_stores.js', 'vizs.js','embed.js',"datacast.js", "articles.js", "reports.js"]
-  
+  config.assets.precompile += ['accounts.js', 'core_projects.js',
+                               'core_themes.js', 'data_stores.js', 'vizs.js','embed.js',"datacast.js", "articles.js", "reports.js", "ga.js"]
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
@@ -82,13 +82,13 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  
+
   BASE_URL = ENV['BASE_URL']
-  
+
   REST_API_ENDPOINT = ENV['REST_API_ENDPOINT']
-  
+
   # Logo Bucket
-  
+
   #GA IDS
   GA_CLIENT_ID=ENV["GA_CLIENT_ID"]
   GA_CLIENT_SECRET=ENV["GA_CLIENT_SECRET"]
@@ -96,4 +96,23 @@ Rails.application.configure do
   GA_REFRESH_TOKEN=ENV["GA_REFRESH_TOKEN"]
   GA_IDS=ENV["GA_IDS"]
   GA_ENDPOINT = "https://www.googleapis.com/analytics/v3/data/ga"
+
+  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.smtp_settings = {
+    :user_name => ENV['MAIL_USERNAME'],
+    :password => ENV['MAIL_PASSWORD'],
+    :domain => ENV['MAIL_DOMAIN'],
+    :address => ENV['MAIL_ADDRESS'],
+    :port => ENV['MAIL_PORT'],
+    :authentication =>:plain,
+    :enable_starttls_auto => true
+  }
+
+  ActionMailer::Base.default_options = {
+    :from => ENV['MAIL_FROM']
+  }
+
+
+
+
 end
