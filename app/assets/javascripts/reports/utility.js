@@ -12,15 +12,15 @@ Rumali.object = {
 }
 Rumali.utility = (function () {
 
-	
+
 	var getJSONForCard = function(url,id,callbackfn){
 		$.getJSON(url) //jquery function to parse url and get data in done method.
 			.done(function(data){
-				callbackfn(data,id);	
+				callbackfn(data,id);
 			});
 	}
 
-	
+
 
 	var renderHTMLforTableTitle = function(title){
 		var string = '<span class="col-sm-12">';
@@ -58,20 +58,20 @@ Rumali.utility = (function () {
 		//Convert it to switch case
 	}
 
-	
+
 	var calculateChangeFromPreviousValue = function(value,diff_value){
 
-		var tooltip = (+diff_value/((+value)-(+diff_value)) * 100).toFixed(2) 
-		tooltip += '% change from the previous month.'; 
+		var tooltip = (+diff_value/((+value)-(+diff_value)) * 100).toFixed(2)
+		tooltip += '% change from the previous month.';
 		//rendering html for the tooltip.
 
 
 		return tooltip;
-	} 
+	}
 
 	var tooltipLayout = function(value){
-		var tooltip = value; 
-		tooltip += '% change from the previous month.'; 
+		var tooltip = value;
+		tooltip += '% change from the previous month.';
 		//rendering html for the tooltip.
 
 
@@ -82,8 +82,8 @@ Rumali.utility = (function () {
 	var getJSONforTable = function(url,id,callbackfn){
 		$.getJSON(url) //jquery function to parse url and get data in done method.
 			.done(function(data){
-					callbackfn(data,id);	
-		});	
+					callbackfn(data,id);
+		});
 	}
 
 	//rendering filter common function
@@ -96,10 +96,10 @@ Rumali.utility = (function () {
 			html_string = smallDropDown(id,values,length);
 		}
 		else{
-			html_string = largeDropDown(id,values,length);	
+			html_string = largeDropDown(id,values,length);
 		}
     	return html_string;
-	} 
+	}
 
 	//finding distinct values of the attributes from the array that is being passed.
 	var findDistinct = function(data,attribute_name){
@@ -107,7 +107,7 @@ Rumali.utility = (function () {
 		value = _.map(data, function(obj){ return obj[attribute_name] });
 		value = _.uniq(value);
 		return value;
-	}	
+	}
 
 	//filtering the data as per the attribute that is being passed.
 	var filterData = function(data,attribute_name,attribute_value){
@@ -159,6 +159,6 @@ Rumali.utility = (function () {
 		filterData:filterData,
 		setHTMLheaderForChart:setHTMLheaderForChart,
 		smallDropDown:smallDropDown,
-		largeDropDown:largeDropDown		
+		largeDropDown:largeDropDown
 	}
 }());

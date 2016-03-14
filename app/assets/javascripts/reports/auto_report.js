@@ -2,6 +2,8 @@
 Rumali.autoCharts = (function(){
 	//Global objects to be used within  aggregators report.
 	var chart_data = {},
+	// Top digital object variable
+	 top_digital_objects,
 	//Loading all the table boxes
 		table_data = {},
 	//Utility class have functions which have common functions
@@ -54,7 +56,7 @@ Rumali.autoCharts = (function(){
 			utility.getJSONforTable(global_obj.datacast_url+table_data.tables[index].dataset.datacast_identifier,id,renderHTMLForTable);
 			//renderHTMLForTable(table_json,i);
 		}
-		loadTop10digitalObject(gon.top_digital_objects,(gon.selected_year-1).toString());
+		utility.getJSON(rumi_api_endpoint + 'datacast/'+ gon.top_digital_objects_identifier,"",loadTop10digitalObject);
 	};
 	//Set up the data for one d chart and then call function for pykchart.
 	var loadOnedPie = function(obj){
@@ -272,6 +274,8 @@ Rumali.autoCharts = (function(){
 
 	//Function to load top 10 digital objects.
 	var loadTop10digitalObject = function(obj,filter_details){
+
+		top_digital_objects = top_digital_objects || obj;
 		var month_arr = ['January','February','March','April','May','June','July','August','September','October','November','December'], i,prev_year = gon.selected_year - 1,current_month_index = month_arr.indexOf(gon.current_month) + 2,
 			selector = "#"+ $(obj).attr('id'),
 			filter_data;
@@ -354,7 +358,7 @@ Rumali.autoCharts = (function(){
 			}
 			return transformed_object;
 		}
-		filterData(gon.top_digital_objects,filter_details);
+		filterData(top_digital_objects,filter_details);
 	};
 
 	//Load error div in case data is not present
@@ -494,7 +498,7 @@ Rumali.autoCharts = (function(){
 	}
 
 	var filterTopDigitalObjectsData = function(filter_details){
-		loadTop10digitalObject(gon.top_digital_objects,filter_details);
+		loadTop10digitalObject(top_digital_objects,filter_details);
 	};
 
 	return{
