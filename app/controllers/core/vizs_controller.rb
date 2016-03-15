@@ -72,7 +72,7 @@ class Core::VizsController < ApplicationController
 
   def update
     @viz.update(core_viz_params)
-    @viz.config = JSON.parse(params[:core_viz][:config]) if params[:core_viz][:config].present? 
+    @viz.config = JSON.parse(params[:core_viz][:config]) if params[:core_viz][:config].present?
     if @viz.save
       redirect_to edit_account_core_project_viz_path(@account, @core_project,@viz), notice: t("u.s")
     else

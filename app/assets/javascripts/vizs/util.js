@@ -3,15 +3,15 @@ Rumali.object = {
   datacast_url : rumi_api_endpoint + 'datacast/'
 }
 //Set up the data json once so that we don't need to call service again.It is saved in return_data object
-var getJSON = function(url,callbackfn){	
+var getJSON = function(url,callbackfn){
   $.getJSON(url) //jquery function to parse url and get data in done method.
     .done(function(data){
-        callbackfn(data);  
+        callbackfn(data);
     });
 }
 //find all the keys in an array.
 var findKeyArray = function(obj){
-
+	debugger;
 	var key_array = Object.keys(obj);
 	return key_array;
 }
@@ -55,7 +55,7 @@ var renderHTMLForCard = function(data,id){
 	htmlcontent += '<span class= "col-sm-12 card_layout_key">'+key+'</b></span>';
 	htmlcontent += '<span class= "col-sm-12 card_layout_value">'+value+'</b>';
 	if(diff_in_value !== ''){
-		htmlcontent +=  diff_string;	
+		htmlcontent +=  diff_string;
 	}
 	htmlcontent += '<span class= "col-sm-12 card_layout_content">'+content;
 	htmlcontent += '</span>';
@@ -91,10 +91,10 @@ var filterChart = function(data,column_name,column_value){
 					if(k !== column_name){
 						filtered_data[count][k]=data[index][k];
 						//Copying all the items from original array to new array.
-						//value to be pushed in the new array 
+						//value to be pushed in the new array
 				}
 			} 	//Filter data is the data that is to be displayed on the ui.
-		}		
+		}
 	}
 	return filtered_data;
 }

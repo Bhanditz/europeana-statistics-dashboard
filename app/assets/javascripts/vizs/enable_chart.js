@@ -11,7 +11,7 @@ Rumali.loadChartFromDropdown = function(){
 	var bindDropdownValue = function(){
 		default_theme = JSON.parse(gon.default_theme);
 		$("#id_manual_chart_filter").attr("disabled", true);
-		$("#id_manual_chart_filter").attr('checked', false); 
+		$("#id_manual_chart_filter").attr('checked', false);
 		toggleFilterPanel();
 
 		$('#core_datacasts').change(function() {
@@ -19,17 +19,17 @@ Rumali.loadChartFromDropdown = function(){
 			if(this.selectedIndex !== 0 ){
 				data_avail = 'new_data';
 				$("#id_manual_chart_filter").attr("disabled", false);
-				$("#id_manual_chart_filter").attr('checked', false); 
+				$("#id_manual_chart_filter").attr('checked', false);
 				toggleFilterPanel();
-				validateChartsToBeShown(this.options[this.selectedIndex]);	
+				validateChartsToBeShown(this.options[this.selectedIndex]);
 			}
 			else{
 				$("#id_manual_chart_filter").attr("disabled", true);
-				$("#id_manual_chart_filter").attr('checked', false); 
+				$("#id_manual_chart_filter").attr('checked', false);
 				toggleFilterPanel();
-			}	
-			enableCoreVizSubmit();			
-		});	
+			}
+			enableCoreVizSubmit();
+		});
 		//Show filter when the enable filter is checked.
 		displayFilterColumn();
 		bindOnChangeCoreVizName();
@@ -54,7 +54,7 @@ Rumali.loadChartFromDropdown = function(){
 				obj_metrics = _.without(obj_metrics,filter);
 			}
 
-			obj_metrics_string = obj_metrics.sort().join(',');	
+			obj_metrics_string = obj_metrics.sort().join(',');
 		}
 		else{
 			obj_metrics = [];
@@ -72,23 +72,23 @@ Rumali.loadChartFromDropdown = function(){
 		}
 		else{
 			obj_dimensions = [];
-			obj_dimensions_string = '';	
+			obj_dimensions_string = '';
 		}
 		if(original_obj_dimensions_string !== obj_dimensions_string){
 			d_or_m_filter = 'd';
 		}
 		else if(original_obj_metrics_string !== obj_metrics_string){
-			d_or_m_filter = 'm';	
+			d_or_m_filter = 'm';
 		}
 		else{
-			d_or_m_filter = '';	
+			d_or_m_filter = '';
 		}
-		//Getting all the image tags inside the tag 
+		//Getting all the image tags inside the tag
 		$('#chart_selector_list img').each(function(){
 			var html_tag = $(this)[0];
 			if(typeof html_tag.dataset.dimensions_alias === 'undefined' || html_tag.dataset.metrics_alias === 'undefined' || html_tag.dataset.dimensions_alias.length === 0 || html_tag.dataset.metrics_alias.length === 0){
 				$(this).removeClass('disabled');
-				$(this).addClass('enabled');	
+				$(this).addClass('enabled');
 
 				$(this).unbind("click");
 				$(this).click(getData);
@@ -96,7 +96,7 @@ Rumali.loadChartFromDropdown = function(){
 			else{
 				metric_array = html_tag.dataset.metrics_alias;
 				dimension_array = html_tag.dataset.dimensions_alias;
-				
+
 				metric_array_string =  JSON.parse(metric_array).sort().join(',');
 				dimension_array_string = JSON.parse(dimension_array).sort().join(',');
 
@@ -105,23 +105,23 @@ Rumali.loadChartFromDropdown = function(){
 					$(this).addClass('enabled');
 
 					$(this).unbind("click");
-					$(this).click(getData);	
+					$(this).click(getData);
 				}
 				else{
 					$(this).removeClass('enabled');
 					$(this).addClass('disabled');
-					$(this).prop('onclick',null).off('click');	
+					$(this).prop('onclick',null).off('click');
 				}
 			}
 		});
-		$('#chart_selector_list img')[0].click();			
+		$('#chart_selector_list img')[0].click();
 
 	}
 
 	var renderChart = function(data){
 		var chart_api;
 		var config = {},k;
-		
+
 		clearChart();
 
 		if(current_chart.dataset.api === 'handsontable'){
@@ -133,9 +133,10 @@ Rumali.loadChartFromDropdown = function(){
 			  "outsideClickDeselects": false,
 			  "contextMenu": false
 			}
-            config.data = data;
-            config.colHeaders = findKeyArray(data[0]);
-            $("#table_show").handsontable(config);	
+			debugger;
+      config.data = data;
+      config.colHeaders = findKeyArray(data[0]);
+      $("#table_show").handsontable(config);
 
 		}else if(current_chart.dataset.api === 'one-number-indicator'){
 			$("#box_show").show();
@@ -152,9 +153,9 @@ Rumali.loadChartFromDropdown = function(){
 			config.chart_height = 450;
 			config.map_code = 'world';
 			k = new chart_api(config);
-	  		k.execute();	
+	  		k.execute();
 		}
-		
+
 	}
 
 	var setFilterAndRenderChart = function(data){
@@ -175,7 +176,7 @@ Rumali.loadChartFromDropdown = function(){
 		else{
 			current_chart = this;
 			filtered_data = filterChart();
-			renderChart(filtered_data);		
+			renderChart(filtered_data);
 		}
 	}
 
@@ -197,11 +198,11 @@ Rumali.loadChartFromDropdown = function(){
 						if(k !== filter_name){
 							filtered_data[count][k]=datacast_data[index][k];
 							//Copying all the items from original array to new array.
-							//value to be pushed in the new array 
+							//value to be pushed in the new array
 						}
-					} 
+					}
 					//Filter data is the data that is to be displayed on the ui.
-				}		
+				}
 			}
 			return filtered_data;
 		}
@@ -222,14 +223,14 @@ Rumali.loadChartFromDropdown = function(){
 
     	$('#core_datacasts_filter').append($('<option>', {
         		value: 'Select filter column',
-        		text : 'Select filter column' 
+        		text : 'Select filter column'
     		}));
 
 
 		$.each(filter_array, function (i, item) {
-    		$('#core_datacasts_filter').append($('<option>', { 
+    		$('#core_datacasts_filter').append($('<option>', {
         		value: item,
-        		text : item 
+        		text : item
     		}));
 		});
 		// sets selected index to first item using jQuery (can work on multiple elements)
@@ -243,8 +244,8 @@ Rumali.loadChartFromDropdown = function(){
 				filter_name = this.options[this.selectedIndex].text;
 				showUniqueFilterValues(filter_name);
 				validateChartsToBeShown(chart_data,this.options[this.selectedIndex].text);
-			}	
-		});	
+			}
+		});
 		return filter_array;
 	}
 
@@ -257,44 +258,44 @@ Rumali.loadChartFromDropdown = function(){
 			toggleFilterPanel();
 			hideChartFilter();
 			showUnfilteredData();
-			validateChartsToBeShown(x.options[x.selectedIndex]);	
-		});	
+			validateChartsToBeShown(x.options[x.selectedIndex]);
+		});
 	}
 
 	//toggle filter panel depending on the value of the checkbox.
 	var toggleFilterPanel = function(){
 		is_datacast_filter_enable = $('#id_manual_chart_filter').is(":checked");
 		if(is_datacast_filter_enable){
-			$('#core_datacasts_filter').show(); 
+			$('#core_datacasts_filter').show();
 		}
 		else{
 			$('#core_datacasts_filter').hide();
 			//
 		}
-	} 	
+	}
 
 	//Hiding chart filter
 	var hideChartFilter = function(){
 		$('#filter_show').hide();
-	} 
+	}
 
 	var showUnfilteredData = function(){
 		data_avail = 'existing_data';
-		filter_name = '';	
+		filter_name = '';
 	}
 
 	//Showing unique values for the filter.
 	var showUniqueFilterValues = function(filter_name){
 		var unique_filter_name_values = [];
 		$('#filter_show').show();
-		unique_filter_html = renderFilter(datacast_data,filter_name,'filter_show');	
+		unique_filter_html = renderFilter(datacast_data,filter_name,'filter_show');
 		$('#filter_show').html(unique_filter_html);
 
 		$('#filter_show').unbind("change");
 		$('#filter_show').change(function(){
 			data_avail = 'existing_data';
 			getData.call(current_chart);
-		});	
+		});
 	}
 	//Binding core viz name to change event.
 	var bindOnChangeCoreVizName = function(){
@@ -313,8 +314,8 @@ Rumali.loadChartFromDropdown = function(){
 	}
 	$( "#core_viz_submit" ).on("click",function( event ) {
 		$("#core_viz_core_datacast_identifier").val($("#core_datacasts :selected").val());
-		$("#core_viz_ref_chart_combination_code").val(current_chart.dataset.combination_code); 
-		$("#core_viz_filter_column_d_or_m").val(d_or_m_filter); 
+		$("#core_viz_ref_chart_combination_code").val(current_chart.dataset.combination_code);
+		$("#core_viz_filter_column_d_or_m").val(d_or_m_filter);
 	});
 	//Call function on load of this function.
 	bindDropdownValue();

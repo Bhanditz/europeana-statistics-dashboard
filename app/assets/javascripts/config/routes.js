@@ -44,16 +44,15 @@ window.onload = function () {
       Rumali.dataCastNewPage();
       Rumali.initDataCastGrid();
       break;
-    case "scopejs_articles_edit":
-    case "scopejs_articles_update":
-      Rumali.newArticleCreate();
     case "scopejs_reports_show": //need to break it into 2 switch cases
       Rumali.buildCharts.loadReportChart();
+      break;
     case "scopejs_reports_new":
     case "scopejs_reports_create":
     case "scopejs_reports_edit":
     case "scopejs_reports_update":
       Rumali.reportsNewPage();
+      break;
     case "scopejs_aggregations_provider_hit_list":
       Rumali.manualCharts.loadReportChart();
     default:
