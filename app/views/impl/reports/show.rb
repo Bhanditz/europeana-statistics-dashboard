@@ -51,7 +51,8 @@ module Impl
           charts: get_report_charts,
           numberedlist: {
             title: "Top 25 Digital Objects"
-          }
+          },
+          stats_bar: get_stats_bar
         }
         unless @impl_report.impl_aggregation_genre == "data_provider"
           if @impl_report.impl_aggregation_genre == "europeana"
@@ -75,36 +76,6 @@ module Impl
 
       def get_report_charts
         @impl_report.variable_object
-        # {
-        #   main_chart: {
-        #     title: "Total pageviews in throughout the years",
-        #     id: "spain_-_line_chart",
-        #     api: "PykCharts.multiD.multiSeriesLine",
-        #     datacast_identifier: "73a218cfeeafbc4db46bca62340d9e931da4fa6b959629cece30dc531f0ccfba5a",
-        #     class: 'd3-pykcharts'
-        #   },
-        #   topcountries:{
-        #     title: "Top 25 Countries",
-        #     id: "spain_-_top_countries",
-        #     api: "PykCharts.maps.oneLayer",
-        #     datacast_identifier: "1a08e1be9ff9bbb728521df12cb86bd8ab95d510d37fcf37e8d529b8e3b75e98d5",
-        #     class: 'd3-pykcharts',
-        #   },
-        #   total_items: {
-        #     title: "Total number of items",
-        #     id: "spain_-_media_type_donut_chart",
-        #     api: "PykCharts.oneD.electionDonut",
-        #     datacast_identifier: "99c1e6eeda0363af1f368e07efcc6c0e5a214d57491a4946142e8f1c406bd313c8",
-        #     class: 'd3-pykcharts',
-        #   },
-        #   open_for_reuse: {
-        #     title: "Open for Re-use",
-        #     id: "spain_-_reusables",
-        #     api: "PykCharts.oneD.pie",
-        #     datacast_identifier: "8a8e60211b3a0c21b7da1ec8fb9a7c0226387e7675f90b0db563d657fd2ff678a6",
-        #     class: 'd3-pykcharts',
-        #   }
-        # }
       end
 
       def get_data_providers
@@ -128,6 +99,31 @@ module Impl
           title: "Aggregators working with Europeana",
           value: @impl_aggregation.impl_outputs.where(genre: "top_provider_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
           description: "The total number of institutions working with Europeana."
+        }
+      end
+
+      def get_stats_bar
+        {
+          items: [{
+            "title": "Total Views in 2014",
+            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2014'").sum("value").to_i),
+          },{
+            "title": "Total Views in 2015",
+            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2015'").sum("value").to_i),
+            "trend": "20%"
+          },{
+            "title": "Total Views in 2016(till now)",
+            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2016'").sum("value").to_i),
+          },{
+            "title": "Total clickThrough in 2016",
+            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "clickThrough").first.core_time_aggregations.where("aggregation_level_value = '2016'").sum("value").to_i),
+          },{
+            "title": "Total events in 2015",
+            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2016'").sum("value").to_i),
+          },{
+            "title": "Total events in 2016(till now)",
+            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2016'").sum("value").to_i),
+          }]
         }
       end
     end
