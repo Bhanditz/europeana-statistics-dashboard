@@ -52,7 +52,7 @@ module Impl
           numberedlist: {
             title: "Top 25 Digital Objects"
           },
-          stats_bar: get_stats_bar
+          # stats_bar: get_stats_bar
         }
         unless @impl_report.impl_aggregation_genre == "data_provider"
           if @impl_report.impl_aggregation_genre == "europeana"
