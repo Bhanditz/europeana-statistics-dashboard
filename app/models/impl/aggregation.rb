@@ -183,17 +183,6 @@ class Impl::Aggregation < ActiveRecord::Base
       $redis.set("data_providers_json", json.to_json)
     end
     json
-    # if $redis.get("data_providers_html").present?
-    #   html_string = $redis.get("data_providers_html")
-    # else
-    #   html_string = "<table class='table'><thead><th>Name</th></thead>"
-    #   self.data_providers.includes(:impl_outputs).order(:name).each do |data_provider|
-    #     html_string += "<tr><td><a href='#{BASE_URL}/dataprovider/#{data_provider.impl_report.slug}'>#{data_provider.name}</a></td></tr>" if data_provider.impl_report.present?
-    #   end
-    #   html_string += "</table>"
-    #   $redis.set("data_providers_html", html_string)
-    # end
-    # html_string
   end
 
   def self.get_providers_json
@@ -211,19 +200,6 @@ class Impl::Aggregation < ActiveRecord::Base
       $redis.set("providers_json", json.to_json)
     end
     json
-    # if $redis.get("providers_html").present?
-    #   html_string = $redis.get("providers_html")
-    # else
-    #   html_string = "<table class='table'><thead><th>Name</th></thead>"
-    #   self.providers.includes(:impl_outputs).order(:name).each do |provider|
-    #     html_string += "<tr><td><a href='#{BASE_URL}/provider/#{provider.impl_report.slug}'>#{provider.name}</a></td></tr>" if provider.impl_report.present?
-    #   end
-    #   providers.each do |d|
-    #   end
-    #   html_string += "</table>"
-    #   $redis.set("providers_html", html_string)
-    # end
-    # html_string
   end
 
   def self.get_countries_json
@@ -241,18 +217,6 @@ class Impl::Aggregation < ActiveRecord::Base
       $redis.set("countries_json", json.to_json)
     end
     json
-
-    # if $redis.get("countries_html").present?
-    #   html_string = $redis.get("countries_html")
-    # else
-    #   html_string = "<table class='table'><thead><th>Country name</th></thead>"
-    #   self.countries.includes(:impl_outputs).order(:name).each do |country|
-    #     html_string += "<tr><td><a href='#{BASE_URL}/country/#{country.impl_report.slug}'>#{country.name}</a></td></tr>" if country.impl_report.present?
-    #   end
-    #   html_string += "</table>"
-    #   $redis.set("countries_html", html_string)
-    # end
-    # return html_string
   end
 
   def get_total_visits_query

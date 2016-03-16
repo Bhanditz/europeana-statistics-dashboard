@@ -10,11 +10,11 @@ class Aggregations::Europeana::PageviewsBuilder
       aggregation_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","pageviews")
       aggregation_output.update_attributes(status: "Fetching pageviews", error_messages: nil)
       begin
-        ga_start_date   = aggregation.last_updated_at.present? ? (aggregation.last_updated_at+1).strftime("%Y-%m-%d") : "2012-01-01"
+        ga_start_date   = aggregation.last_updated_at.present? ? (aggregation.last_updated_at+1).strftime("%Y-%m-%d") : "2013-01-01"
         ga_end_date     = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
         ga_dimensions   = "ga:month,ga:year"
         ga_metrics      = "ga:pageviews"
-        ga_filters      = "ga:hostname=~europeana.eu"
+        ga_filters      = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/record/"
         ga_access_token = Impl::DataSet.get_access_token
         page_views = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
         page_views_data = page_views.map{|a| {"month" => a[0], "year" => a[1], "pageviews" => a[2].to_i}}
@@ -40,35 +40,6 @@ class Aggregations::Europeana::PageviewsBuilder
         #Fetching Languages
         # language_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "language","pageviews")
         # Core::TimeAggregation.create_aggregations(language_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","language") unless language_output.nil?
-
-        #Fetching Device Categories
-        # category_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "deviceCategory","pageviews")
-        # Core::TimeAggregation.create_aggregations(category_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","deviceCategory") unless category_output.nil?
-
-        #Fetching Device Brands
-        # branding_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "mobileDeviceBranding","pageviews")
-        # Core::TimeAggregation.create_aggregations(branding_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","mobileDeviceBranding") unless branding_output.nil?
-
-        #Fetching User Types for Pageviews
-        # user_type_output_for_pageviews = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","pageviews")
-        # Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews,"monthly", aggregation_id,"Impl::Aggregation","pageviews","userType") unless user_type_output_for_pageviews.nil?
-
-        #Fetching User Types for Sessions
-        # user_type_output_for_sessions = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","sessions")
-        # Core::TimeAggregation.create_aggregations(user_type_output_for_sessions,"monthly", aggregation_id,"Impl::Aggregation","sessions","userType") unless user_type_output_for_sessions.nil?
-
-        #Fetching User Types for avgSessionDuration
-        # user_type_output_for_avg_session_duration = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","avgSessionDuration")
-        # Core::TimeAggregation.create_aggregations(user_type_output_for_avg_session_duration,"monthly", aggregation_id,"Impl::Aggregation","avgSessionDuration","userType") unless user_type_output_for_avg_session_duration.nil?
-
-        #Fetching User Types for bounceRate
-        # user_type_output_for_bounce_rate = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","bounceRate")
-        # Core::TimeAggregation.create_aggregations(user_type_output_for_bounce_rate,"monthly", aggregation_id,"Impl::Aggregation","bounceRate","userType") unless user_type_output_for_bounce_rate.nil?
-
-
-        #Fetching User Types for pageviewsPerSession
-        # user_type_output_for_pageviews_per_session = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "userType","pageviewsPerSession")
-        # Core::TimeAggregation.create_aggregations(user_type_output_for_pageviews_per_session,"monthly", aggregation_id,"Impl::Aggregation","pageviewsPerSession","userType") unless user_type_output_for_pageviews_per_session.nil?
 
         #Top Digital Objects
         top_digital_objects = Aggregations::Europeana::PageviewsBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date)
