@@ -14,7 +14,7 @@ class Impl::DataProviders::TrafficBuilder
     data_provider_pageviews_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","pageviews")
     data_provider_visits_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","visits")
     data_provider_pageviews_output.update_attributes(status: "Building Pageviews", error_messages: nil)
-    ga_start_date = data_provider.last_updated_at.present? ? (data_provider.last_updated_at + 1).strftime("%Y-%m-%d") : "2013-01-01"
+    ga_start_date = data_provider.last_updated_at.present? ? (data_provider.last_updated_at + 1).strftime("%Y-%m-%d") : "2012-01-01"
     ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
 
     ga_dimensions   = "ga:month,ga:year"
