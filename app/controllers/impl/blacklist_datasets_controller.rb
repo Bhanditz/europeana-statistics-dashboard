@@ -2,7 +2,7 @@ class Impl::BlacklistDatasetsController < ApplicationController
 	before_action :sudo_project_member!
 
 	def index
-		@blacklist_datasets = Impl::BlacklistDataset.order(created_at: :desc).page.per(30)
+		@blacklist_datasets = Impl::BlacklistDataset.order(created_at: :desc).page(params[:page]).per(30)
 		@blacklist_dataset = Impl::BlacklistDataset.new
 	end
 
