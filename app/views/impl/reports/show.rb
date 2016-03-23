@@ -52,7 +52,7 @@ module Impl
           numberedlist: {
             title: "Top 25 Digital Objects"
           },
-          # stats_bar: get_stats_bar
+          stats_bar: get_stats_bar
         }
         unless @impl_report.impl_aggregation_genre == "data_provider"
           if @impl_report.impl_aggregation_genre == "europeana"
@@ -80,7 +80,7 @@ module Impl
 
       def get_data_providers
         {
-          title: "Institutions working with Europeana",
+          title: "Institutions working with Europeana #{@impl_aggregation.genre == "europeana" ? "" : "in " + @impl_aggregation.name}",
           value: @impl_aggregation.genre == "europeana" ? 3521 : @impl_aggregation.child_data_providers.count,
           description: "The total number of institutions working with Europeana."
         }

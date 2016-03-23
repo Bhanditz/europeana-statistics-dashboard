@@ -40,4 +40,4 @@ class Impl::DataProviders::VizsBuilder
     ref_chart = Ref::Chart.find_by(slug: ref_slugs[genre])
     return ref_chart
   end
-end    
+end

@@ -140,7 +140,7 @@ Rumali.autoCharts = (function(){
     			"donut_show_total_at_center_size": 30,
 				};
 
-			var chartobj = new PykCharts.oneD.electionDonut(
+			var chartobj = new PykCharts.oneD.donut(
 					oned_obj
 				);
 

@@ -25,13 +25,13 @@ class Aggregations::Europeana::ReportBuilder
     #"$main_chart$"
     line_chart_content_key = required_variables.shift
     line_chart_content_value = core_vizs.line_chart.first.auto_html_json
-    line_chart_content_value["title"] = "Total pageviews in throughout the years"
+    line_chart_content_value["title"] = "Total pageviews, compared year by year."
     variable_object[line_chart_content_key] = line_chart_content_value
 
     #"$topcountries$"
     top_countries_content_key = required_variables.shift
     top_countries_content_value = core_vizs.top_country.first.auto_html_json
-    top_countries_content_value["title"] = "Top 25 Countries"
+    top_countries_content_value["title"] = "Pagviews for Top 25 Countries for the current year."
     variable_object[top_countries_content_key] = top_countries_content_value
 
     #"$total_items$"
