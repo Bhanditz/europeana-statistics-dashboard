@@ -33,6 +33,25 @@ class Aggregations::Europeana::PageviewsBuilder
 
         Core::TimeAggregation.create_aggregations(mediums_data,"monthly",aggregation_id,"Impl::Aggregation","visits","medium")
 
+        #Fetching ClickThroughs
+        data_provider_click_through_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","clickThrough")
+        ga_start_date = "2012-01-01"
+        #To change to last updated at once it runs for all the jobs
+        ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
+
+        ga_dimensions   = "ga:year"
+        click_metrics  = "ga:totalEvents"
+        ga_filter = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/record/;ga:eventCategory==Europeana Redirect,ga:eventCategory==Redirect"
+        #click Through
+        ga_access_token = Impl::DataSet.get_access_token
+
+        click_through = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{click_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filter}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
+        click_through_data = click_through.map{|a| {"year"=> a[0], "clickThrough" => a[1].to_i}}
+        click_through_data = click_through_data.sort_by {|d| [d["year"]]}
+
+        Core::TimeAggregation.create_time_aggregations("Impl::Output",data_provider_click_through_output.id, click_through_data,"clickThrough","yearly")
+
+
         #Fetching Countries
         country_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "country","pageviews")
         Core::TimeAggregation.create_aggregations(country_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","country") unless country_output.nil?
