@@ -17,7 +17,8 @@ class Impl::DataProviders::TopCountriesBuilder
       country_output = Impl::Aggregation.fetch_GA_data_between(start_date, end_date, data_provider, "country","pageviews")
       Core::TimeAggregation.create_aggregations(country_output,"monthly", data_provider_id,"Impl::Aggregation","pageviews","country") unless country_output.nil?
       data_provider.update_attributes(status: "Processed top 25 countries")
-      Impl::DataProviders::ItemViewsBuilder.perform_async(data_provider_id)
+      # Impl::DataProviders::ItemViewsBuilder.perform_async(data_provider_id)
+      Impl::DataProviders::ClickThroughBuilder.perform_async(data_provider_id)
     rescue => e
       data_provider.update_attributes(status: "Failed to build top 25 countries",error_messages: e.to_s)
     end

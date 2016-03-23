@@ -27,6 +27,7 @@ class Impl::DataProviders::ReportBuilder
     line_chart_content_key = required_variables.shift
     line_chart_content_value = core_vizs.line_chart.first.auto_html_json
     line_chart_content_value["title"] = "Monthly page views of items in Europeana."
+    line_chart_content_value['description'] = "Total number of visits to items from this collection. Hover over the different months to see exact numbers. You can turn the colour for each year on and off by clicking on it."
     variable_object[line_chart_content_key] = line_chart_content_value
 
     #"$topcountries$"

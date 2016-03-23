@@ -34,7 +34,7 @@ class Aggregations::Europeana::PageviewsBuilder
         Core::TimeAggregation.create_aggregations(mediums_data,"monthly",aggregation_id,"Impl::Aggregation","visits","medium")
 
         #Fetching ClickThroughs
-        data_provider_click_through_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","clickThrough")
+        data_provider_click_through_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","clickThrough")
         ga_start_date = "2012-01-01"
         #To change to last updated at once it runs for all the jobs
         ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")

@@ -37,6 +37,7 @@ class Impl::DataProviders::ClickThroughBuilder
       Core::TimeAggregation.create_time_aggregations("Impl::Output",data_provider_click_through_output.id, click_through_data,"clickThrough","yearly")
       # data_provider.update_attributes(status: "Building Visits", error_messages: nil)
       data_provider_click_through_output.update_attributes(status: "Built click through", error_messages: nil)
+      Impl::DataProviders::ItemViewsBuilder.perform_async(data_provider_id)
     rescue => e
       data_provider_click_through_output.update_attributes(status: "Failed to build click through", error_messages: e.to_s)
       data_provider.update_attributes(status: "Failed to build click through", error_messages: e.to_s)
