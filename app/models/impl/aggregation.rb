@@ -72,7 +72,7 @@ class Impl::Aggregation < ActiveRecord::Base
 
   def get_countries_query
     year = Date.today.year
-    return "Select sum(ta.value) as size, b.code as iso2, 'Pageviews' as tooltip_column_name from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id = #{self.id} and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{year}' group by b.code order by size desc limit 25"
+    return "Select sum(ta.value) as size, b.code as iso2, 'Pageviews' as tooltip_column_name from core_time_aggregations as ta, (Select o.id as output_id, value, code from impl_outputs o,ref_country_codes as code where o.impl_parent_id = #{self.id} and o.genre='top_countries' and o.value = code.country) as b where ta.parent_id = b.output_id and split_part(ta.aggregation_level_value,'_',1)='#{year}' group by b.code order by size desc limit 10"
   end
 
   def get_collections_query

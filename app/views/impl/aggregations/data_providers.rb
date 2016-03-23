@@ -5,6 +5,10 @@ module Impl
         'All Data providers'
       end
 
+      def bodyclass
+        "europeana_statsdashboard page_static"
+      end
+
       def navigation
         { global: {} }
       end

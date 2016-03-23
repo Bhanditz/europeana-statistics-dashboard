@@ -28,7 +28,8 @@ module Impl
             path: asset_path('reports.js')
           },
           {
-            path:Rails.env.production? ? asset_path("ga.js") : ""
+            path:Rails.env.production? ? asset_path("ga.js") : "",
+            path:Rails.env.production? ? asset_path("hotjar.js") : ""
           },
           {
             path: styleguide_url('/js/dist/require.js'),
@@ -50,9 +51,10 @@ module Impl
           stats_source: @impl_aggregation.name.titleize,
           charts: get_report_charts,
           numberedlist: {
-            title: "Top 25 Digital Objects"
+            title: "Top 25 items",
+            description: "These items have been viewed most by visitors to Europeana. Use the dropdown menus to look at different time periods."
           },
-          # stats_bar: get_stats_bar
+          stats_bar: get_stats_bar
         }
         unless @impl_report.impl_aggregation_genre == "data_provider"
           if @impl_report.impl_aggregation_genre == "europeana"
@@ -80,49 +82,66 @@ module Impl
 
       def get_data_providers
         {
-          title: "Institutions working with Europeana #{@impl_aggregation.genre == "europeana" ? "" : "in " + @impl_aggregation.name}",
+          title: "Number of cultural institutions sharing collections via Europeana",
           value: @impl_aggregation.genre == "europeana" ? 3521 : @impl_aggregation.child_data_providers.count,
-          description: "The total number of institutions working with Europeana."
+          description: "Thousands of cultural institutions share their digital collections via Europeana. <a href='http://europeana.eu/portal/browse/sources' target='_blank'>Click here for the full list</a>."
         }
       end
 
       def get_countries_count
         {
-          title: "Countries working with Europeana",
+          title: "Number of countries sharing collections via Europeana",
           value: @impl_aggregation.impl_outputs.where(genre: "top_country_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
-          description: "The total number of institutions working with Europeana."
+          description: false
         }
       end
 
       def get_providers_count
         {
-          title: "Aggregators working with Europeana",
+          title: "Number of aggregators working with Europeana",
           value: @impl_aggregation.impl_outputs.where(genre: "top_provider_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
           description: "The total number of institutions working with Europeana."
         }
       end
 
       def get_stats_bar
+        pg_views_2014 = @impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2014'").sum("value").to_i
+        pg_views_2015 = @impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2015'").sum("value").to_i
+        pg_views_2016 = @impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2016'").sum("value").to_i
+
+        ct_2014 = @impl_aggregation.impl_outputs.where(genre: "clickThrough").first.core_time_aggregations.where("aggregation_level_value = '2014'").sum("value").to_i
+        ct_2015 = @impl_aggregation.impl_outputs.where(genre: "clickThrough").first.core_time_aggregations.where("aggregation_level_value = '2015'").sum("value").to_i
+        ct_2016 = @impl_aggregation.impl_outputs.where(genre: "clickThrough").first.core_time_aggregations.where("aggregation_level_value = '2016'").sum("value").to_i
+
         {
           items: [{
             "title": "Total Views in 2014",
-            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2014'").sum("value").to_i),
+            "value": helpers.number_with_delimiter(pg_views_2014)
           },{
             "title": "Total Views in 2015",
-            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2015'").sum("value").to_i),
-            "trend": "20%"
+            "value": helpers.number_with_delimiter(pg_views_2015),
+            "trend": {
+              "value": (((pg_views_2015 - pg_views_2014).abs.to_f/pg_views_2014)*100).round(2).to_s + "%",
+              "positive": pg_views_2015 > pg_views_2014 ? true : false,
+              "negative": pg_views_2015 < pg_views_2014 ? true : false
+            }
           },{
             "title": "Total Views in 2016(till now)",
-            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2016'").sum("value").to_i),
+            "value": helpers.number_with_delimiter(pg_views_2016),
           },{
-            "title": "Total clickThrough in 2016",
-            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "clickThrough").first.core_time_aggregations.where("aggregation_level_value = '2016'").sum("value").to_i),
+            "title": "Total Click Through in 2014",
+            "value": helpers.number_with_delimiter(ct_2014)
           },{
-            "title": "Total events in 2015",
-            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2016'").sum("value").to_i),
+            "title": "Total Click Through in 2015",
+            "value": helpers.number_with_delimiter(ct_2015),
+            "trend": {
+              "value": (((ct_2015 - ct_2014).abs.to_f/ct_2014)*100).round(2).to_s + "%",
+              "positive": ct_2015 > ct_2014 ? true : false,
+              "negative": ct_2015 < ct_2014 ? true : false
+            }
           },{
-            "title": "Total events in 2016(till now)",
-            "value": helpers.number_with_delimiter(@impl_aggregation.impl_outputs.where(genre: "pageviews").first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2016'").sum("value").to_i),
+            "title": "Total Click Through in 2016(till now)",
+            "value": helpers.number_with_delimiter(ct_2016)
           }]
         }
       end
