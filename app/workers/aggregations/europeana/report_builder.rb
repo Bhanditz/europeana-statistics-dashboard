@@ -32,7 +32,7 @@ class Aggregations::Europeana::ReportBuilder
     #"$topcountries$"
     top_countries_content_key = required_variables.shift
     top_countries_content_value = core_vizs.top_country.first.auto_html_json
-    top_countries_content_value["title"] = "Top 10 countries."
+    top_countries_content_value["title"] = "Top 10 countries. These countries generated the most views in Europeana this year."
     variable_object[top_countries_content_key] = top_countries_content_value
 
     #"$total_items$"
