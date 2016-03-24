@@ -47,7 +47,7 @@ class Impl::DataProviders::ReportBuilder
     reusable_content_value = core_vizs.reusable.first.auto_html_json
     reusable_content_value["title"] = "How much of the collection is available for re-use?"
     reusable_content_value["description"] = "Every item you find in Europeana comes with a <a href='http://pro.europeana.eu/page/available-rights-statements target='_blank''>rights statements</a> telling you how you can use it. To make it easier, we have divided these rights statements <a href='http://pro.europeana.eu/blogpost/new-features-for-europeana' target='_blank'>into three categories</a>.".html_safe
-    variable_object[reusable_content_key] = reusable_content_valuea
+    variable_object[reusable_content_key] = reusable_content_value
 
     return variable_object, core_template
   end
