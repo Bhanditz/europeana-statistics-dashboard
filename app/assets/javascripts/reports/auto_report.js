@@ -214,6 +214,7 @@ Rumali.autoCharts = (function(){
 					chart_color: ["#1A8AC7","#095F90","#4BC0F0"],
 					data_sort_enable: "no",
 					axis_x_time_value_datatype:"month",
+					// multiLineChart: true,
 					chart_width: 1200
 				};
 			var chartobj = new PykCharts.multiD.multiSeriesLine(
@@ -221,6 +222,17 @@ Rumali.autoCharts = (function(){
 					);
 
 			chartobj.execute();
+
+			document.getElementById($(obj).attr('id')).style.width = "100%";
+			// debugger;
+			var resize = chartobj.k.resize(chartobj.svgContainer);
+        chartobj.k.__proto__._ready(resize);
+        window.addEventListener('resize', function(event){
+        	// debugger;
+            return chartobj.k.resize(chartobj.svgContainer);
+        });
+
+
 		}
 
 		if(!country_chart_data){
