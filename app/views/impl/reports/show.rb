@@ -2,7 +2,7 @@ module Impl
   module Reports
     class Show < Europeana::Styleguide::View
       def page_title
-        'Welcome'
+        "#{@impl_aggregation.genre == "europeana" ? "Overall" : @impl_aggregation.name.titleize} - Europeana Statistics Dashboard"
       end
 
       def navigation
@@ -100,7 +100,7 @@ module Impl
         {
           title: "Number of aggregators working with Europeana",
           value: @impl_aggregation.impl_outputs.where(genre: "top_provider_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
-          description: "The total number of institutions working with Europeana."
+          description: "Working between Europeana and the cultural heritage institutions are aggregators. They act as intermediaries, harvesting data from the institutions. <a href='http://europeana.eu/portal/browse/sources'>Click here for the full list</a>."
         }
       end
 
@@ -115,32 +115,32 @@ module Impl
 
         {
           items: [{
-            "title": "Total Views in 2014",
+            "title": "Total views in 2014",
             "value": helpers.number_with_delimiter(pg_views_2014)
           },{
-            "title": "Total Views in 2015",
+            "title": "Total views in 2015",
             "value": helpers.number_with_delimiter(pg_views_2015),
-            "trend": {
+            "trend": pg_views_2014 == 0 ? {} : {
               "value": (((pg_views_2015 - pg_views_2014).abs.to_f/pg_views_2014)*100).round(2).to_s + "%",
               "positive": pg_views_2015 > pg_views_2014 ? true : false,
               "negative": pg_views_2015 < pg_views_2014 ? true : false
             }
           },{
-            "title": "Total Views in 2016(till now)",
+            "title": "Total views in 2016(till now)",
             "value": helpers.number_with_delimiter(pg_views_2016),
           },{
-            "title": "Total Click Through in 2014",
+            "title": "Total click-throughs in 2014",
             "value": helpers.number_with_delimiter(ct_2014)
           },{
-            "title": "Total Click Through in 2015",
+            "title": "Total click-throughs in 2015",
             "value": helpers.number_with_delimiter(ct_2015),
-            "trend": {
+            "trend": ct_2014 == 0 ? {} : {
               "value": (((ct_2015 - ct_2014).abs.to_f/ct_2014)*100).round(2).to_s + "%",
               "positive": ct_2015 > ct_2014 ? true : false,
               "negative": ct_2015 < ct_2014 ? true : false
             }
           },{
-            "title": "Total Click Through in 2016(till now)",
+            "title": "Total click-throughs in 2016(till now)",
             "value": helpers.number_with_delimiter(ct_2016)
           }]
         }

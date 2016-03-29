@@ -2,7 +2,7 @@ module Impl
   module Aggregations
     class Countries < Europeana::Styleguide::View
       def page_title
-        'All Countries'
+        'Countries - Europeana Statistics Dashboard'
       end
 
       def bodyclass

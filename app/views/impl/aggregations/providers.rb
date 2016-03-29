@@ -2,7 +2,7 @@ module Impl
   module Aggregations
     class Providers < Europeana::Styleguide::View
       def page_title
-        'All Providers'
+        'Aggregators - Europeana Statistics Dashboard'
       end
 
       def bodyclass
