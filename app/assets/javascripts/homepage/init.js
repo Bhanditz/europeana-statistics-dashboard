@@ -9,10 +9,13 @@ Rumali.loadHomePage = function(){
     chart_onhover_highlight_enable: true,
     click_enable: false,
     legends_enable: 'no',
-
-    // optional
     chart_height: 800,
-    chart_width: 1200
+    chart_width: 1200,
+    border_between_chart_elements_color: "#444444"
   });
+  k.enable_custom_hover = true;
+  k.active_color = "#F46195";
+  k.inactive_color = "#DBCED5";
+  k.no_data_color = "#EAEAEA";
   k.execute();
 }

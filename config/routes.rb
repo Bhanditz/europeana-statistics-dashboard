@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   get "/countries", to: "impl/aggregations#countries", as: "countries"
   get "/provider_hit_list", to: "impl/aggregations#provider_hit_list", as: "provider_hit_list"
   get "/europeana", to: "impl/reports#show", as: "europeana_report", genre: "europeana", impl_report_id: "europeana"
+  get "/:manual_report_id", to: "impl/reports#manual_report", as: "manual_report"
 
   namespace :dataprovider,module: false  do
     get ":impl_report_id", to: "impl/reports#show", as: "impl_report", genre: "data_provider"
@@ -59,10 +60,6 @@ Rails.application.routes.draw do
 
   namespace :provider,module: false do
     get ":impl_report_id", to: "impl/reports#show", as: "impl_report", genre: "provider"
-  end
-
-  namespace :europeana, module: false do
-    get "/:impl_report_id", to: "impl/reports#show", as: "impl_report", genre: nil
   end
 
   get "/:account_id/projects", to: "accounts#show", as: "_account", :defaults => { :content => "projects" }

@@ -11,19 +11,19 @@ class ApplicationController < ActionController::Base
   #------------------------------------------------------------------------------------------------------------------
 
   private
-  
+
   def detect_domain
     @is_not_rumi = (request.domain != "localhost" and request.domain != "rumi.io")
   end
-  
+
   def set_current_user_to_session
     Thread.current[:i] = current_account.id if current_account.present?
   end
-  
-  # LOCKING this method. Do not change. 
+
+  # LOCKING this method. Do not change.
   # Module: Access-Control
   # Author: Ritvvij Parrikh
-  
+
   def set_universal_objects
     if params[:account_id].present?
       begin
@@ -52,21 +52,21 @@ class ApplicationController < ActionController::Base
         redirect_to root_url, alert: t("set_universal_objects.no_such_account_2")
       end
     end
-    if @account.blank? 
+    if @account.blank?
       @account = current_account  if controller_name == "projects" and action_name == "new"
     end
     gon.scopejs = "scopejs_#{controller_name}_#{action_name}"
   end
-  
-  # LOCKING this method. Do not change. 
+
+  # LOCKING this method. Do not change.
   # Module: Access-Control
   # Author: Ritvvij Parrikh
-  
+
   def sudo_account!
     authenticate_account!
   end
-  
-  # LOCKING this method. Do not change. 
+
+  # LOCKING this method. Do not change.
   # Module: Access-Control
   # Author: Ritvvij Parrikh
 
@@ -75,8 +75,8 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, alert: t("pd.sudo_organisation_owner!") if current_account.sudo_organisation_owner(@account)
     @sudo = Constants::SUDO_111
   end
-  
-  # LOCKING this method. Do not change. 
+
+  # LOCKING this method. Do not change.
   # Module: Access-Control
   # Author: Ritvvij Parrikh
 
@@ -87,8 +87,8 @@ class ApplicationController < ActionController::Base
       redirect_to root_url, alert: t("pd.sudo_project_member!") if @sudo.blank? and !redirect_to_show
     end
   end
-  
-  # LOCKING this method. Do not change. 
+
+  # LOCKING this method. Do not change.
   # Module: Access-Control
   # Author: Ritvvij Parrikh
 
@@ -99,8 +99,8 @@ class ApplicationController < ActionController::Base
       @sudo = Constants::SUDO_111
     end
   end
-  
-  # LOCKING this method. Do not change. 
+
+  # LOCKING this method. Do not change.
   # Module: Access-Control
   # Author: Ritvvij Parrikh
 
@@ -109,8 +109,8 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, alert: t("pd.sudo_admin!") if !current_account.is_admin?
     @sudo = Constants::SUDO_111
   end
-  
-  # LOCKING this method. Do not change. 
+
+  # LOCKING this method. Do not change.
   # Module: Access-Control
   # Author: Ritvvij Parrikh
 
@@ -129,17 +129,17 @@ class ApplicationController < ActionController::Base
       @sudo = Constants::SUDO_001
     end
   end
-  
+
   #------------------------------------------------------------------------------------------------------------------
-  
+
   def set_ref_plan_tokens
     true
   end
-  
+
   #------------------------------------------------------------------------------------------------------------------
 
   protected
-  
+
   def log_session
     if controller_name == "vizs" and (action_name == "embed" or action_name == "show")
       session_id = session.present? ? session.id : nil
@@ -149,25 +149,29 @@ class ApplicationController < ActionController::Base
       Thread.current[:s] = Core::SessionImpl.log(session.id, current_account.id, request.env["REMOTE_ADDR"].to_s, request.env["HTTP_USER_AGENT"].to_s)
     end
   end
-    
+
   # Enable DEVISE forms to accept username.
   def configure_devise_params
     devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:username, :email, :password)}
     devise_parameter_sanitizer.for(:sign_in) {|u| u.permit(:username, :password)}
     devise_parameter_sanitizer.for(:account_update) {|u| u.permit(:password, :current_password, :password_confirmation)}
   end
-  
+
   #------------------------------------------------------------------------------------------------------------------
-  
+
   private
-  
-  # LOCKING this method. Do not change. 
+
+  # LOCKING this method. Do not change.
   # Module: Access-Control
   # Author: Ritvvij Parrikh
-  
+
+  def after_sign_in_path_for(resource)
+    _account_project_path(resource, resource.core_projects.first)
+  end
+
   def after_filter_set
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
   end
-  
+
 end
