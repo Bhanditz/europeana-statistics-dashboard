@@ -56,6 +56,12 @@ Rumali.autoCharts = (function(){
 			utility.getJSONforTable(global_obj.datacast_url+table_data.tables[index].dataset.datacast_identifier,id,renderHTMLForTable);
 			//renderHTMLForTable(table_json,i);
 		}
+		Handlebars.registerHelper('trimString', function(passedString) {
+			if(!passedString){
+				return "";
+			}
+			return passedString.length > 10 ? passedString : passedString.substring(0,10) + "...";
+		});
 		utility.getJSON(rumi_api_endpoint + 'datacast/'+ gon.top_digital_objects_identifier,"",loadTop10digitalObject);
 	};
 	//Set up the data for one d chart and then call function for pykchart.
@@ -71,7 +77,6 @@ Rumali.autoCharts = (function(){
 
 			if(data.length <= 0){
 				createErrorDiv($(obj).attr('id'));
-
 			}
 			else{
 				removeErrorDiv($(obj).attr('id'));
@@ -85,9 +90,7 @@ Rumali.autoCharts = (function(){
 			var oned_obj = {
 				selector: selector,//Getting id for the element as expected by the pykihcharts.
 				data:data,
-				//Api for fetching the data.
-      	tooltip_enable: "yes", //enabling tool tip for the gven chart
-      	//shade_color: "#1A8AC7","#095F90","#4BC0F0"]
+				tooltip_enable: "yes", //enabling tool tip for the gven chart
       	shade_color: "#4BC0F0",
       	"pointer_size": 28,
       	"label_size": 28,
@@ -346,13 +349,12 @@ Rumali.autoCharts = (function(){
 				return parseInt(obj.value)*-1;
 			});
 			filter_data = _.first(filter_data,25);
-
+			filter_data.forEach(function(d){ if(d.title){d.title = (d.title.length < 125? d.title : d.title.substring(0,125) + "...");}});
 			renderHTMLForDigitalObj(transformFilterData(filter_data));
 		}
 
 		var renderHTMLForDigitalObj = function(data){
 			var source = $("#top25-template").html();
-			// var source = '{{#each this}}<li><div class="listitem media"><img class="listitem-image media-figure" src="{{ image_root }}{{ image }}" alt="{{ title }}"><div class="media-body">{{#if url}}<a href="{{ url }}"><h3>{{ title }}</h3></a>{{else}}<h3>{{ title }}</h3>{{/if}}<div class="listitem-text">{{ description }}</div>{{#if extra }}<div class="listitem-extra">{{ extra }}</div>{{/if}}</div></div></li>{{/each}}',
 			template = Handlebars.compile(source);
 			$("ol.results-list").html(template(data));
 		}
