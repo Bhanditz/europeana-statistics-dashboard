@@ -11,7 +11,8 @@ Rumali.loadHomePage = function(){
     legends_enable: 'no',
     chart_height: 800,
     chart_width: 1200,
-    border_between_chart_elements_color: "#444444"
+    border_between_chart_elements_color: "#444444",
+    default_zoom_level: 95
   });
   k.enable_custom_hover = true;
   k.active_color = "#F46195";
