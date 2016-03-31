@@ -2,11 +2,11 @@ module Impl
   module Aggregations
     class Countries < Europeana::Styleguide::View
       def page_title
-        'Countries - Europeana Statistics Dashboard'
+        'Europeana Statistics Dashboard'
       end
 
       def bodyclass
-        "europeana_statsdashboard page_static"
+        "europeana_statsdashboard page_countries"
       end
 
       def navigation
@@ -19,25 +19,45 @@ module Impl
         ]
       end
 
+      def js_vars
+        [
+          {
+            name: 'rumi_api_endpoint', value: REST_API_ENDPOINT
+          }
+        ] + super
+      end
+
+
       def js_files
         [
           {
+            path: asset_path('application.js')
+          },
+          {
+            path: asset_path('homepage.js')
+          },
+          {
             path: styleguide_url('/js/dist/require.js'),
-            data_main: styleguide_url('/js/dist/main/main-statistics.js')
+            data_main: styleguide_url('/js/dist/main/main-statistics.js'),
           }
         ]
+      end
+      def title
+        ""
       end
 
       def content
         {
-          links:{
-            items: Impl::Aggregation.get_countries_json
+          "charts": {
+            "main_chart": {
+              "id": "europeana_navigator_map"
+            }
           }
         }
       end
 
-      def title
-        "All Country Reports"
+      def gon
+        helpers.include_gon
       end
 
     end

@@ -47,7 +47,7 @@ window.onload = function () {
     case "scopejs_reports_show": //need to break it into 2 switch cases
       Rumali.buildCharts.loadReportChart();
       break;
-    case "scopejs_static_pages_index":
+    case "scopejs_aggregations_countries":
       Rumali.loadHomePage();
       break;
     case "scopejs_reports_new":

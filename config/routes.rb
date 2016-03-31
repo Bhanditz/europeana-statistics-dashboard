@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   get "/providers", to: "impl/aggregations#providers", as: "providers"
   get "/dataproviders", to: "impl/aggregations#data_providers", as: "data_providers"
   get "/countries", to: "impl/aggregations#countries", as: "countries"
+  get "/countrieslist", to: "impl/aggregations#countrieslist", as: "countrieslist"
   get "/provider_hit_list", to: "impl/aggregations#provider_hit_list", as: "provider_hit_list"
   get "/europeana", to: "impl/reports#show", as: "europeana_report", genre: "europeana", impl_report_id: "europeana"
   get "/:manual_report_id", to: "impl/reports#manual_report", as: "manual_report"
