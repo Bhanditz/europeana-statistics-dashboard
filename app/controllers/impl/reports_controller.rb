@@ -36,7 +36,7 @@ class Impl::ReportsController < ApplicationController
   def create
     @impl_report = Impl::Report.new(impl_report_params)
     if @impl_report.save
-      redirect_to edit_account_project_impl_report_path(@account,@core_project, @impl_report), notice: t("c.s")
+      redirect_to account_project_impl_reports_path(@account,@core_project), notice: t("c.s")
     else
       render :new
     end
@@ -64,7 +64,7 @@ class Impl::ReportsController < ApplicationController
 
   def update
     if @impl_report.update_attributes(impl_report_params)
-      redirect_to edit_account_project_impl_report_path(@account,@core_project, @impl_report), notice: t("u.s")
+      redirect_to account_project_impl_reports_path(@account,@core_project), notice: t("u.s")
     else
       render :edit
     end

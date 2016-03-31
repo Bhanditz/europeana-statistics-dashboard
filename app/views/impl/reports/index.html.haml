@@ -4,11 +4,11 @@
     .panel-body
       .row
         .col-sm-12
-          %h4 Reports
+          %h4 Pages
           .pull-right
-            = link_to "Aggregations", account_project_impl_aggregations_path(@account,@core_project )
+            = link_to "Country Reports", account_project_impl_aggregations_path(@account,@core_project )
             |
-            = link_to "New Report", new_account_project_impl_report_path(@account, @core_project)
+            = link_to "New Page", new_account_project_impl_report_path(@account, @core_project)
           .clearfix
           %hr{style: "margin-bottom: 5px; margin-top: 2px; border-top-color: lightgray;"}
           %table.table.table-condensed

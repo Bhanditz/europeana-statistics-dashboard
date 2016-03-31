@@ -77,12 +77,19 @@ module Impl
       protected
 
       def get_report_charts
+        @impl_report.variable_object["main_chart"]["title"] = "Monthly page views of items"
+        @impl_report.variable_object["main_chart"]["description"] = "Hover over the different months to see exact numbers. You can turn the colour for each year on and off by clicking on it."
+        @impl_report.variable_object["topcountries"]["title"] = "Top 10 countries"
+        @impl_report.variable_object["topcountries"]["description"] = "These countries generated the most views for this collection this year."
+        @impl_report.variable_object["total_items"]["title"] = "Total number of items"
+        @impl_report.variable_object["open_for_reuse"]["title"] = "Available for re-use"
+        @impl_report.variable_object["open_for_reuse"]["description"] = "Every item you find in Europeana comes with a <a href='http://pro.europeana.eu/page/available-rights-statements target='_blank''>rights statements</a> telling you how you can use it. To make it easier, we have divided these rights statements <a href='http://pro.europeana.eu/blogpost/new-features-for-europeana' target='_blank'>into three categories</a>."
         @impl_report.variable_object
       end
 
       def get_data_providers
         {
-          title: "Number of cultural institutions sharing collections via Europeana",
+          title: "Cultural institutions sharing collections",
           value: @impl_aggregation.genre == "europeana" ? 3521 : @impl_aggregation.child_data_providers.count,
           description: "Thousands of cultural institutions share their digital collections via Europeana. <a href='http://europeana.eu/portal/browse/sources' target='_blank'>Click here for the full list</a>."
         }
@@ -90,7 +97,7 @@ module Impl
 
       def get_countries_count
         {
-          title: "Number of countries sharing collections via Europeana",
+          title: "Countries sharing collections",
           value: @impl_aggregation.impl_outputs.where(genre: "top_country_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
           description: false
         }
@@ -98,7 +105,7 @@ module Impl
 
       def get_providers_count
         {
-          title: "Number of aggregators working with Europeana",
+          title: "Aggregators sharing collections",
           value: @impl_aggregation.impl_outputs.where(genre: "top_provider_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
           description: "Working between Europeana and the cultural heritage institutions are aggregators. They act as intermediaries, harvesting data from the institutions. <a href='http://europeana.eu/portal/browse/sources'>Click here for the full list</a>."
         }
