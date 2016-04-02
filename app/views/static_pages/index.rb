@@ -35,11 +35,33 @@ module StaticPages
 
     def content
     	{
-    	 	"charts": {
-    			"main_chart": {
-		        "id": "europeana_navigator_map"
-		      }
-		    }
+        "quicklinks": {
+	        "title": "",
+          "items":[
+            {
+              "title":"Find your Dashboard",
+              "items":[
+                {
+                  "text": "Find an Aggregator",
+                  "url": providers_path
+                },
+                {
+                  "text": "Find an Institution",
+                  "url": data_providers_path
+                }
+              ]
+            },
+            {
+              "title":"Browse Statistics:",
+              "items":[
+                {
+                  "text": "By Country",
+                  "url": countries_path
+                }
+              ]
+            }
+          ]
+	      }
 		  }
     end
 
