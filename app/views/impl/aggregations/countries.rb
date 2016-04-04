@@ -9,6 +9,13 @@ module Impl
         "europeana_statsdashboard page_countries"
       end
 
+      def version
+        {
+          "is_beta": @is_beta
+        }
+      end
+
+
       def navigation
         {
           "global": {

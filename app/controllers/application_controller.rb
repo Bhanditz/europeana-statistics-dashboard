@@ -57,6 +57,7 @@ class ApplicationController < ActionController::Base
     end
     gon.scopejs = "scopejs_#{controller_name}_#{action_name}"
     @about_report = Impl::Report.where(slug: "about").first
+    @is_beta = true
   end
 
   # LOCKING this method. Do not change.

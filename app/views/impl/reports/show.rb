@@ -5,6 +5,12 @@ module Impl
         "#{@impl_aggregation.genre == "europeana" ? "Overall" : @impl_aggregation.name.titleize} - Europeana Statistics Dashboard"
       end
 
+      def version
+        {
+          "is_beta": @is_beta
+        }
+      end
+
       def navigation
         {
           "global": {

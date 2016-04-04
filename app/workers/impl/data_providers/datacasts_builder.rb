@@ -8,7 +8,8 @@ class Impl::DataProviders::DatacastsBuilder
     begin
       raise "Blacklist data set" if aggregation.blacklist_data_set?
     rescue => e
-      aggregation.update_attributes(status: "Failed", error_messages: e.to_s)
+      aggregation.update_attributes(status: "Failed", error_messages: e.to_s,last_updated_at: nil)
+      aggregation.impl_report.delete if aggregation.impl_report
       return nil
     end
     begin

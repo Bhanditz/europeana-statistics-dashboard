@@ -7,7 +7,8 @@ class Impl::DataProviders::ItemViewsBuilder
     begin
       raise "Blacklist data set" if data_provider.blacklist_data_set?
     rescue => e
-      data_provider.update_attributes(status: "Failed", error_messages: e.to_s)
+      data_provider.update_attributes(status: "Failed", error_messages: e.to_s,last_updated_at: nil)
+      data_provider.impl_report.delete if data_provider.impl_report.present?
       return nil
     end
     data_provider.update_attributes(status: "Building item views", error_messages: nil)
