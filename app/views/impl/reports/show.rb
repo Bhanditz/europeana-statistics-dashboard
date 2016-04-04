@@ -12,7 +12,7 @@ module Impl
       def css_files
         [
           { path: styleguide_url('/css/statistics/screen.css'), media: 'all', title: nil },
-          { path: asset_path("europeana.css"), media: 'all', title: nil},
+          # { path: asset_path("europeana.css"), media: 'all', title: nil},
         ]
       end
 
