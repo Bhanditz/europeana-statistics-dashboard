@@ -176,7 +176,7 @@ class Impl::Aggregation < ActiveRecord::Base
       self.data_providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='data_provider' ORDER BY impl_aggregations.name;").each do |data_provider|
           obj = {
             url: "#{BASE_URL}/dataprovider/#{data_provider.impl_report.slug}",
-            text: "#{data_provider.name.titleize}"
+            text: "#{data_provider.name}"
           }
           json << obj
       end
@@ -194,7 +194,7 @@ class Impl::Aggregation < ActiveRecord::Base
       self.providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='provider' ORDER BY impl_aggregations.name;").each do |provider|
         obj = {
           url: "#{BASE_URL}/provider/#{provider.impl_report.slug}",
-          text: "#{provider.name.titleize}"
+          text: "#{provider.name}"
         }
         json << obj
       end
