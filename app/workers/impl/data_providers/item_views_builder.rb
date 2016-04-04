@@ -40,7 +40,7 @@ class Impl::DataProviders::ItemViewsBuilder
     #   Core::TimeAggregation.create_time_aggregations("Impl::Output",click_through_output.id, click_through_data,"totalEvents","monthly")
     #   click_through_output.update_attributes(status: "Processed click throughs")
     #   data_provider.update_attributes(status: "Processed click throughs")
-    #   Impl::DataProviders::TopDigitalObjectsBuilder.perform_async(data_provider_id)
+    Impl::DataProviders::TopDigitalObjectsBuilder.perform_async(data_provider_id)
     # rescue => e
     #   data_provider.update_attributes(status: "Failed to build click throughs",error_messages: e.to_s)
     # end

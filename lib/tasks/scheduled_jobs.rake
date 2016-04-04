@@ -7,7 +7,7 @@ namespace :scheduled_jobs  do
     Mailer.job_status("mirko.lorenz@gmail.com", "The Jobs for " +  Time.now.strftime("%B") + " have started.").deliver_now
 
     cnt = 0
-    Impl::Aggregation.all.each do |d|
+    Impl::Aggregation.where.not(genre: "europeana").all.each do |d|
       Impl::Country::ProviderBuilder.perform_async(d.id) if d.genre == "country"
       Impl::DataProviders::MediaTypesBuilder.perform_async(d.id)
       Impl::DataProviders::DataSetBuilder.perform_at(cnt.seconds.from_now,d.id)

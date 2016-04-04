@@ -6,7 +6,56 @@ module Impl
       end
 
       def navigation
-        { global: {} }
+        { 
+          "global": {
+              "logo": {
+                "url": root_path,
+                'text': "Europeana statistics"
+              },
+              "primary_nav": {
+                "menu_id": "main-menu",
+                "items": [
+                  {
+                    "text": "Europeana Stats",
+                    "is_current": @impl_aggregation.genre == "europeana",
+                    "url": europeana_report_path
+                  },
+                  {
+                    "text": "Find a dashboard",
+                    "submenu": {
+                      "items": [
+                          {
+                            "url": false,
+                            "text": "Browse Statistics:",
+                            "subtitle": true
+                          },
+                          {
+                            "url": countries_path,
+                            "text": "By Country"
+                          },
+                          {
+                              "is_divider": true
+                          },
+                          {
+                            "url": false,
+                            "text": "Find statistics for an organisation:",
+                            "subtitle": true
+                          },
+                          {
+                            "url": providers_path,
+                            "text": "Find an Aggregator"
+                          },
+                          {
+                            "url": data_providers_path,
+                            "text": "Find an Institution"
+                          }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+         }
       end
 
       def css_files
@@ -26,10 +75,6 @@ module Impl
           },
           {
             path: asset_path('reports.js')
-          },
-          {
-            path:Rails.env.production? ? asset_path("ga.js") : "",
-            path:Rails.env.production? ? asset_path("hotjar.js") : ""
           },
           {
             path: styleguide_url('/js/dist/require.js'),
