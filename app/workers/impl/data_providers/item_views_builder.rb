@@ -27,7 +27,8 @@ class Impl::DataProviders::ItemViewsBuilder
       data_provider.update_attributes(status: "Processed item views")
       item_views_output.update_attributes(status: "Processed item views")
     rescue => e
-      data_provider.update_attributes(status: "Failed to build item views",error_messages: e.to_s)
+      data_provider.update_attributes(status: "Failed to build item views",error_messages: e.to_s, last_updated_at: nil)
+      data_provider.impl_report.delete if data_provider.impl_report.present?
     end
 
     # begin

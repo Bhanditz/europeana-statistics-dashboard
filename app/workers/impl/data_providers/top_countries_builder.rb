@@ -21,7 +21,8 @@ class Impl::DataProviders::TopCountriesBuilder
       # Impl::DataProviders::ItemViewsBuilder.perform_async(data_provider_id)
       Impl::DataProviders::ClickThroughBuilder.perform_async(data_provider_id)
     rescue => e
-      data_provider.update_attributes(status: "Failed to build top 25 countries",error_messages: e.to_s)
+      data_provider.update_attributes(status: "Failed to build top 25 countries",error_messages: e.to_s, last_updated_at: nil)
+      data_provider.impl_report.delete if data_provider.impl_report.present?
     end
   end
 

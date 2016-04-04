@@ -20,7 +20,8 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
       Impl::DataProviders::DatacastsBuilder.perform_async(data_provider_id)
       data_provider.update_attributes(status: "Built top digital objects", last_updated_at: Date.today.at_beginning_of_month - 1)
     rescue => e
-      data_provider.update_attributes(status: "Failed to build top digital objects",error_messages: e.to_s)
+      data_provider.update_attributes(status: "Failed to build top digital objects",error_messages: e.to_s, last_updated_at: nil)
+      data_provider.impl_report.delete if data_provider.impl_report.present?
     end
   end
 

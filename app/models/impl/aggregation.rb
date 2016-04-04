@@ -99,6 +99,8 @@ class Impl::Aggregation < ActiveRecord::Base
     filter = "ga:hostname=~europeana.eu;"
     impl_data_sets = self.impl_data_sets
     raise "No data set" if impl_data_sets.count == 0
+    raise "No data set" if (impl_data_sets.count == 1 and Constants::FILTERED_280_DATASETS.include?(impl_data_sets.first.name))
+
     last_id = impl_data_sets.last.id
     impl_data_sets.each do |p|
       filter += "ga:pagePath=~/#{p.data_set_id.strip}/," unless Constants::FILTERED_280_DATASETS.include?(p.name) and self.genre == 'data_provider'

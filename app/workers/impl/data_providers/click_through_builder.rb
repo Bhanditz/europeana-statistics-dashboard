@@ -41,7 +41,8 @@ class Impl::DataProviders::ClickThroughBuilder
       Impl::DataProviders::ItemViewsBuilder.perform_async(data_provider_id)
     rescue => e
       data_provider_click_through_output.update_attributes(status: "Failed to build click through", error_messages: e.to_s)
-      data_provider.update_attributes(status: "Failed to build click through", error_messages: e.to_s)
+      data_provider.update_attributes(status: "Failed to build click through", error_messages: e.to_s, last_updated_at: nil)
+      data_provider.impl_report.delete if data_provider.impl_report.present?
       return nil
     end
 
