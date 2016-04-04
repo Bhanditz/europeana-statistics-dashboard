@@ -33,7 +33,7 @@ Rumali.utility = (function () {
 	var getJSON = function(url,context,callbackfn){
 		$.getJSON(url) //jquery function to parse url and get data in done method.
 			.done(function(data){
-					callbackfn(data,(parseInt(gon.selected_year,10) - 1).toString());
+					callbackfn(data,(parseInt(gon.selected_year,10)).toString());
 			});
 	}
 

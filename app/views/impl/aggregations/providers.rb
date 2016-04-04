@@ -10,7 +10,7 @@ module Impl
       end
 
       def navigation
-        { 
+        {
           "global": {
               "logo": {
                 "url": root_path,

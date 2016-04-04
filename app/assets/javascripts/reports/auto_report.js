@@ -62,6 +62,7 @@ Rumali.autoCharts = (function(){
 			}
 			return passedString.length > 10 ? passedString : passedString.substring(0,10) + "...";
 		});
+		$('select#filter-year-select option[value="'+gon.selected_year+'"]').prop("selected",true);
 		utility.getJSON(rumi_api_endpoint + 'datacast/'+ gon.top_digital_objects_identifier,"",loadTop10digitalObject);
 	};
 	//Set up the data for one d chart and then call function for pykchart.
@@ -289,12 +290,10 @@ Rumali.autoCharts = (function(){
 
 	//Function to load top 10 digital objects.
 	var loadTop10digitalObject = function(obj,filter_details){
-
 		top_digital_objects = top_digital_objects || obj;
 		var month_arr = ['January','February','March','April','May','June','July','August','September','October','November','December'], i,prev_year = gon.selected_year - 1,current_month_index = month_arr.indexOf(gon.current_month) + 2,
 			selector = "#"+ $(obj).attr('id'),
 			filter_data;
-
 		$("select.js-filter_top_digital_objects").on('change',function (){
 			var month_gt_current_month = $("select#filter-month-select").find("option:gt("+current_month_index+")"),
 			year = $('select#filter-year-select option:selected').val(),
