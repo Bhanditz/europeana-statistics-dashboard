@@ -101,7 +101,7 @@ class Impl::Aggregation < ActiveRecord::Base
     raise "No data set" if impl_data_sets.count == 0
     last_id = impl_data_sets.last.id
     impl_data_sets.each do |p|
-      filter += "ga:pagePath=~/#{p.data_set_id.strip}/," unless Constants::FILTERED_280_DATASETS.include?(p.name) and self.genre == 'data_providers'
+      filter += "ga:pagePath=~/#{p.data_set_id.strip}/," unless Constants::FILTERED_280_DATASETS.include?(p.name) and self.genre == 'data_provider'
     end
     return filter[0..-2]
   end
