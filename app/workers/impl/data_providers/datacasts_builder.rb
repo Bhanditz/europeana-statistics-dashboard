@@ -62,7 +62,8 @@ class Impl::DataProviders::DatacastsBuilder
         aggregation.update_attributes(status: "Created all datacasts")
       end
     rescue => e
-      aggregation.update_attributes(status: "Failed to build datacast", error_messages: e.to_s)
+      aggregation.update_attributes(status: "Failed to build datacast", error_messages: e.to_s, last_updated_at: nil)
+      aggregation.impl_report.delete if aggregation.impl_report
     end
   end
 end

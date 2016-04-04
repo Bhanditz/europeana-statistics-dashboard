@@ -33,7 +33,8 @@ class Impl::DataProviders::TrafficBuilder
       data_provider_pageviews_output.update_attributes(status: "Built pageviews", error_messages: nil)
     rescue => e
       data_provider_pageviews_output.update_attributes(status: "Failed to build pageviews", error_messages: e.to_s)
-      data_provider.update_attributes(status: "Failed to build pageviews", error_messages: e.to_s)
+      data_provider.update_attributes(status: "Failed to build pageviews", error_messages: e.to_s, last_updated_at: nil)
+      data_provider.impl_report.delete if data_provider.impl_report.present?
       return nil
     end
     #Visits
@@ -49,7 +50,8 @@ class Impl::DataProviders::TrafficBuilder
       Impl::DataProviders::TopCountriesBuilder.perform_async(data_provider_id)
     rescue => e
       data_provider_visits_output.update_attributes(status: "Failed to build visits", error_messages: e.to_s)
-      data_provider.update_attributes(status: "Failed to build visits", error_messages: e.to_s)
+      data_provider.update_attributes(status: "Failed to build visits", error_messages: e.to_s, last_updated_at: nil)
+      data_provider.impl_report.delete if data_provider.impl_report.present?
       return nil
     end
   end
