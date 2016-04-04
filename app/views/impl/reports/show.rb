@@ -102,7 +102,7 @@ module Impl
 
       def content
         a = {
-          stats_source: @impl_aggregation.name.titleize,
+          stats_source: @impl_aggregation.genre == 'country' ? @impl_aggregation.name.titleize : @impl_aggregation.name,
           charts: get_report_charts,
           numberedlist: {
             title: "Top 25 items",
