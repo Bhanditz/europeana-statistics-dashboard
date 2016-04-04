@@ -181,6 +181,7 @@ class Impl::Aggregation < ActiveRecord::Base
           json << obj
       end
       $redis.set("data_providers_json", json.to_json)
+      $redis.expire("data_providers_json", 60*60*24)
     end
     json
   end
@@ -198,6 +199,7 @@ class Impl::Aggregation < ActiveRecord::Base
         json << obj
       end
       $redis.set("providers_json", json.to_json)
+      $redis.expire("providers_json", 60*60*24)
     end
     json
   end
@@ -215,6 +217,7 @@ class Impl::Aggregation < ActiveRecord::Base
         json << obj
       end
       $redis.set("countries_json", json.to_json)
+      $redis.expire("countries_json", 60*60*24)
     end
     json
   end

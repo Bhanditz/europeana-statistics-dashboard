@@ -6,7 +6,56 @@ module Impl
       end
 
       def navigation
-        { global: {} }
+        { 
+          "global": {
+              "logo": {
+                "url": root_path,
+                'text': "Europeana statistics"
+              },
+              "primary_nav": {
+                "menu_id": "main-menu",
+                "items": [
+                  {
+                    "text": "Europeana Stats",
+                    "is_current": false,
+                    "url": europeana_report_path
+                  },
+                  {
+                    "text": "Find a dashboard",
+                    "submenu": {
+                      "items": [
+                          {
+                            "url": false,
+                            "text": "Browse Statistics:",
+                            "subtitle": true
+                          },
+                          {
+                            "url": countries_path,
+                            "text": "By Country"
+                          },
+                          {
+                              "is_divider": true
+                          },
+                          {
+                            "url": false,
+                            "text": "Find statistics for an organisation:",
+                            "subtitle": true
+                          },
+                          {
+                            "url": providers_path,
+                            "text": "Find an Aggregator"
+                          },
+                          {
+                            "url": data_providers_path,
+                            "text": "Find an Institution"
+                          }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+         }
       end
 
       def head_links
