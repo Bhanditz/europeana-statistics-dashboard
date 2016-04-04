@@ -56,6 +56,7 @@ class ApplicationController < ActionController::Base
       @account = current_account  if controller_name == "projects" and action_name == "new"
     end
     gon.scopejs = "scopejs_#{controller_name}_#{action_name}"
+    @about_report = Impl::Report.where(slug: "about").first
   end
 
   # LOCKING this method. Do not change.

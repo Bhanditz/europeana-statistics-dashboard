@@ -10,7 +10,7 @@ module Impl
       end
 
       def navigation
-        { 
+        {
           "global": {
               "logo": {
                 "url": root_path,
@@ -21,7 +21,6 @@ module Impl
                 "items": [
                   {
                     "text": "Europeana Stats",
-                    "is_current": false,
                     "url": europeana_report_path
                   },
                   {
@@ -55,7 +54,13 @@ module Impl
                           }
                       ]
                     }
+                  },
+                  {
+                    "url": @about_report.present? ? manual_report_path(@about_report) : false,
+                    "text": @about_report.present? ? "About" : "",
+                    "is_current": @about_report.slug == @impl_report.slug
                   }
+
                 ]
               }
             }

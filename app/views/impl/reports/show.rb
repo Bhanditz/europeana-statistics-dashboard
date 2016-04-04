@@ -6,7 +6,7 @@ module Impl
       end
 
       def navigation
-        { 
+        {
           "global": {
               "logo": {
                 "url": root_path,
@@ -51,6 +51,10 @@ module Impl
                           }
                       ]
                     }
+                  },
+                  {
+                    "url": @about_report.present? ? manual_report_path(@about_report) : false,
+                    "text": @about_report.present? ? "About" : ""
                   }
                 ]
               }
@@ -61,7 +65,6 @@ module Impl
       def css_files
         [
           { path: styleguide_url('/css/statistics/screen.css'), media: 'all', title: nil },
-          # { path: asset_path("europeana.css"), media: 'all', title: nil},
         ]
       end
 
@@ -178,7 +181,7 @@ module Impl
               "negative": pg_views_2015 < pg_views_2014 ? true : false
             }
           },{
-            "title": "Total views in 2016(till now)",
+            "title": "Total views in 2016 (till now)",
             "value": helpers.number_with_delimiter(pg_views_2016),
           },{
             "title": "Total click-throughs in 2014",
@@ -192,7 +195,7 @@ module Impl
               "negative": ct_2015 < ct_2014 ? true : false
             }
           },{
-            "title": "Total click-throughs in 2016(till now)",
+            "title": "Total click-throughs in 2016 (till now)",
             "value": helpers.number_with_delimiter(ct_2016)
           }]
         }

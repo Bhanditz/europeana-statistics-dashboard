@@ -21,7 +21,6 @@ module Impl
                 "items": [
                   {
                     "text": "Europeana Stats",
-                    "is_current": false,
                     "url": europeana_report_path
                   },
                   {
@@ -55,6 +54,10 @@ module Impl
                           }
                       ]
                     }
+                  },
+                  {
+                    "url": @about_report.present? ? manual_report_path(@about_report) : false,
+                    "text": @about_report.present? ? "About" : ""
                   }
                 ]
               }
