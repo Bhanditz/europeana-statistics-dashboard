@@ -90,6 +90,9 @@ module Impl
         {
           links:{
             items: Impl::Aggregation.get_providers_json
+          },
+          prose: {
+            html: "<small>Can't find your dashboard? Please check the #{link_to "About", manual_report_path(@about_report)} section.</small>".html_safe
           }
         }
       end
