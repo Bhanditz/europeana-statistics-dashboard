@@ -1,0 +1,7 @@
+= javascript_include_tag "new_report.js"
+
+.previous-sheet
+  %h3=h show_project_name(@core_project)
+  .panel.panel-default.sheet.sub
+    .panel-body
+      = render partial: "form"

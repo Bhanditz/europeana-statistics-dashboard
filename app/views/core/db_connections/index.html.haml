@@ -1,0 +1,58 @@
+- content_for :title do
+  DB Connections · #{@account.username}
+
+.previous-sheet
+  %h3=h show_project_name(@core_project)
+  .panel.panel-default.sheet.sub
+    .panel-body
+      .row
+        .col-sm-2= render partial: "core/projects/sidebar"
+        .col-sm-7
+          .panel.panel-default
+            .panel-heading
+              .panel-title DB Connections
+            .panel-body
+            - if @core_db_connections.first.blank?
+              %h1.hint Add your first DB connection
+            - else
+              %table.table.table-condensed
+                %thead
+                  %tr
+                    %th Name
+                    %th Adapter
+                    %th Db Name
+                    %th
+                    %th
+                    %th
+                %tbody
+                  - @core_db_connections.each do |core_db_connection|
+                    %tr
+                      %td= core_db_connection.name
+                      %td= core_db_connection.adapter
+                      %td= core_db_connection.db_name
+                      %td= link_to 'Edit', edit_account_core_project_db_connection_path(@account,@core_project,core_db_connection)
+                      %td= link_to icon_del(account_core_project_db_connection_path(@account,@core_project,core_db_connection))
+        .col-sm-3
+          %p Add / Edit DB connection
+          %hr
+          -if @core_db_connection.id.present?
+            -method = 'put'
+            - url = account_core_project_db_connection_path(@account,@core_project,@core_db_connection)
+          - else 
+            - method = "post"
+            - url = account_core_project_db_connections_path(@account,@core_project)
+
+          = simple_form_for(@core_db_connection, url: url ,html: {class: "form-inline", method: method, autocomplete: "off"}) do |f|
+            = f.error_notification
+            .form-inputs
+              = f.input :core_project_id, as: :hidden, input_html: {value: @core_project.id}
+              = f.input :name
+              = f.input :adapter, as: :select, collection: [["PostgreSQL", "postgresql"], ["MySQL", "mysql"]], include_blank: false
+              = f.input :host
+              = f.input :port
+              = f.input :db_name, label: "Database Name"
+              = f.input :username, as: :string ,input_html: {autocomplete: "off"}
+              = f.input :password, input_html: {value: @core_db_connection.password}
+            .form-actions 
+              %br
+              = f.button :submit, "Save", id: "core_db_connection_submit"

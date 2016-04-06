@@ -1,31 +1,65 @@
-#### Requirements
 
-* Ruby 2.2.0
-* Rails 4.1.0
+# Europeana Statistics Dashboard
 
-### External Gem/Libraries which we use
+[![security](https://hakiri.io/github/europeana/europeana-statistics-dashboard/master.svg)](https://hakiri.io/github/europeana/europeana-statistics-dashboard/master) [![Dependency Status](https://gemnasium.com/europeana/europeana-statistics-dashboard.svg)](https://gemnasium.com/europeana/europeana-statistics-dashboard)
 
-* [ruby-jq][1]
-* [sidekiq][2]
-* [Pykcharts for charting library][3]
+## License
 
-### Getting started with DB setup
+Licensed under the EUPL V.1.1. For full details, see [LICENSE.md](LICENSE.md).
 
-* `rake ref:seed` - A rake tasks which helps in seeding the database.
-    * It creates Accounts
-    * It creates Project
-    * It Seeds from csv files which are placed in ref folder
-        * `reference charts`
-        * `reference themes`
-        * `country codes for maps`
-        * `default db connection`
-        * `default provider report template`
-        * `reports from previous versions`
+## Requirements
 
-* For configuring the theme, we can visit [here][4] as a reference. After deciding the configuration, we can take the configuration object and place it in the ref/theme.csv file in the right format.
-* We can change the configurations and then run the command `rake ref:seed` on the terminal. It will load the changes in the db.
+* Ruby 2.2.2
+* PostgreSQL *with support for the extensions enabled in [db/schema.rb](db/schema.rb)*
+* Redis
+* [Europeana Statistics Grape API][1]
 
-[1]: https://github.com/winebarrel/ruby-jq
-[2]: http://sidekiq.org/
-[3]: http://pykcharts.com/
-[4]: http://pykcharts.com/tour/pie
+## Getting started
+
+1. Create config files. Samples for various deployment environments can be
+  found in the [deploy/](deploy/) directory.
+  * `config/database.yml`
+    * only PostgreSQL is supported
+  * `config/redis.yml`
+2. Set environment varialbes. In dev, these can go in `.env` (see [dotenv][2]).
+  * `BASE_URL`: URL of this application once deployed
+  * `REST_API_ENDPOINT`: URL of the [Europeana Statistics Grape API][1]
+2. Run `bundle exec rake ref:seed`
+3. Start app
+  * On production env, use the Procfile to start all app instances
+  * On dev, run `foreman start`
+
+## Login
+
+1. Open the app in a web browser
+2. Login as user "europeana_user", password "Europeana123!@#"
+3. Edit your account and change your password at `/accounts/edit.europeana_user`
+
+## Seeding the database
+
+`bundle exec rake ref:seed` runs a Rake task that helps in seeding the database.
+
+* It creates Accounts
+* It creates Project
+* It Seeds from csv files which are placed in ref folder
+    * `reference charts`
+    * `reference themes`
+    * `country codes for maps`
+    * `default db connection`
+    * `default provider report template`
+    * `reports from previous versions`
+
+* We can change the configuration and then re-run the Rake task, which will
+load the changes to the db.
+
+## Theme
+
+To configure the theme, see [PykCharts.js][3] as a reference. After deciding the
+configuration, place it in the file [ref/theme.csv](ref/theme.csv).
+
+After the configuration is replaced in the ref/theme.csv, we run the task `rake ref:load` to make the changes. All the charts created after the change will have that theme by default.
+
+[1]: https://github.com/europeana/europeana-statistics-grape
+[2]: https://github.com/bkeepers/dotenv
+[3]: http://pykcharts.com/tour/pie 
+

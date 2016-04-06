@@ -1,0 +1,27 @@
+- content_for :title do
+  #{@core_project.name} · #{@account.username}
+.panel.panel-default.sheet{"data-intro" => "See all your data sets in your current project here", "data-position" => "bottom"}
+  .panel-body
+    = link_to "Reports", account_project_impl_reports_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
+    &nbsp;
+    |
+    &nbsp;
+    = link_to "Datacasts", account_core_project_datacasts_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
+    &nbsp;
+    |
+    &nbsp;
+    = link_to "Visualizations", account_core_project_vizs_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
+    &nbsp;
+    |
+    &nbsp;
+    = link_to "Blacklist Datasets", account_project_impl_blacklist_datasets_path(@account, @core_project), style: "border-bottom: dotted 1px gray"
+    %hr{style: "margin-bottom: 5px; margin-top: 5px; border-top-color: lightgray;"}
+    - if 1 == 2
+      %hr{style: "margin-bottom: 5px; border-top-color: lightgray;"}
+      = render partial: "core/datacasts/index", locals: {core_datacasts: @core_datacasts}
+      %hr{style: "margin-top: 5px; border-top-color: lightgray;"}
+      .row
+        .col-sm-12
+          -if @pending_datacast_pulls.present? and current_account.present? and @sudo[1]
+            %hr
+            = render partial: "core/datacast_pulls/index", locals: {pending_datacast_pulls: @pending_datacast_pulls}

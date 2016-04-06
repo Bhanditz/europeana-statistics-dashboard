@@ -1,0 +1,17 @@
+%div{:marginheight => "0", :marginwidth => "0", :style => "background:#ffffff;text-align:left;margin:0;padding:0;font-weight:400;"}
+  %table{:cellpadding => "0", :cellspacing => "0", :style => "border-spacing:0;background:#ffffff;margin:0;padding:0;border-collapse:collapse;text-align:left;border:0;width:100%"}
+    %tbody
+      %tr
+        %td{:style => "background:#ffffff;text-align:left;vertical-align:top;font-size:15px;line-height:19px;font-family:&quot;Helvetica Neue&quot;,helvetica,arial,sans-serif;color:#000000;padding:0;border-spacing:0;border-collapse:collapse"}
+          %div
+            %p{:style => "font-family:&quot;Helvetica Neue&quot;,helvetica,arial,sans-serif;color:#000000;font-size:15px;line-height:20px;margin:6px 0 9px"}
+              %img{:alt => "Logo email", :src => "https://s3-ap-southeast-1.amazonaws.com/charts.pykih.com/imgs/pykih_tile_28.png"}
+            %br
+              %p{:style => "font-family:&quot;Helvetica Neue&quot;,helvetica,arial,sans-serif;color:#000000;font-size:15px;line-height:20px;margin:6px 0 9px"} Hi there,
+              %p{:style => "font-family:&quot;Helvetica Neue&quot;,helvetica,arial,sans-serif;color:#000000;font-size:15px;line-height:20px;margin:6px 0 9px"} Welcome to Europeana and thanks for signing up! 
+              %div{:style => "margin:19px 0;padding:15px 0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;background:#ffffff"}
+                %p{:style => "font-family:&quot;Helvetica Neue&quot;,helvetica,arial,sans-serif;color:#000000;font-size:15px;line-height:20px;margin:6px 0 9px"}
+                  %b Confirm your account:
+                  %br
+                  = link_to confirmation_url(@resource, confirmation_token: @token), confirmation_url(@resource, confirmation_token: @token)
+              %p{:style => "font-family:&quot;Helvetica Neue&quot;,helvetica,arial,sans-serif;color:#000000;font-size:15px;line-height:20px;margin:6px 0 9px"} We hope you enjoy this opportunity to take Europeana for a spin. Feel free to kick the tires and get acquainted with no limits and no obligation during your free trial.

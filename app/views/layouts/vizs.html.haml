@@ -1,0 +1,33 @@
+!!!
+%html
+  %head
+    %title= "Europeana"
+    :javascript
+      var rumi_api_endpoint = "#{REST_API_ENDPOINT}";
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    %script{:src => "/assets/vizs.js"}
+    = csrf_meta_tags
+  %body{id: "scopejs_#{controller_name}_#{action_name}", style: "background: white;"}
+    .container-fluid
+      .row-fluid
+        .col-sm-9{style: "margin-top: 10px;"}
+          %table
+            %tr
+              %td= link_to "<<&nbsp; Back".html_safe, _account_project_path(@core_project.account, @core_project), class: "btn btn-sm btn-default"
+              %td &nbsp;&nbsp;
+              %td
+                %h4.m0p0
+                  - if @parent.present?
+                    = clone
+          .row-fluid
+            - config = {}
+            - if notice.present?
+              - config = {text: notice, notify: "success"}
+              /.alert.alert-success= notice
+            - if alert.present?
+              - config = {text: alert, notify: "error"}
+              /.alert.alert-danger= alert
+    .clearfix
+    = yield
+    = render partial: "layouts/validations_errors", locals: {config: config}

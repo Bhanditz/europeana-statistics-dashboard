@@ -1,0 +1,141 @@
+.viz{
+    padding: 10px;
+    cursor: pointer;
+}
+
+.viz span.glyphicon{
+    display: block;
+    float: right;
+    font-size: 30px;
+    margin-top: 20px;
+}
+
+.form-control{
+    width:100% !important;
+}
+
+#select_different_chart {
+  cursor:pointer;
+}
+
+#all_charts{
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+#viz-types{
+  margin-left:15px !important;
+}
+#chart_to_select{
+  margin-left:15px;
+}
+
+#chart_selector_list > .disabled{
+  filter: url(filters.svg#grayscale); /* Firefox 3.5+ */
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(1);
+  cursor:default;
+}
+#scopejs_vizs_edit #chart_container,#scopejs_vizs_edit  .d3-pykcharts,#scopejs_vizs_edit  .card_with_value,#scopejs_vizs_update #chart_container,#scopejs_vizs_update  .d3-pykcharts,#scopejs_vizs_update  .card_with_value {
+  min-height: 450px;
+}
+
+#embed-code-display, #broadcast-code-display{font-family: monospace; display: block; overflow:auto; height:100%; width:100%; background:#292929; color:#fff; margin-top:30px;}
+
+#chart_container_display{font-family: monospace; overflow:auto; height:500px;width: 95%;background:#292929; color:#fff;padding: 20px;margin-top:20px;}
+
+#data_container{
+  height: 500px;
+}
+#table_show{
+  max-height: 470px;
+  display: block;
+  overflow-y: auto;
+  height: 500px;
+}
+#chart_show{
+  height: auto;
+  max-height: 470px;
+}
+
+.form-control-checkbox{height: initial !important;width: initial !important;}
+
+.PykCharts-credits {
+  display: none;
+}
+
+.ten_digital{
+  margin-top:15px;
+}
+.ten_digital_image{
+  width:90px;
+  height:90px;
+}
+.card_layout, .box_layout{
+  background-color:#333333;
+  color: white;
+  border: 1px solid #888;
+  border-radius:0px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.card_layout_header_span, .box_layout_header_span{
+  text-align:center;
+  margin-top: 10px; 
+}
+.card_layout_header, .box_layout_header{
+  color: white;
+  margin-bottom:10px; 
+}
+.card_layout_key{
+  text-align:center;
+  font-weight: 800;
+}
+.card_layout_value{
+  text-align:center;
+  font-size: 1.5em;
+  line-height: 26px;
+  font-weight: 800;
+}
+.card_layout_content, .box_layout_content{
+  text-align:left;
+  font-size: 11px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 0;
+  font-weight: 800;
+}
+.border_top{
+  border-top: #cdcdcd medium solid;
+  border-width: 1px;
+}
+.positive_value_css{
+  color: #00FF00;
+}
+.negative_value_css{
+  color: #FF0000;
+}
+.pointer_hover{
+  cursor: hand;
+}
+.box_table .tooltip{
+  background-color: transparent;
+  width: auto;
+  border:none;
+  box-shadow: none;
+}
+.important_val{
+  font-weight: bold;
+}
+.box_layout_header_subtitle{
+  color: white;
+  margin-bottom:0px;  
+  font: italic bold 12px Georgia, serif;
+  text-align: center;
+}
+.box_layout_header{
+  color: white;
+  margin-bottom:0px;  
+}
+.d3-pykcharts {
+  padding-left: 10px;
+}

@@ -1,0 +1,11 @@
+-if @data_format == "csv"
+  #chart_container
+-else
+  %textarea#chart_container_display{:readonly => "", style: "font-family: monospace; overflow:auto; height:500px;width:95%;background:#292929; color:#fff; padding: 20px;" }
+
+:javascript
+  var chart_name = "#{@viz.ref_chart.name}"
+  , initializer = (chart_name == "Grid") ? "#{@initializer}" : #{@initializer}
+  , config_data = #{@viz.config.to_json}
+  , obj = #{@viz.config.to_json}
+  , selector = "#chart_container";

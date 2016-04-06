@@ -1,0 +1,218 @@
+[
+  {
+    "iso2": "CZ",
+    "size": 10,
+    "tooltip": "Czech Republic",
+    "url": "/country/czech-republic"
+  },
+  {
+    "iso2": "BE",
+    "size": 10,
+    "tooltip": "Belgium",
+    "url": "/country/belgium"
+  },
+  {
+    "iso2": "DK",
+    "size": 10,
+    "tooltip": "Denmark",
+    "url": "/country/denmark"
+  },
+  {
+    "iso2": "NL",
+    "size": 10,
+    "tooltip": "Netherlands",
+    "url": "/country/netherlands"
+  },
+  {
+    "iso2": "RO",
+    "size": 10,
+    "tooltip": "Romania",
+    "url": "/country/romania"
+  },
+  {
+    "iso2": "PL",
+    "size": 10,
+    "tooltip": "Poland",
+    "url": "/country/poland"
+  },
+  {
+    "iso2": "HU",
+    "size": 10,
+    "tooltip": "Hungary",
+    "url": "/country/hungary"
+  },
+  {
+    "iso2": "DE",
+    "size": 10,
+    "tooltip": "Germany",
+    "url": "/country/germany"
+  },
+  {
+    "iso2": "CY",
+    "size": 10,
+    "tooltip": "Cyprus",
+    "url": "/country/cyprus"
+  },
+  {
+    "iso2": "EE",
+    "size": 10,
+    "tooltip": "Estonia",
+    "url": "/country/estonia"
+  },
+  {
+    "iso2": "RU",
+    "size": 10,
+    "tooltip": "Russia",
+    "url": "/country/russia"
+  },
+  {
+    "iso2": "MT",
+    "size": 10,
+    "tooltip": "Malta",
+    "url": "/country/malta"
+  },
+  {
+    "iso2": "GR",
+    "size": 10,
+    "tooltip": "Greece",
+    "url": "/country/greece"
+  },
+  {
+    "iso2": "HR",
+    "size": 10,
+    "tooltip": "Croatia",
+    "url": "/country/croatia"
+  },
+  {
+    "iso2": "RS",
+    "size": 10,
+    "tooltip": "Serbia",
+    "url": "/country/serbia"
+  },
+  {
+    "iso2": "LV",
+    "size": 10,
+    "tooltip": "Latvia",
+    "url": "/country/latvia"
+  },
+  {
+    "iso2": "FR",
+    "size": 10,
+    "tooltip": "France",
+    "url": "/country/france"
+  },
+  {
+    "iso2": "NO",
+    "size": 10,
+    "tooltip": "Norway",
+    "url": "/country/norway"
+  },
+  {
+    "iso2": "UA",
+    "size": 10,
+    "tooltip": "Ukraine",
+    "url": "/country/ukraine"
+  },
+  {
+    "iso2": "PT",
+    "size": 10,
+    "tooltip": "Portugal",
+    "url": "/country/portugal"
+  },
+  {
+    "iso2": "TR",
+    "size": 10,
+    "tooltip": "Turkey",
+    "url": "/country/turkey"
+  },
+  {
+    "iso2": "FI",
+    "size": 10,
+    "tooltip": "Finland",
+    "url": "/country/finland"
+  },
+  {
+    "iso2": "SI",
+    "size": 10,
+    "tooltip": "Slovenia",
+    "url": "/country/slovenia"
+  },
+  {
+    "iso2": "ES",
+    "size": 10,
+    "tooltip": "Spain",
+    "url": "/country/spain"
+  },
+  {
+    "iso2": "SE",
+    "size": 10,
+    "tooltip": "Sweden",
+    "url": "/country/sweden"
+  },
+  {
+    "iso2": "IS",
+    "size": 10,
+    "tooltip": "Iceland",
+    "url": "/country/iceland"
+  },
+  {
+    "iso2": "IT",
+    "size": 10,
+    "tooltip": "Italy",
+    "url": "/country/italy"
+  },
+  {
+    "iso2": "CH",
+    "size": 10,
+    "tooltip": "Switzerland",
+    "url": "/country/switzerland"
+  },
+  {
+    "iso2": "AT",
+    "size": 10,
+    "tooltip": "Austria",
+    "url": "/country/austria"
+  },
+  {
+    "iso2": "GB",
+    "size": 10,
+    "tooltip": "United Kingdom",
+    "url": "/country/united-kingdom"
+  },
+  {
+    "iso2": "IE",
+    "size": 10,
+    "tooltip": "Ireland",
+    "url": "/country/ireland"
+  },
+  {
+    "iso2": "BG",
+    "size": 10,
+    "tooltip": "Bulgaria",
+    "url": "/country/bulgaria"
+  },
+  {
+    "iso2": "LT",
+    "size": 10,
+    "tooltip": "Lithuania",
+    "url": "/country/lithuania"
+  },
+  {
+    "iso2": "IL",
+    "size": 10,
+    "tooltip": "Israel",
+    "url": "/country/israel"
+  },
+  {
+    "iso2": "LU",
+    "size": 10,
+    "tooltip": "Luxembourg",
+    "url": "/country/luxembourg"
+  },
+  {
+    "iso2": "SK",
+    "size": 10,
+    "tooltip": "Slovakia",
+    "url": "/country/slovakia"
+  }
+]
