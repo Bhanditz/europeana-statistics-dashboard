@@ -45,7 +45,11 @@ class Impl::Output < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
   def self.find_or_create(impl_parent_id,impl_parent_type,genre,options={})
-    a = where(impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre).first
+    unless options.blank?
+      a = where(impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre,key: options[:key], value: options[:value]).first
+    else
+      a = where(impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre).first
+    end
     if a.blank?
       a = create({impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre, key: options[:key], value: options[:value]})
     end
