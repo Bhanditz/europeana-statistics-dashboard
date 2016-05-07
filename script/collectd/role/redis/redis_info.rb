@@ -1,10 +1,9 @@
 require 'redis'
 
-redis = Redis.new(:host => 'localhost', :port => 6379, :timeout => INTERVAL - 1)
+redis = Redis.new(host: 'localhost', port: 6379, timeout: INTERVAL - 1)
 info = redis.info
 
 items = {
-  'connected_clients' => 'gauge',
   'client_longest_output_list' => 'gauge',
   'client_biggest_input_buf' => 'gauge',
   'blocked_clients' => 'gauge',

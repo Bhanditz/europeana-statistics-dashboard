@@ -32,7 +32,7 @@ class Core::DatacastPullsController < ApplicationController
     else
       @core_datacast = Core::Datacast.new
       flash.now.alert = t("c.f")
-      render  "core/datacasts/file" 
+      render  "core/datacasts/file"
     end
   end
 
@@ -54,7 +54,7 @@ class Core::DatacastPullsController < ApplicationController
   end
 
   private
-    
+
   def set_datacast_pull
     @core_datacast_pull = @core_project.core_datacast_pulls.find("#{h params[:id]}")
   end
@@ -62,5 +62,5 @@ class Core::DatacastPullsController < ApplicationController
   def core_datacast_pull_params
     params.require(:core_datacast_pull).permit(:core_project_id,:core_db_connection_id ,:file_url, :first_row_header, :table_name)
   end
-    
+
 end

@@ -12,7 +12,7 @@
 class Impl::AggregationDataSet < ActiveRecord::Base
   #GEMS
   self.table_name = "impl_aggregation_data_sets"
-  
+
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS

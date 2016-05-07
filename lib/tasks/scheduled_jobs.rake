@@ -1,5 +1,5 @@
 namespace :scheduled_jobs  do
-  task :load => :environment do  |t, args|
+  task :load => :environment do
 
     Mailer.job_status("aashutosh.bhatt@pykih.com", "The Jobs for " +  Time.now.strftime("%B") + " have started.").deliver_now
     Mailer.job_status("ab@pykih.com", "The Jobs for " +  Time.now.strftime("%B") + " have started.").deliver_now

@@ -14,12 +14,11 @@
 #
 
 class Core::DbConnection < ActiveRecord::Base
-  
+
   #GEMS
   self.table_name = "core_db_connections"
-  include WhoDidIt
   #CONSTANTS
-  #ATTRIBUTES  
+  #ATTRIBUTES
   #ACCESSORS
   store_accessor :properties, :host, :port, :username, :password, :db_name
   #ASSOCIATIONS
@@ -38,7 +37,7 @@ class Core::DbConnection < ActiveRecord::Base
   #CALLBACKS
   before_create :before_create_set
   after_create :after_create_set
-  
+
   #SCOPES
   #CUSTOM SCOPES
   def self.default_db
@@ -46,7 +45,7 @@ class Core::DbConnection < ActiveRecord::Base
   end
   #OTHER
   #FUNCTIONS
-  
+
   def self.create_or_update(name,adapter,host,port,db_name,username,password,validate= false)
     c = Core::DbConnection.where(name: name, adapter: adapter).first
     if c.blank?
@@ -72,14 +71,14 @@ class Core::DbConnection < ActiveRecord::Base
     end
     c
   end
-  
+
   #PRIVATE
   private
-  
+
   def before_create_set
     true
   end
-  
+
   def test_connection
     begin
       require 'pg'
@@ -89,7 +88,7 @@ class Core::DbConnection < ActiveRecord::Base
       errors.add(:name,e.to_s)
     end
   end
-  
+
   def after_create_set
     true
   end

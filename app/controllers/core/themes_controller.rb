@@ -15,7 +15,7 @@
 #
 
 class Core::ThemesController < ApplicationController
-    
+
   before_action :sudo_organisation_owner!
   before_action :set_core_theme, only: [:show, :edit, :update, :destroy]
   before_action :set_admin_core_themes, only: [:new,:edit, :index, :create,:update]
@@ -66,7 +66,7 @@ class Core::ThemesController < ApplicationController
     name       = params[:core_theme][:name]
     config     = JSON.parse(params[:core_theme][:config])
     #account_id will not be updated
-    if @core_theme.update({name: name, config: config}) 
+    if @core_theme.update({name: name, config: config})
       redirect_to edit_core_organisation_theme_path(@account, @core_theme), notice: t("u.s")
     else
       @visualization = {}
@@ -92,12 +92,8 @@ class Core::ThemesController < ApplicationController
     @core_theme = Core::Theme.find("#{h params[:id]}")
   end
 
-  def core_theme_params
-    params.require(:core_theme).permit(:account_id, :name, :sort_order, :config, :image_url)
-  end
-
   def set_admin_core_themes
     @all_core_themes = Core::Theme.all.admin
   end
-  
+
 end

@@ -16,9 +16,9 @@ class Ref::CountryCode < ActiveRecord::Base
   #ASSOCIATIONS
   #VALIDATIONS
   #CALLBACKS
-  #SCOPES  
+  #SCOPES
   #CUSTOM SCOPES
-  #OTHER METHODS  
+  #OTHER METHODS
   def self.seed
     CSV.read("ref/country_code.csv").each do |line|
       code = line[0]

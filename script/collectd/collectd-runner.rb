@@ -81,7 +81,7 @@ loop do
     fork do
       begin
         load script
-      rescue Exception => e
+      rescue StandardError => e
         STDERR.puts("#{script}: #{e}")
       end
     end
@@ -103,5 +103,5 @@ loop do
   end
 
   sleep sleep_time
-  
+
 end

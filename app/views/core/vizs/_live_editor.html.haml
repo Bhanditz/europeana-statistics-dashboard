@@ -13,7 +13,7 @@
         %input.form-control.cstm-form-control.execute{:placeholder => "Height", :type => "number", :id => "chart_height", :value => @visualization['config']['chart_height'],style: "width:28% !important;display:inline;margin:5px"}
         %br
         %a#expandCollapse{:href => "#"} Expand / Collapse all
-      
+
 .col-sm-12#configuration_panels_sidebar
 
   %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#chart_title"}Title
@@ -38,7 +38,7 @@
     .col-sm-12
       %label.cstm-label Font Family
       %input.form-control.cstm-form-control.execute{:placeholder => "Font Family", :type => "textbox", :id => "title_family", :value => @visualization['config']['title_family']}
-    
+
     %br
     .col-sm-12
       %label.cstm-label Title Color
@@ -91,7 +91,7 @@
     .col-sm-12
       %label.cstm-label Subtitle Font Family
       %input.form-control.cstm-form-control.execute{:placeholder => "Font Family", :type => "textbox", :id => "subtitle_family", :value => @visualization['config']['subtitle_family'] }
-    
+
     %br
     .col-sm-12
       %label.cstm-label Subtitle Color
@@ -120,7 +120,7 @@
         .input-append.color#subtitle_color_input{"data-color" => "rgb(255, 146, 180)", "data-color-format" => "hex"}
           %span.add-on
             %i.circle#subtitle_color_circle{:style => "background-color: rgb(255, 146, 180)"}
-          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"subtitle_color",:checked => "checked",:reference=>"color1"}  
+          %input.cstm-form-control.execute1{:name => "backgroundcolor", :type => "radio", :value => "",:id=>"subtitle_color",:checked => "checked",:reference=>"color1"}
 
   -if @visualization['genre'] =="Multi Dimensional Charts" || @visualization['genre'] =="One Dimensional Charts"
     %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#mode_panel"}Chart Mode
@@ -189,7 +189,7 @@
   -if @chart_name != 'Pictograph'
     %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#chartcolor"}Chart Color
     #chartcolor.collapse.panel-body.grey
-     
+
       %input.cstm-form-control.execute2{:name => "chart_color_boolean", :type => "radio", :value => "",:id=>"chart_color_boolean0",       :checked =>"checked"}
       %label.cstm-label{disabled: true} Array Mode
       .col-sm-12
@@ -266,7 +266,7 @@
       .col-sm-6.indent
         %label.cstm-label Add Suffix
         %input.form-control.cstm-form-control.execute{:placeholder => "eg: /-", :type => "textbox", :id => "units_suffix", :value => @visualization['config']['units_suffix']}
-  
+
   -if (@visualization['genre'] == "One Dimensional Charts" or @chart_name == "Multi-series Line" or @chart_name == "Line" or @chart_name == "Panel of Lines" or @chart_name == "Bar" or @chart_name == "Grouped Bar") and @chart_name != "1D Bubble"
     %a.list-group-item.theme-editor.panel-title{"data-parent" => "#MainMenu", "data-toggle" => "collapse", :href => "#ticks"} Ticks (Outside Chart)
     #ticks.collapse.panel-body.grey
@@ -397,7 +397,7 @@
       .col-sm-6.indent
         %label.cstm-label Outer Tick Length
         %input.form-control.cstm-form-control.execute.xEnable{:placeholder => "Outer tick size", :type => "number", :id => "axis_x_outer_pointer_length", :value => @visualization['config']['axis_x_outer_pointer_length'],disabled:disabled}
-      
+
       .col-sm-6.indent
         %label.cstm-label Always Show Ticks
         %input.form-control.cstm-form-control.execute.xEnable{:placeholder => "red;green;blue", :type => "string", :id => "axis_x_pointer_values", :value => @visualization['config']['axis_x_pointer_values'],disabled:disabled}
@@ -433,7 +433,7 @@
           -if @visualization['config']['axis_y_enable'] == "yes"
             - disabled = false
             - checked = true
-          -else 
+          -else
             - disabled = true
             - checked = "false"
 
@@ -465,7 +465,7 @@
         .input-group
           %input.form-control.cstm-form-control.execute.yEnable{:placeholder => "Tick size", :type => "number", :id => "axis_y_pointer_size", :value => @visualization['config']['axis_y_pointer_size'],disabled:disabled}
           %span.input-group-addon px
-      
+
       .col-sm-6.indent
         %label.cstm-label Ticks color
         %input.form-control.cstm-form-control.execute.yEnable{:type => "color", :id => "axis_y_pointer_color", :value => @visualization['config']['axis_y_pointer_color'],disabled:disabled}
@@ -555,7 +555,7 @@
           -if @visualization['config']['label_enable'] == "yes"
             - disabled = false
             - checked = true
-          -else 
+          -else
             - disabled = true
             - checked  = false
           %input.cstm-form-control.execute{:type => "checkbox", :value => @visualization['config']['label_enable'], id:"label_enable",checked:checked,"disableinputs"=>"labelEnable"}
@@ -606,7 +606,7 @@
             %i.circle#label_color_circle{:style => "background-color: rgb(255, 146, 180)"}
           %input.cstm-form-control.execute1{:name=> "color" ,:type => "radio",:value => "",:id=>"label_color","indentity"=>"chart_color0",:reference=>"color1"}
 
-  -if @chart_name != "Timeline" 
+  -if @chart_name != "Timeline"
     %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#realtimedata"} Live Data
     #realtimedata.collapse.panel-body.grey
       .col-sm-12.indent
@@ -682,8 +682,8 @@
         %label.cstm-label.checkbox-inline Turn On data grouping
         - if @visualization['config']['clubdata_enable'] == "yes"
           -disabled = false
-          -checked = true 
-        -else 
+          -checked = true
+        -else
           -disabled = true
           -checked = false
         %input.cstm-form-control.execute{:type => "checkbox", id: 'clubdata_enable', value: @visualization['config']['clubdata_enable'], checked: checked,"disableinputs"=>"club"}
@@ -701,7 +701,7 @@
         %label.cstm-label Always include the segments below
         %input.form-control.cstm-form-control.execute.club{:placeholder => "Add Semicolon Separated Values", :type => "var",:id => "clubdata_always_include_data_points",disabled:disabled}
 
-    
+
   -if @visualization['genre'] == "Multi Dimensional Charts" && @chart_name != 'Spider'
     %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#margin"}Chart Margins
     #margin.collapse.panel-body.grey
@@ -787,10 +787,10 @@
       -if @visualization['config']['tooltip_enable'] == "yes"
         -disabled = false
         -checked = true
-      -else 
+      -else
         -diabled = true
         -checked = false
-        
+
       %input.cstm-form-control.execute.tint{:type => "checkbox", :value => @visualization['config']['tooltip_enable'], id: "tooltip_enable",checked: checked}
       -if @chart_name == 'Line' || @chart_name == 'Panel of Lines' || @chart_name == 'Area' || @visualization['genre'] == "Map Charts"
         .clearfix
@@ -822,7 +822,7 @@
       .col-sm-12.indent
         %label.cstm-label Inner Radius Percent
         .input-group
-          
+
           %input.form-control.cstm-form-control.execute{:placeholder => "Inner Radius Percent", :type => "number",id: 'donut_inner_radius_percent', value: @visualization['config']['donut_inner_radius_percent'],max:99,min:1}
           %span.input-group-addon %
       .clearfix
@@ -1030,7 +1030,7 @@
       .col-sm-6.indent
         %label.cstm-label Radius
         %input.form-control.cstm-form-control.execute{:placeholder => "Radius", :type => "number",id: 'scatterplot_radius', value: @visualization['config']['scatterplot_radius']}
-      
+
 
   -if @chart_name == 'Pictograph'
     %a.list-group-item.theme-editor.panel-title{"data-toggle" => "collapse", :href => "#pictograph"}Configure pictograph
@@ -1174,7 +1174,7 @@
           %label.cstm-label.checkbox-inline Enable Variable circle size
           -checked =  @visualization['config']['variable_circle_size_enable'] == 'yes' ? "true" : "false"
           %input.cstm-form-control.execute{:type => "checkbox", id: 'variable_circle_size_enable', value: @visualization['config']['variable_circle_size_enable'], checked: checked}
-    
+
       -if @chart_name == "Line" || @chart_name == "Multi-series Line" || @chart_name == "Area" ||@chart_name =="Panel of Lines" || @chart_name == "Stacked Area" || @chart_name == "Scatter"
         .col-sm-12.indent
           %label.cstm-label.checkbox-inline Enable Zoom and Panning
@@ -1200,7 +1200,7 @@
         -checked  = @visualization['config']['click_enable'] == 'yes' ? "true" : "false"
         %input.cstm-form-control{:type => "checkbox", id: 'click_enable', value: @visualization['config']['click_enable'], checked: checked}
         .clearfix
-        %br          
+        %br
 
       .col-sm-8.indent
         %label.cstm-label Default zoom level

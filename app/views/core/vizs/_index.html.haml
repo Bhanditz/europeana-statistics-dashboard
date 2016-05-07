@@ -19,7 +19,7 @@
         - if @sudo[1]
           %td.borderless
             =link_to "Edit", edit_account_core_project_viz_path(@account,@core_project,viz)
-            
+
         %td.borderless
           - if viz.ref_chart.name == "Grid"
             API
@@ -29,7 +29,7 @@
           %span.hint= time_ago_in_words(viz.updated_at) + " ago"
         - if @sudo[1]
           %td.borderless= icon_del(account_core_project_viz_path(@account,@core_project,viz))
-          
+
 .clearfix
 %br
 %center

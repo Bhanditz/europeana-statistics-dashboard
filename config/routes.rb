@@ -8,10 +8,10 @@ Rails.application.routes.draw do
 
   resources :accounts do
     namespace :core do
-      resources :permissions
+      # resources :permissions
       resources :projects do
         get "members", on: :member
-        resources :db_connections, except: [:show]
+        # resources :db_connections, except: [:show]
         resources :datacasts do
           post "preview","upload", on: :collection
           get "file", on: :collection
@@ -19,8 +19,7 @@ Rails.application.routes.draw do
           get "change_d_or_m", on: :member
         end
         resources :datacast_pulls,only: [:create,:destroy,:edit,:update]
-        resources :vizs do
-        end
+        resources :vizs
       end
     end
   end
@@ -40,14 +39,14 @@ Rails.application.routes.draw do
 
   #CUSTOM PUBLIC URLs --------------------------------------------------------------
 
-  get 'switch_user' => 'switch_user#set_current_user'
-  get 'approve/account/:id' => "accounts#change_approval"
-  get "/new", to: "core/projects#new", as: "_new_project"
+  # get 'switch_user' => 'switch_user#set_current_user'
+  # get 'approve/account/:id' => "accounts#change_approval"
+  # get "/new", to: "core/projects#new", as: "_new_project"
   get "/providers", to: "impl/aggregations#providers", as: "providers"
   get "/dataproviders", to: "impl/aggregations#data_providers", as: "data_providers"
   get "/countries", to: "impl/aggregations#countries", as: "countries"
   get "/countrieslist", to: "impl/aggregations#countrieslist", as: "countrieslist"
-  get "/provider_hit_list", to: "impl/aggregations#provider_hit_list", as: "provider_hit_list"
+  # get "/provider_hit_list", to: "impl/aggregations#provider_hit_list", as: "provider_hit_list"
   get "/europeana", to: "impl/reports#show", as: "europeana_report", genre: "europeana", impl_report_id: "europeana"
   get "/:manual_report_id", to: "impl/reports#manual_report", as: "manual_report"
 
@@ -63,12 +62,12 @@ Rails.application.routes.draw do
     get ":impl_report_id", to: "impl/reports#show", as: "impl_report", genre: "provider"
   end
 
-  get "/:account_id/projects", to: "accounts#show", as: "_account", :defaults => { :content => "projects" }
-  get "/:account_id/dashboard", to: "accounts#dashboard", as: "dashboard"
+  # get "/:account_id/projects", to: "accounts#show", as: "_account", :defaults => { :content => "projects" }
+  # get "/:account_id/dashboard", to: "accounts#dashboard", as: "dashboard"
   get "/:account_id/edit", to: "accounts#edit", as: "_edit_account"
   #
   get "/:account_id/:project_id", to: "core/projects#show", as: "_account_project"
-  get "/:account_id/:project_id/edit", to: "core/projects#edit", as: "_edit_account_project"
+  # get "/:account_id/:project_id/edit", to: "core/projects#edit", as: "_edit_account_project"
   #
   #ROOT URL --------------------------------------------------------------
   root "static_pages#index"

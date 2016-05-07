@@ -7,8 +7,8 @@
     .panel-body
       .row
         .col-sm-9
-          %h4 
-            Aggregation: 
+          %h4
+            Aggregation:
             = @impl_aggregation.name
           %p.gray.pull-left Aggregate data with various provider ids
           .pull-right= link_to "Datacasts",datacasts_account_project_impl_aggregation_path(@account, @core_project, @impl_aggregation), class: "btn btn-orange"
@@ -61,4 +61,3 @@
                 = f.input :wikiname
               .form-actions
                 = f.button :submit, "Save"
-          

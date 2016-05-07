@@ -36,11 +36,8 @@ class Impl::Output < ActiveRecord::Base
 
   #CALLBACKS
   #SCOPES
-  scope :collections, -> {where(genre: "collections" )}
   scope :media_types, -> {where(genre: "media_types" )}
   scope :reusable, -> {where(genre: "reusable")}
-  scope :traffic, -> {where(genre: ["pageviews","events"])}
-  scope :top_countries, -> {where(genre: "top_countries" )}
   scope :top_digital_objects, -> {where(genre: "top_digital_objects")}
   #CUSTOM SCOPES
   #FUNCTIONS
@@ -53,7 +50,7 @@ class Impl::Output < ActiveRecord::Base
     if a.blank?
       a = create({impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre, key: options[:key], value: options[:value]})
     end
-    a 
+    a
   end
 
   def self.update_with_custom_attributes(impl_parent_id, impl_parent_type,options={})

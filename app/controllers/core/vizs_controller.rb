@@ -66,7 +66,7 @@ class Core::VizsController < ApplicationController
       @ref_charts =  Ref::Chart.where.not(slug: "grid")
       default_theme = Core::Theme.admin.where(name: "Default").first.config
       gon.default_theme = default_theme.to_json
-      render action: :new
+      render :new
     end
   end
 

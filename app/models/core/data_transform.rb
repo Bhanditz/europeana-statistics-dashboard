@@ -1,5 +1,5 @@
 class Core::DataTransform
-  
+
   def self.twod_array_generate(object)
     # Convert PG::Result object to 2d array
 
@@ -9,7 +9,7 @@ class Core::DataTransform
       object.each do |row|
         final_data << row.values
       end
-    rescue => e
+    rescue
       return []
     end
     return final_data
@@ -23,7 +23,7 @@ class Core::DataTransform
     end
     return dont_want_json ? final_data.to_xml : final_data.to_json
   end
-  
+
   def self.csv_generate(object)
     # Convert PG::Result object to CSV
     final_data = ""
@@ -35,7 +35,7 @@ class Core::DataTransform
         final_data += row.to_csv
       end
       final_data = final_data[0...-1] #removing the last extra \n
-    rescue IndexError => e
+    rescue IndexError
       return ""
     end
     return final_data

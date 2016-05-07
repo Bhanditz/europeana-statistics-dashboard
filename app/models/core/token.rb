@@ -16,10 +16,9 @@
 class Core::Token < ActiveRecord::Base
   #Gems
   self.table_name = "core_tokens"
-  include WhoDidIt
-   
-  
-  #CONSTANTS  
+
+
+  #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
 
@@ -31,7 +30,7 @@ class Core::Token < ActiveRecord::Base
   validates :name, presence: true, uniqueness: {scope: :core_project_id}
   validates :core_project_id, presence: true
   validates :account_id, presence: true
-  
+
   #CALLBACKS
   before_create :before_create_set
 
@@ -44,9 +43,9 @@ class Core::Token < ActiveRecord::Base
   end
 
   #PRIVATE
-  
+
   private
-  
+
   def before_create_set
     self.api_token = SecureRandom.hex(18)
     true

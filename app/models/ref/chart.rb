@@ -23,8 +23,7 @@ class Ref::Chart < ActiveRecord::Base
 
   #GEMS
   self.table_name = "ref_charts"
-  include WhoDidIt
-  
+
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS

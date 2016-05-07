@@ -15,10 +15,10 @@
 #
 
 class Impl::DataSet < ActiveRecord::Base
-  
+
   #GEMS
   self.table_name = "impl_datasets"
-  
+
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
@@ -47,17 +47,9 @@ class Impl::DataSet < ActiveRecord::Base
     a
   end
 
-  def refresh_all_jobs
-    end_date = Date.today.at_beginning_of_week.strftime("%Y-%m-%d")
-    start_date = (Date.today.at_beginning_of_week - 1).at_beginning_of_week.strftime("%Y-%m-%d")
-    Impl::TrafficBuilder.perform_async(self.id,start_date,end_date)
-  end
-
   def self.find_or_create(data_set_name)
     a = where(name: data_set_name).first
-    u_or_c = "updated"
     if a.blank?
-      u_or_c = "created"
       a = create!({name: data_set_name})
     end
     a

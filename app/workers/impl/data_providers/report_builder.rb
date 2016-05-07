@@ -10,7 +10,7 @@ class Impl::DataProviders::ReportBuilder
       variable_object, core_template = Impl::DataProviders::ReportBuilder.get_report_variable_object(aggregation)
       html_content = ""
 
-      a = Impl::Report.create_or_update(aggregation.name, aggregation_id, core_template.id, html_content, variable_object, true, aggregation.name.parameterize("-"))
+      Impl::Report.create_or_update(aggregation.name, aggregation_id, core_template.id, html_content, variable_object, true, aggregation.name.parameterize("-"))
       aggregation.update_attributes(status: "Report built", error_messages: nil)
     rescue => e
       aggregation.update_attributes(status: "Failed to build report", error_messages: e.to_s)

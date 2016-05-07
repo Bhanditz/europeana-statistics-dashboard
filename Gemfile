@@ -47,9 +47,11 @@ end
 
 group :development do
   gem "better_errors"
+  gem "rails_best_practices"
   gem "binding_of_caller"
   gem 'spring'
   gem 'annotate', ">=2.6.0"
   gem "rails-erd"
   gem 'foreman'
+  gem 'rubocop', '~> 0.39.0', require: false
 end

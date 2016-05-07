@@ -89,15 +89,10 @@ class Impl::AggregationsController < ApplicationController
     @impl_aggregations = Impl::Aggregation.countries
   end
 
-  def provider_hit_list
-    @core_datacast = Core::Datacast.find_by_name("Europeana Provider Hit List")
-  end
-
-
   private
 
     def set_impl_aggregation
-      @impl_aggregation = Impl::Aggregation.find("#{h (params[:id])}")
+      @impl_aggregation = Impl::Aggregation.find("#{params[:id]}")
     end
 
     def impl_aggregation_params

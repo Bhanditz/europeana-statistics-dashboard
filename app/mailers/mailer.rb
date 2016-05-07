@@ -3,4 +3,4 @@ class Mailer < ActionMailer::Base
     @email = send_to
     mail(to: @email, subject: subject + "<EOM>")
   end
- end
+end

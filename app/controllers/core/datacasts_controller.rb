@@ -24,7 +24,7 @@
 #
 
 class Core::DatacastsController < ApplicationController
-  
+
   before_action :sudo_project_member!
   before_action :set_core_datacast, only: [:edit, :update, :destroy, :run_worker, :change_d_or_m]
   before_action :set_token,only: [:upload,:destroy]
@@ -80,12 +80,12 @@ class Core::DatacastsController < ApplicationController
     else
       flash.now.alert = t('u.f')
       render "edit"
-    end 
+    end
   end
 
   def preview
     respond_to do |format|
-      format.json { 
+      format.json {
         query =  params["query"] || ""
         if ['update','insert','drop','truncate','delete'].any? { |word| query.include?(word) }
           response = {}
@@ -108,15 +108,7 @@ class Core::DatacastsController < ApplicationController
       }
     end
   end
-  
-  def csv
-    #s = "/tmp/#{SecureRandom.hex(24)}.csv"
-    #@data_store.generate_file_in_tmp(s,@alknfalkfnalkfnadlfkna)
-    #send_data IO.read(s), :type => "application/vnd.ms-excel", :filename => "#{@data_store.slug}.csv", :stream => false
-    #File.delete(s)
-  end
-  
-  
+
   def destroy
     begin
       if @core_datacast.table_name.present?
@@ -169,11 +161,11 @@ class Core::DatacastsController < ApplicationController
   end
 
   private
-  
+
   def set_core_datacast
     @core_datacast = @core_project.core_datacasts.friendly.find("#{h params[:id]}")
   end
-  
+
   def set_token
     @alknfalkfnalkfnadlfkna = @account.core_tokens.where(core_project_id: @core_project.id).first.api_token
     gon.token = @alknfalkfnalkfnadlfkna
@@ -182,5 +174,5 @@ class Core::DatacastsController < ApplicationController
   def core_datacast_params
     params.require(:core_datacast).permit(:core_project_id, :core_db_connection_id, :name, :identifier, :properties, :created_by, :updated_by, :query, :method, :refresh_frequency, :error, :fingerprint, :last_execution_time, :average_execution_time, :size,:last_run_at,:last_data_changed_at, :format,:params_object,:column_properties, :table_name, :file)
   end
-  
+
 end

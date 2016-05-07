@@ -15,20 +15,20 @@
 #
 
 class Core::ProjectsController < ApplicationController
-  
+
   before_action :sudo_project_member!, only: [:members, :edit]
   before_action :sudo_project_owner!, only: [:destroy, :update]
   before_action :sudo_public!, only: [:show]
   before_action :sudo_organisation_owner!, only: [:new, :create]
   before_action :set_project, only: [:edit, :update, :destroy, :members]
-  
+
   #---------------------------------------------------------------------------------------------------
   # CRUD
 
   def new
     @core_project = Core::Project.new
   end
-  
+
   def show
   end
 
@@ -52,9 +52,8 @@ class Core::ProjectsController < ApplicationController
       if @core_project.update(core_project_params)
         format.html { redirect_to _edit_account_project_path(@core_project.account, @core_project), notice: t("u.s") }
         format.json { head :ok , notice: t("u.s")}
-        #format.json { render :show, status: :updated, location: @core_project, notice: t("u.s") }
       else
-        format.html { 
+        format.html {
           @core_token  = Core::Token.new
           @core_tokens = @core_project.core_tokens.includes(:account)
           flash.now.alert = t("u.f")
@@ -73,30 +72,26 @@ class Core::ProjectsController < ApplicationController
       redirect_to root_url, notice: t("d.s")
     end
   end
-  
+
   #---------------------------------------------------------------------------------------------------
   # OTHER
-  
-  # LOCKING this method. Do not change. 
-  # Module: Access-Control
-  # Author: Ritvvij Parrikh
-  
+
   def members
     @permission = Core::Permission.new
     @permissions = @core_project.core_permissions.includes(:account)
   end
-    
+
   #---------------------------------------------------------------------------------------------------
 
   private
-  
+
   def set_project
     @core_project = Core::Project.where(account_id: @account.id).friendly.find(params[:id].blank? ? "#{h params[:project_id]}" : "#{h params[:id]}")
   end
 
   def core_project_params
-    params.require(:core_project).permit(:account_id, :name, :is_public, 
+    params.require(:core_project).permit(:account_id, :name, :is_public,
                                     :description, :license) #hstore - properties
   end
-  
+
 end

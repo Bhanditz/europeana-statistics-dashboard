@@ -4,7 +4,7 @@
     =simple_form_for(@viz,url: account_core_project_viz_path(@account, @core_project,@viz),method: :put) do |f|
       .col-sm-3
         -unless ["Grid","One Number indicators"].include?(@viz.ref_chart.name)
-          = render partial: "live_editor",locals: {f: f}
+          = render "live_editor",locals: {f: f}
       .col-sm-9
         = f.input :name, id: "name",required: true
         #filter_container

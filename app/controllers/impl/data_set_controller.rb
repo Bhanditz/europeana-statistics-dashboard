@@ -1,5 +1,5 @@
 class Impl::DataSetsController < ApplicationController
-  
+
   before_action :sudo_project_member!, :set_impl_aggregation
   before_action :set_impl_provider, only: [:restart_worker, :destroy]
 
@@ -30,7 +30,7 @@ class Impl::DataSetsController < ApplicationController
     Impl::TrafficBuilder.perform_async(@impl_provider.id)
     redirect_to :back, notice: t("provider.worker")
   end
-  
+
   private
 
   def set_impl_aggregation
@@ -44,5 +44,5 @@ class Impl::DataSetsController < ApplicationController
   def impl_provider_params
     params.require(:impl_provider).permit(:data_set_id, :created_by, :updated_by)
   end
-  
+
 end

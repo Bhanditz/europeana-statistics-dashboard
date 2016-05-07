@@ -15,7 +15,7 @@ class CsvFileUploader < CarrierWave::Uploader::Base
   def store_dir
     ""
   end
-    
+
   def cache_dir
     "//tmp/"
   end

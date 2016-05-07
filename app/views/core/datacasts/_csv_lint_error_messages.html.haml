@@ -10,7 +10,7 @@
         %th Category 2
         %th Contents
     %tbody
-      - @validator.errors.each do |err|   
+      - @validator.errors.each do |err|
         - if err.type == :stray_quote
           - err_type = "Stray Quotes"
         -elsif err.type == :unclosed_quote
@@ -48,7 +48,7 @@
           %td.col-sm-1= err_type
           %td.hint= err.content
 
-%br  
+%br
 
 .panel.panel-danger
   .panel-heading Warnings faced
@@ -59,8 +59,8 @@
         %th Column
         %th Warning
     %tbody
-        
-      - @validator.warnings.each do |warn|   
+
+      - @validator.warnings.each do |warn|
         - if warn.category == :structure
           - warn_category = "Structural Error: "
         - elsif warn.category == :schema
@@ -71,7 +71,7 @@
           - warn_category = warn.category
         - if warn.type == :encoding
           - warn_type = "Character set is not UTF-8"
-        -elsif warn.type == :check_options 
+        -elsif warn.type == :check_options
           - warn_type = "CSV file appears to contain only a single column"
         -elsif warn.type == :inconsistent_values
           - warn_type = "Inconsistent values in the same column"
@@ -100,7 +100,7 @@
 - if 1==2
   %hr
   %h1 Information Messages
-  - @validator.info_messages.each do |info|   
+  - @validator.info_messages.each do |info|
     %div.alert.alert-info
       - if info.category == :structure
         - info_category = "Structural Error: "
@@ -112,8 +112,8 @@
         - info_category = info.category
       - info_msg = "#{info_category}: #{info.content} "
       %p= info_msg
-      
+
 :javascript
-  $(document).ready(function () {      
+  $(document).ready(function () {
     clicked_on_upload_step();
   });

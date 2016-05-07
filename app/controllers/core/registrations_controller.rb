@@ -2,14 +2,10 @@ class Core::RegistrationsController < Devise::RegistrationsController
 
   before_action :sudo_organisation_owner!, only: [:edit,:update]
   before_action :set_sessions, only: [:edit, :update]
-  
+
   def new
     super
   end
-  
-  # LOCKING this method. Do not change. 
-  # Module: Access-Control
-  # Author: Ritvvij Parrikh
 
   def create
     super
@@ -24,10 +20,6 @@ class Core::RegistrationsController < Devise::RegistrationsController
   def edit
     super
   end
-  
-  # LOCKING this method. Do not change. 
-  # Module: Access-Control
-  # Author: Ritvvij Parrikh
 
   private
 
@@ -36,4 +28,4 @@ class Core::RegistrationsController < Devise::RegistrationsController
     @logged_in_from_multiple_sources = @sessions.count
   end
 
-end 
+end

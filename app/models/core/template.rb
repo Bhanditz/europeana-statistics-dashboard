@@ -27,9 +27,6 @@ class Core::Template < ActiveRecord::Base
   before_create :before_create_set
   after_create :after_create_set
   #SCOPES
-  scope :default_data_provider_template, -> {where(genre: 'data_providers').first}
-  scope :default_provider_template, -> {where(genre: 'providers').first}
-  scope :default_country_template, -> {where(genre: 'country').first}
   scope :default_europeana_template, -> {where(genre: 'europeana').first}
   #CUSTOM SCOPES
   #FUNCTIONS

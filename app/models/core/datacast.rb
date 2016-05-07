@@ -28,7 +28,6 @@ class Core::Datacast < ActiveRecord::Base
   self.table_name = "core_datacasts"
 
   #GEMS
-  include WhoDidIt
   extend FriendlyId
   friendly_id :name, use: :slugged
   #CONSTANTS
@@ -58,13 +57,9 @@ class Core::Datacast < ActiveRecord::Base
 
   #SCOPES
   scope :ready, ->{where("properties->'error' != ?","''").where.not(last_run_at: nil)}
-  scope :media_type, -> {where("core_datacasts.name LIKE '% - Media Types'")}
   scope :reusable, -> {where("core_datacasts.name LIKE '% - Reusables'")}
   scope :top_country, -> {where("core_datacasts.name LIKE '% - Top Countries'")}
   scope :top_digital_objects, -> {where("core_datacasts.name LIKE '% - Top Digital Objects'")}
-  scope :collections, -> {where("core_datacasts.name LIKE '% - Collections'")}
-  scope :line_charts, -> {where("core_datacasts.name LIKE '% - Line Chart'")}
-  scope :top_search_terms, -> {where("core_datacasts.name LIKE '% - Search Terms'")}
   #CUSTOM SCOPES
   #OTHER
   #FUNCTIONS
@@ -87,7 +82,7 @@ class Core::Datacast < ActiveRecord::Base
     datatype_distribution = {}
     column_names = data.shift
     column_names.each do |col|
-      datatype_distribution[col] = {"string": 0, "boolean": 0, "float": 0, "integer": 0, "date": 0, "blank": 0}
+      datatype_distribution[col] = {string: 0, boolean: 0, float: 0, integer: 0, date: 0, blank: 0}
     end
     data.each do |row|
       row.each_with_index do |elem, index|
@@ -99,7 +94,7 @@ class Core::Datacast < ActiveRecord::Base
   end
 
   def self.get_col_datatype(datatype_distribution)
-    datatype_distribution = datatype_distribution.reject {|k,v| v <= 0}
+    datatype_distribution = datatype_distribution.reject {|_k,v| v <= 0}
     possible_types = datatype_distribution.keys
     return "float" if datatype_distribution.has_key?(:float) and (possible_types & [:date, :boolean]).length < 1 and datatype_distribution[:float] > 0
     return "integer" if datatype_distribution.has_key?(:integer) and (possible_types & [:date, :boolean, :float]).length < 1 and datatype_distribution[:integer] > 0
@@ -128,14 +123,14 @@ class Core::Datacast < ActiveRecord::Base
       else
         return false
       end
-    rescue Exception => e
+    rescue StandardError
       return false
     end
   end
 
-  def self.upload_tmp_file(_data)
+  def self.upload_tmp_file(data)
     uploader = CsvFileUploader.new
-    if uploader.cache!(_data)
+    if uploader.cache!(data)
       file_path = uploader.file.path
       file_size = uploader.file.size
       if !file_path or file_size < 1
@@ -153,9 +148,9 @@ class Core::Datacast < ActiveRecord::Base
     return [uploader, nil, column_separator]
   end
 
-  def self.upload_or_create_file(file_path, file_name, _core_project_id,_core_db_connection_id ,table_name,first_row_header, column_separator,token)
+  def self.upload_or_create_file(file_path, file_name, core_project_id, core_db_connection_id ,table_name,first_row_header, column_separator,token)
     query = "Select * from #{table_name}"
-    d = Core::Datacast.new({query: query, name: file_name, core_project_id: _core_project_id, core_db_connection_id: _core_db_connection_id, identifier: SecureRandom.hex(33), table_name: table_name })
+    d = Core::Datacast.new({query: query, name: file_name, core_project_id: core_project_id, core_db_connection_id: core_db_connection_id, identifier: SecureRandom.hex(33), table_name: table_name })
     if d.save
       grid_data = []
       is_everything_saved_properly = false
@@ -189,6 +184,10 @@ class Core::Datacast < ActiveRecord::Base
     end
   end
 
+  def should_generate_new_friendly_id?
+    name_changed?
+  end
+
   def self.insert_into_grid(projectname, username, filename, token, grid_data)
     begin
       response = Nestful.post REST_API_ENDPOINT + "#{username}/#{projectname}/#{filename}/row/batch_add", {token: token, data: grid_data }, :format => :json
@@ -197,7 +196,7 @@ class Core::Datacast < ActiveRecord::Base
       else
         return false
       end
-    rescue Exception => e
+    rescue StandardError
       return false
     end
   end
@@ -235,10 +234,6 @@ class Core::Datacast < ActiveRecord::Base
     return dimension_or_metric.count
   end
 
-  def get_auto_html_for_number_indicators
-    return "<div id='#{self.identifier}' data-datacast_identifier='#{self.identifier}' class='card_with_value' ></div>"
-  end
-
   def get_auto_html_for_table
     return "<div id='#{self.identifier}' data-datacast_identifier='#{self.identifier}' class='box_table' ></div>"
   end
@@ -261,10 +256,6 @@ class Core::Datacast < ActiveRecord::Base
 
   private
 
-  def should_generate_new_friendly_id?
-    name_changed?
-  end
-
   def before_create_set
     self.number_of_rows = 0
     self.method = "get"
@@ -281,5 +272,4 @@ class Core::Datacast < ActiveRecord::Base
     end
     true
   end
-
 end
