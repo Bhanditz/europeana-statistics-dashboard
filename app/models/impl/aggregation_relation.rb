@@ -44,5 +44,4 @@ class Impl::AggregationRelation < ActiveRecord::Base
     a
   end
   #PRIVATE
-  private
 end

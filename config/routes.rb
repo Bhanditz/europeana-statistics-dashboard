@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
-  devise_for :accounts, :controllers => { :registrations => 'core/registrations' }, :path => 'accounts', :path_names => {:sign_up => 'secret_signup_only'}
+  devise_for :accounts, :path => 'accounts', :path_names => {:sign_up => 'secret_signup_only'}
 
   #NORMAL ROUTES --------------------------------------------------------------
 
@@ -12,11 +12,8 @@ Rails.application.routes.draw do
       resources :projects, only:[:show] do
         get "members", on: :member
         # resources :db_connections, except: [:show]
-        resources :datacasts, except:[:show] do
-          post "preview","upload", on: :collection
-          get "file", on: :collection
+        resources :datacasts, only:[] do
           get "run_worker", on: :member
-          get "change_d_or_m", on: :member
         end
         # resources :datacast_pulls,only: [:create,:destroy,:edit,:update]
         # resources :vizs
@@ -25,14 +22,14 @@ Rails.application.routes.draw do
   end
 
   resources :accounts, only:[:edit, :update] do
-    resources :projects do
-      namespace :impl do
-        resources :aggregations, except:[:new] do
-          get "restart_all_aggregation_workers","datacasts","restart_worker","reset_country_data", on: :member
+      resources :projects do
+        namespace :impl do
+          resources :aggregations, except:[:new] do
+            get "restart_all_aggregation_workers","datacasts","restart_worker","reset_country_data", on: :member
+          end
+          resources :blacklist_datasets, only: [:index,:create,:destroy]
+          resources :reports, except: [:show]
         end
-        resources :blacklist_datasets, only: [:index,:create,:destroy]
-        resources :reports, except: [:show]
-      end
     end
   end
 

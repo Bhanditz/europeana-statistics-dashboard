@@ -26,7 +26,6 @@ namespace :seed do
     accounts = [["europeana_user@europeana.eu", "europeana_user"]]
     accounts.each do |a|
       c = Account.new(email: a[0], username: a[1], password: "Europeana123!@#", confirmation_sent_at: Time.now)
-      c.skip_confirmation!
       c.save
     end
   end

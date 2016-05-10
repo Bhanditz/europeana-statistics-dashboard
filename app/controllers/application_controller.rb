@@ -18,14 +18,9 @@ class ApplicationController < ActionController::Base
         @account = Account.friendly.find(params[:account_id])
         begin
           if controller_name == "projects" and params[:id].present?
-            @core_project = @account.core_projects.where(account_id: @account.id, slug:"#{params[:id]}").first
-            raise "no project found" if @core_project.nil?
+            @core_project = @account.core_projects.friendly.find(params[:id])
           elsif params[:project_id].present?
-            @core_project = @account.core_projects.where(account_id: @account.id, slug:"#{params[:project_id]}").first
-            raise "no project found" if @core_project.nil?
-          elsif params[:core_project_id].present?
-            @core_project = @account.core_projects.where(account_id: @account.id, slug:"#{params[:core_project_id]}").first
-            raise "no project found" if @core_project.nil?
+            @core_project = @account.core_projects.friendly.find(params[:project_id])
           end
         rescue
           redirect_to root_url, alert: t("set_universal_objects.no_such_project")
@@ -33,16 +28,14 @@ class ApplicationController < ActionController::Base
       rescue
         redirect_to root_url, alert: t("set_universal_objects.no_such_account_1")
       end
-    elsif (controller_name == "accounts" or controller_name == "params") and params[:id].present?
+    elsif controller_name == "accounts" and params[:id].present?
       begin
-        @account = Account.friendly.find("#{params[:id]}")
+        @account = Account.friendly.find(params[:id])
       rescue
         redirect_to root_url, alert: t("set_universal_objects.no_such_account_2")
       end
     end
-    if @account.blank?
-      @account = current_account  if controller_name == "projects" and action_name == "new"
-    end
+
     gon.scopejs = "scopejs_#{controller_name}_#{action_name}"
     @about_report = Impl::Report.where(slug: "about").first
     @is_beta = true
@@ -60,7 +53,6 @@ class ApplicationController < ActionController::Base
 
   # Enable DEVISE forms to accept username.
   def configure_devise_params
-    devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:username, :email, :password)}
     devise_parameter_sanitizer.for(:sign_in) {|u| u.permit(:username, :password)}
     devise_parameter_sanitizer.for(:account_update) {|u| u.permit(:password, :current_password, :password_confirmation)}
   end

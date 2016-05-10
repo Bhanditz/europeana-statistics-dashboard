@@ -28,5 +28,4 @@
         - if alert.present?
           - config = {text: alert, notify: "error"}
           /.alert.alert-danger= alert
-    = render partial: "layouts/validations_errors", locals: {config: config, data_store: @data_store, viz: @viz, core_map_file: @core_map_file}
-    = render partial: "layouts/footer", locals: {config: config}
+    = render partial: "layouts/validations_errors", locals: {config: config}

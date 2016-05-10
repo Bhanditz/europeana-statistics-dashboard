@@ -25,8 +25,8 @@ class Impl::Output < ActiveRecord::Base
   #ACCESSORS
   store_accessor :properties, :image_url, :title_url, :title, :content
   #ASSOCIATIONS
-  belongs_to :impl_parent,polymorphic: :true
-  has_many :core_time_aggregations,->{where(parent_type: 'Impl::Output')} ,class_name: "Core::TimeAggregation", foreign_key: "parent_id", dependent: :destroy
+  belongs_to :impl_parent, polymorphic: :true
+  has_many :core_time_aggregations, ->{where(parent_type: 'Impl::Output')}, class_name: "Core::TimeAggregation", foreign_key: "parent_id", dependent: :destroy
   has_many :country_code, class_name: "Ref::CountryCode", primary_key: "value", foreign_key: "country"
   #VALIDATIONS
   validates :impl_parent_id, presence: :true
@@ -69,7 +69,5 @@ class Impl::Output < ActiveRecord::Base
     return a
   end
 
-
   #PRIVATE
-  private
 end

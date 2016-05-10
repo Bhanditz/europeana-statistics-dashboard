@@ -226,7 +226,6 @@ class Impl::Aggregation < ActiveRecord::Base
   end
 
   def after_create_set
-    # Aggregations::WikiProfileBuilder.perform_async(self.id)
     if self.genre == 'country'
       Impl::Country::ProviderBuilder.perform_async(self.id)
     end

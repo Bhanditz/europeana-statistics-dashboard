@@ -23,7 +23,7 @@
 class Account < ActiveRecord::Base
 
   #GEMS
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :confirmable
+  devise :database_authenticatable, :recoverable, :validatable, :registerable
 
   extend FriendlyId
   friendly_id :username, use: :slugged
@@ -39,7 +39,6 @@ class Account < ActiveRecord::Base
 
   #ASSOCIATIONS
   has_many :permissions, class_name: "Core::Permission", foreign_key: :account_id, dependent: :destroy
-  has_many :core_tokens, class_name: "Core::Token", dependent: :destroy
 
   def core_projects
     Core::Project.where(id: self.permissions.where(role: [Constants::ROLE_C, Constants::ROLE_O]).pluck(:core_project_id).uniq)

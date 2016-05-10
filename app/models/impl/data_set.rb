@@ -31,7 +31,6 @@ class Impl::DataSet < ActiveRecord::Base
 
   #CALLBACKS
   before_create :before_create_set
-  after_create :after_create_set
   #SCOPES
   #CUSTOM SCOPES
   #FUNCTIONS
@@ -62,9 +61,4 @@ class Impl::DataSet < ActiveRecord::Base
     self.data_set_id = self.name.split("_")[0].gsub(/[^0-9,.]/,"")
     true
   end
-
-  def after_create_set
-    true
-  end
-
 end

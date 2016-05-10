@@ -25,7 +25,7 @@ class Core::TimeAggregation < ActiveRecord::Base
   #ATTRIBUTES
   #ACCESSORS
   #ASSOCIATIONS
-  belongs_to :parent,polymorphic: :true
+  belongs_to :parent, polymorphic: :true
   #VALIDATIONS
   validates :parent_type, presence: :true
   validates :parent_id, presence: :true

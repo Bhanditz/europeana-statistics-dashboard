@@ -32,12 +32,10 @@ class Core::SessionImpl < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
-  #Core::SessionImpl.logged_in_from_multiple_sources(aid)
   def self.logged_in_from_multiple_sources(aid)
     Core::SessionImpl.joins(:core).includes(:core).where(account_id: aid)
   end
 
-  #Core::SessionImpl.log(sid, aid, ip, blu)
   def self.log(sid, aid, ip, blu)
     a = Core::SessionImpl.where(session_id: sid).first
     if a.blank?
@@ -51,6 +49,4 @@ class Core::SessionImpl < ActiveRecord::Base
   end
 
   #PRIVATE
-  private
-
 end

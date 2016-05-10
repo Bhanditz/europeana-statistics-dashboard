@@ -24,8 +24,6 @@ class Core::Template < ActiveRecord::Base
   validates :name, presence: true
   validates :genre, presence: true, uniqueness: {scope: :name}
   #CALLBACKS
-  before_create :before_create_set
-  after_create :after_create_set
   #SCOPES
   scope :default_europeana_template, -> {where(genre: 'europeana').first}
   #CUSTOM SCOPES
@@ -40,15 +38,6 @@ class Core::Template < ActiveRecord::Base
     end
     a
   end
+
   #PRIVATE
-  private
-
-  def before_create_set
-    true
-  end
-
-  def after_create_set
-    true
-  end
-
 end

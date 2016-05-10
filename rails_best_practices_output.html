@@ -60,7 +60,7 @@
       to see more useful Rails Best Practices.
     </p>
     <p>
-        Found 105 warnings.
+        Found 97 warnings.
     </p>
     <table>
           <tr>
@@ -69,12 +69,12 @@
                 />&nbsp;<label for="AlwaysAddDbIndexReview">Always Add Db Index</label>
               </td>
               <td>
-                <input type="checkbox" class="error-type" id="OveruseRouteCustomizationsReview" value="OveruseRouteCustomizationsReview"
-                />&nbsp;<label for="OveruseRouteCustomizationsReview">Overuse Route Customizations</label>
+                <input type="checkbox" class="error-type" id="NotUseTimeAgoInWordsReview" value="NotUseTimeAgoInWordsReview"
+                />&nbsp;<label for="NotUseTimeAgoInWordsReview">Not Use Time Ago In Words</label>
               </td>
               <td>
-                <input type="checkbox" class="error-type" id="ReplaceInstanceVariableWithLocalVariableReview" value="ReplaceInstanceVariableWithLocalVariableReview"
-                />&nbsp;<label for="ReplaceInstanceVariableWithLocalVariableReview">Replace Instance Variable With Local Variable</label>
+                <input type="checkbox" class="error-type" id="RemoveUnusedMethodsInModelsReview" value="RemoveUnusedMethodsInModelsReview"
+                />&nbsp;<label for="RemoveUnusedMethodsInModelsReview">Remove Unused Methods In Models</label>
               </td>
           </tr>
           <tr>
@@ -87,8 +87,8 @@
                 />&nbsp;<label for="RemoveUnusedMethodsInControllersReview">Remove Unused Methods In Controllers</label>
               </td>
               <td>
-                <input type="checkbox" class="error-type" id="UseMultipartAlternativeAsContentTypeOfEmailReview" value="UseMultipartAlternativeAsContentTypeOfEmailReview"
-                />&nbsp;<label for="UseMultipartAlternativeAsContentTypeOfEmailReview">Use Multipart Alternative As Content Type Of Email</label>
+                <input type="checkbox" class="error-type" id="ReplaceInstanceVariableWithLocalVariableReview" value="ReplaceInstanceVariableWithLocalVariableReview"
+                />&nbsp;<label for="ReplaceInstanceVariableWithLocalVariableReview">Replace Instance Variable With Local Variable</label>
               </td>
           </tr>
           <tr>
@@ -100,15 +100,9 @@
                 <input type="checkbox" class="error-type" id="RemoveUnusedMethodsInHelpersReview" value="RemoveUnusedMethodsInHelpersReview"
                 />&nbsp;<label for="RemoveUnusedMethodsInHelpersReview">Remove Unused Methods In Helpers</label>
               </td>
-          </tr>
-          <tr>
               <td>
-                <input type="checkbox" class="error-type" id="NotUseTimeAgoInWordsReview" value="NotUseTimeAgoInWordsReview"
-                />&nbsp;<label for="NotUseTimeAgoInWordsReview">Not Use Time Ago In Words</label>
-              </td>
-              <td>
-                <input type="checkbox" class="error-type" id="RemoveUnusedMethodsInModelsReview" value="RemoveUnusedMethodsInModelsReview"
-                />&nbsp;<label for="RemoveUnusedMethodsInModelsReview">Remove Unused Methods In Models</label>
+                <input type="checkbox" class="error-type" id="UseMultipartAlternativeAsContentTypeOfEmailReview" value="UseMultipartAlternativeAsContentTypeOfEmailReview"
+                />&nbsp;<label for="UseMultipartAlternativeAsContentTypeOfEmailReview">Use Multipart Alternative As Content Type Of Email</label>
               </td>
           </tr>
         <tr>
@@ -300,24 +294,6 @@
           </tr>
           <tr class="MoveModelLogicIntoModelReview">
             <td class='filename'>
-                app/controllers/core/datacasts_controller.rb
-            </td>
-            <td class='line'>49</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (gon use_count > 4)</a>
-            </td>
-          </tr>
-          <tr class="MoveModelLogicIntoModelReview">
-            <td class='filename'>
-                app/controllers/core/datacasts_controller.rb
-            </td>
-            <td class='line'>49</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (@preview_data use_count > 4)</a>
-            </td>
-          </tr>
-          <tr class="MoveModelLogicIntoModelReview">
-            <td class='filename'>
                 app/controllers/impl/reports_controller.rb
             </td>
             <td class='line'>45</td>
@@ -334,29 +310,11 @@
               <a href='http://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (@impl_aggregation use_count > 4)</a>
             </td>
           </tr>
-          <tr class="MoveModelLogicIntoModelReview">
-            <td class='filename'>
-                app/controllers/application_controller.rb
-            </td>
-            <td class='line'>15</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (@account use_count > 4)</a>
-            </td>
-          </tr>
-          <tr class="MoveModelLogicIntoModelReview">
-            <td class='filename'>
-                app/controllers/application_controller.rb
-            </td>
-            <td class='line'>15</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (@core_project use_count > 4)</a>
-            </td>
-          </tr>
           <tr class="NotUseTimeAgoInWordsReview">
             <td class='filename'>
                 app/views/core/datacasts/_index.html.haml
             </td>
-            <td class='line'>37</td>
+            <td class='line'>28</td>
             <td class='message'>
               <a href='http://rails-bestpractices.com/posts/2012/02/10/not-use-time_ago_in_words/' target='_blank'>not use time_ago_in_words</a>
             </td>
@@ -365,7 +323,7 @@
             <td class='filename'>
                 app/views/core/datacasts/_index.html.haml
             </td>
-            <td class='line'>51</td>
+            <td class='line'>42</td>
             <td class='message'>
               <a href='http://rails-bestpractices.com/posts/2012/02/10/not-use-time_ago_in_words/' target='_blank'>not use time_ago_in_words</a>
             </td>
@@ -377,33 +335,6 @@
             <td class='line'>26</td>
             <td class='message'>
               <a href='http://rails-bestpractices.com/posts/2012/02/10/not-use-time_ago_in_words/' target='_blank'>not use time_ago_in_words</a>
-            </td>
-          </tr>
-          <tr class="OveruseRouteCustomizationsReview">
-            <td class='filename'>
-                config/routes.rb
-            </td>
-            <td class='line'>9</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/2010/07/22/overuse-route-customizations/' target='_blank'>overuse route customizations (customize_count > 3)</a>
-            </td>
-          </tr>
-          <tr class="OveruseRouteCustomizationsReview">
-            <td class='filename'>
-                config/routes.rb
-            </td>
-            <td class='line'>12</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/2010/07/22/overuse-route-customizations/' target='_blank'>overuse route customizations (customize_count > 3)</a>
-            </td>
-          </tr>
-          <tr class="OveruseRouteCustomizationsReview">
-            <td class='filename'>
-                config/routes.rb
-            </td>
-            <td class='line'>15</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/2010/07/22/overuse-route-customizations/' target='_blank'>overuse route customizations (customize_count > 3)</a>
             </td>
           </tr>
           <tr class="RemoveUnusedMethodsInControllersReview">
@@ -419,7 +350,7 @@
             <td class='filename'>
                 app/controllers/application_controller.rb
             </td>
-            <td class='line'>72</td>
+            <td class='line'>64</td>
             <td class='message'>
               <a href='' target='_blank'>remove unused methods (ApplicationController#after_sign_in_path_for)</a>
             </td>
@@ -435,9 +366,27 @@
           </tr>
           <tr class="RemoveUnusedMethodsInModelsReview">
             <td class='filename'>
+                app/models/core/adapters/db.rb
+            </td>
+            <td class='line'>2</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Core::Adapters::Db#query_get_all_tables)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/core/session_impl.rb
+            </td>
+            <td class='line'>35</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Core::SessionImpl#logged_in_from_multiple_sources)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
                 app/models/core/datacast.rb
             </td>
-            <td class='line'>186</td>
+            <td class='line'>113</td>
             <td class='message'>
               <a href='' target='_blank'>remove unused methods (Core::Datacast#should_generate_new_friendly_id?)</a>
             </td>
@@ -446,7 +395,7 @@
             <td class='filename'>
                 app/models/core/project.rb
             </td>
-            <td class='line'>72</td>
+            <td class='line'>69</td>
             <td class='message'>
               <a href='' target='_blank'>remove unused methods (Core::Project#should_generate_new_friendly_id?)</a>
             </td>
@@ -455,7 +404,7 @@
             <td class='filename'>
                 app/models/impl/report.rb
             </td>
-            <td class='line'>68</td>
+            <td class='line'>63</td>
             <td class='message'>
               <a href='' target='_blank'>remove unused methods (Impl::Report#should_generate_new_friendly_id?)</a>
             </td>
@@ -464,7 +413,7 @@
             <td class='filename'>
                 app/models/account.rb
             </td>
-            <td class='line'>67</td>
+            <td class='line'>66</td>
             <td class='message'>
               <a href='' target='_blank'>remove unused methods (Account#should_generate_new_friendly_id?)</a>
             </td>
@@ -473,7 +422,7 @@
             <td class='filename'>
                 app/models/account.rb
             </td>
-            <td class='line'>88</td>
+            <td class='line'>87</td>
             <td class='message'>
               <a href='' target='_blank'>remove unused methods (Account#find_first_by_auth_conditions)</a>
             </td>
@@ -546,15 +495,6 @@
                 app/views/impl/aggregations/_providers.html.haml
             </td>
             <td class='line'>52</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/2010/07/24/replace-instance-variable-with-local-variable/' target='_blank'>replace instance variable with local variable</a>
-            </td>
-          </tr>
-          <tr class="ReplaceInstanceVariableWithLocalVariableReview">
-            <td class='filename'>
-                app/views/impl/aggregations/_providers.html.haml
-            </td>
-            <td class='line'>53</td>
             <td class='message'>
               <a href='http://rails-bestpractices.com/posts/2010/07/24/replace-instance-variable-with-local-variable/' target='_blank'>replace instance variable with local variable</a>
             </td>
@@ -795,15 +735,6 @@
           </tr>
           <tr class="ReplaceInstanceVariableWithLocalVariableReview">
             <td class='filename'>
-                app/views/impl/aggregations/_data_providers.html.haml
-            </td>
-            <td class='line'>67</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/2010/07/24/replace-instance-variable-with-local-variable/' target='_blank'>replace instance variable with local variable</a>
-            </td>
-          </tr>
-          <tr class="ReplaceInstanceVariableWithLocalVariableReview">
-            <td class='filename'>
                 app/views/impl/aggregations/_countries.html.haml
             </td>
             <td class='line'>3</td>
@@ -942,15 +873,6 @@
                 app/views/impl/aggregations/_countries.html.haml
             </td>
             <td class='line'>54</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/2010/07/24/replace-instance-variable-with-local-variable/' target='_blank'>replace instance variable with local variable</a>
-            </td>
-          </tr>
-          <tr class="ReplaceInstanceVariableWithLocalVariableReview">
-            <td class='filename'>
-                app/views/impl/aggregations/_countries.html.haml
-            </td>
-            <td class='line'>55</td>
             <td class='message'>
               <a href='http://rails-bestpractices.com/posts/2010/07/24/replace-instance-variable-with-local-variable/' target='_blank'>replace instance variable with local variable</a>
             </td>

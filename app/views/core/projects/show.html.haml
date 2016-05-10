@@ -10,10 +10,10 @@
     %hr{style: "margin-bottom: 5px; margin-top: 5px; border-top-color: lightgray;"}
     - if 1 == 2
       %hr{style: "margin-bottom: 5px; border-top-color: lightgray;"}
-      = render partial: "core/datacasts/index", locals: {sudo: @sudo, core_project: @core_project, account: @account, impl_aggregation: @impl_aggregation, core_datacasts: @core_datacasts}
+      = render partial: "core/datacasts/index", locals: {core_project: @core_project, account: @account, impl_aggregation: @impl_aggregation, core_datacasts: @core_datacasts}
       %hr{style: "margin-top: 5px; border-top-color: lightgray;"}
       .row
         .col-sm-12
-          -if @pending_datacast_pulls.present? and current_account.present? and @sudo[1]
+          -if @pending_datacast_pulls.present? and current_account.present?
             %hr
-            = render partial: "core/datacast_pulls/index", locals: {pending_datacast_pulls: @pending_datacast_pulls, sudo_1: @sudo[1]}
+            = render partial: "core/datacast_pulls/index", locals: {pending_datacast_pulls: @pending_datacast_pulls}

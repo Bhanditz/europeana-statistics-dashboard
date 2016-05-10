@@ -35,9 +35,6 @@ class Core::DbConnection < ActiveRecord::Base
   validate  :test_connection
 
   #CALLBACKS
-  before_create :before_create_set
-  after_create :after_create_set
-
   #SCOPES
   #CUSTOM SCOPES
   def self.default_db
@@ -75,10 +72,6 @@ class Core::DbConnection < ActiveRecord::Base
   #PRIVATE
   private
 
-  def before_create_set
-    true
-  end
-
   def test_connection
     begin
       require 'pg'
@@ -87,10 +80,6 @@ class Core::DbConnection < ActiveRecord::Base
     rescue => e
       errors.add(:name,e.to_s)
     end
-  end
-
-  def after_create_set
-    true
   end
 
 end

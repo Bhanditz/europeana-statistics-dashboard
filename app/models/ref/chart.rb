@@ -36,5 +36,4 @@ class Ref::Chart < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
   #PRIVATE
-  private
 end

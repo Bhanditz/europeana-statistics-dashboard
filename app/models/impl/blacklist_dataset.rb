@@ -23,5 +23,4 @@ class Impl::BlacklistDataset < ActiveRecord::Base
   	blacklist_datasets
   end
   #PRIVATE
-  private
 end

@@ -52,4 +52,4 @@
               %td= link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, restart_worker_account_project_impl_aggregation_path(@account, @core_project, impl_data_provider)
   #datacasts.tab-pane{role: 'tabpanel'}
     - if @core_datacasts.count > 0
-      = render partial: "core/datacasts/index", locals: {sudo: @sudo, core_project: @core_project, account: @account, impl_aggregation: @impl_aggregation, core_datacasts: @core_datacasts}
+      = render partial: "core/datacasts/index", locals: {core_project: @core_project, account: @account, impl_aggregation: @impl_aggregation, core_datacasts: @core_datacasts}

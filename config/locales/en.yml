@@ -31,13 +31,6 @@ en:
     s: "Successfully deleted."
     m: "Queued for deletion. Pls. refresh your page!"
     f: "Failed to delete."
-  pd:
-    sudo_organisation_owner!: "Permission Denied. (2)"
-    sudo_project_member!: "Permission Denied. (3)"
-    sudo_project_owner!: "Permission Denied. (4)"
-    sudo_admin!: "Permission Denied. (5)"
-    sudo_public!: "Permission Denied. (6)"
-    sudo_embed!: "Permission Denied. (7)"
   set_universal_objects:
     no_such_account_1: "No such account (1)."
     no_such_account_2: "No such account (2)."
@@ -47,11 +40,9 @@ en:
   api:
     e_401: "Unauthorized."
     e_400:
-      token: "Token not found."
       account: "AccountID not found."
       project: "ProjectID not found."
     e_404:
-      token: "Token not associated with a account."
       account: "Account not found."
       project: "Project not found."
   confirm:
