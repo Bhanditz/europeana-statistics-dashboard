@@ -25,7 +25,7 @@
 
 class Core::DatacastsController < ApplicationController
 
-  before_action :sudo_project_member!
+  before_action :authenticate_account!
   before_action :set_core_datacast, only: [:edit, :update, :destroy, :run_worker, :change_d_or_m]
   before_action :set_token,only: [:upload,:destroy]
 

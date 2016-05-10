@@ -6,28 +6,28 @@ Rails.application.routes.draw do
 
   #NORMAL ROUTES --------------------------------------------------------------
 
-  resources :accounts do
+  resources :accounts, only:[:edit, :update] do
     namespace :core do
       # resources :permissions
-      resources :projects do
+      resources :projects, only:[:show] do
         get "members", on: :member
         # resources :db_connections, except: [:show]
-        resources :datacasts do
+        resources :datacasts, except:[:show] do
           post "preview","upload", on: :collection
           get "file", on: :collection
           get "run_worker", on: :member
           get "change_d_or_m", on: :member
         end
-        resources :datacast_pulls,only: [:create,:destroy,:edit,:update]
-        resources :vizs
+        # resources :datacast_pulls,only: [:create,:destroy,:edit,:update]
+        # resources :vizs
       end
     end
   end
 
-  resources :accounts do
+  resources :accounts, only:[:edit, :update] do
     resources :projects do
       namespace :impl do
-        resources :aggregations do
+        resources :aggregations, except:[:new] do
           get "restart_all_aggregation_workers","datacasts","restart_worker","reset_country_data", on: :member
         end
         resources :blacklist_datasets, only: [:index,:create,:destroy]

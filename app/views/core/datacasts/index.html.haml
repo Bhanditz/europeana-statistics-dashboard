@@ -3,9 +3,3 @@
   %h3=h show_project_name(@core_project)
   .panel.panel-default.sheet.sub
     .panel-body
-      = render partial: "core/datacasts/index"
-    .row
-      .col-sm-12
-        -if @pending_datacast_pulls.present? and current_account.present? and @sudo[1]
-          %hr
-          = render "core/datacast_pulls/index", locals: {pending_datacast_pulls: @pending_datacast_pulls}

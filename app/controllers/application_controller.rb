@@ -48,54 +48,12 @@ class ApplicationController < ActionController::Base
     @is_beta = true
   end
 
-  def sudo_organisation_owner!
-    authenticate_account!
-    redirect_to root_url, alert: t("pd.sudo_organisation_owner!") if current_account.sudo_organisation_owner(@account)
-    @sudo = Constants::SUDO_111
-  end
-
-  def sudo_project_member!(redirect_to_show = false)
-    authenticate_account! unless redirect_to_show
-    if @core_project.present?
-      @sudo = current_account.sudo_project_member(@core_project.account, @core_project.id) if current_account.present?
-      redirect_to root_url, alert: t("pd.sudo_project_member!") if @sudo.blank? and !redirect_to_show
-    end
-  end
-
-  def sudo_project_owner!
-    authenticate_account!
-    if @core_project.present?
-      redirect_to root_url, alert: t("pd.sudo_project_owner!")  if current_account.sudo_project_owner(@core_project.id)
-      @sudo = Constants::SUDO_111
-    end
-  end
-
-  def sudo_public!
-    if @core_project.present?
-      @sudo = nil
-      @sudo = current_account.sudo_project_member(@core_project.account, @core_project.id)    if account_signed_in?
-      if @sudo.blank?
-        if !@core_project.is_public and action_name != "embed"
-          redirect_to root_url, alert: t("pd.sudo_public!")
-        else
-          @sudo = Constants::SUDO_001
-        end
-      end
-    else
-      @sudo = Constants::SUDO_001
-    end
-  end
-
   #------------------------------------------------------------------------------------------------------------------
 
   protected
 
   def log_session
-    if controller_name == "vizs" and (action_name == "embed" or action_name == "show")
-      session_id = session.present? ? session.id : nil
-      account_id = current_account.present? ? current_account.id : nil
-      Core::SessionImpl.log_viz(session_id, account_id , request.env["REMOTE_ADDR"].to_s, request.env["HTTP_USER_AGENT"].to_s,params[:id])
-    elsif current_account.present?
+    if current_account.present?
       Core::SessionImpl.log(session.id, current_account.id, request.env["REMOTE_ADDR"].to_s, request.env["HTTP_USER_AGENT"].to_s)
     end
   end

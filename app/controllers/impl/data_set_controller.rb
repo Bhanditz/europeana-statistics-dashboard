@@ -1,6 +1,6 @@
 class Impl::DataSetsController < ApplicationController
 
-  before_action :sudo_project_member!, :set_impl_aggregation
+  before_action :authenticate_account!, :set_impl_aggregation
   before_action :set_impl_provider, only: [:restart_worker, :destroy]
 
   def index

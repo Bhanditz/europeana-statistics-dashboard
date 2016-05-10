@@ -94,10 +94,6 @@ class Core::Viz < ActiveRecord::Base
     return nil
   end
 
-  def auto_html_div
-    return "<div id='#{ERB::Util.h self.name.parameterize("_")}' data-api='#{ERB::Util.h self.ref_chart.api}' data-datacast_identifier='#{ERB::Util.h self.core_datacast_identifier}' class='#{ "One Number indicators" == self.ref_chart.name ? "card_with_value" : "d3-pykcharts"}' data-filter_present='#{ERB::Util.h self.filter_present}' data-filter_column_name='#{ERB::Util.h self.filter_column_name}'></div>".html_safe
-  end
-
   def auto_html_json
     obj = {
       id: "#{ERB::Util.h self.name.parameterize("_")}",

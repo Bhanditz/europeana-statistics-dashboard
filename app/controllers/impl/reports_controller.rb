@@ -21,7 +21,7 @@ class Impl::ReportsController < ApplicationController
 
   layout :styleguide_aware_layout
 
-  before_action :sudo_public!, only: [:show, :index, :manual_report]
+  before_action :authenticate_account!, only: [:show, :index, :manual_report]
   before_action :set_impl_report, only: [:show,:edit, :update, :destroy,:manual_report]
   before_action :set_gon_config_objects,only: [:show,:edit, :update,:new, :create]
 

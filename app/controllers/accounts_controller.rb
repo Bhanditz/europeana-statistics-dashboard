@@ -22,7 +22,7 @@
 
 class AccountsController < ApplicationController
 
-  before_action :sudo_organisation_owner!, only: [:dashboard, :edit, :update]
+  before_action :authenticate_account!, only: [:dashboard, :edit, :update]
 
   #------------------------------------------------------------------------------------------------------------------
   # CRUD

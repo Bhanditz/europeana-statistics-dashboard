@@ -57,22 +57,6 @@ class Account < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
-  def sudo_organisation_owner(o) #always run off current_user
-    self.id == o.id ? false : true
-  end
-
-  def sudo_project_owner(p) #always run off current_user
-    self.permissions.where("core_permissions.core_project_id = ?", p).where(role: Constants::ROLE_O).first.blank?
-  end
-
-  def sudo_project_member(_o, p) #always run off current_user
-    c = self.permissions.where("core_permissions.core_project_id = ?", p).where(role: [Constants::ROLE_C, Constants::ROLE_O]).first
-    return nil                  if c.blank?
-    return Constants::SUDO_011  if c.role == Constants::ROLE_C
-    return Constants::SUDO_111  if c.role == Constants::ROLE_O
-    FAIL
-  end
-
   def to_s
     self.username
   end

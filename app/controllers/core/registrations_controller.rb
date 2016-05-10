@@ -1,6 +1,6 @@
 class Core::RegistrationsController < Devise::RegistrationsController
 
-  before_action :sudo_organisation_owner!, only: [:edit,:update]
+  before_action :authenticate_account!, only: [:edit,:update]
   before_action :set_sessions, only: [:edit, :update]
 
   def new

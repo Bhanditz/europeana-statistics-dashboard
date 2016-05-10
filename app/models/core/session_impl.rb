@@ -50,17 +50,6 @@ class Core::SessionImpl < ActiveRecord::Base
     return a.id
   end
 
-  def self.log_viz(_sid, aid, ip, blu,viz_id = nil)
-    a = Core::SessionImpl.new()
-    # a.session_id = sid
-    a.account_id = aid
-    a.ip         = ip
-    a.blurb      = blu
-    a.core_viz_id = viz_id
-    a.save
-    return a.id
-  end
-
   #PRIVATE
   private
 

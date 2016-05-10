@@ -10,7 +10,7 @@
         %th Category 2
         %th Contents
     %tbody
-      - @validator.errors.each do |err|
+      - validator.errors.each do |err|
         - if err.type == :stray_quote
           - err_type = "Stray Quotes"
         -elsif err.type == :unclosed_quote
@@ -60,7 +60,7 @@
         %th Warning
     %tbody
 
-      - @validator.warnings.each do |warn|
+      - validator.warnings.each do |warn|
         - if warn.category == :structure
           - warn_category = "Structural Error: "
         - elsif warn.category == :schema
@@ -100,7 +100,7 @@
 - if 1==2
   %hr
   %h1 Information Messages
-  - @validator.info_messages.each do |info|
+  - validator.info_messages.each do |info|
     %div.alert.alert-info
       - if info.category == :structure
         - info_category = "Structural Error: "

@@ -17,7 +17,8 @@
 #
 
 class Core::DatacastPullsController < ApplicationController
-  before_action :sudo_project_member!, only: [:create,:edit,:update,:destroy]
+
+  before_action :authenticate_account!, only: [:create,:edit,:update,:destroy]
   before_action :set_datacast_pull, only: [:edit,:update,:destroy]
 
   def edit

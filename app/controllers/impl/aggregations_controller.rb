@@ -18,7 +18,7 @@
 
 class Impl::AggregationsController < ApplicationController
 
-  before_action :sudo_project_member!, except: [:providers,:data_providers,:countries,:provider_hit_list,:countrieslist]
+  before_action :authenticate_account!, except: [:providers,:data_providers,:countries,:provider_hit_list,:countrieslist]
   before_action :set_impl_aggregation, only: [:show,:edit, :update, :destroy, :restart_worker, :datacasts,:reset_country_data]
   layout :styleguide_aware_layout
 

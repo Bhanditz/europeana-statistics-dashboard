@@ -56,7 +56,6 @@ class Core::Datacast < ActiveRecord::Base
   after_create :after_create_set
 
   #SCOPES
-  scope :ready, ->{where("properties->'error' != ?","''").where.not(last_run_at: nil)}
   scope :reusable, -> {where("core_datacasts.name LIKE '% - Reusables'")}
   scope :top_country, -> {where("core_datacasts.name LIKE '% - Top Countries'")}
   scope :top_digital_objects, -> {where("core_datacasts.name LIKE '% - Top Digital Objects'")}

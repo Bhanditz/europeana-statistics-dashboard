@@ -64,4 +64,4 @@
 
   #datacasts.tab-pane{role: 'tabpanel'}
     - if @core_datacasts.count > 0
-      = render partial: "core/datacasts/index", locals: {core_datacasts: @core_datacasts}
+      = render partial: "core/datacasts/index", locals: {sudo: @sudo, core_project: @core_project, account: @account, impl_aggregation: @impl_aggregation, core_datacasts: @core_datacasts}

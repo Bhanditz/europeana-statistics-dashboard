@@ -1,8 +1,8 @@
 - if ["new",'create'].include?(action_name)
-  - url = account_project_impl_reports_path(@account,@core_project)
+  - url = account_project_impl_reports_path(@account, @core_project)
   - method = "post"
 - else
-  - url = account_project_impl_report_path(@account,@core_project, @impl_report)
+  - url = account_project_impl_report_path(@account, @core_project, @impl_report)
   - method = "put"
 
 
