@@ -23,6 +23,7 @@
                 %tr
                   %td
                     = link_to impl_report.name, manual_report_path(impl_report)
-                  %td.hint= "#{time_ago_in_words(impl_report.updated_at)} ago"
+                  %td.hint= timeago(impl_report.updated_at)
+                  / "#{time_ago_in_words(impl_report.updated_at)} ago"
                   %td= link_to 'Edit', edit_account_project_impl_report_path(@core_project.account, @core_project, impl_report)
                   %td= icon_del(account_project_impl_report_path(@core_project.account, @core_project, impl_report))

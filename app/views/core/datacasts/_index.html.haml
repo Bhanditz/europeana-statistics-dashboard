@@ -25,7 +25,8 @@
             .hint{style: "color: red;"}=h core_datacast.error
         %td.hint
           - if core_datacast.last_run_at.present?
-            = time_ago_in_words(core_datacast.last_run_at)
+            = timeago(core_datacast.last_run_at)
+            / time_ago_in_words(core_datacast.last_run_at)
           - if core_datacast.count_of_queries.present?
             %br
             = core_datacast.count_of_queries
@@ -39,7 +40,8 @@
             = core_datacast.number_of_columns
         %td.hint
           - if core_datacast.last_data_changed_at.present?
-            = time_ago_in_words(core_datacast.last_data_changed_at)
+            = timeago(core_datacast.last_data_changed_at)
+            /time_ago_in_words(core_datacast.last_data_changed_at)
           - if core_datacast.average_execution_time.present?
             %br
             = core_datacast.average_execution_time.to_f.ceil

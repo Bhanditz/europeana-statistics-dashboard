@@ -10,11 +10,9 @@ class AddMoreIndexes < ActiveRecord::Migration
 
     add_index "core_projects", ["account_id"], name: "core_projects_account_id"
 
-    add_index "core_session_impls", ["account_id"], name: "core_session_impls_core_viz_id"
+    add_index "core_session_impls", ["core_viz_id"], name: "core_session_impls_core_viz_id"
+
     add_index "core_themes", ["account_id"], name: "core_themes_account_id"
-
-
-
 
     add_index "core_vizs", ["core_project_id"], name: "core_vizs_core_project_id"
 

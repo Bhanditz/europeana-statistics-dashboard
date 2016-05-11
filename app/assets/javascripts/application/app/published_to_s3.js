@@ -6,4 +6,7 @@ $(document).ready(function() {
     $("#s3-published-requested-at").html($(this).attr("s3-requested-at"));
     event.preventDefault();
   });
+
+
+  $("time.timeago").timeago();
 });

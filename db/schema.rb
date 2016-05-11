@@ -138,8 +138,8 @@ ActiveRecord::Schema.define(version: 20160511104940) do
     t.integer  "core_viz_id"
   end
 
-  add_index "core_session_impls", ["account_id"], name: "core_session_impls_core_viz_id", using: :btree
   add_index "core_session_impls", ["account_id"], name: "index_core_session_impls_on_account_id", using: :btree
+  add_index "core_session_impls", ["core_viz_id"], name: "core_session_impls_core_viz_id", using: :btree
   add_index "core_session_impls", ["session_id"], name: "index_core_session_impls_on_session_id", unique: true, using: :btree
 
   create_table "core_sessions", force: :cascade do |t|

@@ -30,10 +30,10 @@ var renderFilter = function(data,metric,id){
 		html_string = smallDropDown(id,values,length);
 	}
 	else{
-		html_string = largeDropDown(id,values,length);	
+		html_string = largeDropDown(id,values,length);
 	}
 	return html_string;
-} 
+}
 //Render dropdown less than or equal to 5
 var smallDropDown = function(id,values,length){
 	var html_string = '<select id='+id+' class="form-control" style="width:12.5%!important">';
@@ -52,7 +52,7 @@ var largeDropDown = function(id,values,length){
 		}
 		html_string += '</select>';
 		return html_string;
-}	
+}
 
 //Set up the data json once so that we don't need to call service again.It is saved in return_data object
 var getJSON = function(url,callbackfn){
