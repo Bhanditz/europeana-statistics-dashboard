@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160308052908) do
+ActiveRecord::Schema.define(version: 20160511104940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(version: 20160308052908) do
 
   create_table "core_datacast_outputs", force: :cascade do |t|
     t.string   "datacast_identifier", null: false
-    t.integer  "core_datacast_id",    null: false
     t.text     "output"
     t.text     "fingerprint"
     t.datetime "created_at",          null: false
@@ -54,20 +53,6 @@ ActiveRecord::Schema.define(version: 20160308052908) do
   end
 
   add_index "core_datacast_outputs", ["datacast_identifier"], name: "index_core_datacast_outputs_on_datacast_identifier", unique: true, using: :btree
-
-  create_table "core_datacast_pulls", force: :cascade do |t|
-    t.integer  "core_project_id"
-    t.text     "file_url"
-    t.boolean  "first_row_header"
-    t.string   "status"
-    t.text     "error_messages"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "core_db_connection_id"
-    t.string   "table_name"
-  end
 
   create_table "core_datacasts", force: :cascade do |t|
     t.integer  "core_project_id"
@@ -90,6 +75,8 @@ ActiveRecord::Schema.define(version: 20160308052908) do
     t.string   "table_name"
   end
 
+  add_index "core_datacasts", ["core_db_connection_id"], name: "core_datacasts_core_db_connection_id", using: :btree
+  add_index "core_datacasts", ["core_project_id"], name: "core_datacasts_core_project_id", using: :btree
   add_index "core_datacasts", ["identifier"], name: "index_core_datacasts_on_identifier", unique: true, using: :btree
 
   create_table "core_db_connections", force: :cascade do |t|
@@ -102,6 +89,8 @@ ActiveRecord::Schema.define(version: 20160308052908) do
     t.datetime "updated_at"
     t.integer  "core_project_id"
   end
+
+  add_index "core_db_connections", ["core_project_id"], name: "core_db_connections_core_project_id", using: :btree
 
   create_table "core_permissions", force: :cascade do |t|
     t.integer  "account_id"
@@ -117,6 +106,8 @@ ActiveRecord::Schema.define(version: 20160308052908) do
     t.integer  "core_project_id"
   end
 
+  add_index "core_permissions", ["account_id"], name: "core_permissions_account_id", using: :btree
+  add_index "core_permissions", ["core_project_id"], name: "core_permissions_core_project_id", using: :btree
   add_index "core_permissions", ["email"], name: "index_core_permissions_on_email", using: :btree
 
   create_table "core_projects", force: :cascade do |t|
@@ -131,6 +122,7 @@ ActiveRecord::Schema.define(version: 20160308052908) do
     t.integer  "updated_by"
   end
 
+  add_index "core_projects", ["account_id"], name: "core_projects_account_id", using: :btree
   add_index "core_projects", ["properties"], name: "projects_properties", using: :gin
   add_index "core_projects", ["slug"], name: "index_core_projects_on_slug", using: :btree
 
@@ -146,6 +138,7 @@ ActiveRecord::Schema.define(version: 20160308052908) do
     t.integer  "core_viz_id"
   end
 
+  add_index "core_session_impls", ["account_id"], name: "core_session_impls_core_viz_id", using: :btree
   add_index "core_session_impls", ["account_id"], name: "index_core_session_impls_on_account_id", using: :btree
   add_index "core_session_impls", ["session_id"], name: "index_core_session_impls_on_session_id", unique: true, using: :btree
 
@@ -180,6 +173,8 @@ ActiveRecord::Schema.define(version: 20160308052908) do
     t.datetime "updated_at"
   end
 
+  add_index "core_themes", ["account_id"], name: "core_themes_account_id", using: :btree
+
   create_table "core_time_aggregations", force: :cascade do |t|
     t.string   "aggregation_level"
     t.string   "parent_type"
@@ -197,19 +192,6 @@ ActiveRecord::Schema.define(version: 20160308052908) do
 
   add_index "core_time_aggregations", ["parent_type", "parent_id"], name: "parent_type_parent_id_index", using: :btree
 
-  create_table "core_tokens", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "core_project_id"
-    t.string   "api_token"
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-  end
-
-  add_index "core_tokens", ["api_token"], name: "index_core_tokens_on_api_token", using: :btree
-
   create_table "core_vizs", force: :cascade do |t|
     t.integer  "core_project_id"
     t.hstore   "properties"
@@ -226,6 +208,7 @@ ActiveRecord::Schema.define(version: 20160308052908) do
   end
 
   add_index "core_vizs", ["core_datacast_identifier"], name: "index_core_vizs_on_core_datacast_identifier", using: :btree
+  add_index "core_vizs", ["core_project_id"], name: "core_vizs_core_project_id", using: :btree
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
@@ -284,6 +267,7 @@ ActiveRecord::Schema.define(version: 20160308052908) do
     t.date     "last_updated_at"
   end
 
+  add_index "impl_aggregations", ["core_project_id"], name: "impl_aggregations_core_project_id", using: :btree
   add_index "impl_aggregations", ["genre"], name: "impl_aggregation_genre_index", using: :btree
 
   create_table "impl_blacklist_datasets", force: :cascade do |t|
@@ -336,6 +320,9 @@ ActiveRecord::Schema.define(version: 20160308052908) do
     t.string   "impl_aggregation_genre"
   end
 
+  add_index "impl_reports", ["core_project_id"], name: "impl_reports_core_project_id", using: :btree
+  add_index "impl_reports", ["core_template_id"], name: "impl_reports_core_template_id", using: :btree
+  add_index "impl_reports", ["impl_aggregation_id"], name: "impl_reports_impl_aggregation_id", using: :btree
   add_index "impl_reports", ["slug"], name: "index_impl_report_on_slug_for_europeana", where: "((impl_aggregation_genre)::text = 'europeana'::text)", using: :btree
   add_index "impl_reports", ["slug"], name: "index_impl_report_on_slug_for_manual_reports", where: "(impl_aggregation_genre IS NULL)", using: :btree
   add_index "impl_reports", ["slug"], name: "index_impl_reports_on_slug_for_country", where: "((impl_aggregation_genre)::text = 'country'::text)", using: :btree
