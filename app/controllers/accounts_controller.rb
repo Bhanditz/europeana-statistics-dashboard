@@ -27,17 +27,17 @@ class AccountsController < ApplicationController
   #------------------------------------------------------------------------------------------------------------------
   # CRUD
 
-  def edit
-  end
+  # def edit
+  # end
 
-  def update
-    if @account.update(account_params)
-      redirect_to _edit_account_path(@account), notice: t("u.s")
-    else
-      flash.now.alert = t("u.f")
-      render :edit
-    end
-  end
+  # def update
+  #   if @account.update(account_params)
+  #     redirect_to _edit_account_path(@account), notice: t("u.s")
+  #   else
+  #     flash.now.alert = t("u.f")
+  #     render :edit
+  #   end
+  # end
 
   #------------------------------------------------------------------------------------------------------------------
   # OTHER

@@ -29,5 +29,4 @@ namespace :seed do
       c.save
     end
   end
-
 end

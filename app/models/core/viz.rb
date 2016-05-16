@@ -36,7 +36,6 @@ class Core::Viz < ActiveRecord::Base
 
   #CALLBACKS
   before_create :before_create_set
-  after_create :after_create_set
 
   #SCOPES
   scope :reusable, -> {where("core_vizs.name LIKE '%- Reusables'")}
