@@ -80,9 +80,6 @@ module Impl
             path: asset_path('application.js')
           },
           {
-            path: asset_path('accounts.js')
-          },
-          {
             path: asset_path('reports.js')
           },
           {
@@ -144,7 +141,7 @@ module Impl
       def get_data_providers
         {
           title: "Cultural institutions sharing collections",
-          value: @impl_aggregation.genre == "europeana" ? 3521 : @impl_aggregation.child_data_providers.count,
+          # value: @impl_aggregation.genre == "europeana" ? 3521 : @impl_aggregation.child_data_providers.count,
           description: "Thousands of cultural institutions share their digital collections via Europeana. <a href='http://europeana.eu/portal/browse/sources' target='_blank'>Click here for the full list</a>."
         }
       end
@@ -152,7 +149,7 @@ module Impl
       def get_countries_count
         {
           title: "Countries sharing collections",
-          value: @impl_aggregation.impl_outputs.where(genre: "top_country_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
+          # value: @impl_aggregation.impl_outputs.where(genre: "top_country_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
           description: false
         }
       end
@@ -160,7 +157,7 @@ module Impl
       def get_providers_count
         {
           title: "Aggregators sharing collections",
-          value: @impl_aggregation.impl_outputs.where(genre: "top_provider_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
+          # value: @impl_aggregation.impl_outputs.where(genre: "top_provider_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
           description: "Working between Europeana and the cultural heritage institutions are aggregators. They act as intermediaries, harvesting data from the institutions. <a href='http://europeana.eu/portal/browse/sources'>Click here for the full list</a>."
         }
       end

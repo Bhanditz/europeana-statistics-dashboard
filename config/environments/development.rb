@@ -33,8 +33,7 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
   config.assets.precompile += [
-    'accounts.js', 'core_projects.js', 'core_themes.js', 'data_stores.js', 'vizs.js',"datacast.js",
-    "articles.js", "reports.js", "europeana.css","new_report.js","ga.js","hotjar.js","homepage.js"
+    "reports.js", "europeana.css", "new_report.js", "homepage.js"
   ]
 
   # Raises error for missing translations

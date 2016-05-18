@@ -33,10 +33,4 @@ class Core::ProjectsController < ApplicationController
     @core_project = @account.core_projects.find(params[:project_id])
     # @core_project = Core::Project.where(account_id: @account.id).friendly.find(params[:id].blank? ? params[:project_id] : params[:id])
   end
-
-  def core_project_params
-    params.require(:core_project).permit(:account_id, :name, :is_public,
-                                    :description, :license) #hstore - properties
-  end
-
 end

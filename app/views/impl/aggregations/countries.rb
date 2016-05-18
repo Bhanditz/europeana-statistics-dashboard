@@ -64,7 +64,7 @@ module Impl
                   },
                   {
                     url: @about_report.present? ? manual_report_path(@about_report) : false,
-                    text: @about_report.present? ? About : ""
+                    text: @about_report.present? ? "About" : ""
                   }
                 ]
               }

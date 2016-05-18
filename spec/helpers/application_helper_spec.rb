@@ -46,17 +46,17 @@ RSpec.describe ApplicationHelper, :type => :helper do
 
 
   describe 'generate report status html indicator', type: :helper do
-    # it 'should return a html string with class signal sig-red' do
-    #   impl = Impl::Aggregation.first
-    #   indicator = get_impl_status(impl)
-    #   expect(indicator).to eq("<div class='signal sig-red'></div>")
-    # end
+    it 'should return a html string with class signal sig-red' do
+      impl = Impl::Aggregation.last
+      indicator = get_impl_status(impl)
+      expect(indicator).to eq("<div class='signal sig-red'></div>")
+    end
 
-    # it 'should return a html string with class signal sig-gray' do
-    #   impl = Impl::Aggregation.first
-    #   indicator = get_impl_status(impl)
-    #   expect(indicator).to eq("<div class='signal sig-gray'></div>")
-    # end
+    it 'should return a html string with class signal sig-gray' do
+      impl = Impl::Aggregation.fourth
+      indicator = get_impl_status(impl)
+      expect(indicator).to eq("<div class='signal sig-gray'></div>")
+    end
 
     it 'should return a html string with class signal sig-green' do
       impl = Impl::Aggregation.first

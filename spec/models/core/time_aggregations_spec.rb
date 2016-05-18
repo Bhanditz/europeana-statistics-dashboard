@@ -52,32 +52,26 @@ RSpec.describe Core::TimeAggregation, type: :model do
     end
   end
 
-  # context '#create_aggregations' do
-  #   it 'should create a new Core::Aggregation and save it' do
+  context '#create_aggregations' do
+    it 'should create a new Core::Aggregation and save it' do
 
-  #     data = [{"pageviews" => "123.231", "month" => "02", "year" => "01", "digital_object" => "This is a sample text."}]
-  #     aggregation_level = "monthly"
-  #     parent_id = -1
-  #     parent_type = 'TestImpl:TestOutput'
-  #     metric = 'pageviews'
-  #     output_type = "digital_object"
+      data = [{"pageviews" => "123.231", "month" => "02", "year" => "01", "digital_object" => "This is a sample text."}]
+      aggregation_level = "monthly"
+      parent_id = 1
+      parent_type = 'Impl::Aggregation'
+      metric = 'pageviews'
+      output_type = "digital_object"
 
-  #     impl_op = Impl::Output.where(impl_parent_id: parent_id, impl_parent_type: parent_type, genre: output_type, key: output_type, value: data[output_type]).first
-  #     expect(impl_op).to eq(nil)
+      previous_count = Core::TimeAggregation.count
+      new_row = Core::TimeAggregation.create_aggregations(data, aggregation_level, parent_id, parent_type, metric, output_type)
+      new_count =  Core::TimeAggregation.count
 
-  #     new_row = Core::TimeAggregation.create_aggregations(data, aggregation_level, parent_id, parent_type, metric, output_type)
+      expect(new_count).not_to eq(previous_count)
 
-  #     impl_op = Impl::Output.where(impl_parent_id: parent_id, impl_parent_type: parent_type, genre: output_type, key: output_type, value: data[output_type]).first
-  #     expect(impl_op.id.class).to eq(Fixnum)
-
-  #     previous = Core::TimeAggregation.where(parent_type: parent_type, parent_id: parent_id, metric: metric, aggregation_level: aggregation_level).first
-  #     expect(previous.id.class).to eq(Fixnum)
-
-  #     expect(new_row).to eq(data)
-  #     impl_op.delete
-  #     previous.delete
-  #   end
-  # end
+      expect(new_row).to eq(data)
+      Core::TimeAggregation.last.delete
+    end
+  end
 
 
 

@@ -22,8 +22,7 @@ Rumali.autoCharts = (function(){
 			table_length = table_data.tables.length;
 		chart_data.year_no = gon.current_year;
 		chart_data.month = gon.current_month;
-		// loadYearMenuBar();//year filter
-		// loadQuarterMenuBar();//quarter filter
+
 		//loop to consider pykih charts loop
 		for(;index<charts_length;index++){
 			var api_data = chart_data.charts[index].dataset.api; //Getting api data attribute of the chart
@@ -54,7 +53,6 @@ Rumali.autoCharts = (function(){
 			id = table_data.tables[index].id;
 			//id which specifies on which html tag table needs to be rendered.
 			utility.getJSONforTable(global_obj.datacast_url+table_data.tables[index].dataset.datacast_identifier,id,renderHTMLForTable);
-			//renderHTMLForTable(table_json,i);
 		}
 		Handlebars.registerHelper('trimString', function(passedString) {
 			if(!passedString){
@@ -214,11 +212,9 @@ Rumali.autoCharts = (function(){
 					selector: selector,//Getting id for the element as expected by the pykihcharts.
 					data:data,
 					color_mode: "color",
-					//chart_color: ["#B0E2FF","#60AFFE"],
 					chart_color: ["#1A8AC7","#095F90","#4BC0F0"],
 					data_sort_enable: "no",
 					axis_x_time_value_datatype:"month",
-					// multiLineChart: true,
 					chart_width: 1200
 				};
 			var chartobj = new PykCharts.multiD.multiSeriesLine(
@@ -228,11 +224,9 @@ Rumali.autoCharts = (function(){
 			chartobj.execute();
 
 			document.getElementById($(obj).attr('id')).style.width = "100%";
-			// debugger;
 			var resize = chartobj.k.resize(chartobj.svgContainer);
         chartobj.k.__proto__._ready(resize);
         window.addEventListener('resize', function(event){
-        	// debugger;
             return chartobj.k.resize(chartobj.svgContainer);
         });
 
@@ -257,26 +251,17 @@ Rumali.autoCharts = (function(){
 					selector: selector,//Getting id for the element as expected by the pykihcharts.
 					data:data,
 					//Api for fetching the data.
-			      	export_enable: "no",
-			      	map_code: "world",
-			      	chart_height: '700',//height of the chart
-			      	chart_width:'1000',
-			      	tooltip_enable: "yes", //enabling tool tip for the gven chart
-			      	//palette_color:"Red",
-			      	//total_no_of_colors: 5,
-			      	default_color:["#E4E4E4"],//,
-					    color_mode: "saturation",
-							//chart_color: ["#B0E2FF","#60AFFE"],
-							saturation_color: "#4BC0F0",
-
-			      	// saturation_color: "#255AEE",
-			      	// color_mode: "saturation"
+	      	export_enable: "no",
+	      	map_code: "world",
+	      	chart_height: '700',//height of the chart
+	      	chart_width:'1000',
+	      	tooltip_enable: "yes", //enabling tool tip for the gven chart
+	      	default_color:["#E4E4E4"],
+			    color_mode: "saturation",
+					saturation_color: "#4BC0F0"
 				};
 
-			var chartobj = new PykCharts.maps.oneLayer(
-						loadonedmap_obj
-					);
-
+			var chartobj = new PykCharts.maps.oneLayer(loadonedmap_obj);
 			chartobj.execute();
 		}
 
@@ -381,134 +366,11 @@ Rumali.autoCharts = (function(){
 		var error_html =  "<span id=error_"+selector+">"+(custommesg ? custommesg : defaultmesg)+"</span>";
 		$(error_html).insertBefore("#"+selector);
 	};
+
 	//removing a div for error
 	var removeErrorDiv = function(selector){
 		$('#error_'+selector).remove();
 	};
-
-	var renderHTMLForTable = function(data,id){
-		var i =0,
-			title = '',
-			rank_for_country = '',
-			rank_for_country_diff = '',
-			rank_for_europeana = '',
-			rank_for_europeana_diff = '',
-			value = '',
-			is_positive_diff = '',
-			diff_value = '',
-			value_contribution_for_country = '',
-			value_contribution_for_europeana = '',
-			htmlcontent = '';
-
-		htmlcontent += '<span class = "col-sm-12 box_layout border_top">';
-		htmlcontent += '<span class = "col-sm-12 box_layout_header_span">';
-		htmlcontent += '<span class = "col-sm-3 box_layout_header"><b>Metric';
-		htmlcontent += '</b></span>';
-		htmlcontent += '<span class = "col-sm-4 box_layout_header"><b>Rank';
-		htmlcontent += '</b></span>';
-		htmlcontent += '<span class = "col-sm-5 box_layout_header"><b>Value';
-		htmlcontent += '</b></span>';
-		htmlcontent += '</span>';
-		htmlcontent += '<span class = "col-sm-12">';
-		htmlcontent += '<span class = "col-sm-3"></span>';
-		/* Add it when it is applied
-			htmlcontent += '<span class = "col-sm-4 box_layout_header_subtitle">Country/Europeana</span>';
-		*/
-		htmlcontent += '<span class = "col-sm-4 box_layout_header_subtitle">Europeana</span>';
-		htmlcontent += '</span>';
-
-		//running loop for each row within the html
-
-		for(i=0;i<data.length;i++){
-
-			title = data[i].metric;
-			rank_for_europeana = data[i].rank_for_europeana;
-			rank_for_europeana_diff = data[i].diff_in_rank_for_europeana;
-			value = data[i].value_of_last_month;
-			value_contribution_for_europeana = data[i].contribution_to_europeana;
-			diff_value = data[i].diff_value;
-			htmlcontent += '<span class = "col-sm-12 border_top">';
-			htmlcontent += '<span class = "col-sm-3 text-center">';
-			//Title logic
-			htmlcontent += utility.renderHTMLforTableTitle(title);
-
-			htmlcontent += '</span>';
-
-			htmlcontent += '<span class = "col-sm-4 text-center">';
-			//Ranking logic
-			htmlcontent += renderHTMLforTableRank(rank_for_country,rank_for_country_diff,rank_for_europeana,rank_for_europeana_diff);
-
-			htmlcontent += '</span>';
-
-			htmlcontent += '<span class = "col-sm-5 text-right">';
-			//value logic
-			htmlcontent += renderHTMLforTableValue(value,diff_value,value_contribution_for_country,value_contribution_for_europeana);
-			htmlcontent += '</span>';
-
-			htmlcontent += '</span>';
-
-		}
-
-		htmlcontent += '<span class = "col-sm-12 border_top box_layout_header_subtitle">';
-		htmlcontent += '* % in value indicates contribution to Europeana.';
-		htmlcontent += '</span>';
-
-		htmlcontent += '</span>';
-
-		$('#'+id).html(htmlcontent);
-		$('.positive_value_css').tooltip();
-		$('.negative_value_css').tooltip();
-	}
-
-	//Rendering string for rank column only
-	var renderHTMLforTableRank = function(rank_for_country,rank_for_country_diff,rank_for_europeana,rank_for_europeana_diff){
-		var string = '<span class="col-sm-12">';
-		string += '<span class="important_val">';
-		string += rank_for_europeana + '</span>(' ;
-		if(rank_for_europeana_diff > 0){
-			string += '<span class="'+utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.negative)+'">';
-			string += rank_for_europeana_diff + ' &#9660;';
-		}
-		else if(rank_for_europeana_diff < 0){
-			string += '<span class="'+utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.positive)+'">';
-			string += (rank_for_europeana_diff*-1)+ ' &#9652;';
-		}
-		else{
-			string += '<span class="'+utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.no_change)+' ">';
-			string += (rank_for_europeana_diff*-1)+ ' -';
-		}
-
-		string += '</span>';
-		string += ')';
-
-		string += '</span>';
-		return string;
-	}
-
-	//Rendering html for value table
-	var renderHTMLforTableValue = function(value,diff_value,value_contribution_for_country,value_contribution_for_europeana){
-		var string = '<span class="col-sm-12">';
-		var cond_class = '';
-		if(+diff_value > 0){
-			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.positive);
-		}
-		else if(+diff_value < 0){
-			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.negative);
-		}
-		else{
-			cond_class = utility.applyConditionalCssPositiveOrNegative(Rumali.object.value_change.no_change);
-		}
-		string += '<span class='+cond_class+' data-toggle="tooltip" data-placement="bottom" data-original-title="'+utility.calculateChangeFromPreviousValue(value,diff_value)+'">';
-		string += utility.applyConditionalFormatting(value);
-		string += '</span>(';
-		//assiging value and conditional css to it.
-		/* Add it later
-		string += '('+(value_contribution_for_country)+'% / '
-		*/
-		string += value_contribution_for_europeana+'% )';
-		string += '</span>';
-		return string;
-	}
 
 	var filterTopDigitalObjectsData = function(filter_details){
 		loadTop10digitalObject(top_digital_objects,filter_details);

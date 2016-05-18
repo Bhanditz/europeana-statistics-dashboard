@@ -56,6 +56,7 @@ class Core::Datacast < ActiveRecord::Base
   after_create :after_create_set
 
   #SCOPES
+  scope :top_digital_objects, -> {where("core_datacasts.name LIKE '% - Top Digital Objects'")}
   #CUSTOM SCOPES
   #OTHER
   #FUNCTIONS
