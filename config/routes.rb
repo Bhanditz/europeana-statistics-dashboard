@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   devise_for :accounts, :path => 'accounts', :path_names => {:sign_up => 'secret_signup_only'}
 
-  resources :accounts, only:[:edit, :update] do
+  resources :accounts, only:[] do
     namespace :core do
       resources :projects, only:[:show] do
         get "members", on: :member
@@ -13,10 +13,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :accounts, only:[:edit, :update] do
+  resources :accounts, only:[] do
       resources :projects do
         namespace :impl do
-          resources :aggregations, except:[:new] do
+          resources :aggregations, except:[:show, :new] do
             get "restart_worker", on: :member
           end
           resources :blacklist_datasets, only: [:index,:create,:destroy]
