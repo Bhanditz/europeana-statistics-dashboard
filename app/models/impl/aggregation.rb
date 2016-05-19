@@ -108,7 +108,7 @@ class Impl::Aggregation < ActiveRecord::Base
   def self.create_or_find_aggregation(name, genre, core_project_id)
     aggregation = where(name:name, genre: genre, core_project_id: core_project_id).first
     if aggregation.nil?
-      aggregation = create({name: name, genre: genre, wikiname: nil,core_project_id: core_project_id, status: ""})
+      aggregation = create({name: name, genre: genre, core_project_id: core_project_id, status: ""})
     end
     aggregation
   end

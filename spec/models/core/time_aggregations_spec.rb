@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Core::TimeAggregation, type: :model do
-  context 'GOOGLE ANALYTICS query string' do
+  context '#fetch_aggregation_value' do
     it "should return a proper quarterly query" do
       string = Core::TimeAggregation.fetch_aggregation_value("quarterly", "2016", "1")
       expect(string).to eq('2016_Q1')
@@ -72,6 +72,32 @@ RSpec.describe Core::TimeAggregation, type: :model do
       Core::TimeAggregation.last.delete
     end
   end
+
+  context '#create_digital_objects_aggregation' do
+    it 'should return a digital_objects_aggregation record' do
+      digital_objects_data = [{
+        "month" => "03",
+        "year" => "2016",
+        "size" => "20144"
+      }]
+      aggregation_level = "monthly"
+      data_provider_id = -1
+
+      impl_op = Impl::Output.where(genre: "top_digital_objects").first
+      digital_objects_data[0]['title_url'] = impl_op.title_url
+      digital_objects_data[0]['image_url'] = impl_op.image_url
+      digital_objects_data[0]['title'] = impl_op.title
+
+      previous_count = Core::TimeAggregation.count
+      new_row = Core::TimeAggregation.create_digital_objects_aggregation(digital_objects_data, aggregation_level, data_provider_id)
+      new_count =  Core::TimeAggregation.count
+
+      expect(new_count).not_to eq(previous_count)
+      expect(new_row).to eq(digital_objects_data)
+      # Core::TimeAggregation.last.delete
+    end
+  end
+
 
 
 
