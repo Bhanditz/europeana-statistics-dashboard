@@ -121,10 +121,10 @@ RSpec.describe Impl::Aggregation, type: :model do
       dimensions = "ga:month,ga:year"
       filters = "#{data_provider.get_aggregated_filters};ga:pagePath=~/portal/record/"
       sort = "ga:year,ga:month"
-      ga_data = [["03", "2016", "43"], nil, nil]
+      ga_data = [["03", "2016", "43"]]
 
       query_data = Impl::Aggregation.get_ga_data(start_date, end_date, metrics, dimensions, filters, sort)
-      expect(ga_data).to eq(ga_data)
+      expect(query_data).to eq(ga_data)
     end
   end
 

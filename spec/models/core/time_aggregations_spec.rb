@@ -12,12 +12,12 @@ RSpec.describe Core::TimeAggregation, type: :model do
       expect(string).to eq("2016_February")
     end
 
-     it "should return a proper half_yearly query" do
+    it "should return a proper half_yearly query" do
       string = Core::TimeAggregation.fetch_aggregation_value("half_yearly", "2016", "1")
       expect(string).to eq("2016_H1")
     end
 
-     it "should return a proper yearly query" do
+    it "should return a proper yearly query" do
       string = Core::TimeAggregation.fetch_aggregation_value("yearly", "2016", "1")
       expect(string).to eq("2016")
     end
@@ -97,8 +97,4 @@ RSpec.describe Core::TimeAggregation, type: :model do
       # Core::TimeAggregation.last.delete
     end
   end
-
-
-
-
 end

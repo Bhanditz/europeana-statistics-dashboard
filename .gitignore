@@ -29,6 +29,7 @@ dump.rdb
 /config/redis.yml
 /.env
 coverage
+rails_best_practices_output.html
 
 app/assets/javascripts/application/zlib/*.js
 *.pyc
