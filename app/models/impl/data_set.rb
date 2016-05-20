@@ -49,7 +49,9 @@ class Impl::DataSet < ActiveRecord::Base
   def self.find_or_create(data_set_name)
     a = where(name: data_set_name).first
     if a.blank?
-      a = create!({name: data_set_name})
+      a = new({name: data_set_name})
+      a.id = Impl::DataSet.last.present? ? Impl::DataSet.last.id + 1 : 1
+      a.save
     end
     a
   end

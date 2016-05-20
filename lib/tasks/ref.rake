@@ -1,5 +1,4 @@
 #rake ref:load
-require 'json/pure'
 namespace :ref do
 
   task load: :environment do
@@ -28,7 +27,7 @@ namespace :ref do
       cc_code          = line[8] || SecureRandom.hex(3) #it produces a random hex code when no combination_code is present in the csv
       source           = line[9]
       file_path        = line[10]
-      map              = JSON.parse(line[11]).to_json
+      map              = line[11]
 
       Ref::Chart.create!({
                 name: name,
@@ -52,7 +51,7 @@ namespace :ref do
     CSV.read("ref/theme.csv").each_with_index do |line,index|
       next if index == 0 #skipping header
       name           = line[0]
-      config         = JSON.parse(line[1]).to_json
+      config         = line[1]
       account_id     = line[2]
       sort_order     = line[3]
       image_url      = line[4]

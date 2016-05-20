@@ -39,7 +39,9 @@ class Impl::AggregationRelation < ActiveRecord::Base
   def self.create_or_find(parent_id,parent_genre, child_id, child_genre)
     a = where(impl_parent_id: parent_id, impl_child_id: child_id).first
     if a.nil?
-      a = create({impl_parent_id: parent_id, impl_child_id: child_id, impl_parent_genre: parent_genre, impl_child_genre: child_genre})
+      a = new({impl_parent_id: parent_id, impl_child_id: child_id, impl_parent_genre: parent_genre, impl_child_genre: child_genre})
+      a.id = Impl::AggregationRelation.last.present? ? Impl::AggregationRelation.last.id + 1 : 1
+      a.save
     end
     a
   end

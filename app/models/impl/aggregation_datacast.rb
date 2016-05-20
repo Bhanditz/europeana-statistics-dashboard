@@ -31,7 +31,8 @@ class Impl::AggregationDatacast < ActiveRecord::Base
   def self.find_or_create(impl_aggregation_id, core_datacast_identifier)
     a = where(impl_aggregation_id: impl_aggregation_id, core_datacast_identifier: core_datacast_identifier).first
     if a.blank?
-      a = create({impl_aggregation_id: impl_aggregation_id, core_datacast_identifier: core_datacast_identifier})
+      a = new({impl_aggregation_id: impl_aggregation_id, core_datacast_identifier: core_datacast_identifier})
+      a.id = Impl::AggregationDatacast.last.present? ? Impl::AggregationDatacast.last.id + 1 : 1
     end
     a
   end

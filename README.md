@@ -59,7 +59,24 @@ configuration, place it in the file [ref/theme.csv](ref/theme.csv).
 
 After the configuration is replaced in the ref/theme.csv, we run the task `rake ref:load` to make the changes. All the charts created after the change will have that theme by default.
 
+## Running Test Cases
+
+'bundle exec rake seed:test_tables' runs a Rake tasks to seed Test database.
+
+* Copies Aggregation Data
+* Copies Blacklist Data
+* Copies Datacasts Data
+* Copies Aggregation DataSet Data
+* Copies Aggregation Datacasts Data
+* Copies Aggregation Relations Data
+* Copies DataSets Data
+* Copies Outputs Data
+* Copies Time Aggregation Data
+* Copies Datacast Outputs Data
+
+* Seed Data is kept in ref/seeds folder.
+
 [1]: https://github.com/europeana/europeana-statistics-grape
 [2]: https://github.com/bkeepers/dotenv
-[3]: http://pykcharts.com/tour/pie 
+[3]: http://pykcharts.com/tour/pie
 

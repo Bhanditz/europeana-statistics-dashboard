@@ -41,8 +41,8 @@ RSpec.describe Impl::Aggregation, type: :model do
 
   context '#get_aggregated_filters' do
     it 'should return aggregation Google Analytics filters for europeana' do
-      filters = "ga:hostname=~europeana.eu;ga:pagePath=~/2022702/,ga:pagePath=~/2022702/,ga:pagePath=~/2022702/,ga:pagePath=~/2022702/"
-      aggregation = Impl::Aggregation.fourth
+      filters = "ga:hostname=~europeana.eu;ga:pagePath=~/90402/"
+      aggregation = Impl::Aggregation.last
       expect(aggregation.get_aggregated_filters).to eq(filters)
     end
   end
@@ -59,8 +59,8 @@ RSpec.describe Impl::Aggregation, type: :model do
 
   context '#blacklist_data_set?' do
     it 'should return if the aggregation record is blacklisted or not.' do
-      blacklisted_dataset = Impl::Aggregation.find(4299)
-      expect(blacklisted_dataset.blacklist_data_set?).to eq(true)
+      blacklisted_dataset = Impl::Aggregation.find(631)
+      expect(blacklisted_dataset.blacklist_data_set?).to eq(false)
     end
   end
 
@@ -121,7 +121,7 @@ RSpec.describe Impl::Aggregation, type: :model do
       dimensions = "ga:month,ga:year"
       filters = "#{data_provider.get_aggregated_filters};ga:pagePath=~/portal/record/"
       sort = "ga:year,ga:month"
-      ga_data = [["03", "2016", "43"]]
+      ga_data = [["03", "2016", "7"]]
 
       query_data = Impl::Aggregation.get_ga_data(start_date, end_date, metrics, dimensions, filters, sort)
       expect(query_data).to eq(ga_data)
@@ -131,8 +131,8 @@ RSpec.describe Impl::Aggregation, type: :model do
   context '#get_data_providers_json' do
     it 'should return the data providers data as json' do
       data = {
-        "url"=>"http://localhost:3000/dataprovider/academie-voor-de-streekgebonden-gastronomie",
-        "text"=>"Academie voor de Streekgebonden Gastronomie"
+        "url"=>"http://localhost:3000/dataprovider/dans-knaw",
+        "text"=>"DANS-KNAW"
       }
 
       expected_data = Impl::Aggregation.get_data_providers_json.first
@@ -143,8 +143,8 @@ RSpec.describe Impl::Aggregation, type: :model do
    context '#get_providers_json' do
     it 'should return the providers data as json' do
       data = {
-        "url"=>"http://localhost:3000/provider/3d-coform-consortium",
-        "text"=>"3D-COFORM consortium"
+        "url"=>"http://localhost:3000/provider/locloud",
+        "text"=>"LoCloud"
       }
       expected_data = Impl::Aggregation.get_providers_json.first
       expect(expected_data).to eq(data)
@@ -154,20 +154,8 @@ RSpec.describe Impl::Aggregation, type: :model do
   context '#get_countries_json' do
     it 'should return the countries data as json' do
       data = {
-        "url"=>"http://localhost:3000/country/austria",
-        "text"=>"Austria"
-      }
-
-      expected_data = Impl::Aggregation.get_countries_json.first
-      expect(expected_data).to eq(data)
-    end
-  end
-
-  context '#get_countries_json' do
-    it 'should return the countries data as json' do
-      data = {
-        "url"=>"http://localhost:3000/country/austria",
-        "text"=>"Austria"
+        "url"=>"http://localhost:3000/country/france",
+        "text"=>"France"
       }
 
       expected_data = Impl::Aggregation.get_countries_json.first

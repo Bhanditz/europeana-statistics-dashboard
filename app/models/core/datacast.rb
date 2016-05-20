@@ -63,7 +63,9 @@ class Core::Datacast < ActiveRecord::Base
   def self.create_or_update_by(q,core_project_id,db_connection_id,table_name)
     a = where(name: table_name, core_project_id: core_project_id, core_db_connection_id: db_connection_id).first
     if a.blank?
-      a = create({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, identifier: SecureRandom.hex(33)})
+      a = new({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, identifier: SecureRandom.hex(33)})
+      a.id = Core::Datacast.last.present? ? Core::Datacast.last.id + 1 : 1
+      a.save
     else
       if a.query != q
         a.update_attributes(query: q)
@@ -147,7 +149,9 @@ class Core::Datacast < ActiveRecord::Base
   end
 
   def after_create_set
-    Core::DatacastOutput.create(datacast_identifier: self.identifier)
+    c = Core::DatacastOutput.new(datacast_identifier: self.identifier)
+    c.id = Core::DatacastOutput.last.present? ? Core::DatacastOutput.last.id + 1 : 1
+    c.save
     unless self.table_name.present?
       Core::Datacast::RunWorker.perform_async(self.id)
     end

@@ -25,10 +25,8 @@ gem 'europeana-styleguide', github: 'europeana/europeana-styleguide-ruby', branc
 gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide' # until upstream merges our pull requests
 gem 'dotenv-rails'
 gem 'whenever'
+gem "redis-namespace"
 
-#For Sidekiq Web
-gem 'redis-namespace'
-gem 'sinatra', :require => nil
 
 #Assets related
 gem 'uglifier',     '>= 1.3.0'
@@ -41,8 +39,6 @@ end
 
 group :production do
   gem 'rails_12factor'
-  #For Hosting, Once Richard Comes, we can revert it back to puma
-  gem "unicorn"
 end
 
 group :development do
