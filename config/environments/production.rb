@@ -60,8 +60,9 @@ Rails.application.configure do
 
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-  config.assets.precompile += ['accounts.js', 'core_projects.js',
-                               'core_themes.js', 'data_stores.js', 'vizs.js','embed.js',"datacast.js", "articles.js", "reports.js","europeana.css","new_report.js", "ga.js", "hotjar.js","homepage.js"]
+  config.assets.precompile += [
+    "reports.js", "europeana.css", "new_report.js", "homepage.js"
+  ]
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

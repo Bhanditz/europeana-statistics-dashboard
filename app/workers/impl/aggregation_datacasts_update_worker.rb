@@ -1,7 +1,7 @@
 class Impl::AggregationDatacastsUpdateWorker
   include Sidekiq::Worker
   sidekiq_options backtrace: true
-  
+
   def perform(provider_id)
     provider = Impl::Provider.find(provider_id)
     begin
@@ -11,7 +11,8 @@ class Impl::AggregationDatacastsUpdateWorker
           Core::Datacast::RunWorker.perform_async(d.id)
         end
       end
-    rescue => e
+    rescue
+      nil
     end
   end
 end

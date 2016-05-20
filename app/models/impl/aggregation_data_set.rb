@@ -12,7 +12,7 @@
 class Impl::AggregationDataSet < ActiveRecord::Base
   #GEMS
   self.table_name = "impl_aggregation_data_sets"
-  
+
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
@@ -24,19 +24,8 @@ class Impl::AggregationDataSet < ActiveRecord::Base
   validates :impl_aggregation_id, presence: :true, uniqueness: {scope: :impl_data_set_id}
 
   #CALLBACKS
-  before_create :before_create_set
-  after_create :after_create_set
   #SCOPES
   #CUSTOM SCOPES
   #FUNCTIONS
   #PRIVATE
-  private
-
-  def before_create_set
-    true
-  end
-
-  def after_create_set
-    true
-  end
 end

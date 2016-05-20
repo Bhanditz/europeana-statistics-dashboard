@@ -18,8 +18,8 @@
 
 class Impl::AggregationsController < ApplicationController
 
-  before_action :sudo_project_member!, except: [:providers,:data_providers,:countries,:provider_hit_list,:countrieslist]
-  before_action :set_impl_aggregation, only: [:show,:edit, :update, :destroy, :restart_worker, :datacasts,:reset_country_data]
+  before_action :authenticate_account!, except: [:providers, :data_providers, :countries, :countrieslist]
+  before_action :set_impl_aggregation, only: [:show, :edit, :update, :destroy, :restart_worker]
   layout :styleguide_aware_layout
 
   def index
@@ -40,9 +40,6 @@ class Impl::AggregationsController < ApplicationController
       @impl_data_sets = @impl_aggregation.impl_data_sets
     end
     @core_datacasts = @impl_aggregation.core_datacasts
-  end
-
-  def show
   end
 
   def create
@@ -75,29 +72,21 @@ class Impl::AggregationsController < ApplicationController
   end
 
   def providers
-    @impl_aggregations = Impl::Aggregation.providers
   end
 
   def data_providers
-    @impl_aggregations = Impl::Aggregation.data_providers
   end
 
   def countries
   end
 
   def countrieslist
-    @impl_aggregations = Impl::Aggregation.countries
   end
-
-  def provider_hit_list
-    @core_datacast = Core::Datacast.find_by_name("Europeana Provider Hit List")
-  end
-
 
   private
 
     def set_impl_aggregation
-      @impl_aggregation = Impl::Aggregation.find("#{h (params[:id])}")
+      @impl_aggregation = Impl::Aggregation.find("#{params[:id]}")
     end
 
     def impl_aggregation_params
@@ -105,6 +94,6 @@ class Impl::AggregationsController < ApplicationController
     end
 
     def styleguide_aware_layout
-      ["providers","data_providers","countries","provider_hit_list","countrieslist"].include?(action_name) ? false : 'application'
+      ["providers", "data_providers", "countries", "countrieslist"].include?(action_name) ? false : 'application'
     end
 end

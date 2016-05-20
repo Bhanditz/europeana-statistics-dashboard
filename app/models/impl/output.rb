@@ -25,8 +25,8 @@ class Impl::Output < ActiveRecord::Base
   #ACCESSORS
   store_accessor :properties, :image_url, :title_url, :title, :content
   #ASSOCIATIONS
-  belongs_to :impl_parent,polymorphic: :true
-  has_many :core_time_aggregations,->{where(parent_type: 'Impl::Output')} ,class_name: "Core::TimeAggregation", foreign_key: "parent_id", dependent: :destroy
+  belongs_to :impl_parent, polymorphic: :true
+  has_many :core_time_aggregations, ->{where(parent_type: 'Impl::Output')}, class_name: "Core::TimeAggregation", foreign_key: "parent_id", dependent: :destroy
   has_many :country_code, class_name: "Ref::CountryCode", primary_key: "value", foreign_key: "country"
   #VALIDATIONS
   validates :impl_parent_id, presence: :true
@@ -36,11 +36,8 @@ class Impl::Output < ActiveRecord::Base
 
   #CALLBACKS
   #SCOPES
-  scope :collections, -> {where(genre: "collections" )}
   scope :media_types, -> {where(genre: "media_types" )}
   scope :reusable, -> {where(genre: "reusable")}
-  scope :traffic, -> {where(genre: ["pageviews","events"])}
-  scope :top_countries, -> {where(genre: "top_countries" )}
   scope :top_digital_objects, -> {where(genre: "top_digital_objects")}
   #CUSTOM SCOPES
   #FUNCTIONS
@@ -53,7 +50,7 @@ class Impl::Output < ActiveRecord::Base
     if a.blank?
       a = create({impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre, key: options[:key], value: options[:value]})
     end
-    a 
+    a
   end
 
   def self.update_with_custom_attributes(impl_parent_id, impl_parent_type,options={})
@@ -72,7 +69,5 @@ class Impl::Output < ActiveRecord::Base
     return a
   end
 
-
   #PRIVATE
-  private
 end

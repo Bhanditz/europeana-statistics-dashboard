@@ -15,41 +15,38 @@
 #
 
 class Core::Theme < ActiveRecord::Base
-  
+
   #GEMS
   self.table_name = "core_themes"
-  include WhoDidIt
-   
-  
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
   #ASSOCIATIONS
   belongs_to :account
-  
+
   #VALIDATIONS
   validates :name, presence: true, uniqueness: {scope: :account_id}
   validates :config, presence: true
   #ideally we should write a validation that if user creates a theme then account_id is mandatory
-  
+
   #CALLBACKS
   before_create :before_create_set
-  
+
   #SCOPES
   scope :admin, -> {where("account_id IS NULL")}
   default_scope {order('sort_order ASC')}
   scope :default_theme, -> {where(name: "Default").first}
-  
+
   #CUSTOM SCOPES
   #FUNCTIONS
 
   def to_s
     self.name
   end
-  
+
   #PRIVATE
   private
-  
+
   def before_create_set
     if self.account_id.present?
       self.sort_order = 0
@@ -57,5 +54,5 @@ class Core::Theme < ActiveRecord::Base
     end
     true
   end
-  
+
 end

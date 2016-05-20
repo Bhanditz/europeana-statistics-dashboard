@@ -37,5 +37,4 @@ class Impl::AggregationDatacast < ActiveRecord::Base
   end
 
   #PRIVATE
-  private
 end

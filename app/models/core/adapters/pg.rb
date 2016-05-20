@@ -1,13 +1,13 @@
 class Core::Adapters::Pg
-  
+
   require 'pg'
-  
+
   GET_ALL_TABLES = "SELECT table_name as name FROM information_schema.tables WHERE table_schema != 'pg_catalog' AND table_schema != 'information_schema';"
-  
+
   def self.query_get_all_columns(table_name)
     "SELECT column_name, data_type from information_schema.columns where table_name='#{table_name}';"
   end
-  
+
   def self.run(db, query, format, limit)
     response = {}
     begin
@@ -17,9 +17,9 @@ class Core::Adapters::Pg
       response["number_of_columns"] = data.nfields
       data = data.first(limit) unless limit.nil?
       response["number_of_rows"] = data.count
-      response["query_output"] = format == "2darray" ? Core::DataTransform.twod_array_generate(data) 
-                               : format == "json"    ? Core::DataTransform.json_generate(data) 
-                               : format == "xml"     ? Core::DataTransform.json_generate(data, true) 
+      response["query_output"] = format == "2darray" ? Core::DataTransform.twod_array_generate(data)
+                               : format == "json"    ? Core::DataTransform.json_generate(data)
+                               : format == "xml"     ? Core::DataTransform.json_generate(data, true)
                                : format == "raw"     ? data
                                                      : Core::DataTransform.csv_generate(data)
       response["execute_flag"] = true
@@ -29,11 +29,4 @@ class Core::Adapters::Pg
     end
     return response
   end
-  
-  def self.get_column_meta
-  end
-  
-  def self.get_output_column_meta
-  end
-
 end

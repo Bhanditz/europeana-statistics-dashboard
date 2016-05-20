@@ -70,10 +70,10 @@ FriendlyId.defaults do |config|
   # more like 4.0.
   #
   config.use Module.new {
-     def should_generate_new_friendly_id?
-       slug.blank? ||  username_changed?|| name_changed?
-     end
-   }
+    def should_generate_new_friendly_id?
+      slug.blank? ||  username_changed?|| name_changed?
+    end
+  }
   #
   # FriendlyId uses Rails's `parameterize` method to generate slugs, but for
   # languages that don't use the Roman alphabet, that's not usually suffient. Here

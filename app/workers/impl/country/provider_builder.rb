@@ -11,7 +11,7 @@ class Impl::Country::ProviderBuilder
         if all_providers.present? and all_providers['fields'].present?
           all_providers['fields'].each do |provider|
             provider = Impl::Aggregation.create_or_find_aggregation(provider['label'],'provider',country.core_project_id)
-            country_provider = Impl::AggregationRelation.create_or_find(country_id,"country", provider.id, "provider")
+            Impl::AggregationRelation.create_or_find(country_id,"country", provider.id, "provider")
             query = CGI.escape("COUNTRY:\"#{country.name.downcase}\"  PROVIDER:\"#{provider.name}\"")
             data_providers = JSON.parse(Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=SQkKyghXb&query=#{query}&rows=0&profile=facets,params&facet=DATA_PROVIDER").body)
             if data_providers['facets'].present?
@@ -22,8 +22,8 @@ class Impl::Country::ProviderBuilder
             if data_providers['fields'].present?
               data_providers["fields"].each do |data_provider|
                 data_provider = Impl::Aggregation.create_or_find_aggregation(data_provider['label'],'data_provider',country.core_project_id)
-                country_data_provider = Impl::AggregationRelation.create_or_find(country_id,"country", data_provider.id, "data_provider")
-                provider_data_provider = Impl::AggregationRelation.create_or_find(provider.id, "provider",data_provider.id, "data_provider")
+                Impl::AggregationRelation.create_or_find(country_id,"country", data_provider.id, "data_provider")
+                Impl::AggregationRelation.create_or_find(provider.id, "provider",data_provider.id, "data_provider")
               end
             end
           end

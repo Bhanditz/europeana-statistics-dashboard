@@ -48,14 +48,14 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
           size = digital_object[3].to_i
           begin
             digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split(".")[0]}.json?wskey=SQkKyghXb&profile=full").read)
-          rescue => e
+          rescue
             next
           end
           next if ((digital_object_europeana_data.nil?) or (digital_object_europeana_data["success"] == false))
           image_url = digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'].present? ? digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'] : "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
           begin
             title = digital_object_europeana_data["object"]["proxies"][0]['dcTitle'].first[1].first
-          rescue => e
+          rescue
             title = "No Title Found"
           end
           title_middle_url = digital_object_europeana_data["object"]['europeanaAggregation']['about'].split("/")

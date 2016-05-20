@@ -7,60 +7,60 @@ module Impl
 
       def version
         {
-          "is_beta": @is_beta
+          is_beta: @is_beta
         }
       end
 
       def navigation
         {
-          "global": {
-              "logo": {
-                "url": root_path,
-                'text': "Europeana statistics"
+          global: {
+              logo: {
+                url: root_path,
+                text: "Europeana statistics"
               },
-              "primary_nav": {
-                "menu_id": "main-menu",
-                "items": [
+              primary_nav: {
+                menu_id: "main-menu",
+                items: [
                   {
-                    "text": "Europeana Stats",
-                    "is_current": @impl_aggregation.genre == "europeana",
-                    "url": europeana_report_path
+                    text: "Europeana Stats",
+                    is_current: @impl_aggregation.genre == "europeana",
+                    url: europeana_report_path
                   },
                   {
-                    "text": "Find a dashboard",
-                    "submenu": {
-                      "items": [
+                    text: "Find a dashboard",
+                    submenu: {
+                      items: [
                           {
-                            "url": false,
-                            "text": "Browse Statistics:",
-                            "subtitle": true
+                            url: false,
+                            text: "Browse Statistics:",
+                            subtitle: true
                           },
                           {
-                            "url": countries_path,
-                            "text": "By Country"
+                            url: countries_path,
+                            text: "By Country"
                           },
                           {
-                              "is_divider": true
+                              is_divider: true
                           },
                           {
-                            "url": false,
-                            "text": "Find statistics for an organisation:",
-                            "subtitle": true
+                            url: false,
+                            text: "Find statistics for an organisation:",
+                            subtitle: true
                           },
                           {
-                            "url": providers_path,
-                            "text": "Find an Aggregator"
+                            url: providers_path,
+                            text: "Find an Aggregator"
                           },
                           {
-                            "url": data_providers_path,
-                            "text": "Find an Institution"
+                            url: data_providers_path,
+                            text: "Find an Institution"
                           }
                       ]
                     }
                   },
                   {
-                    "url": @about_report.present? ? manual_report_path(@about_report) : false,
-                    "text": @about_report.present? ? "About" : ""
+                    url: @about_report.present? ? manual_report_path(@about_report) : false,
+                    text: @about_report.present? ? "About" : ""
                   }
                 ]
               }
@@ -78,9 +78,6 @@ module Impl
         [
           {
             path: asset_path('application.js')
-          },
-          {
-            path: asset_path('accounts.js')
           },
           {
             path: asset_path('reports.js')
@@ -144,7 +141,7 @@ module Impl
       def get_data_providers
         {
           title: "Cultural institutions sharing collections",
-          value: @impl_aggregation.genre == "europeana" ? 3521 : @impl_aggregation.child_data_providers.count,
+          # value: @impl_aggregation.genre == "europeana" ? 3521 : @impl_aggregation.child_data_providers.count,
           description: "Thousands of cultural institutions share their digital collections via Europeana. <a href='http://europeana.eu/portal/browse/sources' target='_blank'>Click here for the full list</a>."
         }
       end
@@ -152,7 +149,7 @@ module Impl
       def get_countries_count
         {
           title: "Countries sharing collections",
-          value: @impl_aggregation.impl_outputs.where(genre: "top_country_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
+          # value: @impl_aggregation.impl_outputs.where(genre: "top_country_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
           description: false
         }
       end
@@ -160,7 +157,7 @@ module Impl
       def get_providers_count
         {
           title: "Aggregators sharing collections",
-          value: @impl_aggregation.impl_outputs.where(genre: "top_provider_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
+          # value: @impl_aggregation.impl_outputs.where(genre: "top_provider_counts").first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
           description: "Working between Europeana and the cultural heritage institutions are aggregators. They act as intermediaries, harvesting data from the institutions. <a href='http://europeana.eu/portal/browse/sources'>Click here for the full list</a>."
         }
       end
@@ -176,33 +173,33 @@ module Impl
 
         {
           items: [{
-            "title": "Total views in 2014",
-            "value": helpers.number_with_delimiter(pg_views_2014)
+            title: "Total views in 2014",
+            value: helpers.number_with_delimiter(pg_views_2014)
           },{
-            "title": "Total views in 2015",
-            "value": helpers.number_with_delimiter(pg_views_2015),
-            "trend": pg_views_2014 == 0 ? {} : {
-              "value": (((pg_views_2015 - pg_views_2014).abs.to_f/pg_views_2014)*100).round(2).to_s + "%",
-              "positive": pg_views_2015 > pg_views_2014 ? true : false,
-              "negative": pg_views_2015 < pg_views_2014 ? true : false
+            title: "Total views in 2015",
+            value: helpers.number_with_delimiter(pg_views_2015),
+            trend: pg_views_2014 == 0 ? {} : {
+              value: (((pg_views_2015 - pg_views_2014).abs.to_f/pg_views_2014)*100).round(2).to_s + "%",
+              positive: pg_views_2015 > pg_views_2014 ? true : false,
+              negative: pg_views_2015 < pg_views_2014 ? true : false
             }
           },{
-            "title": "Total views in 2016 (till now)",
-            "value": helpers.number_with_delimiter(pg_views_2016),
+            title: "Total views in 2016 (till now)",
+            value: helpers.number_with_delimiter(pg_views_2016),
           },{
-            "title": "Total click-throughs in 2014",
-            "value": helpers.number_with_delimiter(ct_2014)
+            title: "Total click-throughs in 2014",
+            value: helpers.number_with_delimiter(ct_2014)
           },{
-            "title": "Total click-throughs in 2015",
-            "value": helpers.number_with_delimiter(ct_2015),
-            "trend": ct_2014 == 0 ? {} : {
-              "value": (((ct_2015 - ct_2014).abs.to_f/ct_2014)*100).round(2).to_s + "%",
-              "positive": ct_2015 > ct_2014 ? true : false,
-              "negative": ct_2015 < ct_2014 ? true : false
+            title: "Total click-throughs in 2015",
+            value: helpers.number_with_delimiter(ct_2015),
+            trend: ct_2014 == 0 ? {} : {
+              value: (((ct_2015 - ct_2014).abs.to_f/ct_2014)*100).round(2).to_s + "%",
+              positive: ct_2015 > ct_2014 ? true : false,
+              negative: ct_2015 < ct_2014 ? true : false
             }
           },{
-            "title": "Total click-throughs in 2016 (till now)",
-            "value": helpers.number_with_delimiter(ct_2016)
+            title: "Total click-throughs in 2016 (till now)",
+            value: helpers.number_with_delimiter(ct_2016)
           }]
         }
       end

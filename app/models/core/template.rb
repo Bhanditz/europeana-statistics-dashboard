@@ -24,12 +24,7 @@ class Core::Template < ActiveRecord::Base
   validates :name, presence: true
   validates :genre, presence: true, uniqueness: {scope: :name}
   #CALLBACKS
-  before_create :before_create_set
-  after_create :after_create_set
   #SCOPES
-  scope :default_data_provider_template, -> {where(genre: 'data_providers').first}
-  scope :default_provider_template, -> {where(genre: 'providers').first}
-  scope :default_country_template, -> {where(genre: 'country').first}
   scope :default_europeana_template, -> {where(genre: 'europeana').first}
   #CUSTOM SCOPES
   #FUNCTIONS
@@ -43,15 +38,6 @@ class Core::Template < ActiveRecord::Base
     end
     a
   end
+
   #PRIVATE
-  private
-
-  def before_create_set
-    true
-  end
-
-  def after_create_set
-    true
-  end
-
 end

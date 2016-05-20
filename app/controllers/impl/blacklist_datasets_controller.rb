@@ -1,5 +1,5 @@
 class Impl::BlacklistDatasetsController < ApplicationController
-	before_action :sudo_project_member!
+	before_action :authenticate_account!
 
 	def index
 		@blacklist_datasets = Impl::BlacklistDataset.order(created_at: :desc).page(params[:page]).per(30)

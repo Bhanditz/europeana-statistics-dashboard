@@ -14,7 +14,7 @@ class Aggregations::Europeana::VizBuilder
           filter_present, filter_column_name, filter_column_d_or_m = Aggregations::Europeana::VizBuilder.get_filters(genre)
           ref_chart = Aggregations::Europeana::VizBuilder.get_ref_chart(genre)
           validate = false
-          core_viz = Core::Viz.find_or_create(core_datacast.identifier,core_datacast.name,ref_chart.combination_code,core_datacast.core_project_id,filter_present,filter_column_name,filter_column_d_or_m, validate,true)
+          Core::Viz.find_or_create(core_datacast.identifier,core_datacast.name,ref_chart.combination_code,core_datacast.core_project_id,filter_present,filter_column_name,filter_column_d_or_m, validate,true)
         end
         Aggregations::Europeana::ReportBuilder.perform_async
       rescue => e

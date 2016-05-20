@@ -14,7 +14,7 @@
 class Impl::AggregationRelation < ActiveRecord::Base
   #GEMS
   self.table_name = "impl_aggregation_relations"
-  
+
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
@@ -44,5 +44,4 @@ class Impl::AggregationRelation < ActiveRecord::Base
     a
   end
   #PRIVATE
-  private
 end

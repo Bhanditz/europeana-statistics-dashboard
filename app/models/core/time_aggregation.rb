@@ -20,12 +20,12 @@
 class Core::TimeAggregation < ActiveRecord::Base
   #GEMS
   self.table_name = "core_time_aggregations"
-  
+
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
   #ASSOCIATIONS
-  belongs_to :parent,polymorphic: :true
+  belongs_to :parent, polymorphic: :true
   #VALIDATIONS
   validates :parent_type, presence: :true
   validates :parent_id, presence: :true
@@ -46,7 +46,7 @@ class Core::TimeAggregation < ActiveRecord::Base
         month = d["month"]
         year  = d["year"]
         aggregation_level_value = Core::TimeAggregation.fetch_aggregation_value(aggregation_level,year,month)
-        time_aggregation = Core::TimeAggregation.create_or_update(parent_type, parent_id, metric, aggregation_level, aggregation_level_value, value)
+        Core::TimeAggregation.create_or_update(parent_type, parent_id, metric, aggregation_level, aggregation_level_value, value)
       end
     end
   end
@@ -95,7 +95,7 @@ class Core::TimeAggregation < ActiveRecord::Base
         year  = c["year"]
         value = c[metric]
         aggregation_level_value = Core::TimeAggregation.fetch_aggregation_value(aggregation_level,year,month)
-        time_aggregation = Core::TimeAggregation.create_or_update("Impl::Output", parent_output.id, metric, aggregation_level, aggregation_level_value, value)
+        Core::TimeAggregation.create_or_update("Impl::Output", parent_output.id, metric, aggregation_level, aggregation_level_value, value)
       end
     end
   end
@@ -107,10 +107,10 @@ class Core::TimeAggregation < ActiveRecord::Base
       year  = d["year"]
       value = d["size"]
       aggregation_level_value = Core::TimeAggregation.fetch_aggregation_value(aggregation_level,year,month)
-      time_aggregation = Core::TimeAggregation.create_or_update("Impl::Output", digital_objects_output.id, "pageviews", aggregation_level, aggregation_level_value, value)
+      Core::TimeAggregation.create_or_update("Impl::Output", digital_objects_output.id, "pageviews", aggregation_level, aggregation_level_value, value)
     end
   end
-  
+
   #PRIVATE
   private
 
