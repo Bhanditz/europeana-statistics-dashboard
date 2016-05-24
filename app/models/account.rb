@@ -81,16 +81,16 @@ class Account < ActiveRecord::Base
     true
   end
 
-  protected
-
   # This function is used to override devise's search by email to search by username
-  def self.find_first_by_auth_conditions(warden_conditions)
-    conditions = warden_conditions.dup
-    uzername = conditions.delete(:username)
-    if uzername.present?
-      where(conditions).where(["lower(username) = :value", { :value => uzername.downcase }]).first
-    else
-      where(conditions).first
+  class << self
+    def find_first_by_auth_conditions(warden_conditions)
+      conditions = warden_conditions.dup
+      uzername = conditions.delete(:username)
+      if uzername.present?
+        where(conditions).where(["lower(username) = :value", { :value => uzername.downcase }]).first
+      else
+        where(conditions).first
+      end
     end
   end
 

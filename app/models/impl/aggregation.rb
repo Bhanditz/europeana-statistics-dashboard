@@ -118,7 +118,6 @@ class Impl::Aggregation < ActiveRecord::Base
     ga_dimensions   = "ga:month,ga:year,ga:#{extra_dimension}"
     ga_metrics      = "ga:#{metric}"
     ga_sort         = "-ga:#{metric}"
-    data = []
     ga_start_date = start_date
     ga_end_date = end_date
     unless data_provider.nil?

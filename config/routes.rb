@@ -14,14 +14,14 @@ Rails.application.routes.draw do
   end
 
   resources :accounts, only:[] do
-      resources :projects do
-        namespace :impl do
-          resources :aggregations, except:[:show, :new] do
-            get "restart_worker", on: :member
-          end
-          resources :blacklist_datasets, only: [:index,:create,:destroy]
-          resources :reports, except: [:show]
+    resources :projects do
+      namespace :impl do
+        resources :aggregations, except:[:show, :new] do
+          get "restart_worker", on: :member
         end
+        resources :blacklist_datasets, only: [:index,:create,:destroy]
+        resources :reports, except: [:show]
+      end
     end
   end
 

@@ -140,7 +140,7 @@ RSpec.describe Impl::Aggregation, type: :model do
     end
   end
 
-   context '#get_providers_json' do
+  context '#get_providers_json' do
     it 'should return the providers data as json' do
       data = {
         "url"=>"http://localhost:3000/provider/locloud",
