@@ -22,11 +22,13 @@ class Impl::AggregationsController < ApplicationController
   before_action :set_impl_aggregation, only: [:show, :edit, :update, :destroy, :restart_worker]
   layout :styleguide_aware_layout
 
+  # Overview of all aggregations
   def index
     @impl_aggregations = @core_project.impl_aggregations.countries.includes(:impl_report)
     @impl_aggregation = Impl::Aggregation.new
   end
 
+  # Edit the aggregation for the given ID
   def edit
     if @impl_aggregation.genre == 'country'
       @impl_providers = @impl_aggregation.child_providers.includes(:impl_report)
@@ -42,6 +44,7 @@ class Impl::AggregationsController < ApplicationController
     @core_datacasts = @impl_aggregation.core_datacasts
   end
 
+  # Create a new aggregation in the database.
   def create
     @impl_aggregation = Impl::Aggregation.new(impl_aggregation_params)
     @impl_aggregation.created_by = current_account.id
@@ -53,6 +56,7 @@ class Impl::AggregationsController < ApplicationController
     end
   end
 
+  # Update an aggregation with the given ID.
   def update
     if @impl_aggregation.update(impl_aggregation_params)
       redirect_to edit_account_project_impl_aggregation_path(@core_project.account, @core_project, @impl_aggregation), notice: t("u.s")
@@ -61,25 +65,31 @@ class Impl::AggregationsController < ApplicationController
     end
   end
 
+  # Destroy an aggregation with the given ID.
   def destroy
     @impl_aggregation.destroy
     redirect_to account_project_impl_aggregations_path(@core_project.account, @core_project), notice: t("d.s")
   end
 
+  # Invokes a method that run's a all the jobs to fetch all the data again.
   def restart_worker
     @impl_aggregation.restart_all_jobs
     redirect_to :back, notice: t("aggregation.refreshed_all_jobs")
   end
 
+  # Render Provider page.
   def providers
   end
 
+  # Render Data Providers page.
   def data_providers
   end
 
+  # Render Countries page.
   def countries
   end
 
+  # Render Country list page.
   def countrieslist
   end
 

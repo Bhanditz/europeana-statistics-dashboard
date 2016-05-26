@@ -52,4 +52,5 @@ group :development do
   gem 'rubocop', '~> 0.39.0', require: false
   gem 'rspec-rails', '~> 3.4', '>= 3.4.2'
   gem 'simplecov', :require => false, :group => :test
+  gem 'yard'
 end

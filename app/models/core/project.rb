@@ -48,6 +48,7 @@ class Core::Project < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
+  # Returns the name of the project.
   def to_s
     self.name
   end

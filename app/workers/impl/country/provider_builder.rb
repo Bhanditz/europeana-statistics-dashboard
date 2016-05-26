@@ -2,6 +2,9 @@ class Impl::Country::ProviderBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches data of each country associated with europeana using the Europeana API and stores it in the database.
+  #
+  # @param country_id [Fixnum] id of the instance of Impl::Aggregation where the genre is country.
   def perform(country_id)
     country = Impl::Aggregation.find(country_id)
     if country.genre == 'country'

@@ -25,14 +25,17 @@ class Impl::ReportsController < ApplicationController
   before_action :set_impl_report, only: [:show,:edit, :update, :destroy,:manual_report]
   before_action :set_gon_config_objects,only: [:show,:edit, :update,:new, :create]
 
+  # Overview of all manual Impl::Reports
   def index
     @impl_reports = Impl::Report.manual.order(updated_at: :desc)
   end
 
+  # Creates a new instance of Impl::Report
   def new
     @impl_report = Impl::Report.new
   end
 
+  # Saves the instance of Impl::Report to database.
   def create
     @impl_report = Impl::Report.new(impl_report_params)
     if @impl_report.save
@@ -42,6 +45,7 @@ class Impl::ReportsController < ApplicationController
     end
   end
 
+  # Displays details of Impl::Report with a particular ID.
   def show
   	@selected_date = Date.today.at_beginning_of_month - 1
     @current_month = Date::MONTHNAMES[@selected_date.month]
@@ -54,14 +58,17 @@ class Impl::ReportsController < ApplicationController
     gon.top_digital_objects_identifier = @impl_aggregation.core_datacasts.top_digital_objects.first.identifier
   end
 
+  # Render manual report creation page.
   def manual_report
     @markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
   end
 
+  # Edit details of Impl::Report with a particular ID.
   def edit
     @core_vizs = Core::Viz.manual
   end
 
+  # Update details of Impl::Report with a particular ID.
   def update
     if @impl_report.update_attributes(impl_report_params)
       redirect_to account_project_impl_reports_path(@account,@core_project), notice: t("u.s")
@@ -70,6 +77,7 @@ class Impl::ReportsController < ApplicationController
     end
   end
 
+  # Destroy details of Impl::Report with a particular ID.
   def destroy
     @impl_report.destroy
     redirect_to account_project_impl_reports_path(@account, @core_project)

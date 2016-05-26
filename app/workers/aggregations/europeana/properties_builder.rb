@@ -2,6 +2,7 @@ class Aggregations::Europeana::PropertiesBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches properties of entities from Europeana API's and stores them in the database.
   def perform
     aggregation = Impl::Aggregation.europeana
     if aggregation.genre == "europeana"
@@ -19,6 +20,7 @@ class Aggregations::Europeana::PropertiesBuilder
             raise "No #{property.downcase} detected"
           end
         end
+        # Run the worker to build datacast for europeana.
         Aggregations::Europeana::DatacastBuilder.perform_async
       rescue => e
         aggregation.update_attributes(status: "Failed to build properties", error_messages: e.to_s)

@@ -22,6 +22,7 @@ class Core::ProjectsController < ApplicationController
   #---------------------------------------------------------------------------------------------------
   # CRUD
 
+  # Serves the show action.
   def show
   end
 

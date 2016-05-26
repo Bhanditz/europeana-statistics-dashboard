@@ -41,7 +41,15 @@ class Impl::Output < ActiveRecord::Base
   scope :top_digital_objects, -> {where(genre: "top_digital_objects")}
   #CUSTOM SCOPES
   #FUNCTIONS
-  def self.find_or_create(impl_parent_id,impl_parent_type,genre,options={})
+
+  # Either creates a new Impl::Output or returns an existing Impl::Output object from the database.
+  #
+  # @param impl_parent_id [Fixnum] id of the reference to object of Impl::Aggregation or any other class.
+  # @param impl_parent_type [String] class to which the impl_parent_id belongs.
+  # @param genre [String] refers to the element the output belongs.
+  # @param options [Object] contains additional parameters that are to be stored.
+  # @return [Object] a reference to Impl::Output.
+  def self.find_or_create(impl_parent_id, impl_parent_type, genre, options={})
     unless options.blank?
       a = where(impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: genre,key: options[:key], value: options[:value]).first
     else
@@ -53,7 +61,13 @@ class Impl::Output < ActiveRecord::Base
     a
   end
 
-  def self.update_with_custom_attributes(impl_parent_id, impl_parent_type,options={})
+  # Updates a Impl::Output object and saves it to the database.
+  #
+  # @param impl_parent_id [Fixnum] id of the reference to object of Impl::Aggregation or any other class.
+  # @param impl_parent_type [String] class to which the impl_parent_id belongs.
+  # @param options [Object] contains additional parameters that are to be stored for example image_url.
+  # @return [Object] a reference to Impl::Output.
+  def self.update_with_custom_attributes(impl_parent_id, impl_parent_type, options={})
     a = Impl::Output.find_or_create_digital_object(impl_parent_id,impl_parent_type,options)
     a.image_url = options[:image_url]
     a.properties_will_change!
@@ -61,7 +75,13 @@ class Impl::Output < ActiveRecord::Base
     return a
   end
 
-  def self.find_or_create_digital_object(impl_parent_id, impl_parent_type,options={})
+  # Either creates a new Impl::Output or returns an existing Impl::Output object with genre as 'total_digital_objects' from the database.
+  #
+  # @param impl_parent_id [Fixnum] id of the reference to object of Impl::Aggregation or any other class.
+  # @param impl_parent_type [String] class to which the impl_parent_id belongs.
+  # @param options [Object] contains additional parameters that are to be stored.
+  # @return [Object] a reference to Impl::Output.
+  def self.find_or_create_digital_object(impl_parent_id, impl_parent_type, options={})
     a = where(impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: "top_digital_objects", key: options[:key], value: options[:value]).where("properties -> 'title_url' = ?", options[:title_url]).first
     if a.blank?
       a = create({impl_parent_id: impl_parent_id,impl_parent_type: impl_parent_type,genre: "top_digital_objects", key: options[:key], value: options[:value],title_url: options[:title_url],skip_uniqueness_validation: true})

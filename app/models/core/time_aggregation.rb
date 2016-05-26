@@ -39,7 +39,16 @@ class Core::TimeAggregation < ActiveRecord::Base
   #SCOPES
   #CUSTOM SCOPES
   #FUNCTIONS
-  def self.create_time_aggregations(parent_type,parent_id,data,metric,aggregation_level)
+
+  # Creates Core::TimeAggregation object and saves it to the database.
+  #
+  # @param parent_type [String] class to which the parent_id belongs.
+  # @param parent_id [Fixnum] id of the reference to object of Core::TimeAggregation or any other class.
+  # @param data [Array] formatted data from Google Analytics or Europeana API.
+  # @param metric [String] the mectric for which the data is fetched.
+  # @param aggregation_level [Fixnum] the level of aggregation of data.
+  # @return [Array] the data that was passed on as parameter.
+  def self.create_time_aggregations(parent_type, parent_id, data, metric, aggregation_level)
     if data.size > 0
       data.each do |d|
         value = d[metric]
@@ -51,6 +60,15 @@ class Core::TimeAggregation < ActiveRecord::Base
     end
   end
 
+  # Either creates a Core::TimeAggregation object or updates and saves it to the database.
+  #
+  # @param parent_type [String] class to which the parent_id belongs.
+  # @param parent_id [Fixnum] id of the reference to object of Core::TimeAggregation or any other class.
+  # @param metric [String] the mectric for which the data is fetched.
+  # @param aggregation_level [Fixnum] the level of aggregation of data.
+  # @param aggregation_level_value [String] output of #fetch_aggregation_value.
+  # @param value [Fixnum] value of each type aggregation (example: for pageviews the value is 3000).
+  # @return [Object] an instance of Core::TimeAggregation.
   def self.create_or_update(parent_type, parent_id, metric, aggregation_level, aggregation_level_value, value)
     a = where(parent_type: parent_type, parent_id: parent_id, metric: metric, aggregation_level: aggregation_level,aggregation_level_value: aggregation_level_value).first
     if a.blank?
@@ -68,7 +86,14 @@ class Core::TimeAggregation < ActiveRecord::Base
     a
   end
 
-  def self.fetch_aggregation_value(aggregation_level,year,month,options={})
+  # Generates value of the aggregation based on the aggregation level specified.
+  #
+  # @param aggregation_level [String] aggregation level of the data.
+  # @param year [String] a valid year number.
+  # @param month [String] a valid month number.
+  # @param options [Hash] optional parameter to set week number.
+  # @return [String] the aggregation value that is used to query Google Analytics data.
+  def self.fetch_aggregation_value(aggregation_level, year, month, options={})
     case aggregation_level
       when "weekly"
         week = options[:week]
@@ -87,7 +112,16 @@ class Core::TimeAggregation < ActiveRecord::Base
     return aggregation_value
   end
 
-  def self.create_aggregations(data,aggregation_level,parent_id,parent_type,metric,output_type)
+  # Creates Core::TimeAggregation object with parent_type as Impl::Output and saves it to the database.
+  #
+  # @param data [Array] formatted data from Google Analytics or Europeana API.
+  # @param aggregation_level [Fixnum] the level of aggregation of data.
+  # @param parent_id [Fixnum] id of the reference to object of Core::TimeAggregation or any other class.
+  # @param parent_type [String] class to which the parent_id belongs.
+  # @param metric [String] the mectric for which the data is fetched.
+  # @param output_type [String] the type of entity for which the Core::TimeAggregation is created.
+  # @return [Array] the data that was passed on as parameter.
+  def self.create_aggregations(data, aggregation_level, parent_id, parent_type, metric, output_type)
     if data.size > 0
       data.each do |c|
         parent_output = Impl::Output.find_or_create(parent_id,parent_type,"top_#{output_type.pluralize}",key: output_type,value: c[output_type])
@@ -100,7 +134,13 @@ class Core::TimeAggregation < ActiveRecord::Base
     end
   end
 
-  def self.create_digital_objects_aggregation(digital_objects_data,aggregation_level, data_provider_id)
+  # Creates Core::TimeAggregation object for digital objects and metric pageviews.
+  #
+  # @param digital_objects_data [Array] formatted data from Google Analytics or Europeana API.
+  # @param aggregation_level [Fixnum] the level of aggregation of data.
+  # @param data_provider_id [Fixnum] id that referes to Impl::Aggregation or a data provider.
+  # @return [Array] the data that was passed on as parameter.
+  def self.create_digital_objects_aggregation(digital_objects_data, aggregation_level, data_provider_id)
     digital_objects_data.each do |d|
       digital_objects_output = Impl::Output.update_with_custom_attributes(data_provider_id,"Impl::Aggregation",title_url: d["title_url"],image_url: d["image_url"],key: "title", value: d["title"])
       month = d["month"]

@@ -40,6 +40,7 @@ class Core::Permission < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
+  # Returns user's username if the account is present in the database, else user's email is returned.
   def to_s
     self.account_id.present? ? self.account.username : self.email
   end

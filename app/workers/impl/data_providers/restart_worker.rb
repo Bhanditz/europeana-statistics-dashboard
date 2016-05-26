@@ -2,6 +2,9 @@ class Impl::DataProviders::RestartWorker
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Runs all the workers to re fetch the data for a particular provider.
+  #
+  # @param aggregation_id [Fixnum] id of the instance of Impl:Aggregation.
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
     aggregation.update_column(:last_updated_at, nil)

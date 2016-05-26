@@ -2,6 +2,9 @@ class Impl::DataProviders::ItemViewsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches the pageviews for a particular data provider's items and stores it the database.
+  #
+  # @param data_provider_id [Fixnum] id of the instance of Impl:Aggregation where genre is data_provider.
   def perform(data_provider_id)
     data_provider = Impl::Aggregation.find(data_provider_id)
     begin
@@ -30,21 +33,8 @@ class Impl::DataProviders::ItemViewsBuilder
       data_provider.update_attributes(status: "Failed to build item views",error_messages: e.to_s, last_updated_at: nil)
       data_provider.impl_report.delete if data_provider.impl_report.present?
     end
-
-    # begin
-    #   #Click throughs
-    #   click_through_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","click_throughs")
-    #   click_through_output.update_attributes(status: "Building click throughs", error_messages: nil)
-    #   click_through_metrics = "ga:totalEvents"
-    #   click_through_filters = "#{data_provider.get_aggregated_filters};ga:eventCategory=~Europeana Redirect"
-    #   click_through_data = Impl::Aggregation.get_ga_data(ga_start_date,ga_end_date, click_through_metrics,ga_dimensions,click_through_filters,"ga:year,ga:month")
-    #   click_through_data = click_through_data.map{|a| {"month" => a[0], "year"=> a[1], "totalEvents" => a[2].to_i}}
-    #   Core::TimeAggregation.create_time_aggregations("Impl::Output",click_through_output.id, click_through_data,"totalEvents","monthly")
-    #   click_through_output.update_attributes(status: "Processed click throughs")
-    #   data_provider.update_attributes(status: "Processed click throughs")
+    # Run the worker to collect data of top digital objects for the same instance.
     Impl::DataProviders::TopDigitalObjectsBuilder.perform_async(data_provider_id)
-    # rescue => e
-    #   data_provider.update_attributes(status: "Failed to build click throughs",error_messages: e.to_s)
-    # end
+
   end
 end

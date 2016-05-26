@@ -40,6 +40,7 @@ class Account < ActiveRecord::Base
   #ASSOCIATIONS
   has_many :permissions, class_name: "Core::Permission", foreign_key: :account_id, dependent: :destroy
 
+  # Returns the projects associated with the user's account.
   def core_projects
     Core::Project.where(id: self.permissions.where(role: [Constants::ROLE_C, Constants::ROLE_O]).pluck(:core_project_id).uniq)
   end
@@ -56,6 +57,7 @@ class Account < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
+  # Returns the username of the user.
   def to_s
     self.username
   end

@@ -2,6 +2,8 @@ class Aggregations::Europeana::DatacastBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # It fetches data for the all the entities (pageviews, digital objects, countries count, provider count, data provider count, media type chart, reusable chart, top countries table)
+  # for europeana and creates a datacast for each of the entity.
   def perform
     aggregation = Impl::Aggregation.europeana
     aggregation.update_attributes(status: "Building Datacasts", error_messages: nil)

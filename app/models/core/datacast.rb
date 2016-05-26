@@ -60,7 +60,15 @@ class Core::Datacast < ActiveRecord::Base
   #CUSTOM SCOPES
   #OTHER
   #FUNCTIONS
-  def self.create_or_update_by(q,core_project_id,db_connection_id,table_name)
+
+  # Either creates a new Core::Datacast or updates an existing Core::Datacast object in the database.
+  #
+  # @param q [String] SQL query string.
+  # @param core_project_id [Fixnum] a reference id to Core::Project.
+  # @param db_connection_id [Fixnum] a reference id to Core::DbConnection.
+  # @param table_name [String] the name of table from database.
+  # @return [Object] a reference to Core::Project.
+  def self.create_or_update_by(q, core_project_id, db_connection_id, table_name)
     a = where(name: table_name, core_project_id: core_project_id, core_db_connection_id: db_connection_id).first
     if a.blank?
       a = new({query: q,core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, identifier: SecureRandom.hex(33)})
@@ -75,6 +83,11 @@ class Core::Datacast < ActiveRecord::Base
     a
   end
 
+
+  # Retruns the frequency of occurrence of each type of data in the data passed as agrunemnts.
+  #
+  # @param data [Array] 2D array representation of data.
+  # @return [Object] datatype [string, boolean, float, integer, date and blank] distribution for each of the column.
   def self.get_data_distribution(data)
     #Doubt: What about JSON/HSTORE datatypes
     #Data is a 2d array
@@ -92,6 +105,10 @@ class Core::Datacast < ActiveRecord::Base
     return datatype_distribution
   end
 
+  # Retruns the datatype of the column based datatype distribution of the the column.
+  #
+  # @param datatype_distribution [Object] output of Core::Datacast.get_data_distribution of a single column.
+  # @return [String] the datatype of the column based on datatype distribution, possible values are float, integer, boolean, date and string.
   def self.get_col_datatype(datatype_distribution)
     datatype_distribution = datatype_distribution.reject {|_k,v| v <= 0}
     possible_types = datatype_distribution.keys
@@ -103,6 +120,10 @@ class Core::Datacast < ActiveRecord::Base
     return "string" #else - worst case scenario
   end
 
+  # Retruns the datatype of each element in the 2D array, i.e. each value of each column.
+  #
+  # @param element [String] a value from the 2D array of data.
+  # @return [String] the datatype of the element based on REGEX match, possible values are float, integer, boolean, date and string.
   def self.get_element_datatype(element)
     return "blank" if element.blank?
     element.strip!
@@ -117,10 +138,17 @@ class Core::Datacast < ActiveRecord::Base
     name_changed?
   end
 
+  # Retruns the result of a SQL query in the format specified format.
+  #
+  # @param format [String] the format of the resultant query data, possible values ['json', '2darray', 'xml', 'raw'].
+  # @return [Object] metadata of data along with data as an object same as Core::Adapters::Db.run.
   def run(format=nil)
     Core::Adapters::Db.run(self.core_db_connection, self.query, format || self.format)
   end
 
+  # Determines whether the SQL query is a SELECT query or not.
+  #
+  # @return [Boolean] true if the query is a simple SQL SELECT query else it returns false..
   def query_only_select
     if self.query.downcase.index("select") != 0
       self.errors.add(:query,"Illegal query")

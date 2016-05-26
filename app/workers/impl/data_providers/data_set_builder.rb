@@ -2,6 +2,9 @@ class Impl::DataProviders::DataSetBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches data sets using the Europeana API and store them in the data base.
+  #
+  # @param aggregation_id [Fixnum] id of the instance of Impl:Aggregation.
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
     unless aggregation.genre == 'europeana'
@@ -13,6 +16,7 @@ class Impl::DataProviders::DataSetBuilder
             d_set = Impl::DataSet.find_or_create(data_set['label'])
             Impl::AggregationDataSet.create({impl_aggregation_id: aggregation_id,impl_data_set_id: d_set.id })
           end
+          # Run the TrafficBuilder worker for the same Impl::Aggregation instance.
           Impl::DataProviders::TrafficBuilder.perform_async(aggregation_id)
         else
           raise "No data set found"

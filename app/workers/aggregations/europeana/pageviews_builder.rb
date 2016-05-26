@@ -2,6 +2,7 @@ class Aggregations::Europeana::PageviewsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches pageviews and clickthroughs data from Google Analytics.
   def perform
     aggregation = Impl::Aggregation.europeana
     aggregation_id = aggregation.id
@@ -69,7 +70,11 @@ class Aggregations::Europeana::PageviewsBuilder
     end
   end
 
-
+  # Returns data of pageviews for all top digital objects from Google Analytics fecting, the details of digital objects from Europeana API's
+  #
+  # @param start_date [String] valid start date to fetch Google Analytics data from.
+  # @param end_date [String] a valid date till which Google Analytics data is to be fetched.
+  # @return [Array] an array of Hash that is formatted output of Google Analytics and Europeana API's.
   def self.fetch_data_for_all_quarters_between(start_date, end_date)
     top_digital_objects_data = []
     ga_access_token = Impl::DataSet.get_access_token

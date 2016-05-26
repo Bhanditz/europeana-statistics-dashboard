@@ -28,6 +28,7 @@ class Core::DatacastsController < ApplicationController
   before_action :authenticate_account!
   before_action :set_core_datacast, only: [:run_worker]
 
+  # Invokes the sidekiq worker to fetch data for a particular datacast.
   def run_worker
     Core::Datacast::RunWorker.perform_async(@core_datacast.id)
     redirect_to :back, notice: t("datacast.run_worker")

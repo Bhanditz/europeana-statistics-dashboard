@@ -34,6 +34,8 @@ class Impl::DataSet < ActiveRecord::Base
   #SCOPES
   #CUSTOM SCOPES
   #FUNCTIONS
+
+  # Returns the access token and refreshes the access token if it has expired.
   def self.get_access_token
     if $redis.get("ga_access_token").present?
       a = $redis.get("ga_access_token")
@@ -46,6 +48,10 @@ class Impl::DataSet < ActiveRecord::Base
     a
   end
 
+  # Either creates a new Impl::DataSet or returns an existing Impl::DataSet object from the database.
+  #
+  # @param data_set_name [String] name of the dataset.
+  # @return [Object] a reference to Impl::DataSet.
   def self.find_or_create(data_set_name)
     a = where(name: data_set_name).first
     if a.blank?

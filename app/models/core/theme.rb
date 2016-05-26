@@ -40,6 +40,7 @@ class Core::Theme < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
+  # Returns the name of the theme.
   def to_s
     self.name
   end

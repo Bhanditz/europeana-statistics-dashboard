@@ -3,6 +3,9 @@ class Core::Datacast::RunWorker
   include Sidekiq::Worker
   sidekiq_options :backtrace => true
 
+  # Runs the query associated with each datacast. It stores the result of the query in the database.
+  #
+  # @param core_datacast_id [Fixnum] id of an instance of Core::Datacast.
   def perform(core_datacast_id)
     d = Core::Datacast.find(core_datacast_id)
     prev = d.core_datacast_output
@@ -46,6 +49,9 @@ class Core::Datacast::RunWorker
     end
   end
 
+  # It saves the processing done by the RunWorker after updating certain properties, into the database.
+  #
+  # @param d [Object] instance of Core::Datacast
   def self.fin(d)
     d.count_of_queries = d.count_of_queries.blank? ? 1 : d.count_of_queries + 1
     d.last_run_at = Time.now

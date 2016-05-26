@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # Sets current user and current project as instance variable. If there is any error the the user is redirected to root_url.
   def set_universal_objects
     if params[:account_id].present?
       begin
@@ -45,6 +46,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # Creates a session for the current user and stores the session in the database.
   def log_session
     if current_account.present?
       Core::SessionImpl.log(session.id, current_account.id, request.env["REMOTE_ADDR"].to_s, request.env["HTTP_USER_AGENT"].to_s)
@@ -61,10 +63,15 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # Override DEVISE after_sign_in_path_for method to redirect to project page.
+  #
+  # @param resource [Devise Object] the user that has signed in.
+  # @return [String] the url to a particular project.
   def after_sign_in_path_for(resource)
     _account_project_path(resource, resource.core_projects.first)
   end
 
+  # Set heades in response object for CORS.
   def after_filter_set
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'

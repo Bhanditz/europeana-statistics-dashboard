@@ -37,13 +37,26 @@ class Core::DbConnection < ActiveRecord::Base
   #CALLBACKS
   #SCOPES
   #CUSTOM SCOPES
+
+  # Returns a single row where the name is "Default database".
   def self.default_db
     where(name: "Default Database").first
   end
   #OTHER
   #FUNCTIONS
 
-  def self.create_or_update(name,adapter,host,port,db_name,username,password,validate= false)
+  # Either creates a new Core::DbConnection or updates an existing Core::DbConnection object in the database.
+  #
+  # @param name [String] name of the database (reference name).
+  # @param adapter [String] name of the database adapter to be used.
+  # @param host [String] host name of the database server.
+  # @param port [String] port number at which database is accessable.
+  # @param db_name [String] actual name of the database.
+  # @param username [String] username required to access the database.
+  # @param password [String] password required to access the database.
+  # @param validate [Boolean] to indicate whether to save the object to database with or without validation.
+  # @return [Object] a reference to Core::DbConnection.
+  def self.create_or_update(name, adapter, host, port, db_name, username, password, validate=false)
     c = Core::DbConnection.where(name: name, adapter: adapter).first
     if c.blank?
       c = Core::DbConnection.new({name: name,

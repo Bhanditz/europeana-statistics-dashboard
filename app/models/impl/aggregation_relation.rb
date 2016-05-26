@@ -36,7 +36,14 @@ class Impl::AggregationRelation < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
-  def self.create_or_find(parent_id,parent_genre, child_id, child_genre)
+  # Either creates a new Impl::AggregationRelation or returns an existing Impl::AggregationRelation object from the database.
+  #
+  # @param parent_id [Fixnum] id of the reference to Impl::Aggregation object.
+  # @param parent_genre [String] the type of Impl::Aggregation.
+  # @param child_id [Fixnum] id of the reference to Impl::Aggregation object.
+  # @param child_genre [String] the type of Impl::Aggregation.
+  # @return [Object] a reference to Impl::AggregationRelation.
+  def self.create_or_find(parent_id, parent_genre, child_id, child_genre)
     a = where(impl_parent_id: parent_id, impl_child_id: child_id).first
     if a.nil?
       a = new({impl_parent_id: parent_id, impl_child_id: child_id, impl_parent_genre: parent_genre, impl_child_genre: child_genre})

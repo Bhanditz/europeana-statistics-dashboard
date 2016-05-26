@@ -2,6 +2,9 @@ class Impl::DataProviders::MediaTypesBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches the media types data using Europeana API, for a particular provider and stores it in the database.
+  #
+  # @param aggregation_id [Fixnum] id of the instance of Impl:Aggregation.
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
     aggregation.update_attributes(status: "Building Media Types", error_messages: nil)

@@ -2,6 +2,10 @@ class Impl::DataProviders::DatacastsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # It fetches data for the all the entities (top countries, top digital objects, media types, reusables, pageviews, provider count)
+  # for an Impl::Aggregation instance and creates or updates the datacast for each of the entity.
+  #
+  # @param aggregation_id [Fixnum] id of the instance of Impl:Aggregation.
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
     aggregation.update_attributes(status: "Building Datacasts", error_messages: nil)

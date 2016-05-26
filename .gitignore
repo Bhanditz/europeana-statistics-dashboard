@@ -30,6 +30,8 @@ dump.rdb
 /.env
 coverage
 rails_best_practices_output.html
+doc/
+.yardoc/
 
 app/assets/javascripts/application/zlib/*.js
 *.pyc

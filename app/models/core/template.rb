@@ -29,7 +29,14 @@ class Core::Template < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
-  def self.create_or_update(name,html_content,genre,required_variables)
+  # Either creates a new Core::Template or updates an existing Core::Template object in the database.
+  #
+  # @param name [String] name of the template.
+  # @param html_content [String] the html of the template.
+  # @param genre [String] identifier for type of template, possible values are ["data_providers", "providers", "country", "europeana"].
+  # @param required_variables [Array] collection of variable name to be replace in the html string.
+  # @return [Object] a reference to Core::Template.
+  def self.create_or_update(name, html_content, genre, required_variables)
     a = where(name: name, genre: genre).first
     if a.blank?
       a = create({name: name, html_content: html_content,genre: genre, required_variables: required_variables })

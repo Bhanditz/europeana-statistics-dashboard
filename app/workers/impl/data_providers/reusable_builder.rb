@@ -2,6 +2,9 @@ class Impl::DataProviders::ReusableBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches availability for reuse of artifacts from the Europeana API for a particular provider.
+  #
+  # @param aggregation_id [Fixnum] id of the instance of Impl:Aggregation.
   def perform(aggregation_id)
     aggregation = Impl::Aggregation.find(aggregation_id)
     aggregation.update_attributes(status: "Building Reusables", error_messages: nil)
