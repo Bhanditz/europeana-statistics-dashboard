@@ -1,6 +1,10 @@
 notifications:
   email: false
 sudo: false
+branches:
+  only:
+    - master
+    - stable
 language: ruby
 rvm:
   - 2.2.2
