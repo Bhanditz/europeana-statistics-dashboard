@@ -10,3 +10,11 @@ development:
   username: europeana
   password: super_secret
   port: 5432
+
+test:
+  <<: *pg
+  port: 5432
+  database: europeana_stats_test
+  host: localhost
+  username: developer
+  password: developer
