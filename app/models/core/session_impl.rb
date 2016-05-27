@@ -32,14 +32,6 @@ class Core::SessionImpl < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
-  # Checks if the user is logged in from multiple sources/devises/browsers.
-  #
-  # @param aid [Fixnum] id corresponding the user in the database.
-  # @return [Object] a Collection active session entries of the user.
-  def self.logged_in_from_multiple_sources(aid)
-    Core::SessionImpl.joins(:core).includes(:core).where(account_id: aid)
-  end
-
   # Updates or Creates a new Session for the user currently logged in.
   #
   # @param sid [String] securehex string.
