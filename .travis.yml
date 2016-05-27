@@ -1,0 +1,11 @@
+notifications:
+  email: false
+sudo: false
+language: ruby
+rvm:
+  - 2.2.2
+script: bundle exec rspec
+env:
+  - RAILS_ENV=test
+services:
+  - redis-server
