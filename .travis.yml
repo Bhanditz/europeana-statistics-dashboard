@@ -4,7 +4,7 @@ sudo: false
 branches:
   only:
     - master
-    - stable
+    - develop
 language: ruby
 rvm:
   - 2.2.2
