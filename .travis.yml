@@ -8,6 +8,13 @@ branches:
 language: ruby
 rvm:
   - 2.2.2
+before_install:
+  - "cp deploy/development/config/database.yml config/database.yml"
+before_script:
+  - RAILS_ENV=test rake db:create
+  - RAILS_ENV=test rake db:migrate
+  - RAILS_ENV=test rake seed:users
+  - RAILS_ENV=test rake seed:test_tables
 script: bundle exec rspec
 env:
   - RAILS_ENV=test

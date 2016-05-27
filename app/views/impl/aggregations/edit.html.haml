@@ -8,14 +8,14 @@
       .row
         .col-sm-9
           - if @impl_aggregation.genre == "country"
-            = render partial: "countries", locals: {impl_aggregation: @impl_aggregation, account: @account, core_project: @core_project, impl_providers: @impl_providers, impl_data_providers: @impl_data_providers, core_datacasts: @core_datacasts}
+            = render "countries", impl_aggregation: @impl_aggregation, account: @account, core_project: @core_project, impl_providers: @impl_providers, impl_data_providers: @impl_data_providers, core_datacasts: @core_datacasts
           - elsif @impl_aggregation.genre == "provider"
-            = render partial: "providers", locals: {impl_aggregation: @impl_aggregation, account: @account, core_project: @core_project, impl_countries: @impl_countries, impl_data_providers: @impl_data_providers, core_datacasts: @core_datacasts}
+            = render "providers", impl_aggregation: @impl_aggregation, account: @account, core_project: @core_project, impl_countries: @impl_countries, impl_data_providers: @impl_data_providers, core_datacasts: @core_datacasts
           -else
-            = render partial: "data_providers", locals: { impl_aggregation: @impl_aggregation, impl_countries: @impl_countries, account: @account, core_project: @core_project, impl_providers: @impl_providers, impl_data_sets: @impl_data_sets, core_datacast: @core_datacast }
+            = render "data_providers", impl_aggregation: @impl_aggregation, impl_countries: @impl_countries, account: @account, core_project: @core_project, impl_providers: @impl_providers, impl_data_sets: @impl_data_sets, core_datacast: @core_datacast
 
         .col-sm-3
           .well
             %h5="Edit #{@impl_aggregation.genre.titleize}"
             %hr
-            = render partial: "form", locals: {impl_aggregation: @impl_aggregation, core_project: @core_project}
+            = render "form", impl_aggregation: @impl_aggregation, core_project: @core_project
