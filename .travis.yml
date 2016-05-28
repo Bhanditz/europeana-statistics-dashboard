@@ -11,10 +11,10 @@ rvm:
 before_install:
   - "cp deploy/development/config/database.yml config/database.yml"
 before_script:
-  - RAILS_ENV=test rake db:create
-  - RAILS_ENV=test rake db:migrate
-  - RAILS_ENV=test rake seed:users
-  - RAILS_ENV=test rake seed:test_tables
+  - RAILS_ENV=test bundle exec rake db:create
+  - RAILS_ENV=test bundle exec rake db:migrate
+  - RAILS_ENV=test bundle exec rake seed:users
+  - RAILS_ENV=test bundle exec rake seed:test_tables
 script: bundle exec rspec
 env:
   - RAILS_ENV=test
