@@ -17,8 +17,7 @@ before_script:
   - psql --version
   - RAILS_ENV=test bundle exec rake db:create
   - RAILS_ENV=test bundle exec rake db:migrate
-  - RAILS_ENV=test bundle exec rake seed:users
-  - RAILS_ENV=test bundle exec rake seed:test_tables
+  - RAILS_ENV=test bundle exec rake seed:test_db
 script: bundle exec rspec
 env:
   - RAILS_ENV=test
