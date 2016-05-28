@@ -9,7 +9,6 @@ RSpec.describe Impl::Aggregation, type: :model do
     it 'should return a static query for a given Impl::Agregation object' do
       today = Date.today
       query = "Select name, value as weight from core_time_aggregations INNER JOIN (Select id as impl_output_id, value as name from impl_outputs where impl_parent_id = 1 and genre = 'top_media_types') as io on parent_id = impl_output_id and parent_type = 'Impl::Output' where aggregation_level_value = '#{today.year}_#{Date::MONTHNAMES[today.month]}'"
-
       expect(@aggregation.get_static_query('media_type')).to eq(query)
     end
   end
@@ -17,7 +16,7 @@ RSpec.describe Impl::Aggregation, type: :model do
   context '#get_digital_objects_query' do
     it 'should retrun the static query for digital_objects' do
       year = Date.today.year
-      query = "Select year,month, value,image_url,title_url,title  from (Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as month, sum(ta.value) as value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title, ROW_NUMBER() OVER (PARTITION BY  split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(value) desc) AS row  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id = 1 and genre='top_digital_objects') as b where ta.parent_id = b.output_id group by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), ta.aggregation_value_to_display, ta.metric,ta.aggregation_index, output_properties -> 'image_url', output_properties -> 'title_url', output_value order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), value desc) as final_output where row < 25 and year::integer in (#{(2014..year).to_a.join(",")});"
+      query =  "Select year,month, value,image_url,title_url,title  from (Select split_part(ta.aggregation_level_value,'_',1) as year, split_part(ta.aggregation_level_value, '_',2) as month, sum(ta.value) as value,ta.aggregation_index, output_properties -> 'image_url' as image_url, output_properties -> 'title_url' as title_url, output_value as title, ROW_NUMBER() OVER (PARTITION BY  split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2) order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), sum(value) desc) AS row  from core_time_aggregations ta, (Select o.id as output_id, o.key as output_key, o.value as output_value, o.properties as output_properties from impl_outputs o where o.impl_parent_id = 1 and genre='top_digital_objects') as b where ta.parent_id = b.output_id group by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), ta.aggregation_value_to_display, ta.metric,ta.aggregation_index, output_properties -> 'image_url', output_properties -> 'title_url', output_value order by split_part(ta.aggregation_level_value,'_',1), split_part(ta.aggregation_level_value, '_',2), value desc) as final_output where row < 25 and year::integer in (#{(2014..year).to_a.join(",")});"
       expect(@aggregation.get_digital_objects_query).to eq(query)
     end
   end
@@ -41,8 +40,8 @@ RSpec.describe Impl::Aggregation, type: :model do
 
   context '#get_aggregated_filters' do
     it 'should return aggregation Google Analytics filters for europeana' do
-      filters = "ga:hostname=~europeana.eu;ga:pagePath=~/90402/"
-      aggregation = Impl::Aggregation.last
+      filters = "ga:hostname=~europeana.eu;ga:pagePath=~/91956/"
+      aggregation = Impl::Aggregation.first
       expect(aggregation.get_aggregated_filters).to eq(filters)
     end
   end
@@ -59,7 +58,7 @@ RSpec.describe Impl::Aggregation, type: :model do
 
   context '#blacklist_data_set?' do
     it 'should return if the aggregation record is blacklisted or not.' do
-      blacklisted_dataset = Impl::Aggregation.find(631)
+      blacklisted_dataset = Impl::Aggregation.first
       expect(blacklisted_dataset.blacklist_data_set?).to eq(false)
     end
   end
@@ -121,7 +120,7 @@ RSpec.describe Impl::Aggregation, type: :model do
       dimensions = "ga:month,ga:year"
       filters = "#{data_provider.get_aggregated_filters};ga:pagePath=~/portal/record/"
       sort = "ga:year,ga:month"
-      ga_data = [["03", "2016", "7"]]
+      ga_data = [["03", "2016", "0"]]
 
       query_data = Impl::Aggregation.get_ga_data(start_date, end_date, metrics, dimensions, filters, sort)
       expect(query_data).to eq(ga_data)
@@ -130,42 +129,36 @@ RSpec.describe Impl::Aggregation, type: :model do
 
   context '#get_data_providers_json' do
     it 'should return the data providers data as json' do
-      data = {
-        "url"=>"http://localhost:3000/dataprovider/dans-knaw",
-        "text"=>"DANS-KNAW"
-      }
-
+      data = {"url"=>"http://localhost:3000/dataprovider/content-2014", "text"=>"Diputació de Barcelona"}
       expected_data = Impl::Aggregation.get_data_providers_json.first
-      expect(expected_data).to eq(data)
+      expect(expected_data["url"]).to eq(data["url"])
+      expect(expected_data["text"]).to eq(data["text"])
     end
   end
 
   context '#get_providers_json' do
     it 'should return the providers data as json' do
-      data = {
-        "url"=>"http://localhost:3000/provider/locloud",
-        "text"=>"LoCloud"
-      }
+      data = {"url"=>"http://localhost:3000/provider/content-2013", "text"=>"LoCloud"}
+
       expected_data = Impl::Aggregation.get_providers_json.first
-      expect(expected_data).to eq(data)
+      expect(expected_data["url"]).to eq(data["url"])
+      expect(expected_data["text"]).to eq(data["text"])
     end
   end
 
   context '#get_countries_json' do
     it 'should return the countries data as json' do
-      data = {
-        "url"=>"http://localhost:3000/country/france",
-        "text"=>"France"
-      }
+      data = {"url"=>"http://localhost:3000/country/traffic-usage-2014", "text"=>"France"}
 
       expected_data = Impl::Aggregation.get_countries_json.first
-      expect(expected_data).to eq(data)
+      expect(expected_data["url"]).to eq(data["url"])
+      expect(expected_data["text"]).to eq(data["text"])
     end
   end
 
   context '#get_data_providers_count_query' do
     it 'should return a query that get data_provider count' do
-      query = "Select count(*) as value, '' as key, '' as content, 'Total Institutions' as title, '' as diff_in_value from impl_aggregation_relations where impl_parent_genre='europeana' and impl_child_genre='data_provider' and impl_parent_id = '1'"
+      query =  "Select count(*) as value, '' as key, '' as content, 'Total Institutions' as title, '' as diff_in_value from impl_aggregation_relations where impl_parent_genre='provider' and impl_child_genre='data_provider' and impl_parent_id = '1'"
       expect(@aggregation.get_data_providers_count_query).to eq(query)
     end
   end

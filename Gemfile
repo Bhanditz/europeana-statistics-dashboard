@@ -41,7 +41,7 @@ group :production do
   gem 'rails_12factor'
 end
 
-group :development do
+group :development, :test do
   gem "better_errors"
   gem "rails_best_practices"
   gem "binding_of_caller"
@@ -54,4 +54,5 @@ group :development do
   gem 'coveralls', require: false
   gem 'simplecov', :require => false, :group => :test
   gem 'yard'
+  gem 'seed_dump'
 end

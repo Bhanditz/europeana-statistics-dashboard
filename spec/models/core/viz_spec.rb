@@ -63,8 +63,4 @@ RSpec.describe Core::Viz, type: :model do
       expect(previous_viz.id).to eq(@viz_id)
     end
   end
-
-
-
-
 end

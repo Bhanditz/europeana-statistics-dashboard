@@ -47,19 +47,19 @@ RSpec.describe ApplicationHelper, :type => :helper do
 
   describe 'generate report status html indicator', type: :helper do
     it 'should return a html string with class signal sig-red' do
-      impl = Impl::Aggregation.last
+      impl = Impl::Aggregation.first
       indicator = get_impl_status(impl)
       expect(indicator).to eq("<div class='signal sig-red'></div>")
     end
 
     it 'should return a html string with class signal sig-gray' do
-      impl = Impl::Aggregation.fourth
+      impl = Impl::Aggregation.second
       indicator = get_impl_status(impl)
       expect(indicator).to eq("<div class='signal sig-gray'></div>")
     end
 
     it 'should return a html string with class signal sig-green' do
-      impl = Impl::Aggregation.first
+      impl = Impl::Aggregation.third
       indicator = get_impl_status(impl)
       expect(indicator).to eq("<div class='signal sig-green'></div>")
     end
@@ -67,9 +67,9 @@ RSpec.describe ApplicationHelper, :type => :helper do
 
   describe 'generate an custom html tag for timeago', type: :helper do
     it 'should return <time></time> for the given date' do
-      time = Time.new(2015, 10, 31)
+      time = Time.new(2015, 10, 31, 5, 30, 0, "+05:30")
       html = timeago(time)
-      expect(html).to eq('<time class="timeago" datetime="2015-10-30T18:30:00Z">2015-10-31 00:00:00 +0530</time>')
+      expect(html).to eq('<time class="timeago" datetime="2015-10-31T00:00:00Z">2015-10-31 05:30:00 +0530</time>')
     end
   end
 

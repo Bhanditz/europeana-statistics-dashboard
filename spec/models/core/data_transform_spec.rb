@@ -3,7 +3,7 @@ require 'pg'
 RSpec.describe Core::DataTransform, type: :model do
 
   before(:each) do
-    @PGconnection =  PGconn.open(:dbname => 'dstory_test')
+    @PGconnection =  PGconn.open(:dbname => 'europeana_stats_test')
   end
 
   context 'Convert Postgres object to ' do
