@@ -34,13 +34,13 @@ namespace :seed do
     a = Account.new(email: 'europeana_user@europeana.eu', username: 'europeana_user', password: "Europeana123!@#", confirmation_sent_at: Time.now)
     a.save
 
-    Core::Project.create!([
+    Core::Project.create([
       {account_id: 1, name: "Europeana", slug: "europeana", properties: {}, is_public: true, created_by: nil, updated_by: nil}
     ])
 
     Impl::Aggregation.skip_callback(:create, :before, :before_create_set)
     Impl::Aggregation.skip_callback(:create, :after, :after_create_set)
-    Impl::Aggregation.create!([{
+    Impl::Aggregation.create([{
       core_project_id: 1,
       genre: "provider",
       name: "Rijksmuseum",
@@ -117,7 +117,7 @@ namespace :seed do
 
     Core::Datacast.skip_callback(:create, :before, :before_create_set)
     Core::Datacast.skip_callback(:create, :after, :after_create_set)
-    Core::Datacast.create!([{
+    Core::Datacast.create([{
       core_project_id: 1,
       core_db_connection_id: 1,
       name: "PROVIDER Rijksmuseum - Providers Count",
@@ -169,7 +169,7 @@ namespace :seed do
 
     Impl::Output.skip_callback(:create, :before, :before_create_set)
     Impl::Output.skip_callback(:create, :after, :after_create_set)
-    Impl::Output.create!([{
+    Impl::Output.create([{
       genre: "visits",
       impl_parent_type: "Impl::Aggregation",
       impl_parent_id: 1,
@@ -249,7 +249,7 @@ namespace :seed do
 
     Impl::Aggregation.skip_callback(:create, :before, :before_create_set)
     Impl::Aggregation.skip_callback(:create, :after, :after_create_set)
-    Impl::Aggregation.create!([{
+    Impl::Aggregation.create([{
       core_project_id: 1,
       genre: "data_provider",
       name: "DANS-KNAW",
@@ -325,7 +325,7 @@ namespace :seed do
 
     Impl::AggregationDataSet.skip_callback(:create, :before, :before_create_set)
     Impl::AggregationDataSet.skip_callback(:create, :after, :after_create_set)
-    Impl::AggregationDataSet.create!([{
+    Impl::AggregationDataSet.create([{
       impl_aggregation_id: 1,
       impl_data_set_id: 1
     }, {
@@ -349,7 +349,7 @@ namespace :seed do
 
     Impl::DataSet.skip_callback(:create, :before, :before_create_set)
     Impl::DataSet.skip_callback(:create, :after, :after_create_set)
-    Impl::DataSet.create!([{
+    Impl::DataSet.create([{
       data_set_id: "91956",
       created_by: nil,
       updated_by: nil,
@@ -404,7 +404,7 @@ namespace :seed do
 
     Impl::Report.skip_callback(:create, :before, :before_create_set)
     Impl::Report.skip_callback(:create, :after, :after_create_set)
-    Impl::Report.create!([{
+    Impl::Report.create([{
       impl_aggregation_id: 1,
       core_template_id: nil,
       name: "About This Dashboard",
@@ -460,7 +460,7 @@ namespace :seed do
 
     Impl::BlacklistDataset.skip_callback(:create, :before, :before_create_set)
     Impl::BlacklistDataset.skip_callback(:create, :after, :after_create_set)
-    Impl::BlacklistDataset.create!([
+    Impl::BlacklistDataset.create([
       {dataset: "2023601_Ag_DE_DISMARC"},
       {dataset: "2022608_Ag_NO_ELocal_DiMu"},
       {dataset: "2023003_Ag_BE_Elocal_Erfgoedregister"},
@@ -472,7 +472,7 @@ namespace :seed do
 
     Core::Viz.skip_callback(:create, :before, :before_create_set)
     Core::Viz.skip_callback(:create, :after, :after_create_set)
-    Core::Viz.create!([{
+    Core::Viz.create([{
       core_project_id: 1,
       properties: {},
       name: "PROVIDER Digitising Contemporary Art - Media Type Donut Chart",
@@ -491,7 +491,7 @@ namespace :seed do
 
     Ref::Chart.skip_callback(:create, :before, :before_create_set)
     Ref::Chart.skip_callback(:create, :after, :after_create_set)
-    Ref::Chart.create!([{
+    Ref::Chart.create([{
       name: "Multi-series Line",
       description: "Sometimes we wish to visualise the trend based behaviour of several data sets against a common ordinal/ interval data range. In such cases a multi-series line offers insight into both the trend behaviour and comparison between trend behaviour for different data sets",
       img_small: "https://s3-ap-southeast-1.amazonaws.com/charts.pykih.com/icons/multi-line.png",
@@ -512,7 +512,7 @@ namespace :seed do
 
     Core::Theme.skip_callback(:create, :before, :before_create_set)
     Core::Theme.skip_callback(:create, :after, :after_create_set)
-    Core::Theme.create!([{
+    Core::Theme.create([{
       account_id: nil,
       name: "Default",
       sort_order: 1,
