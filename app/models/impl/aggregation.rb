@@ -191,8 +191,8 @@ class Impl::Aggregation < ActiveRecord::Base
     else
       self.data_providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='data_provider' ORDER BY impl_aggregations.name;").each do |data_provider|
           obj = {
-            url: "#{BASE_URL}/dataprovider/#{data_provider.impl_report.slug}",
-            text: "#{data_provider.name}"
+            "url" => "#{BASE_URL}/dataprovider/#{data_provider.impl_report.slug}",
+            "text" => "#{data_provider.name}"
           }
           json << obj
       end
@@ -210,8 +210,8 @@ class Impl::Aggregation < ActiveRecord::Base
     else
       self.providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='provider' ORDER BY impl_aggregations.name;").each do |provider|
         obj = {
-          url: "#{BASE_URL}/provider/#{provider.impl_report.slug}",
-          text: "#{provider.name}"
+          "url" => "#{BASE_URL}/provider/#{provider.impl_report.slug}",
+          "text" => "#{provider.name}"
         }
         json << obj
       end
@@ -229,8 +229,8 @@ class Impl::Aggregation < ActiveRecord::Base
     else
       self.find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='country' ORDER BY impl_aggregations.name;").each do |country|
         obj = {
-          url: "#{BASE_URL}/country/#{country.impl_report.slug}",
-          text: "#{country.name.titleize}"
+          "url" => "#{BASE_URL}/country/#{country.impl_report.slug}",
+          "text" => "#{country.name.titleize}"
         }
         json << obj
       end

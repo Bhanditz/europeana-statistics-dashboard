@@ -130,6 +130,7 @@ RSpec.describe Impl::Aggregation, type: :model do
   context '#get_data_providers_json' do
     it 'should return the data providers data as json' do
       data = {"url"=>"http://localhost:3000/dataprovider/content-2014", "text"=>"Diputació de Barcelona"}
+
       expected_data = Impl::Aggregation.get_data_providers_json.first
       expect(expected_data["url"]).to eq(data["url"])
       expect(expected_data["text"]).to eq(data["text"])
