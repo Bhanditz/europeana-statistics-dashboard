@@ -16,5 +16,5 @@ test:
   port: 5432
   database: europeana_stats_test
   host: localhost
-  username: developer
-  password: developer
+  username: postgres
+  password:

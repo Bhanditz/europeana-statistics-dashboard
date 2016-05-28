@@ -21,3 +21,4 @@ env:
   - RAILS_ENV=test
 services:
   - redis-server
+  - postgresql
