@@ -12,6 +12,9 @@ SimpleCov.start do
   add_filter '/app/views'
   add_filter '/app/mailers'
   add_filter '/app/assets'
+  add_filter '/app/workers'
+  add_filter '/deploy'
+  add_filter '/public'
 
   add_group 'Controllers', 'app/controllers'
   add_group 'Models', 'app/models'
