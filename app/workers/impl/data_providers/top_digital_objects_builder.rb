@@ -35,7 +35,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     ga_filters  = data_provider.get_aggregated_filters
     looper = Date.parse(start_date)
     end_date = Date.parse(end_date)
-    ga_max_results = 1000
+    ga_max_results = 50
     while looper < end_date
       ga_access_token = Impl::DataSet.get_access_token
       ga_start_date = looper.strftime("%Y-%m-%d")
