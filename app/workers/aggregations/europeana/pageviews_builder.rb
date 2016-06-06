@@ -10,7 +10,7 @@ class Aggregations::Europeana::PageviewsBuilder
       aggregation_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","pageviews")
       aggregation_output.update_attributes(status: "Fetching pageviews", error_messages: nil)
       begin
-        ga_start_date   = aggregation.last_updated_at.present? ? (aggregation.last_updated_at+1).strftime("%Y-%m-%d") : "2012-01-01"
+        ga_start_date   = aggregation.last_updated_at.present? ? (aggregation.last_updated_at+1).strftime("%Y-%m-%d") : "2014-01-01"
         ga_end_date     = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
         ga_dimensions   = "ga:month,ga:year"
         ga_metrics      = "ga:pageviews"
@@ -22,6 +22,7 @@ class Aggregations::Europeana::PageviewsBuilder
         Core::TimeAggregation.create_time_aggregations("Impl::Output",aggregation_output.id,page_views_data,"pageviews","monthly")
         aggregation.update_attributes(status: "Fetched pageviews", error_messages: nil)
         aggregation_output.update_attributes(status: "Fetched Pageviews", error_messages: nil)
+
         #Fetching Visits
         ga_dimensions   = "ga:month,ga:year,ga:medium"
         ga_metrics      = "ga:visits"
@@ -35,9 +36,6 @@ class Aggregations::Europeana::PageviewsBuilder
 
         #Fetching ClickThroughs
         data_provider_click_through_output = Impl::Output.find_or_create(aggregation_id,"Impl::Aggregation","clickThrough")
-        ga_start_date = "2012-01-01"
-        #To change to last updated at once it runs for all the jobs
-        ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
 
         ga_dimensions   = "ga:year"
         click_metrics  = "ga:totalEvents"
@@ -50,7 +48,6 @@ class Aggregations::Europeana::PageviewsBuilder
         click_through_data = click_through_data.sort_by {|d| [d["year"]]}
 
         Core::TimeAggregation.create_time_aggregations("Impl::Output",data_provider_click_through_output.id, click_through_data,"clickThrough","yearly")
-
 
         #Fetching Countries
         country_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "country","pageviews")
@@ -85,7 +82,8 @@ class Aggregations::Europeana::PageviewsBuilder
     ga_filters  = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/record/"
     ga_start_date = start_date
     ga_end_date = end_date
-    top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
+    ga_max_results = 50
+    top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
     if top_digital_objects_per_quarter.present?
       top_digital_objects_per_quarter.each do |digital_object|
         page_path = digital_object[0].split("/")
