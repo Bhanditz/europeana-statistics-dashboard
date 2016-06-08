@@ -26,6 +26,7 @@ gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide'# until 
 gem 'dotenv-rails'
 gem 'whenever'
 gem "redis-namespace"
+gem 'nokogiri', '>= 1.6.8'
 
 
 #Assets related
