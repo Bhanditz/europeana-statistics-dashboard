@@ -7,8 +7,8 @@ app_dir = File.expand_path("../..", __FILE__)
 preload_app!
 
 rackup DefaultRackup
-port ENV['PORT'] || 3000
 rails_env = ENV['RACK_ENV'] || 'development'
+port ENV['PORT'] || 3000 if rails_env == 'development'
 environment rails_env
 
 # Logging
@@ -19,6 +19,7 @@ pidfile "#{app_dir}/tmp/pids/puma.pid"
 state_path "#{app_dir}/tmp/pids/puma.state"
 activate_control_app
 
+bind "unix://#{app_dir}/tmp/sockets/puma.sock" unless rails_env == 'development'
 
 on_worker_boot do
   # Worker specific setup for Rails 4.1+
