@@ -9,15 +9,12 @@ gem 'redis'
 gem 'puma'
 gem "haml-rails"
 gem "haml"
-gem 'devise', '3.5.5'
+gem 'devise'
 gem 'friendly_id', '~> 5.0.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 gem "nestful"
 gem "simple_form"
 gem 'kaminari'
-gem 'carrierwave'
-gem 'carrierwave_direct'
-gem 'csvlint'
-gem 'gon', '~> 5.2.3'
+gem 'gon'
 gem 'sidekiq'
 gem 'activerecord-session_store'
 gem 'redcarpet'
@@ -34,9 +31,6 @@ gem 'uglifier',     '>= 1.3.0'
 gem 'sass-rails', '~> 5.0.0'
 gem 'susy'
 
-group :doc do
-  gem 'sdoc',         '~> 0.4.0'
-end
 
 group :production do
   gem 'rails_12factor'
