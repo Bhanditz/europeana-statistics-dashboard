@@ -63,5 +63,5 @@
               =impl_data_set.name
 
   #datacasts.tab-pane{role: 'tabpanel'}
-    - if core_datacasts.count > 0
+    - if core_datacasts and core_datacasts.count > 0
       = render "core/datacasts/index", locals: {core_project: core_project, account: account, impl_aggregation: impl_aggregation, core_datacasts: core_datacasts}
