@@ -4,4 +4,4 @@
   %h3=h show_project_name(@core_project)
   .panel.panel-default.sheet.sub
     .panel-body
-      = render partial: "form"
+      = render "form", account: @account, core_project: @core_project, impl_report: @impl_report

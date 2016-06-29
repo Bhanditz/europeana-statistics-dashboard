@@ -2,6 +2,7 @@ class Aggregations::Europeana::PageviewsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches pageviews and clickthroughs data from Google Analytics.
   def perform
     aggregation = Impl::Aggregation.europeana
     aggregation_id = aggregation.id
@@ -53,10 +54,6 @@ class Aggregations::Europeana::PageviewsBuilder
         country_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "country","pageviews")
         Core::TimeAggregation.create_aggregations(country_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","country") unless country_output.nil?
 
-        #Fetching Languages
-        # language_output = Impl::Aggregation.fetch_GA_data_between(ga_start_date, ga_end_date, nil, "language","pageviews")
-        # Core::TimeAggregation.create_aggregations(language_output,"monthly", aggregation_id,"Impl::Aggregation","pageviews","language") unless language_output.nil?
-
         #Top Digital Objects
         top_digital_objects = Aggregations::Europeana::PageviewsBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date)
         Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects,"monthly", aggregation.id)
@@ -70,7 +67,11 @@ class Aggregations::Europeana::PageviewsBuilder
     end
   end
 
-
+  # Returns data of pageviews for all top digital objects from Google Analytics fecting, the details of digital objects from Europeana API's
+  #
+  # @param start_date [String] valid start date to fetch Google Analytics data from.
+  # @param end_date [String] a valid date till which Google Analytics data is to be fetched.
+  # @return [Array] an array of Hash that is formatted output of Google Analytics and Europeana API's.
   def self.fetch_data_for_all_quarters_between(start_date, end_date)
     top_digital_objects_data = []
     ga_access_token = Impl::DataSet.get_access_token
@@ -89,15 +90,15 @@ class Aggregations::Europeana::PageviewsBuilder
         page_path = digital_object[0].split("/")
         size = digital_object[3].to_i
         begin
-          digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split(".")[0]}.json?wskey=SQkKyghXb&profile=full").read)
-        rescue => e
+          digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split(".")[0]}.json?wskey=#{ENV['WSKEY']}&profile=full").read)
+        rescue
           next
         end
         next if ((digital_object_europeana_data.nil?) or (digital_object_europeana_data["success"] == false))
         image_url = digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'].present? ? digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'] : "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
         begin
           title = digital_object_europeana_data["object"]["proxies"][0]['dcTitle'].first[1].first
-        rescue => e
+        rescue
           title = "No Title Found"
         end
         title_middle_url = digital_object_europeana_data["object"]['europeanaAggregation']['about'].split("/")

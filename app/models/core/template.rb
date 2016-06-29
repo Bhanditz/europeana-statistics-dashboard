@@ -24,17 +24,19 @@ class Core::Template < ActiveRecord::Base
   validates :name, presence: true
   validates :genre, presence: true, uniqueness: {scope: :name}
   #CALLBACKS
-  before_create :before_create_set
-  after_create :after_create_set
   #SCOPES
-  scope :default_data_provider_template, -> {where(genre: 'data_providers').first}
-  scope :default_provider_template, -> {where(genre: 'providers').first}
-  scope :default_country_template, -> {where(genre: 'country').first}
   scope :default_europeana_template, -> {where(genre: 'europeana').first}
   #CUSTOM SCOPES
   #FUNCTIONS
 
-  def self.create_or_update(name,html_content,genre,required_variables)
+  # Either creates a new Core::Template or updates an existing Core::Template object in the database.
+  #
+  # @param name [String] name of the template.
+  # @param html_content [String] the html of the template.
+  # @param genre [String] identifier for type of template, possible values are ["data_providers", "providers", "country", "europeana"].
+  # @param required_variables [Array] collection of variable name to be replace in the html string.
+  # @return [Object] a reference to Core::Template.
+  def self.create_or_update(name, html_content, genre, required_variables)
     a = where(name: name, genre: genre).first
     if a.blank?
       a = create({name: name, html_content: html_content,genre: genre, required_variables: required_variables })
@@ -43,15 +45,6 @@ class Core::Template < ActiveRecord::Base
     end
     a
   end
+
   #PRIVATE
-  private
-
-  def before_create_set
-    true
-  end
-
-  def after_create_set
-    true
-  end
-
 end

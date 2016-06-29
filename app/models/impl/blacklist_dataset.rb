@@ -13,6 +13,7 @@ class Impl::BlacklistDataset < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
+  # Returns the list of blacklisted datasets and caches the blacklist in redis.
   def self.get_blacklist_datasets
   	if $redis.get("blacklist_datasets")
   		blacklist_datasets = JSON.parse($redis.get("blacklist_datasets"))
@@ -23,5 +24,4 @@ class Impl::BlacklistDataset < ActiveRecord::Base
   	blacklist_datasets
   end
   #PRIVATE
-  private
 end

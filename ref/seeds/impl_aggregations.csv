@@ -1,0 +1,8 @@
+"id","core_project_id","genre","name","created_by","updated_by","created_at","updated_at","status","error_messages","properties","last_updated_at"
+630,1,"data_provider","DANS-KNAW",,,"2015-11-29 15:38:31.203091","2016-03-24 09:51:53.771371","Report built","","","2016-02-29"
+200,1,"country","france",1,1,"2015-11-27 21:55:01.262062","2016-03-24 09:51:55.501206","Report built","","","2016-02-29"
+115,1,"provider","LoCloud",,,"2015-11-27 21:38:39.564739","2016-03-24 09:51:55.685645","Report built","","","2016-02-29"
+145,1,"data_provider","Diputació de Barcelona",,,"2015-11-27 21:38:41.911676","2016-03-24 09:51:56.370202","In Queue","","","2016-02-29"
+631,1,"provider","Rijksmuseum",,,"2015-11-29 15:38:31.227954","2016-03-24 09:52:05.782524","Failed","error_message","","2016-02-29"
+2,1,"country","spain",1,1,"2015-11-27 21:37:38.646644","2016-05-04 05:49:20.52885","Report built","","","2016-03-31"
+1,1,"europeana","Europeana",,,"2015-11-27 21:35:31.675924","2016-05-03 10:09:15.937793","Report built","","","2016-03-31"

@@ -7,8 +7,14 @@ app_dir = File.expand_path("../..", __FILE__)
 preload_app!
 
 rackup DefaultRackup
-port ENV['PORT'] || 3000
 rails_env = ENV['RACK_ENV'] || 'development'
+
+if rails_env == 'development'
+  port ENV['PORT'] || 3000 if rails_env == 'development'
+else
+  bind "unix://#{app_dir}/tmp/sockets/puma.sock"
+end
+
 environment rails_env
 
 # Logging

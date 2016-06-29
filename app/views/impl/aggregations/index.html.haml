@@ -37,8 +37,7 @@
                     %td= link_to 'Edit', edit_account_project_impl_aggregation_path(@core_project.account, @core_project, impl_aggregation)
                     %td= icon_del(account_project_impl_aggregation_path(@core_project.account, @core_project, impl_aggregation))
         .col-sm-3
-          -if @sudo[1]
-            .well
-              %h5 Add new Country
-              %hr
-              = render partial: "impl/aggregations/form"
+          .well
+            %h5 Add new Country
+            %hr
+            = render "form", impl_aggregation: @impl_aggregation, core_project: @core_project

@@ -15,10 +15,10 @@
 #
 
 class Impl::DataSet < ActiveRecord::Base
-  
+
   #GEMS
   self.table_name = "impl_datasets"
-  
+
   #CONSTANTS
   #ATTRIBUTES
   #ACCESSORS
@@ -31,10 +31,11 @@ class Impl::DataSet < ActiveRecord::Base
 
   #CALLBACKS
   before_create :before_create_set
-  after_create :after_create_set
   #SCOPES
   #CUSTOM SCOPES
   #FUNCTIONS
+
+  # Returns the access token and refreshes the access token if it has expired.
   def self.get_access_token
     if $redis.get("ga_access_token").present?
       a = $redis.get("ga_access_token")
@@ -47,18 +48,16 @@ class Impl::DataSet < ActiveRecord::Base
     a
   end
 
-  def refresh_all_jobs
-    end_date = Date.today.at_beginning_of_week.strftime("%Y-%m-%d")
-    start_date = (Date.today.at_beginning_of_week - 1).at_beginning_of_week.strftime("%Y-%m-%d")
-    Impl::TrafficBuilder.perform_async(self.id,start_date,end_date)
-  end
-
+  # Either creates a new Impl::DataSet or returns an existing Impl::DataSet object from the database.
+  #
+  # @param data_set_name [String] name of the dataset.
+  # @return [Object] a reference to Impl::DataSet.
   def self.find_or_create(data_set_name)
     a = where(name: data_set_name).first
-    u_or_c = "updated"
     if a.blank?
-      u_or_c = "created"
-      a = create!({name: data_set_name})
+      a = new({name: data_set_name})
+      a.id = Impl::DataSet.last.present? ? Impl::DataSet.last.id + 1 : 1
+      a.save
     end
     a
   end
@@ -70,9 +69,4 @@ class Impl::DataSet < ActiveRecord::Base
     self.data_set_id = self.name.split("_")[0].gsub(/[^0-9,.]/,"")
     true
   end
-
-  def after_create_set
-    true
-  end
-
 end

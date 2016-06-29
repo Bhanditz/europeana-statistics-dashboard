@@ -2,6 +2,9 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches and processes top digital object data for the non blacklisted data providers and saves then to the database.
+  #
+  # @param data_provider_id [Fixnum] id of the instance of Impl:Aggregation where genre is data_provider.
   def perform(data_provider_id)
     data_provider = Impl::Aggregation.find(data_provider_id)
     begin
@@ -25,6 +28,12 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     end
   end
 
+  # Returns data of pageviews for all top digital objects from Google Analytics, fecting the details of digital objects from Europeana API's
+  #
+  # @param start_date [String] valid start date to fetch Google Analytics data from.
+  # @param end_date [String] a valid date till which Google Analytics data is to be fetched.
+  # @param data_provider [Object] an instance of Impl::Aggregation.
+  # @return [Array] an array of Hash that is formatted output of Google Analytics and Europeana API's.
   def self.fetch_data_for_all_quarters_between(start_date, end_date, data_provider)
     top_digital_objects_data = []
     europeana_base_url = "http://europeana.eu/api/v2/"
@@ -47,15 +56,15 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
           page_path = digital_object[0].split("/")
           size = digital_object[3].to_i
           begin
-            digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split(".")[0]}.json?wskey=SQkKyghXb&profile=full").read)
-          rescue => e
+            digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split(".")[0]}.json?wskey=#{ENV['WSKEY']}&profile=full").read)
+          rescue
             next
           end
           next if ((digital_object_europeana_data.nil?) or (digital_object_europeana_data["success"] == false))
           image_url = digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'].present? ? digital_object_europeana_data["object"]['europeanaAggregation']['edmPreview'] : "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
           begin
             title = digital_object_europeana_data["object"]["proxies"][0]['dcTitle'].first[1].first
-          rescue => e
+          rescue
             title = "No Title Found"
           end
           title_middle_url = digital_object_europeana_data["object"]['europeanaAggregation']['about'].split("/")

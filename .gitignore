@@ -13,7 +13,7 @@
 
 # Ignore all logfiles and tempfiles.
 .rvmrc
-.ruby-gemset 
+.ruby-gemset
 .ruby-version
 /log/*.log
 /public/uploads/tmp
@@ -28,6 +28,10 @@ dump.rdb
 /config/database.yml
 /config/redis.yml
 /.env
+coverage
+rails_best_practices_output.html
+doc/
+.yardoc/
 
 app/assets/javascripts/application/zlib/*.js
 *.pyc

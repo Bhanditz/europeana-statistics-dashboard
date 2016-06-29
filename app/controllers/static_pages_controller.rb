@@ -3,6 +3,7 @@ class StaticPagesController < ApplicationController
 
   layout false
 
+  # Render Home page.
   def index
   end
 end

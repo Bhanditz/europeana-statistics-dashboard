@@ -2,6 +2,9 @@ class Impl::DataProviders::ClickThroughBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches clickthroughs for the data providers from Google Analytics and formats the data in the required format.
+  #
+  # @param data_provider_id [Fixnum] id of the instance of Impl:Aggregation where genre is data_provider.
   def perform(data_provider_id)
     data_provider = Impl::Aggregation.find(data_provider_id)
     begin
@@ -16,7 +19,6 @@ class Impl::DataProviders::ClickThroughBuilder
 
     data_provider_click_through_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","clickThrough")
 
-    # data_provider_visits_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","visits")
     data_provider_click_through_output.update_attributes(status: "Building click through", error_messages: nil)
     ga_start_date = "2012-01-01"
     #To change to last updated at once it runs for all the jobs
@@ -36,7 +38,6 @@ class Impl::DataProviders::ClickThroughBuilder
       click_through_data = click_through_data.sort_by {|d| [d["year"]]}
 
       Core::TimeAggregation.create_time_aggregations("Impl::Output",data_provider_click_through_output.id, click_through_data,"clickThrough","yearly")
-      # data_provider.update_attributes(status: "Building Visits", error_messages: nil)
       data_provider_click_through_output.update_attributes(status: "Built click through", error_messages: nil)
       Impl::DataProviders::ItemViewsBuilder.perform_async(data_provider_id)
     rescue => e

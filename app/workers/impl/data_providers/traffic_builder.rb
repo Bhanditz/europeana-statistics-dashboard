@@ -2,6 +2,9 @@ class Impl::DataProviders::TrafficBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
 
+  # Fetches and processes pageview and filtered pageview data for the data providers from Google Analytics and formats the data in the required format and stores it in the database.
+  #
+  # @param data_provider_id [Fixnum] id of the instance of Impl:Aggregation where genre is data_provider.
   def perform(data_provider_id)
     data_provider = Impl::Aggregation.find(data_provider_id)
     begin

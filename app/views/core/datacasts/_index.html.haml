@@ -1,12 +1,3 @@
-%h4
-  -if @sudo[1]
-    .pull-right
-      - if @impl_aggregation.nil? and (@sudo[0] or @sudo[1])
-        = link_to "Upload Data".html_safe, file_account_core_project_datacasts_path(@core_project.account, @core_project), style: "font-size: 0.6em; font-weight: normal; border-bottom: 1px dotted gray;", class: "black"
-        &nbsp; &nbsp;
-        = link_to "Create new Query", new_account_core_project_datacast_path(@account, @core_project), id: "dLabel", class: "btn btn-orange btn-sm"
-
-%p.gray Share your data! Convert SQL queries into sharable, real-time APIs.
 %hr{style: "margin-bottom: 5px; margin-top: 2px; border-top-color: lightgray;"}
 %table.table.table-condensed
   %thead
@@ -19,10 +10,10 @@
       %th Kind
       %th
       %th
-      - if @impl_aggregation.nil?
+      - if impl_aggregation.nil?
         %th
   %tbody
-    - @core_datacasts.each do |core_datacast|
+    - core_datacasts.each do |core_datacast|
       %tr
         %td= signal_datacast_status(core_datacast)
         %td
@@ -34,7 +25,8 @@
             .hint{style: "color: red;"}=h core_datacast.error
         %td.hint
           - if core_datacast.last_run_at.present?
-            = time_ago_in_words(core_datacast.last_run_at)
+            = timeago(core_datacast.last_run_at)
+            / time_ago_in_words(core_datacast.last_run_at)
           - if core_datacast.count_of_queries.present?
             %br
             = core_datacast.count_of_queries
@@ -48,13 +40,11 @@
             = core_datacast.number_of_columns
         %td.hint
           - if core_datacast.last_data_changed_at.present?
-            = time_ago_in_words(core_datacast.last_data_changed_at)
+            = timeago(core_datacast.last_data_changed_at)
+            /time_ago_in_words(core_datacast.last_data_changed_at)
           - if core_datacast.average_execution_time.present?
             %br
             = core_datacast.average_execution_time.to_f.ceil
             ms (avg. time)
         %td= core_datacast.format
-        %td= link_to 'Edit', edit_account_core_project_datacast_path(@account, @core_project,  core_datacast)
-        %td= link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, run_worker_account_core_project_datacast_path(@account, @core_project, core_datacast)
-        - if @impl_aggregation.nil?
-          %td= link_to icon_del(account_core_project_datacast_path(@account, @core_project, core_datacast))
+        %td= link_to "<span class='glyphicon glyphicon-refresh'></span>".html_safe, run_worker_account_core_project_datacast_path(account, core_project, core_datacast)

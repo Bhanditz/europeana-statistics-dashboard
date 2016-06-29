@@ -28,14 +28,19 @@ class Impl::AggregationDatacast < ActiveRecord::Base
   #CUSTOM SCOPES
   #FUNCTIONS
 
+  # Either creates a new Impl::AggregationDatacast or returns an existing Impl::AggregationDatacast object from the database.
+  #
+  # @param impl_aggregation_id [Fixnum] id of the reference Impl::Aggregation object.
+  # @param core_datacast_identifier [String] a securehex string.
+  # @return [Object] a reference to Impl::AggregationDatacast
   def self.find_or_create(impl_aggregation_id, core_datacast_identifier)
     a = where(impl_aggregation_id: impl_aggregation_id, core_datacast_identifier: core_datacast_identifier).first
     if a.blank?
-      a = create({impl_aggregation_id: impl_aggregation_id, core_datacast_identifier: core_datacast_identifier})
+      a = new({impl_aggregation_id: impl_aggregation_id, core_datacast_identifier: core_datacast_identifier})
+      a.id = Impl::AggregationDatacast.last.present? ? Impl::AggregationDatacast.last.id + 1 : 1
     end
     a
   end
 
   #PRIVATE
-  private
 end
