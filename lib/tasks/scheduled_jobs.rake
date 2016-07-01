@@ -9,7 +9,7 @@ namespace :scheduled_jobs  do
     rescue Exception => e
     end
     cnt = 0
-    Impl::Aggregation.where.not(genre: "europeana").all.each do |d|
+    Impl::Aggregation.where.not(genre: "europeana").each do |d|
       Impl::Country::ProviderBuilder.perform_async(d.id) if d.genre == "country"
       Impl::DataProviders::MediaTypesBuilder.perform_async(d.id)
       Impl::DataProviders::DataSetBuilder.perform_at(cnt.seconds.from_now,d.id)
