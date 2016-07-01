@@ -1,6 +1,8 @@
 class Aggregations::Europeana::PageviewsBuilder
   include Sidekiq::Worker
+
   sidekiq_options backtrace: true
+  require "open-uri"
 
   # Fetches pageviews and clickthroughs data from Google Analytics.
   def perform
