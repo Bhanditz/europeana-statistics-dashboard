@@ -52,31 +52,9 @@ Licensed under the EUPL V.1.1. For full details, see [LICENSE.md](LICENSE.md).
 * We can change the configuration and then re-run the Rake task, which will
 load the changes to the db.
 
-## Theme
-
-To configure the theme, see [PykCharts.js][3] as a reference. After deciding the
-configuration, place it in the file [ref/theme.csv](ref/theme.csv).
-
-After the configuration is replaced in the ref/theme.csv, we run the task `rake ref:load` to make the changes. All the charts created after the change will have that theme by default.
-
-## Running Test Cases
-
-'bundle exec rake seed:test_tables' runs a Rake tasks to seed Test database.
-
-* Copies Aggregation Data
-* Copies Blacklist Data
-* Copies Datacasts Data
-* Copies Aggregation DataSet Data
-* Copies Aggregation Datacasts Data
-* Copies Aggregation Relations Data
-* Copies DataSets Data
-* Copies Outputs Data
-* Copies Time Aggregation Data
-* Copies Datacast Outputs Data
-
-* Seed Data is kept in ref/seeds folder.
+## Contributors
+[Pykih Software LLP](https://pykih.com/)
 
 [1]: https://github.com/europeana/europeana-statistics-grape
 [2]: https://github.com/bkeepers/dotenv
-[3]: http://pykcharts.com/tour/pie
 
