@@ -1,6 +1,7 @@
 class Impl::DataProviders::ClickThroughBuilder
   include Sidekiq::Worker
   sidekiq_options backtrace: true
+  require "open-uri"
 
   # Fetches clickthroughs for the data providers from Google Analytics and formats the data in the required format.
   #
