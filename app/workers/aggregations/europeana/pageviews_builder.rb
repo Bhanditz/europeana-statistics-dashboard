@@ -17,7 +17,7 @@ class Aggregations::Europeana::PageviewsBuilder
         ga_end_date     = (Date.today.at_beginning_of_month - 1).strftime("%Y-%m-%d")
         ga_dimensions   = "ga:month,ga:year"
         ga_metrics      = "ga:pageviews"
-        ga_filters      = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/record/"
+        ga_filters      = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/"
         ga_access_token = Impl::DataSet.get_access_token
         page_views = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}", {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)["rows"]
         page_views_data = page_views.map{|a| {"month" => a[0], "year" => a[1], "pageviews" => a[2].to_i}}
@@ -42,7 +42,7 @@ class Aggregations::Europeana::PageviewsBuilder
 
         ga_dimensions   = "ga:year"
         click_metrics  = "ga:totalEvents"
-        ga_filter = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/record/;ga:eventCategory==Europeana Redirect,ga:eventCategory==Redirect"
+        ga_filter = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/;ga:eventCategory==Europeana Redirect,ga:eventCategory==Redirect"
         #click Through
         ga_access_token = Impl::DataSet.get_access_token
 
@@ -82,7 +82,7 @@ class Aggregations::Europeana::PageviewsBuilder
     ga_metrics="ga:pageviews"
     ga_dimensions="ga:pagePath,ga:month,ga:year"
     ga_sort= "-ga:pageviews"
-    ga_filters  = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/record/"
+    ga_filters  = "ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/"
     ga_start_date = start_date
     ga_end_date = end_date
     ga_max_results = 50
