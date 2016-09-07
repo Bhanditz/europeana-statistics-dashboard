@@ -23,7 +23,7 @@ class Impl::DataProviders::ItemViewsBuilder
       item_views_output = Impl::Output.find_or_create(data_provider_id,"Impl::Aggregation","item_views")
       item_views_output.update_attributes(status: "Building item views", error_messages: nil)
       item_views_metrics = "ga:pageviews"
-      item_views_filters = "#{data_provider.get_aggregated_filters};ga:pagePath=~/portal/record/"
+      item_views_filters = "#{data_provider.get_aggregated_filters};ga:pagePath=~/portal/(../)?record/"
       item_views_data = Impl::Aggregation.get_ga_data(ga_start_date,ga_end_date,item_views_metrics,ga_dimensions,item_views_filters,"ga:year,ga:month")
       item_views_data = item_views_data.map{|a| {"month" => a[0], "year"=> a[1], "pageviews" => a[2].to_i}}
       Core::TimeAggregation.create_time_aggregations("Impl::Output",item_views_output.id, item_views_data,"pageviews","monthly")
