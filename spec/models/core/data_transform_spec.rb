@@ -1,9 +1,10 @@
 require "rails_helper"
 require 'pg'
 RSpec.describe Core::DataTransform, type: :model do
+  db_uri = URI.parse(ENV['DATABASE_URL'])
 
   before(:each) do
-    @PGconnection =  PGconn.open(:dbname => 'europeana_stats_test')
+    @PGconnection =  PGconn.open(db_uri.hostname, db_uri.port, nil, nil, db_uri.path[1..-1], db_uri.user, db_uri.password)
   end
 
   context 'Convert Postgres object to ' do
