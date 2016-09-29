@@ -17,7 +17,7 @@ gem 'gon'
 gem 'sidekiq'
 gem 'activerecord-session_store'
 gem 'redcarpet'
-gem 'europeana-styleguide', github: 'europeana/europeana-styleguide-ruby',  ref: 'f1cc2b5'
+gem 'europeana-styleguide', github: 'europeana/europeana-styleguide-ruby',  ref: '7bcc0e9'
 gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide'# until upstream merges our pull requests
 gem 'dotenv-rails'
 gem 'whenever'

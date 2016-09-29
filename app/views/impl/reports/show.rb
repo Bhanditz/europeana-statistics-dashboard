@@ -83,8 +83,8 @@ module Impl
             path: asset_path('reports.js')
           },
           {
-            path: styleguide_url('/js/dist/require.js'),
-            data_main: styleguide_url('/js/dist/main/main-statistics.js')
+            path: styleguide_url('/js/modules/require.js'),
+            data_main: styleguide_url('/js/modules/main/main-statistics.js')
           }
         ]
       end
