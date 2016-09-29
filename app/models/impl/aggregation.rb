@@ -147,7 +147,7 @@ class Impl::Aggregation < ActiveRecord::Base
     unless data_provider.nil?
       ga_filters = data_provider.get_aggregated_filters
       query_url = "https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}"
-      else
+    else
       query_url = "https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&sort=#{ga_sort}"
     end
     data = JSON.parse(open(query_url, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).read)
