@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
@@ -30,8 +31,8 @@ module EuropeanaStatisticsDashboard
       g.orm :active_record
     end
 
-    #hstore
-    #config.active_record.schema_format = :sql
+    # hstore
+    # config.active_record.schema_format = :sql
 
     ActiveRecord::SessionStore::Session.table_name = 'core_sessions'
     ActiveRecord::SessionStore::Session.primary_key = 'session_id'

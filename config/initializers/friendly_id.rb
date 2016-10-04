@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # FriendlyId Global Configuration
 #
 # Use this to set up shared configuration options for your entire application.
@@ -17,7 +18,7 @@ FriendlyId.defaults do |config|
   config.use :reserved
 
   config.reserved_words = %w(new edit index session login logout users admin
-    stylesheets assets javascripts images)
+                             stylesheets assets javascripts images)
 
   #  ## Friendly Finders
   #
@@ -38,14 +39,14 @@ FriendlyId.defaults do |config|
   # performance because it will avoid Rails-internal code that makes runtime
   # calls to `Module.extend`.
   #
-  config.use :finders,:slugged
+  config.use :finders, :slugged
   #
   # ## Slugs
   #
   # Most applications will use the :slugged module everywhere. If you wish
   # to do so, uncomment the following line.
   #
-  #config.use :slugged
+  # config.use :slugged
   #
   # By default, FriendlyId's :slugged addon expects the slug column to be named
   # 'slug', but you can change it if you wish.
@@ -71,7 +72,7 @@ FriendlyId.defaults do |config|
   #
   config.use Module.new {
     def should_generate_new_friendly_id?
-      slug.blank? ||  username_changed?|| name_changed?
+      slug.blank? || username_changed? || name_changed?
     end
   }
   #
