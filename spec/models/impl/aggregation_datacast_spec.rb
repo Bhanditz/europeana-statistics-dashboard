@@ -1,9 +1,9 @@
-require "rails_helper"
+# frozen_string_literal: true
+require 'rails_helper'
 
 RSpec.describe Impl::AggregationDatacast, type: :model do
   context '#find_or_create' do
-    it "should return a new AggregationDatacast" do
-
+    it 'should return a new AggregationDatacast' do
       impl_aggregation_id = -1
       core_datacast_identifier = SecureRandom.hex(33)
 
@@ -36,6 +36,5 @@ RSpec.describe Impl::AggregationDatacast, type: :model do
 
       impl_datacast.delete
     end
-
   end
 end

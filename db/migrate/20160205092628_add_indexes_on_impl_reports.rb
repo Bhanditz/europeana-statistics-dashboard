@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 class AddIndexesOnImplReports < ActiveRecord::Migration
   def change
-    execute "Drop index index_impl_reports_on_slug"
+    execute 'Drop index index_impl_reports_on_slug'
     execute "CREATE INDEX index_impl_reports_on_slug_for_country
       ON impl_reports
       USING btree

@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 STDOUT.sync = STDERR.sync = true
 
@@ -13,16 +14,16 @@ if ARGV.size > 2 || (action == 'run' && run_script.nil?)
   exit 1
 end
 
-HOSTNAME = ENV["COLLECTD_HOSTNAME"] || `hostname -f`.chomp
-INTERVAL = (ENV["COLLECTD_INTERVAL"] || 60).to_i
+HOSTNAME = ENV['COLLECTD_HOSTNAME'] || `hostname -f`.chomp
+INTERVAL = (ENV['COLLECTD_INTERVAL'] || 60).to_i
 
-env = ENV["RUBBER_ENV"] ||= "development"
+env = ENV['RUBBER_ENV'] ||= 'development'
 root = File.expand_path(File.dirname(__FILE__) + '/../..')
 
-STDERR.reopen("#{root}/log/collectd-runner.log", "a") unless action == 'run'
+STDERR.reopen("#{root}/log/collectd-runner.log", 'a') unless action == 'run'
 
-require "rubber"
-Rubber::initialize(root, env)
+require 'rubber'
+Rubber.initialize(root, env)
 
 # Gives us a way to run a single script
 if action == 'run'
@@ -46,8 +47,8 @@ Dir["#{script_dir}/**/*"].each do |script|
 
   # skip scripts not specific to the current host or roles
   #
-  relative = script.gsub("#{script_dir}/", "")
-  segments = relative.split("/")
+  relative = script.gsub("#{script_dir}/", '')
+  segments = relative.split('/')
   if segments[0] == 'host'
     next unless segments[1] == Rubber.config.host
   end
@@ -103,5 +104,4 @@ loop do
   end
 
   sleep sleep_time
-
 end

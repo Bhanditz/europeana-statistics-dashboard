@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AddColsToReports < ActiveRecord::Migration
   def change
     add_column :impl_reports, :impl_aggregation_genre, :string

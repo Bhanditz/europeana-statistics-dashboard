@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class RemoveTables < ActiveRecord::Migration
   def change
     drop_table :core_datacast_pulls

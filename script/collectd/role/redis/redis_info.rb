@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'redis'
 
 redis = Redis.new(host: 'localhost', port: 6379, timeout: INTERVAL - 1)

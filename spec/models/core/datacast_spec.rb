@@ -1,11 +1,11 @@
-require "rails_helper"
+# frozen_string_literal: true
+require 'rails_helper'
 
 RSpec.describe Core::Datacast, type: :model do
   context 'getting data distribution' do
-    it "returns data distribution of data" do
-
+    it 'returns data distribution of data' do
       data = [
-        ['col1', 'col2', 'col3', 'col4' ],
+        %w(col1 col2 col3 col4),
         ['first name', 'true', '12', '11-12-2015'],
         ['first name', 'true', '13', '31-12-2015'],
         ['first name', 'true', '14', '01-01-2016'],
@@ -15,17 +15,16 @@ RSpec.describe Core::Datacast, type: :model do
       ]
 
       desired_distribution = {
-        "col1" => {string: 6, boolean: 0, float: 0, integer: 0, date: 0, blank: 0},
-        "col2" => {string: 0, boolean: 6, float: 0, integer: 0, date: 0, blank: 0},
-        "col3" => {string: 0, boolean: 0, float: 0, integer: 6, date: 0, blank: 0},
-        "col4" => {string: 0, boolean: 0, float: 0, integer: 0, date: 6, blank: 0}
+        'col1' => { string: 6, boolean: 0, float: 0, integer: 0, date: 0, blank: 0 },
+        'col2' => { string: 0, boolean: 6, float: 0, integer: 0, date: 0, blank: 0 },
+        'col3' => { string: 0, boolean: 0, float: 0, integer: 6, date: 0, blank: 0 },
+        'col4' => { string: 0, boolean: 0, float: 0, integer: 0, date: 6, blank: 0 }
       }
 
       distribution = Core::Datacast.get_data_distribution(data)
       expect(distribution).to eq(desired_distribution)
     end
   end
-
 
   context 'getting the datatype of data' do
     it 'should return float' do
@@ -73,7 +72,7 @@ RSpec.describe Core::Datacast, type: :model do
 
   context 'Core::Datacast#create_or_update_by' do
     it 'should return a new datacast' do
-      previous_datacast= Core::Datacast.where(name: 'NEW_TEST_DATACAST', core_project_id: 1, core_db_connection_id: 1).first
+      previous_datacast = Core::Datacast.where(name: 'NEW_TEST_DATACAST', core_project_id: 1, core_db_connection_id: 1).first
       new_datacast = Core::Datacast.create_or_update_by(
         'SELECT * FROM generate_series(2,3);',
         1,

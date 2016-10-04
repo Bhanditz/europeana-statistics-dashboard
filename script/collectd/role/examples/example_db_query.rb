@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 query = <<-EOF
   select count(id) from users;
 EOF
 
 # pick a non-critical db if possible
-source = Rubber.instances.for_role("db").first
-source ||= Rubber.instances.for_role("db", "primary" => true).first
+source = Rubber.instances.for_role('db').first
+source ||= Rubber.instances.for_role('db', 'primary' => true).first
 db_host = source ? source.full_name : 'localhost'
 
 command = "psql -U#{Rubber.config.db_slave_user}"

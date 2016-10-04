@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateRankingViews < ActiveRecord::Migration
   def change
     execute "CREATE OR REPLACE VIEW impl_aggregation_rank_of_pageviews AS

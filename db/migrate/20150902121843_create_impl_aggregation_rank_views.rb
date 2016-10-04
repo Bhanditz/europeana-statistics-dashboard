@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 class CreateImplAggregationRankViews < ActiveRecord::Migration
   def change
-    #Creating impl_aggregation_rank_for_pageviews
+    # Creating impl_aggregation_rank_for_pageviews
     execute "CREATE OR REPLACE VIEW impl_aggregation_rank_of_pageviews AS
       Select *,rank_for_europeana - lag(rank_for_europeana) over(Partition by impl_aggregation_id) as diff_in_rank_for_europeana
       FROM
@@ -64,7 +65,7 @@ class CreateImplAggregationRankViews < ActiveRecord::Migration
             impl_join.impl_aggregation_id, cta.aggregation_level_value, europeana_data.pageviews_for_europeana,impl_aggregation_name
         )
       as europeana_rank;"
-    #Creating impl_aggregation_rank_for_collections
+    # Creating impl_aggregation_rank_for_collections
     execute "CREATE OR REPLACE VIEW impl_aggregation_rank_of_collections AS
       SELECT
         io.impl_parent_id AS impl_aggregation_id,io.value::bigint AS sum, rank() OVER (ORDER BY io.value::integer DESC) AS rank,
@@ -87,7 +88,7 @@ class CreateImplAggregationRankViews < ActiveRecord::Migration
       JOIN
         impl_aggregations ia ON io.impl_parent_id = ia.id
       WHERE io.genre::text = 'collections'::text AND io.impl_parent_type::text = 'Impl::Aggregation'::text AND ia.name::text <> 'Europeana'::text;"
-    #Creating impl_aggregation_rank(combined metrics)
+    # Creating impl_aggregation_rank(combined metrics)
     execute "CREATE OR REPLACE VIEW impl_aggregation_ranks AS
       SELECT
         impl_aggregation_rank_of_pageviews.impl_aggregation_id,
