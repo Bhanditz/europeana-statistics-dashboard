@@ -1,4 +1,4 @@
-:concurrency: 20
+:concurrency: 5
 :verbose: true
 production:
   :concurrency: 30
