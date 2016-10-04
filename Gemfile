@@ -12,6 +12,7 @@ gem 'europeana-styleguide', github: 'europeana/europeana-styleguide-ruby', ref: 
 gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide'
 
 gem 'activerecord-session_store'
+gem 'clockwork'
 gem 'devise'
 gem 'friendly_id', '~> 5.0.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 gem 'gon'
@@ -29,7 +30,6 @@ gem 'sass-rails', '~> 5.0'
 gem 'sidekiq'
 gem 'simple_form'
 gem 'susy'
-gem 'whenever'
 
 group :production do
   gem 'rails_serve_static_assets'

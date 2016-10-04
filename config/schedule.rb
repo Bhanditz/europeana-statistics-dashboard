@@ -1,5 +1,10 @@
 # frozen_string_literal: true
-set :output, error: 'log/cron_error_log.log', standard: 'log/cron_log.log'
-every '0 0 1 * *' do
-  rake 'scheduled_jobs:load'
+require File.expand_path('../boot', __FILE__)
+require File.expand_path('../environment', __FILE__)
+require 'clockwork'
+
+include Clockwork
+
+every(1.month, 'stats.update') do
+  Rake::Task['scheduled_jobs:load'].invoke
 end

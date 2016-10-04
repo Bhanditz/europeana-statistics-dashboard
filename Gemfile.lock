@@ -73,7 +73,9 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
     choice (0.2.0)
-    chronic (0.10.2)
+    clockwork (2.0.0)
+      activesupport
+      tzinfo
     code_analyzer (0.4.5)
       sexp_processor
     coderay (1.1.1)
@@ -276,8 +278,6 @@ GEM
     unicode-display_width (1.0.5)
     warden (1.2.6)
       rack (>= 1.0)
-    whenever (0.9.7)
-      chronic (>= 0.6.3)
     yard (0.8.7.6)
 
 PLATFORMS
@@ -288,6 +288,7 @@ DEPENDENCIES
   annotate (>= 2.6.0)
   better_errors
   binding_of_caller
+  clockwork
   coveralls
   devise
   dotenv-rails
@@ -320,7 +321,6 @@ DEPENDENCIES
   stache!
   susy
   uglifier (~> 2.7)
-  whenever
   yard
 
 BUNDLED WITH
