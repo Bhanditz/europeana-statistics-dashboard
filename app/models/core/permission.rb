@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: core_permissions
@@ -17,43 +18,41 @@
 #
 
 class Core::Permission < ActiveRecord::Base
+  # GEMS
+  self.table_name = 'core_permissions'
 
-  #GEMS
-  self.table_name = "core_permissions"
-
-  #CONSTANTS
-  #ATTRIBUTES
-  #ACCESSORS
-  #ASSOCIATIONS
+  # CONSTANTS
+  # ATTRIBUTES
+  # ACCESSORS
+  # ASSOCIATIONS
   belongs_to :account
-  belongs_to :core_project, class_name: "Core::Project", foreign_key: "core_project_id"
+  belongs_to :core_project, class_name: 'Core::Project', foreign_key: 'core_project_id'
 
-  #VALIDATIONS
-  validates :email, presence: true, format: {with: Constants::EMAIL}
+  # VALIDATIONS
+  validates :email, presence: true, format: { with: Constants::EMAIL }
   validates :role, presence: true
   validates :account_id, presence: true, on: :update
 
-  #CALLBACKS
+  # CALLBACKS
   before_create :before_create_set
 
-  #SCOPES
-  #CUSTOM SCOPES
-  #FUNCTIONS
+  # SCOPES
+  # CUSTOM SCOPES
+  # FUNCTIONS
 
   # Returns user's username if the account is present in the database, else user's email is returned.
   def to_s
-    self.account_id.present? ? self.account.username : self.email
+    account_id.present? ? account.username : email
   end
 
-  #PRIVATE
+  # PRIVATE
 
   private
 
   def before_create_set
-    self.role = Constants::ROLE_C   if self.role.blank?
-    self.status =  Constants::STATUS_A if self.status.blank?
+    self.role = Constants::ROLE_C if role.blank?
+    self.status = Constants::STATUS_A if status.blank?
     self.invited_at = Time.now
     true
   end
-
 end

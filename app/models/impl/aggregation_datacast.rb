@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: impl_aggregation_datacasts
@@ -10,23 +11,23 @@
 #
 
 class Impl::AggregationDatacast < ActiveRecord::Base
-  #GEMS
-  self.table_name = "impl_aggregation_datacasts"
+  # GEMS
+  self.table_name = 'impl_aggregation_datacasts'
 
-  #CONSTANTS
-  #ATTRIBUTES
-  #ACCESSORS
-  #ASSOCIATIONS
-  belongs_to :impl_aggregation, class_name: "Impl::Aggregation", foreign_key: "impl_aggregation_id"
-  belongs_to :core_datacast, class_name: "Core::Datacast", foreign_key: "core_datacast_identifier", primary_key: "identifier"
-  #VALIDATIONS
+  # CONSTANTS
+  # ATTRIBUTES
+  # ACCESSORS
+  # ASSOCIATIONS
+  belongs_to :impl_aggregation, class_name: 'Impl::Aggregation', foreign_key: 'impl_aggregation_id'
+  belongs_to :core_datacast, class_name: 'Core::Datacast', foreign_key: 'core_datacast_identifier', primary_key: 'identifier'
+  # VALIDATIONS
   validates :impl_aggregation_id, presence: true
   validates :core_datacast_identifier, presence: true, uniqueness: true
 
-  #CALLBACKS
-  #SCOPES
-  #CUSTOM SCOPES
-  #FUNCTIONS
+  # CALLBACKS
+  # SCOPES
+  # CUSTOM SCOPES
+  # FUNCTIONS
 
   # Either creates a new Impl::AggregationDatacast or returns an existing Impl::AggregationDatacast object from the database.
   #
@@ -36,11 +37,11 @@ class Impl::AggregationDatacast < ActiveRecord::Base
   def self.find_or_create(impl_aggregation_id, core_datacast_identifier)
     a = where(impl_aggregation_id: impl_aggregation_id, core_datacast_identifier: core_datacast_identifier).first
     if a.blank?
-      a = new({impl_aggregation_id: impl_aggregation_id, core_datacast_identifier: core_datacast_identifier})
+      a = new(impl_aggregation_id: impl_aggregation_id, core_datacast_identifier: core_datacast_identifier)
       a.id = Impl::AggregationDatacast.last.present? ? Impl::AggregationDatacast.last.id + 1 : 1
     end
     a
   end
 
-  #PRIVATE
+  # PRIVATE
 end

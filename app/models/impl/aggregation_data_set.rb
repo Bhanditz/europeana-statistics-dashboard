@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: impl_aggregation_data_sets
@@ -10,22 +11,22 @@
 #
 
 class Impl::AggregationDataSet < ActiveRecord::Base
-  #GEMS
-  self.table_name = "impl_aggregation_data_sets"
+  # GEMS
+  self.table_name = 'impl_aggregation_data_sets'
 
-  #CONSTANTS
-  #ATTRIBUTES
-  #ACCESSORS
-  #ASSOCIATIONS
-  belongs_to :impl_aggregation, class_name: "Impl::Aggregation", foreign_key: "impl_aggregation_id"
-  belongs_to :impl_data_set, class_name: "Impl::DataSet", foreign_key: "impl_data_set_id"
-  #VALIDATIONS
+  # CONSTANTS
+  # ATTRIBUTES
+  # ACCESSORS
+  # ASSOCIATIONS
+  belongs_to :impl_aggregation, class_name: 'Impl::Aggregation', foreign_key: 'impl_aggregation_id'
+  belongs_to :impl_data_set, class_name: 'Impl::DataSet', foreign_key: 'impl_data_set_id'
+  # VALIDATIONS
   validates :impl_data_set_id, presence: :true
-  validates :impl_aggregation_id, presence: :true, uniqueness: {scope: :impl_data_set_id}
+  validates :impl_aggregation_id, presence: :true, uniqueness: { scope: :impl_data_set_id }
 
-  #CALLBACKS
-  #SCOPES
-  #CUSTOM SCOPES
-  #FUNCTIONS
-  #PRIVATE
+  # CALLBACKS
+  # SCOPES
+  # CUSTOM SCOPES
+  # FUNCTIONS
+  # PRIVATE
 end

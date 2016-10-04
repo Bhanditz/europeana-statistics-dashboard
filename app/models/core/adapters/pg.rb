@@ -1,5 +1,5 @@
+# frozen_string_literal: true
 class Core::Adapters::Pg
-
   require 'pg'
   # SQL queery to get list of all tables in the database.
   GET_ALL_TABLES = "SELECT table_name as name FROM information_schema.tables WHERE table_schema != 'pg_catalog' AND table_schema != 'information_schema';"
@@ -24,19 +24,19 @@ class Core::Adapters::Pg
       connection = PG.connect(dbname: db.db_name, user: db.username, password: db.password, port: db.port, host: db.host)
       data = connection.exec(query)
       connection.close
-      response["number_of_columns"] = data.nfields
+      response['number_of_columns'] = data.nfields
       data = data.first(limit) unless limit.nil?
-      response["number_of_rows"] = data.count
-      response["query_output"] = format == "2darray" ? Core::DataTransform.twod_array_generate(data)
-                               : format == "json"    ? Core::DataTransform.json_generate(data)
-                               : format == "xml"     ? Core::DataTransform.json_generate(data, true)
-                               : format == "raw"     ? data
+      response['number_of_rows'] = data.count
+      response['query_output'] = format == '2darray' ? Core::DataTransform.twod_array_generate(data)
+                               : format == 'json'    ? Core::DataTransform.json_generate(data)
+                               : format == 'xml'     ? Core::DataTransform.json_generate(data, true)
+                               : format == 'raw'     ? data
                                                      : Core::DataTransform.csv_generate(data)
-      response["execute_flag"] = true
+      response['execute_flag'] = true
     rescue => e
-      response["query_output"] = e.to_s
-      response["execute_flag"] = false
+      response['query_output'] = e.to_s
+      response['execute_flag'] = false
     end
-    return response
+    response
   end
 end
