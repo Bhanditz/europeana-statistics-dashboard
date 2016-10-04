@@ -1,3 +1,0 @@
-production:
-  namespace: cache
-  url: redis://:<%= JSON.parse(ENV['VCAP_SERVICES'])['redis-2.2'].first['credentials']['password'] %>@<%= JSON.parse(ENV['VCAP_SERVICES'])['redis-2.2'].first['credentials']['hostname'] %>:<%= JSON.parse(ENV['VCAP_SERVICES'])['redis-2.2'].first['credentials']['port'] %>/0
