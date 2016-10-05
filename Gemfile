@@ -14,7 +14,7 @@ gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide'
 gem 'activerecord-session_store'
 gem 'clockwork'
 gem 'devise'
-gem 'europeana-logging'
+gem 'europeana-logging', '~> 0.0.3'
 gem 'friendly_id', '~> 5.0.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 gem 'gon'
 gem 'haml'
