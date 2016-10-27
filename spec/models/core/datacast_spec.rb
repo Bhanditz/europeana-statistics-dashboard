@@ -72,10 +72,9 @@ RSpec.describe Core::Datacast, type: :model do
 
   context 'Core::Datacast#create_or_update_by' do
     it 'should return a new datacast' do
-      previous_datacast = Core::Datacast.where(name: 'NEW_TEST_DATACAST', core_project_id: 1, core_db_connection_id: 1).first
+      previous_datacast = Core::Datacast.where(name: 'NEW_TEST_DATACAST', core_project_id: 1).first
       new_datacast = Core::Datacast.create_or_update_by(
         'SELECT * FROM generate_series(2,3);',
-        1,
         1,
         'NEW_TEST_DATACAST'
       )
@@ -87,14 +86,12 @@ RSpec.describe Core::Datacast, type: :model do
       previous_datacast = Core::Datacast.create_or_update_by(
         'SELECT * FROM generate_series(2,3);',
         1,
-        1,
         'NEW_TEST_DATACAST'
       )
       expect(previous_datacast.query).to eq('SELECT * FROM generate_series(2,3);')
 
       new_datacast = Core::Datacast.create_or_update_by(
         'SELECT * FROM generate_series(5,6);',
-        1,
         1,
         'NEW_TEST_DATACAST'
       )

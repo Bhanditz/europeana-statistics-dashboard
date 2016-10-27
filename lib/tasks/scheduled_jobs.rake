@@ -2,10 +2,11 @@
 namespace :scheduled_jobs do
   task load: :environment do
     begin
-      Mailer.job_status('aashutosh.bhatt@pykih.com', 'The Jobs for ' + Time.now.strftime('%B') + ' have started.').deliver_now
-      Mailer.job_status('ab@pykih.com', 'The Jobs for ' + Time.now.strftime('%B') + ' have started.').deliver_now
-      Mailer.job_status('joris.pekel@europeana.eu', 'The Jobs for ' + Time.now.strftime('%B') + ' have started.').deliver_now
-      Mailer.job_status('mirko.lorenz@gmail.com', 'The Jobs for ' + Time.now.strftime('%B') + ' have started.').deliver_now
+      puts 'started scheduled jobs'
+    #  Mailer.job_status('aashutosh.bhatt@pykih.com', 'The Jobs for ' + Time.now.strftime('%B') + ' have started.').deliver_now
+    #  Mailer.job_status('ab@pykih.com', 'The Jobs for ' + Time.now.strftime('%B') + ' have started.').deliver_now
+    #  Mailer.job_status('joris.pekel@europeana.eu', 'The Jobs for ' + Time.now.strftime('%B') + ' have started.').deliver_now
+    #  Mailer.job_status('mirko.lorenz@gmail.com', 'The Jobs for ' + Time.now.strftime('%B') + ' have started.').deliver_now
     rescue Exception => e
     end
     cnt = 0

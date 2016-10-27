@@ -5,7 +5,6 @@
 #
 #  id                     :integer          not null, primary key
 #  core_project_id        :integer
-#  core_db_connection_id  :integer
 #  name                   :string
 #  identifier             :string
 #  properties             :hstore
@@ -37,7 +36,6 @@ class Core::Datacast < ActiveRecord::Base
 
   # ASSOCIATIONS
   belongs_to :core_project, class_name: 'Core::Project', foreign_key: 'core_project_id'
-  belongs_to :core_db_connection, class_name: 'Core::DbConnection', foreign_key: 'core_db_connection_id'
   has_one :core_datacast_output, class_name: 'Core::DatacastOutput', foreign_key: 'datacast_identifier', primary_key: 'identifier', dependent: :destroy
   has_many :core_vizs, class_name: 'Core::Viz', foreign_key: 'core_datacast_identifier', primary_key: 'identifier'
   has_one :impl_aggregation_datacast, class_name: 'Impl::AggregationDatacast', foreign_key: 'core_datacast_identifier', primary_key: 'identifier'
@@ -45,9 +43,8 @@ class Core::Datacast < ActiveRecord::Base
   # VALIDATIONS
   validates :name, presence: true
   validates :core_project_id, presence: true
-  validates :core_db_connection_id, presence: true
   validates :query, presence: true
-  validates :table_name, uniqueness: { scope: :core_db_connection_id }, allow_blank: true, allow_nil: true
+  validates :table_name, uniqueness: true, allow_blank: true, allow_nil: true
   validates :identifier, presence: true, uniqueness: true
   validate :query_only_select
 
@@ -65,15 +62,13 @@ class Core::Datacast < ActiveRecord::Base
   #
   # @param q [String] SQL query string.
   # @param core_project_id [Fixnum] a reference id to Core::Project.
-  # @param db_connection_id [Fixnum] a reference id to Core::DbConnection.
   # @param table_name [String] the name of table from database.
   # @return [Object] a reference to Core::Project.
-  def self.create_or_update_by(q, core_project_id, db_connection_id, table_name)
-    a = where(name: table_name, core_project_id: core_project_id, core_db_connection_id: db_connection_id).first
+  def self.create_or_update_by(q, core_project_id, table_name)
+    a = where(name: table_name, core_project_id: core_project_id).first
     if a.blank?
-      a = new(query: q, core_project_id: core_project_id, core_db_connection_id: db_connection_id, name: table_name, identifier: SecureRandom.hex(33))
-      a.id = Core::Datacast.last.present? ? Core::Datacast.last.id + 1 : 1
-      a.save
+      a = new(query: q, core_project_id: core_project_id, name: table_name, identifier: SecureRandom.hex(33))
+      a.save!
     else
       if a.query != q
         a.update_attributes(query: q)
@@ -142,7 +137,24 @@ class Core::Datacast < ActiveRecord::Base
   # @param format [String] the format of the resultant query data, possible values ['json', '2darray', 'xml', 'raw'].
   # @return [Object] metadata of data along with data as an object same as Core::Adapters::Db.run.
   def run(format = nil)
-    Core::Adapters::Db.run(core_db_connection, query, format || self.format)
+    format = format ||= self.format
+    connection = ActiveRecord::Base.connection
+    data = connection.execute(query)
+    response = {}
+    begin
+      response['number_of_columns'] = data.nfields
+      response['number_of_rows'] = data.count
+      response['query_output'] = format == '2darray' ? Core::DataTransform.twod_array_generate(data)
+        : format == 'json'    ? Core::DataTransform.json_generate(data)
+        : format == 'xml'     ? Core::DataTransform.json_generate(data, true)
+        : format == 'raw'     ? data
+        : Core::DataTransform.csv_generate(data)
+      response['execute_flag'] = true
+    rescue => e
+      response['query_output'] = e.to_s
+      response['execute_flag'] = false
+    end
+    response
   end
 
   # Determines whether the SQL query is a SELECT query or not.
@@ -177,8 +189,7 @@ class Core::Datacast < ActiveRecord::Base
 
   def after_create_set
     c = Core::DatacastOutput.new(datacast_identifier: identifier)
-    c.id = Core::DatacastOutput.last.present? ? Core::DatacastOutput.last.id + 1 : 1
-    c.save
+    c.save!
     unless table_name.present?
       Core::Datacast::RunWorker.perform_async(id)
     end

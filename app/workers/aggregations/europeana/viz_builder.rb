@@ -12,7 +12,6 @@ class Aggregations::Europeana::VizBuilder
         aggregation.core_datacasts.each do |core_datacast|
           next if core_datacast.name.include?('Top Digital Objects')
           genre = core_datacast.name.split(' - ').last.parameterize('_')
-          puts core_datacast.id
           filter_present, filter_column_name, filter_column_d_or_m = Aggregations::Europeana::VizBuilder.get_filters(genre)
           ref_chart = Aggregations::Europeana::VizBuilder.get_ref_chart(genre)
           validate = false

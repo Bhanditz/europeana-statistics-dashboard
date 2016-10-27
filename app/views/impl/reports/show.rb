@@ -148,26 +148,36 @@ module Impl
       end
 
       def get_countries_count
+        value = nil
+        if @impl_aggregation.impl_outputs.where(genre: 'top_country_counts').first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first
+          value = @impl_aggregation.impl_outputs.where(genre: 'top_country_counts').first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value
+        end
         {
           title: 'Countries sharing collections',
-          value: @impl_aggregation.impl_outputs.where(genre: 'top_country_counts').first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
+          value: value,
           description: false
         }
       end
 
       def get_providers_count
+        value = nil
+        if @impl_aggregation.impl_outputs.where(genre: 'top_provider_counts').first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first
+          value = @impl_aggregation.impl_outputs.where(genre: 'top_provider_counts').first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value
+        end
         {
           title: 'Aggregators sharing collections',
-          value: @impl_aggregation.impl_outputs.where(genre: 'top_provider_counts').first.core_time_aggregations.where(aggregation_level_value: "#{@selected_date.year}_#{@current_month}").first.value,
+          value: value,
           description: "Working between Europeana and the cultural heritage institutions are aggregators. They act as intermediaries, harvesting data from the institutions. <a href='http://europeana.eu/portal/browse/sources'>Click here for the full list</a>."
         }
       end
 
       def get_stats_bar
+        pg_views_2013 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2013'").sum('value').to_i
         pg_views_2014 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2014'").sum('value').to_i
         pg_views_2015 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2015'").sum('value').to_i
         pg_views_2016 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2016'").sum('value').to_i
 
+        ct_2013 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2013'").sum('value').to_i
         ct_2014 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2014'").sum('value').to_i
         ct_2015 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2015'").sum('value').to_i
         ct_2016 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2016'").sum('value').to_i

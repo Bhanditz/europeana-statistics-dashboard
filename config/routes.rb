@@ -32,6 +32,8 @@ Rails.application.routes.draw do
   get '/europeana', to: 'impl/reports#show', as: 'europeana_report', genre: 'europeana', impl_report_id: 'europeana'
   get '/:manual_report_id', to: 'impl/reports#manual_report', as: 'manual_report'
 
+  get '/v1/datacast/:identifier', to: 'api#datacast', as: 'api_datacast'
+
   namespace :dataprovider, module: false do
     get ':impl_report_id', to: 'impl/reports#show', as: 'impl_report', genre: 'data_provider'
   end

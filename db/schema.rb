@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511104940) do
+ActiveRecord::Schema.define(version: 20161027132445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,7 +56,6 @@ ActiveRecord::Schema.define(version: 20160511104940) do
 
   create_table "core_datacasts", force: :cascade do |t|
     t.integer  "core_project_id"
-    t.integer  "core_db_connection_id"
     t.string   "name"
     t.string   "identifier"
     t.hstore   "properties"
@@ -75,22 +74,8 @@ ActiveRecord::Schema.define(version: 20160511104940) do
     t.string   "table_name"
   end
 
-  add_index "core_datacasts", ["core_db_connection_id"], name: "core_datacasts_core_db_connection_id", using: :btree
   add_index "core_datacasts", ["core_project_id"], name: "core_datacasts_core_project_id", using: :btree
   add_index "core_datacasts", ["identifier"], name: "index_core_datacasts_on_identifier", unique: true, using: :btree
-
-  create_table "core_db_connections", force: :cascade do |t|
-    t.string   "name"
-    t.string   "adapter"
-    t.hstore   "properties"
-    t.integer  "created_by"
-    t.integer  "updated_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "core_project_id"
-  end
-
-  add_index "core_db_connections", ["core_project_id"], name: "core_db_connections_core_project_id", using: :btree
 
   create_table "core_permissions", force: :cascade do |t|
     t.integer  "account_id"

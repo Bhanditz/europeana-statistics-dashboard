@@ -39,7 +39,6 @@ end
 
 group :development, :test do
   gem 'annotate', '>= 2.6.0'
-  gem 'better_errors'
   gem 'binding_of_caller'
   gem 'dotenv-rails'
   gem 'rails-erd'

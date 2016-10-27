@@ -21,15 +21,6 @@ class Ref::CountryCode < ActiveRecord::Base
   # CUSTOM SCOPES
   # OTHER METHODS
 
-  # Creates Ref::CountryCode entries in databased from csv data.
-  def self.seed
-    CSV.read('ref/country_code.csv').each do |line|
-      code = line[0]
-      country = line[1]
-      Ref::CountryCode.find_or_create(code, country)
-    end
-  end
-
   # Either creates a new Ref::CountryCode or returns an existing Ref::CountryCode object from the database.
   #
   # @param code [String] country code.

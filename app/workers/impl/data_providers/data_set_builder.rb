@@ -11,6 +11,7 @@ class Impl::DataProviders::DataSetBuilder
     unless aggregation.genre == 'europeana'
       aggregation.update_attributes(status: 'Building Data Sets', error_messages: nil)
       begin
+        puts 'TODO remove hardcoded API reference'
         all_data_sets = JSON.parse(Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=#{ENV['WSKEY']}&query=#{CGI.escape(aggregation.genre.upcase + ':"' + aggregation.name + '"')}&rows=0&profile=facets,params&facet=europeana_collectionName").body)['facets'].first
         if all_data_sets.present? && all_data_sets['fields'].present?
           all_data_sets['fields'].each do |data_set|
