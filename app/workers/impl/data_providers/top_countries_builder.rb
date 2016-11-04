@@ -19,7 +19,9 @@ class Impl::DataProviders::TopCountriesBuilder
     begin
       start_date = data_provider.last_updated_at.present? ? (data_provider.last_updated_at + 1).strftime('%Y-%m-%d') : '2012-01-01'
       end_date   = (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d')
+      puts "fetching country pageview data between #{start_date} and #{end_date} for #{data_provider}"
       country_output = Impl::Aggregation.fetch_GA_data_between(start_date, end_date, data_provider, 'country', 'pageviews')
+      puts "country_output: #{country_output}"
       Core::TimeAggregation.create_aggregations(country_output, 'monthly', data_provider_id, 'Impl::Aggregation', 'pageviews', 'country') unless country_output.nil?
       data_provider.update_attributes(status: 'Processed top 25 countries')
       Impl::DataProviders::ClickThroughBuilder.perform_async(data_provider_id)

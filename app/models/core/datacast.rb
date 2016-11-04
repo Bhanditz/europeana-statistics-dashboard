@@ -50,7 +50,7 @@ class Core::Datacast < ActiveRecord::Base
 
   # CALLBACKS
   before_create :before_create_set
-  after_create :after_create_set
+  #after_create :after_create_set
 
   # SCOPES
   scope :top_digital_objects, -> { where("core_datacasts.name LIKE '% - Top Digital Objects'") }
@@ -69,6 +69,7 @@ class Core::Datacast < ActiveRecord::Base
     if a.blank?
       a = new(query: q, core_project_id: core_project_id, name: table_name, identifier: SecureRandom.hex(33))
       a.save!
+      a.send(:after_create_set)
     else
       if a.query != q
         a.update_attributes(query: q)
@@ -193,6 +194,5 @@ class Core::Datacast < ActiveRecord::Base
     unless table_name.present?
       Core::Datacast::RunWorker.perform_async(id)
     end
-    true
   end
 end

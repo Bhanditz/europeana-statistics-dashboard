@@ -50,7 +50,8 @@ class Impl::Aggregation < ActiveRecord::Base
 
   # CALLBACKS
   before_create :before_create_set
-  after_create :after_create_set
+  #after_create :after_create_set
+
   # SCOPES
   scope :data_providers, -> { where(genre: 'data_provider') }
   scope :providers, -> { where(genre: 'provider') }
@@ -126,6 +127,7 @@ class Impl::Aggregation < ActiveRecord::Base
     aggregation = where(name: name, genre: genre, core_project_id: core_project_id).first
     if aggregation.nil?
       aggregation = create(name: name, genre: genre, core_project_id: core_project_id, status: '')
+      aggregation.send(:after_create_set)
     end
     aggregation
   end

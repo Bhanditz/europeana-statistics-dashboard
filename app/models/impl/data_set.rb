@@ -56,7 +56,6 @@ class Impl::DataSet < ActiveRecord::Base
     a = where(name: data_set_name).first
     if a.blank?
       a = new(name: data_set_name)
-      a.id = Impl::DataSet.last.present? ? Impl::DataSet.last.id + 1 : 1
       a.save
     end
     a

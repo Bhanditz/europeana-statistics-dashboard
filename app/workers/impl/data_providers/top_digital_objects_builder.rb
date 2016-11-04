@@ -37,7 +37,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
   # @return [Array] an array of Hash that is formatted output of Google Analytics and Europeana API's.
   def self.fetch_data_for_all_quarters_between(start_date, end_date, data_provider)
     top_digital_objects_data = []
-    europeana_base_url = 'http://europeana.eu/api/v2/'
+    europeana_base_url = ENV['EUROPEANA_API_URL']
     base_title_url = 'http://www.europeana.eu/portal/record/'
     ga_metrics = 'ga:pageviews'
     ga_dimensions = 'ga:pagePath,ga:month,ga:year'
@@ -55,10 +55,16 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
       if top_digital_objects_per_quarter.present?
         top_digital_objects_per_quarter.each do |digital_object|
           page_path = digital_object[0].split('/')
+          if page_path.count == 5 && page_path[3] == 'record'
+            page_path.delete_at(2)
+          end
+          next if page_path[2].downcase != 'record'
           size = digital_object[3].to_i
           begin
-            digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full").read)
-          rescue
+            digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}/#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full").read)
+          rescue => e
+            puts "TODO log this error: #{e.inspect}"
+            #puts "URL was: #{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full"
             next
           end
           next if digital_object_europeana_data.nil? || (digital_object_europeana_data['success'] == false)

@@ -11,8 +11,7 @@ class Aggregations::Europeana::PropertiesBuilder
       begin
         %w(COUNTRY PROVIDER DATA_PROVIDER).each do |property|
           p_down = property.downcase
-          puts "TODO, remove hardcoded api endpoint"
-          properties = JSON.parse(Nestful.get("http://www.europeana.eu/api/v2/search.json?wskey=#{ENV['WSKEY']}&query=*:*&rows=0&profile=facets,params&facet=#{property}").body)
+          properties = JSON.parse(Nestful.get("#{ENV['EUROPEANA_API_URL']}/search.json?wskey=#{ENV['WSKEY']}&query=*:*&rows=0&profile=facets,params&facet=#{property}").body)
           if properties['facets'].present? && properties['facets'].first.present? && properties['facets'].first['fields'].present?
             a = properties['facets'].first['fields']
             properties_data = [{ 'month' => Date.today.month, 'year' => Date.today.year, "#{p_down}_count" => p_down, 'value' => a.count }]

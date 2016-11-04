@@ -9,6 +9,7 @@ namespace :scheduled_jobs do
     #  Mailer.job_status('mirko.lorenz@gmail.com', 'The Jobs for ' + Time.now.strftime('%B') + ' have started.').deliver_now
     rescue Exception => e
     end
+
     cnt = 0
     Impl::Aggregation.where.not(genre: 'europeana').each do |d|
       Impl::Country::ProviderBuilder.perform_async(d.id) if d.genre == 'country'
@@ -20,5 +21,47 @@ namespace :scheduled_jobs do
     europeana = Impl::Aggregation.europeana
     Impl::DataProviders::MediaTypesBuilder.perform_async(europeana.id)
     Aggregations::Europeana::PageviewsBuilder.perform_async
+  end
+
+  task retrieve_and_create_all_countries: :environment  do
+    facet_name = 'COUNTRY'
+    all_facets = facets_for facet_name
+    all_countries = all_facets.select {|facet_set| facet_set["name"] == facet_name}.first
+    all_countries["fields"].each do |facet_field|
+      name = facet_field["label"]
+      genre = 'country'
+      Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
+    end
+  end
+
+  task retrieve_and_create_all_providers: :environment  do
+    facet_name = 'PROVIDER'
+    all_facets = facets_for facet_name
+    all_countries = all_facets.select {|facet_set| facet_set["name"] == facet_name}.first
+    all_countries["fields"].each do |facet_field|
+      name = facet_field["label"]
+      genre = 'provider'
+      Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
+    end
+  end
+
+  task retrieve_and_create_all_data_providers: :environment  do
+    facet_name = 'DATA_PROVIDER'
+    all_facets = facets_for facet_name
+    all_countries = all_facets.select {|facet_set| facet_set["name"] == facet_name}.first
+    all_countries["fields"].each do |facet_field|
+      name = facet_field["label"]
+      genre = 'data_provider'
+      Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
+    end
+  end
+
+  def facets_for facet_field
+    api_response = JSON.parse(Nestful.get("#{ENV['EUROPEANA_API_URL']}/search.json?wskey=#{ENV['WSKEY']}&query=*:*&rows=0&facet=#{facet_field}&f.#{facet_field}.facet.limit=5000&profile=facets").body)
+    api_response["facets"]
+  end
+
+  def core_project_id
+    core_project_id = Core::Project.where(name: 'Europeana').first.id
   end
 end
