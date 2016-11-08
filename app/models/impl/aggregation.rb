@@ -189,10 +189,13 @@ class Impl::Aggregation < ActiveRecord::Base
   # Retruns and caches the JSON for data providers that is used in views to display data.
   def self.get_data_providers_json
     json = []
-    if $redis.get('data_providers_json').present?
+    if $redis.get('data_providers_json').present? and false
       json = JSON.parse($redis.get('data_providers_json'))
     else
-      data_providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='data_provider' ORDER BY impl_aggregations.name;").each do |data_provider|
+      data_providers.order(:name).each do |data_provider|
+        unless data_provider.impl_report
+          next
+        end
         obj = {
           'url' => "#{BASE_URL}/dataprovider/#{data_provider.impl_report.slug}",
           'text' => data_provider.name.to_s

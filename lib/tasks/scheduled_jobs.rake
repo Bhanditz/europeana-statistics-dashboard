@@ -23,7 +23,7 @@ namespace :scheduled_jobs do
     Aggregations::Europeana::PageviewsBuilder.perform_async
   end
 
-  task retrieve_and_create_all_countries: :environment  do
+  task create_countries: :environment do
     facet_name = 'COUNTRY'
     all_facets = facets_for facet_name
     all_countries = all_facets.select {|facet_set| facet_set["name"] == facet_name}.first
@@ -34,7 +34,7 @@ namespace :scheduled_jobs do
     end
   end
 
-  task retrieve_and_create_all_providers: :environment  do
+  task create_providers: :environment do
     facet_name = 'PROVIDER'
     all_facets = facets_for facet_name
     all_countries = all_facets.select {|facet_set| facet_set["name"] == facet_name}.first
@@ -45,7 +45,7 @@ namespace :scheduled_jobs do
     end
   end
 
-  task retrieve_and_create_all_data_providers: :environment  do
+  task create_data_providers: :environment do
     facet_name = 'DATA_PROVIDER'
     all_facets = facets_for facet_name
     all_countries = all_facets.select {|facet_set| facet_set["name"] == facet_name}.first
@@ -53,6 +53,20 @@ namespace :scheduled_jobs do
       name = facet_field["label"]
       genre = 'data_provider'
       Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
+    end
+  end
+
+  task requeue_uncompleted_aggregations: :environment do
+    cnt = 0
+    limit = ENV['AGGREGATOR_QUEUE_LIMIT'] ||= 500
+    Impl::Aggregation.where.not(status: ['Report built'], error_messages: ['Blacklist data set', 'No data set', 'No media type detected']).limit(limit).each do |d|
+      if d.error_messages == 'Blacklist data set' || d.error_messages == 'No data set' || d.error_messages == 'No media type detected' || d.status == 'Report built'
+        puts "your query didn't work m8"
+      end
+      Impl::Country::ProviderBuilder.perform_async(d.id) if d.genre == 'country'
+      Impl::DataProviders::MediaTypesBuilder.perform_async(d.id)
+      Impl::DataProviders::DataSetBuilder.perform_at(cnt.seconds.from_now, d.id)
+      cnt += 10
     end
   end
 

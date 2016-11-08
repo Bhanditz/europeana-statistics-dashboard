@@ -22,7 +22,7 @@ class Impl::ReportsController < ApplicationController
 
   layout :styleguide_aware_layout
 
-  before_action :authenticate_account!, only: [:index, :manual_report]
+  before_action :authenticate_account!, only: [:index]
   before_action :set_impl_report, only: [:show, :edit, :update, :destroy, :manual_report]
   before_action :set_gon_config_objects, only: [:show, :edit, :update, :new, :create]
 
@@ -99,6 +99,7 @@ class Impl::ReportsController < ApplicationController
       genre = params[:genre]
       @impl_report = Impl::Report.where(impl_aggregation_genre: genre).friendly.find(params[:impl_report_id])
     elsif params[:manual_report_id].present?
+      authenticate_account! unless params[:manual_report_id] == 'about'
       @impl_report = Impl::Report.friendly.find(params[:manual_report_id])
     else
       @impl_report = Impl::Report.friendly.find(params[:id])
