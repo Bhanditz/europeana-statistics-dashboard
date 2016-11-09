@@ -37,13 +37,12 @@ class Impl::DataSet < ActiveRecord::Base
 
   # Returns the access token and refreshes the access token if it has expired.
   def self.get_access_token
-    if $redis.get('ga_access_token').present?
-      a = $redis.get('ga_access_token')
+    if Rails.cache.fetch('ga_access_token').present?
+      a = Rails.cache.fetch('ga_access_token')
     else
       resp = Nestful.post 'https://accounts.google.com/o/oauth2/token', method: 'POST', grant_type: 'refresh_token', refresh_token: GA_REFRESH_TOKEN.to_s, client_id: GA_CLIENT_ID.to_s, client_secret: GA_CLIENT_SECRET.to_s
       a = JSON.parse(resp.body)['access_token']
-      $redis.set('ga_access_token', a)
-      $redis.expire('ga_access_token', 60 * 60)
+      Rails.cache.fetch('ga_access_token', expires_in: 1.hours) { a }
     end
     a
   end

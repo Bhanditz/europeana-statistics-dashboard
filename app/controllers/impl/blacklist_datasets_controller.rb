@@ -12,7 +12,7 @@ class Impl::BlacklistDatasetsController < ApplicationController
   def create
     @blacklist_dataset = Impl::BlacklistDataset.new(blacklist_dataset_params)
     if @blacklist_dataset.save
-      $redis.set('blacklist_datasets', Impl::BlacklistDataset.all.pluck(:dataset))
+      Rails.cache.fetch('blacklist_datasets') { Impl::BlacklistDataset.all.pluck(:dataset) }
       redirect_to :back, notice: t('c.s')
     else
       @blacklist_datasets = Impl::BlacklistDataset.all
@@ -24,7 +24,7 @@ class Impl::BlacklistDatasetsController < ApplicationController
   def destroy
     @blacklist_dataset = Impl::BlacklistDataset.find(params[:id])
     @blacklist_dataset.destroy
-    $redis.set('blacklist_datasets', Impl::BlacklistDataset.all.pluck(:dataset))
+    Rails.cache.fetch('blacklist_datasets') { Impl::BlacklistDataset.all.pluck(:dataset) }
     redirect_to :back, notice: t('d.s')
   end
 

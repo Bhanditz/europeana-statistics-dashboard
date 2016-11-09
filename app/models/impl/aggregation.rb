@@ -189,8 +189,8 @@ class Impl::Aggregation < ActiveRecord::Base
   # Retruns and caches the JSON for data providers that is used in views to display data.
   def self.get_data_providers_json
     json = []
-    if $redis.get('data_providers_json').present? and false
-      json = JSON.parse($redis.get('data_providers_json'))
+    if Rails.cache.fetch('data_providers_json').present? and false
+      json = JSON.parse(Rails.cache.fetch('data_providers_json'))
     else
       data_providers.order(:name).each do |data_provider|
         unless data_provider.impl_report
@@ -202,8 +202,10 @@ class Impl::Aggregation < ActiveRecord::Base
         }
         json << obj
       end
-      $redis.set('data_providers_json', json.to_json)
-      $redis.expire('data_providers_json', 60 * 60 * 24)
+      Rails.cache.fetch('data_providers_json', expires_in: 24.hours) do
+        json.to_json
+      end
+
     end
     json
   end
@@ -211,18 +213,22 @@ class Impl::Aggregation < ActiveRecord::Base
   # Retruns and caches the JSON for providers that is used in views to display data.
   def self.get_providers_json
     json = []
-    if $redis.get('providers_json').present?
-      json = JSON.parse($redis.get('providers_json'))
+    if Rails.cache.fetch('providers_json').present?
+      json = JSON.parse(Rails.cache.fetch('providers_json'))
     else
-      providers.order(:name).find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='provider' ORDER BY impl_aggregations.name;").each do |provider|
+      providers.order(:name).each do |provider|
+        unless provider.impl_report
+          next
+        end
         obj = {
           'url' => "#{BASE_URL}/provider/#{provider.impl_report.slug}",
           'text' => provider.name.to_s
         }
         json << obj
       end
-      $redis.set('providers_json', json.to_json)
-      $redis.expire('providers_json', 60 * 60 * 24)
+      Rails.cache.fetch('providers_json', expires_in: 24.hours) do
+        json.to_json
+      end
     end
     json
   end
@@ -230,18 +236,22 @@ class Impl::Aggregation < ActiveRecord::Base
   # Retruns and caches the JSON for countries that is used in views to display data.
   def self.get_countries_json
     json = []
-    if $redis.get('countries_json').present?
-      json = JSON.parse($redis.get('countries_json'))
+    if Rails.cache.fetch('countries_json').present?
+      json = JSON.parse(Rails.cache.fetch('countries_json'))
     else
-      find_by_sql("Select * from impl_aggregations where EXISTS (Select impl_aggregation_id from impl_reports where impl_reports.impl_aggregation_id = impl_aggregations.id) and impl_aggregations.genre='country' ORDER BY impl_aggregations.name;").each do |country|
+      countries.each do |country|
+        unless country.impl_report
+          next
+        end
         obj = {
           'url' => "#{BASE_URL}/country/#{country.impl_report.slug}",
           'text' => country.name.titleize.to_s
         }
         json << obj
       end
-      $redis.set('countries_json', json.to_json)
-      $redis.expire('countries_json', 60 * 60 * 24)
+      Rails.cache.fetch('countries_json', expires_in: 24.hours) do
+        json.to_json
+      end
     end
     json
   end

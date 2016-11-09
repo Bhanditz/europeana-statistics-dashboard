@@ -37,6 +37,22 @@ module Europeana
       ActiveRecord::SessionStore::Session.table_name = 'core_sessions'
       ActiveRecord::SessionStore::Session.primary_key = 'session_id'
       ActiveRecord::SessionStore::Session.data_column_name = 'data'
+
+      # Load Redis config from config/redis.yml, if it exists
+      config.cache_store = begin
+        redis_config = Rails.application.config_for(:redis).symbolize_keys
+        fail RuntimeError unless redis_config.present?
+        [:redis_store, redis_config[:url]]
+      rescue RuntimeError => e
+        :null_store
+      end
+
+      # Load Action Mailer SMTP config from config/smtp.yml, if it exists
+      config.action_mailer.smtp_settings = begin
+        Rails.application.config_for(:smtp).symbolize_keys
+      rescue RuntimeError
+        {}
+      end
     end
   end
 end
