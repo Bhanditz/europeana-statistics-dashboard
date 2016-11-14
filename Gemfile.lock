@@ -205,8 +205,24 @@ GEM
     rake (11.2.2)
     redcarpet (3.3.4)
     redis (3.3.0)
+    redis-actionpack (4.0.1)
+      actionpack (~> 4)
+      redis-rack (~> 1.5.0)
+      redis-store (~> 1.1.0)
+    redis-activesupport (4.1.5)
+      activesupport (>= 3, < 5)
+      redis-store (~> 1.1.0)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
+    redis-rack (1.5.0)
+      rack (~> 1.5)
+      redis-store (~> 1.1.0)
+    redis-rails (4.0.0)
+      redis-actionpack (~> 4)
+      redis-activesupport (~> 4)
+      redis-store (~> 1.1.0)
+    redis-store (1.1.7)
+      redis (>= 2.2)
     request_store (1.3.1)
     require_all (1.3.3)
     responders (2.2.0)
@@ -315,8 +331,8 @@ DEPENDENCIES
   rails_best_practices
   rails_serve_static_assets
   redcarpet
-  redis
   redis-namespace
+  redis-rails (~> 4.0)
   rspec-rails (~> 3.4.2, >= 3.4.2)
   rubocop (= 0.39.0)
   sass-rails (~> 5.0)
