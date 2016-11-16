@@ -280,6 +280,8 @@ class Impl::Aggregation < ActiveRecord::Base
   def after_create_set
     if genre == 'country'
       Impl::Country::ProviderBuilder.perform_async(id)
+    elsif genre == 'europeana'
+      Aggregations::Europeana::PageviewsBuilder.perform_async
     end
     Impl::DataProviders::DataSetBuilder.perform_async(id)
     Impl::DataProviders::MediaTypesBuilder.perform_async(id)

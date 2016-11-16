@@ -59,14 +59,17 @@ namespace :scheduled_jobs do
   task requeue_uncompleted_aggregations: :environment do
     cnt = 0
     limit = ENV['AGGREGATOR_QUEUE_LIMIT'] ||= 1250
-    Impl::Aggregation.where.not(status: ['Report built'], error_messages: ['Blacklist data set', 'No data set', 'No media type detected']).limit(limit).each do |d|
-      if d.error_messages == 'Blacklist data set' || d.error_messages == 'No data set' || d.error_messages == 'No media type detected' || d.status == 'Report built'
-        puts "your query didn't work m8"
-      end
+    Impl::Aggregation.where.not(genre: 'europeana', status: ['Report built'], error_messages: ['Blacklist data set', 'No data set', 'No media type detected']).limit(limit).each do |d|
       Impl::Country::ProviderBuilder.perform_async(d.id) if d.genre == 'country'
       Impl::DataProviders::MediaTypesBuilder.perform_async(d.id)
       Impl::DataProviders::DataSetBuilder.perform_at(cnt.seconds.from_now, d.id)
       cnt += 10
+    end
+
+    europeana = Impl::Aggregation.europeana
+    unless europeana.status == 'Report built'
+      Impl::DataProviders::MediaTypesBuilder.perform_async(europeana.id)
+      Aggregations::Europeana::PageviewsBuilder.perform_async
     end
   end
 
