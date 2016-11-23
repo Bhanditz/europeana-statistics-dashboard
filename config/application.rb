@@ -42,10 +42,9 @@ module Europeana
       config.cache_store = begin
         redis_config = Rails.application.config_for(:redis).symbolize_keys
         fail RuntimeError unless redis_config.present?
-        puts "set redis in application.rb"
         [:redis_store, redis_config[:url]]
       rescue RuntimeError => e
-        puts "Unable to set redis as cache, using :null_store"
+        puts "Unable to set redis as cache, using :null_store. e = #{e.inspect}"
         :null_store
       end
 
