@@ -1,5 +1,8 @@
 # frozen_string_literal: true
-redis_url = Rails.application.config_for(:redis).symbolize_keys[:url]
+redis_url = nil
+if Rails.application.config.cache_store[0] == :redis_store && Rails.application.config.cache_store[1]
+  redis_url = Rails.application.config.cache_store[1]
+end
 
 Sidekiq.configure_server do |config|
   config.redis = { url: redis_url, namespace: 'sidekiq' }
