@@ -46,7 +46,6 @@ class Aggregations::Europeana::VizBuilder
   # @param genre [String] the name of the entity.
   # @return [Object] an instance of Ref::Chart.
   def self.get_ref_chart(genre)
-    puts genre
     ref_slugs = { 'reusables' => 'pie', 'top_countries' => 'one-layer-map', 'line_chart' => 'multi-series-line', 'providers_count' => 'one-number-indicator', 'data_providers_count' => 'one-number-indicator', 'countries_count' => 'one-number-indicator', 'media_type_donut_chart' => 'election-donut' }
     ref_chart = Ref::Chart.find_by(slug: ref_slugs[genre])
     ref_chart
