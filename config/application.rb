@@ -44,7 +44,6 @@ module Europeana
         fail RuntimeError unless redis_config.present?
         [:redis_store, redis_config[:url]]
       rescue RuntimeError => e
-        puts "Unable to set redis as cache, using :null_store. e = #{e.inspect}"
         :null_store
       end
 

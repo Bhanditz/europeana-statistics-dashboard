@@ -63,7 +63,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
           begin
             digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}/#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full").read)
           rescue => e
-            puts "TODO log this error: #{e.inspect}"
+            #puts "TODO log this error: #{e.inspect}"
             #puts "URL was: #{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full"
             next
           end
