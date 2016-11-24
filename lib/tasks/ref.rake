@@ -75,7 +75,6 @@ namespace :ref do
     name = 'Europeana'
     genre = 'europeana'
     europeana_impl_aggregation = Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
-    puts "europeana_impl_aggregation: #{europeana_impl_aggregation.inspect}"
     Impl::DataProviders::MediaTypesBuilder.perform_async(Impl::Aggregation.europeana.id)
     Aggregations::Europeana::PageviewsBuilder.perform_async
   end
