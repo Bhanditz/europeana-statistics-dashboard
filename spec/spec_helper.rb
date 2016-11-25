@@ -38,6 +38,7 @@ SimpleCov.start do
   add_group 'Controllers', 'app/controllers'
   add_group 'Models', 'app/models'
   add_group 'Helpers', 'app/helpers'
+  add_group 'Workers', 'app/workers'
 end
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
