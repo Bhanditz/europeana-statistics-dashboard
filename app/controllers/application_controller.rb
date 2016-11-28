@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
   # Override DEVISE after_sign_in_path_for method to redirect to project page.
   #
   # @param resource [Devise Object] the user that has signed in.
-  # @return [String] the url to a particular project.
+  # @return [String] the url to a particula]r project.
   def after_sign_in_path_for(resource)
     _account_project_path(resource, resource.core_projects.first)
   end

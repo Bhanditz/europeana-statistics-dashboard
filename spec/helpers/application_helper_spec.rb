@@ -4,14 +4,14 @@ require 'rails_helper'
 RSpec.describe ApplicationHelper, type: :helper do
   describe '#link_to profile picture for email_id' do
     it 'returns the url for profile picture with default size 20' do
-      email_id = 'test@emmail.com'
+      email_id = 'test@example.com'
       size = 20
       profile_picture_url = dp(email_id)
       expect(profile_picture_url).to eq("https://gravatar.com/avatar/#{Digest::MD5.hexdigest(email_id)}.png?s=#{size}")
     end
 
     it 'returns the url for profile picture with size 30' do
-      email_id = 'test@emmail.com'
+      email_id = 'test@example.com'
       size = 30
       profile_picture_url = dp(email_id, size)
       expect(profile_picture_url).to eq("https://gravatar.com/avatar/#{Digest::MD5.hexdigest(email_id)}.png?s=#{size}")
@@ -20,8 +20,8 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe 'generate profile picture image', type: :helper do
     it 'returns the url for profile picture' do
-      t = Account.first
-      email_id = 'europeana_user@europeana.eu'
+      t = accounts(:europeana_account)
+      email_id = t.email
       size = 30
       profile_picture_url = account_image(t, size)
       expect(profile_picture_url).to eq("https://gravatar.com/avatar/#{Digest::MD5.hexdigest(email_id)}.png?s=#{size}")
@@ -46,19 +46,19 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe 'generate report status html indicator', type: :helper do
     it 'should return a html string with class signal sig-red' do
-      impl = Impl::Aggregation.first
+      impl = impl_aggregations(:rijksmuseum_aggregation)
       indicator = get_impl_status(impl)
       expect(indicator).to eq("<div class='signal sig-red'></div>")
     end
 
     it 'should return a html string with class signal sig-gray' do
-      impl = Impl::Aggregation.second
+      impl = impl_aggregations(:diputaciodebarcelona_aggregation)
       indicator = get_impl_status(impl)
       expect(indicator).to eq("<div class='signal sig-gray'></div>")
     end
 
     it 'should return a html string with class signal sig-green' do
-      impl = Impl::Aggregation.third
+      impl = impl_aggregations(:europeana_aggregation)
       indicator = get_impl_status(impl)
       expect(indicator).to eq("<div class='signal sig-green'></div>")
     end

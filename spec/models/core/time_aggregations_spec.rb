@@ -56,7 +56,7 @@ RSpec.describe Core::TimeAggregation, type: :model do
     it 'should create a new Core::Aggregation and save it' do
       data = [{ 'pageviews' => '123.231', 'month' => '02', 'year' => '01', 'digital_object' => 'This is a sample text.' }]
       aggregation_level = 'monthly'
-      parent_id = 1
+      parent_id = Impl::Aggregation.first.id
       parent_type = 'Impl::Aggregation'
       metric = 'pageviews'
       output_type = 'digital_object'

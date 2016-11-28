@@ -27,6 +27,7 @@ class Impl::Aggregation < ActiveRecord::Base
   # ACCESSORS
   store_accessor :properties
   # ASSOCIATIONS
+  belongs_to :core_project, :class_name => 'Core::Project', foreign_key: 'core_project_id'
   has_many :impl_child_data_providers, -> { data_providers }, class_name: 'Impl::AggregationRelation', foreign_key: 'impl_parent_id', dependent: :destroy
   has_many :impl_child_providers, -> { providers }, class_name: 'Impl::AggregationRelation', foreign_key: 'impl_parent_id', dependent: :destroy
   has_many :child_data_providers, through: :impl_child_data_providers, source: :impl_child
@@ -205,7 +206,6 @@ class Impl::Aggregation < ActiveRecord::Base
       Rails.cache.fetch('data_providers_json', expires_in: 24.hours) do
         json.to_json
       end
-
     end
     json
   end

@@ -3,8 +3,8 @@ require 'rails_helper'
 
 RSpec.describe Core::Datacast, type: :model do
   context 'getting data distribution' do
-    it 'returns data distribution of data' do
-      data = [
+    let(:data) {
+      [
         %w(col1 col2 col3 col4),
         ['first name', 'true', '12', '11-12-2015'],
         ['first name', 'true', '13', '31-12-2015'],
@@ -13,14 +13,16 @@ RSpec.describe Core::Datacast, type: :model do
         ['first name', 'true', '16', '21-01-2016'],
         ['first name', 'true', '17', '31-01-2016']
       ]
-
-      desired_distribution = {
+    }
+    let(:desired_distribution) {
+      {
         'col1' => { string: 6, boolean: 0, float: 0, integer: 0, date: 0, blank: 0 },
         'col2' => { string: 0, boolean: 6, float: 0, integer: 0, date: 0, blank: 0 },
         'col3' => { string: 0, boolean: 0, float: 0, integer: 6, date: 0, blank: 0 },
         'col4' => { string: 0, boolean: 0, float: 0, integer: 0, date: 6, blank: 0 }
       }
-
+    }
+    it 'returns data distribution of data' do
       distribution = Core::Datacast.get_data_distribution(data)
       expect(distribution).to eq(desired_distribution)
     end

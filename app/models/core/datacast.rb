@@ -35,7 +35,6 @@ class Core::Datacast < ActiveRecord::Base
   store_accessor :properties, :query, :method, :refresh_frequency, :error, :fingerprint, :format, :number_of_rows, :number_of_columns
 
   # ASSOCIATIONS
-  belongs_to :core_project, class_name: 'Core::Project', foreign_key: 'core_project_id'
   has_one :core_datacast_output, class_name: 'Core::DatacastOutput', foreign_key: 'datacast_identifier', primary_key: 'identifier', dependent: :destroy
   has_many :core_vizs, class_name: 'Core::Viz', foreign_key: 'core_datacast_identifier', primary_key: 'identifier'
   has_one :impl_aggregation_datacast, class_name: 'Impl::AggregationDatacast', foreign_key: 'core_datacast_identifier', primary_key: 'identifier'
@@ -121,11 +120,11 @@ class Core::Datacast < ActiveRecord::Base
   # @return [String] the datatype of the element based on REGEX match, possible values are float, integer, boolean, date and string.
   def self.get_element_datatype(element)
     return 'blank' if element.blank?
-    element.strip!
-    return 'boolean' if %w(t true f false yes no y n).include?(element.downcase)
-    return 'date' if (element.match(/^[0-3]?[0-9](-|\/)[0-1]?[0-9](-|\/)[0-9]{2,4}$/) || element.match(/^[0-1]?[0-9](-|\/)[0-3]?[0-9](-|\/)[0-9]{2,4}$/) || element.match(/^[0-3]?[0-9](-|\/)[0-1]?[0-9](-|\/)[0-9]{2,4}( |)(\s|\d(|:|\d)+)$/) || element.match(/^[0-1]?[0-9](-|\/)[0-3]?[0-9](-|\/)[0-9]{2,4}( |)(\s|\d(|:|\d)+)$/)) && Date.parse(element).present?
-    return 'float' if element =~ /^[-+]?[0-9]*\.[0-9]+$/
-    return 'integer' if element =~ /^[-+]?[0-9]+$/
+    stripped_element = element.strip
+    return 'boolean' if %w(t true f false yes no y n).include?(stripped_element.downcase)
+    return 'date' if (stripped_element.match(/^[0-3]?[0-9](-|\/)[0-1]?[0-9](-|\/)[0-9]{2,4}$/) || stripped_element.match(/^[0-1]?[0-9](-|\/)[0-3]?[0-9](-|\/)[0-9]{2,4}$/) || element.match(/^[0-3]?[0-9](-|\/)[0-1]?[0-9](-|\/)[0-9]{2,4}( |)(\s|\d(|:|\d)+)$/) || element.match(/^[0-1]?[0-9](-|\/)[0-3]?[0-9](-|\/)[0-9]{2,4}( |)(\s|\d(|:|\d)+)$/)) && Date.parse(stripped_element).present?
+    return 'float' if stripped_element =~ /^[-+]?[0-9]*\.[0-9]+$/
+    return 'integer' if stripped_element =~ /^[-+]?[0-9]+$/
     'string'
   end
 

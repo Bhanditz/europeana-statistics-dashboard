@@ -46,7 +46,6 @@ Rails.application.routes.draw do
     get ':impl_report_id', to: 'impl/reports#show', as: 'impl_report', genre: 'provider'
   end
 
-  get '/:account_id/edit', to: 'accounts#edit', as: '_edit_account'
   get '/:account_id/:project_id', to: 'core/projects#show', as: '_account_project'
 
   root 'static_pages#index'

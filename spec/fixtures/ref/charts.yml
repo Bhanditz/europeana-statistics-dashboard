@@ -1,0 +1,15 @@
+multi_series_line:
+  name: "Multi-series Line"
+  description: "Sometimes we wish to visualise the trend based behaviour of several data sets against a common ordinal/ interval data range. In such cases a multi-series line offers insight into both the trend behaviour and comparison between trend behaviour for different data sets"
+  img_small: "https://s3-ap-southeast-1.amazonaws.com/charts.pykih.com/icons/multi-line.png"
+  genre: "Multi Dimensional Charts"
+  map: "{\"dimensions_required\":2,\"metrics_required\":1,\"dimensions_alias\":[\"x\",\"name\"],\"metrics_alias\":[\"y\"]}"
+  api: "PykCharts.multiD.multiSeriesLine"
+  created_by: nil
+  updated_by: nil
+  img_data_mapping: "https://s3-ap-southeast-1.amazonaws.com/charts.pykih.com/icons/data.multi-series.line.png"
+  slug: "multi-series-line"
+  combination_code: "f80d2e"
+  source: "public/PykCharts/src/js/multiD/multiD.js"
+  file_path: "public/PykCharts/src/js/multiD/lineChart.js"
+  sort_order: 2

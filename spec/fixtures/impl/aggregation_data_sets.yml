@@ -1,0 +1,18 @@
+first:
+  impl_aggregation: europeana_aggregation
+  impl_data_set: l_es_bibcatalunya_fulletsab
+second:
+  impl_aggregation: dansknaw_aggregation
+  impl_data_set: l_es_bibcatalunya_iguerramuab
+third:
+  impl_aggregation_id: 3
+  impl_data_set: l_es_bibcatalunya_incunableab
+fourth:
+  impl_aggregation: locloud_aggregation
+  impl_data_set: l_es_bibcatalunya_abertrana
+fifth:
+  impl_aggregation_id: 5
+  impl_data_set_id: 5
+sixth:
+  impl_aggregation_id: 6
+  impl_data_set_id: 6

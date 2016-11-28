@@ -1,0 +1,70 @@
+rijksmuseum_aggregation:
+  core_project: europeana_project
+  genre: "provider"
+  name: "Rijksmuseum"
+  created_by: nil
+  updated_by: nil
+  status: "Failed"
+  error_messages: "error_message"
+  properties: {}
+  last_updated_at: "2016-02-29"
+diputaciodebarcelona_aggregation:
+  core_project: europeana_project
+  genre: "data_provider"
+  name: "Diputació de Barcelona"
+  created_by: nil
+  updated_by: nil
+  status: "In Queue"
+  error_messages: ""
+  properties: {}
+  last_updated_at: "2016-02-29"
+france_aggregation:
+  core_project: europeana_project
+  genre: "country"
+  name: "france"
+  created_by: 1
+  updated_by: 1
+  status: "Report built"
+  error_messages: ""
+  properties: {}
+  last_updated_at: "2016-02-29"
+locloud_aggregation:
+  core_project: europeana_project
+  genre: "provider"
+  name: "LoCloud"
+  created_by: nil
+  updated_by: nil
+  status: "Report built"
+  error_messages: ""
+  properties: {}
+  last_updated_at: "2016-02-29"
+dansknaw_aggregation:
+  core_project: europeana_project
+  genre: "data_provider"
+  name: "DANS-KNAW"
+  created_by: nil
+  updated_by: nil
+  status: "Report built"
+  error_messages: ""
+  properties: {}
+  last_updated_at: "2016-02-29"
+spain:
+  core_project: europeana_project
+  genre: "country"
+  name: "spain"
+  created_by: 1
+  updated_by: 1
+  status: "Report built"
+  error_messages: ""
+  properties: {}
+  last_updated_at: "2016-03-31"
+europeana_aggregation:
+  core_project: europeana_project
+  genre: "europeana"
+  name: "Europeana"
+  created_by: nil
+  updated_by: nil
+  status: "Report built"
+  error_messages: ""
+  properties: {}
+  last_updated_at: "2016-03-31"

@@ -1,0 +1,48 @@
+l_es_bibcatalunya_fulletsab:
+  data_set_id: "91956"
+  created_by: nil
+  updated_by: nil
+  status: "In queue"
+  error_messages: ""
+  impl_aggregation_id: nil
+  name: "91956_L_Es_BibCatalunya_fulletsAB"
+l_es_bibcatalunya_iguerramuab:
+  data_set_id: "91996"
+  created_by: nil
+  updated_by: nil
+  status: "In queue"
+  error_messages: ""
+  impl_aggregation_id: nil
+  name: "91996_L_Es_BibCatalunya_IGuerraMuAB"
+l_es_bibcatalunya_incunableab:
+  data_set_id: "91959"
+  created_by: nil
+  updated_by: nil
+  status: "In queue"
+  error_messages: ""
+  impl_aggregation_id: nil
+  name: "91959_L_Es_BibCatalunya_incunableAB"
+l_es_bibcatalunya_abertrana:
+  data_set_id: "91947"
+  created_by: nil
+  updated_by: nil
+  status: "In queue"
+  error_messages: ""
+  impl_aggregation_id: nil
+  name: "91947_L_Es_BibCatalunya_abertrana"
+ag_eu_juaica_museo_aefardi_toledo:
+  data_set_id: "09317"
+  created_by: nil
+  updated_by: nil
+  status: "In queue"
+  error_messages: ""
+  impl_aggregation_id: nil
+  name: "09317_Ag_EU_Judaica_Museo_Sefardi_Toledo"
+ag_eu_tel_a1030_europanaregia:
+  data_set_id: "92078"
+  created_by: nil
+  updated_by: nil
+  status: "In queue"
+  error_messages: ""
+  impl_aggregation_id: nil
+  name: "92078_Ag_EU_TEL_a1030_EuropanaRegia"

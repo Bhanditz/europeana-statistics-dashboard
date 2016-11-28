@@ -57,7 +57,7 @@ class Impl::Output < ActiveRecord::Base
       a = where(impl_parent_id: impl_parent_id, impl_parent_type: impl_parent_type, genre: genre, key: options[:key], value: options[:value]).first
     end
     if a.blank?
-      a = !create(impl_parent_id: impl_parent_id, impl_parent_type: impl_parent_type, genre: genre, key: options[:key], value: options[:value])
+      a = create!(impl_parent_id: impl_parent_id, impl_parent_type: impl_parent_type, genre: genre, key: options[:key], value: options[:value])
     end
     a
   end
