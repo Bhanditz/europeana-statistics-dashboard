@@ -7,24 +7,25 @@ RSpec.describe Aggregations::Europeana::DatacastBuilder do
   describe '#perform' do
     context 'when everything works' do
       let(:datacast_double) { double("dummy_datacast", identifier: "fake_id") }
+      let(:project_id) { core_projects(:europeana_project).id }
       it 'should create or update, Total Pageviews, Top Digital Objects, Total Countries, Total Providers,
           Total Data Providers, Media Types, Reusables and Top Country Datacasts. Then queue the VizBuilder.'  do
         expect(Core::Datacast).to receive(:create_or_update_by).with(
-            an_instance_of(String), core_projects(:europeana_project).id, 'Europeana - Line Chart') { datacast_double }
+            an_instance_of(String), project_id, 'Europeana - Line Chart') { datacast_double }
         expect(Core::Datacast).to receive(:create_or_update_by).with(
-            an_instance_of(String), core_projects(:europeana_project).id, 'Europeana - Top Digital Objects') { datacast_double }
+            an_instance_of(String), project_id, 'Europeana - Top Digital Objects') { datacast_double }
         expect(Core::Datacast).to receive(:create_or_update_by).with(
-            an_instance_of(String), core_projects(:europeana_project).id, 'Europeana - Countries Count') { datacast_double }
+            an_instance_of(String), project_id, 'Europeana - Countries Count') { datacast_double }
         expect(Core::Datacast).to receive(:create_or_update_by).with(
-            an_instance_of(String), core_projects(:europeana_project).id, 'Europeana - Providers Count') { datacast_double }
+            an_instance_of(String), project_id, 'Europeana - Providers Count') { datacast_double }
         expect(Core::Datacast).to receive(:create_or_update_by).with(
-            an_instance_of(String), core_projects(:europeana_project).id, 'Europeana - Data Providers Count') { datacast_double }
+            an_instance_of(String), project_id, 'Europeana - Data Providers Count') { datacast_double }
         expect(Core::Datacast).to receive(:create_or_update_by).with(
-            an_instance_of(String), core_projects(:europeana_project).id, 'Europeana - Media Type Donut Chart') { datacast_double }
+            an_instance_of(String), project_id, 'Europeana - Media Type Donut Chart') { datacast_double }
         expect(Core::Datacast).to receive(:create_or_update_by).with(
-            an_instance_of(String), core_projects(:europeana_project).id, 'Europeana - Reusables') { datacast_double }
+            an_instance_of(String), project_id, 'Europeana - Reusables') { datacast_double }
         expect(Core::Datacast).to receive(:create_or_update_by).with(
-            an_instance_of(String), core_projects(:europeana_project).id, 'Europeana - Top Countries') { datacast_double }
+            an_instance_of(String), project_id, 'Europeana - Top Countries') { datacast_double }
         expect(Impl::AggregationDatacast).to receive(:find_or_create).exactly(8).times
         expect(Aggregations::Europeana::VizBuilder).to receive(:perform_async)
         subject.perform
