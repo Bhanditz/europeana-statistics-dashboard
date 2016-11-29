@@ -41,7 +41,7 @@ class Core::Project < ActiveRecord::Base
 
   # CALLBACKS
   before_create :before_create_set
-  after_create :after_create_set
+  after_commit :after_create_set, on: :create
   before_destroy :on_delete
 
   # SCOPES

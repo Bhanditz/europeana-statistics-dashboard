@@ -29,8 +29,9 @@ class Account < ActiveRecord::Base
   friendly_id :username, use: :slugged
 
   # CONSTANTS
+  # CALLBACKS
   before_create :before_create_set
-  after_create :after_create_set
+  after_commit :after_create_set, on: :create
 
   # ATTRIBUTES
   # ACCESSORS
