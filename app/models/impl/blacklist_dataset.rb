@@ -16,8 +16,9 @@ class Impl::BlacklistDataset < ActiveRecord::Base
 
   # Returns the list of blacklisted datasets and caches the blacklist in redis.
   def self.get_blacklist_datasets
+    blacklist_datasets = []
     if Rails.cache.fetch('blacklist_datasets')
-      blacklist_datasets = JSON.parse(Rails.cache.fetch('blacklist_datasets'))
+      blacklist_datasets = Rails.cache.fetch('blacklist_datasets')
     else
       blacklist_datasets = all.pluck(:dataset)
       Rails.cache.fetch('blacklist_datasets') { blacklist_datasets }

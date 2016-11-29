@@ -28,5 +28,20 @@ class Impl::AggregationDataSet < ActiveRecord::Base
   # SCOPES
   # CUSTOM SCOPES
   # FUNCTIONS
+
+  # Either creates a new Impl::AggregationDataSet or returns an existing
+  # Impl::AggregationDataSet object from the database.
+  #
+  # @param impl_aggregation_identifier [String] id of the aggregation.
+  # @param impl_data_set_identifier [String] id of the data set.
+  # @return [Object] a reference to Impl::AggregationDataSet
+  def self.find_or_create(impl_aggregation_identifier, impl_data_set_identifier)
+    a = where(impl_aggregation_id: impl_aggregation_identifier, impl_data_set_id: impl_data_set_identifier).first
+    if a.blank?
+      a = new(impl_aggregation_id: impl_aggregation_identifier, impl_data_set_id: impl_data_set_identifier)
+      a.save!
+    end
+    a
+  end
   # PRIVATE
 end
