@@ -72,6 +72,8 @@ RSpec.describe Aggregations::Europeana::VizBuilder do
   end
 
   describe '#get_ref_chart' do
-
+    it 'should lookup the ref_chart by the slug' do
+      expect(described_class.get_ref_chart('line_chart')).to eq(ref_charts(:multi_series_line))
+    end
   end
 end
