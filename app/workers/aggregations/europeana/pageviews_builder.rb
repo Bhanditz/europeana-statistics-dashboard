@@ -20,6 +20,7 @@ class Aggregations::Europeana::PageviewsBuilder
         ga_metrics      = 'ga:pageviews'
         ga_filters      = 'ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/'
         ga_access_token = Impl::DataSet.get_access_token
+
         page_views = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read)['rows']
         page_views_data = page_views.map { |a| { 'month' => a[0], 'year' => a[1], 'pageviews' => a[2].to_i } }
         page_views_data = page_views_data.sort_by { |d| [d['year'], d['month']] }
@@ -59,7 +60,7 @@ class Aggregations::Europeana::PageviewsBuilder
         Core::TimeAggregation.create_aggregations(country_output, 'monthly', aggregation_id, 'Impl::Aggregation', 'pageviews', 'country') unless country_output.nil?
 
         # Top Digital Objects
-        top_digital_objects = Aggregations::Europeana::PageviewsBuilder.fetch_data_for_all_quarters_between(ga_start_date, ga_end_date)
+        top_digital_objects = Aggregations::Europeana::PageviewsBuilder.fetch_data_for_all_items_between(ga_start_date, ga_end_date)
         Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects, 'monthly', aggregation.id)
 
         Aggregations::Europeana::PropertiesBuilder.perform_async
@@ -71,12 +72,12 @@ class Aggregations::Europeana::PageviewsBuilder
     end
   end
 
-  # Returns data of pageviews for all top digital objects from Google Analytics fecting, the details of digital objects from Europeana API's
+  # Returns data of pageviews for all top digital objects from Google Analytics fetching, the details of digital objects from Europeana API's
   #
   # @param start_date [String] valid start date to fetch Google Analytics data from.
   # @param end_date [String] a valid date till which Google Analytics data is to be fetched.
   # @return [Array] an array of Hash that is formatted output of Google Analytics and Europeana API's.
-  def self.fetch_data_for_all_quarters_between(start_date, end_date)
+  def self.fetch_data_for_all_items_between(start_date, end_date)
     top_digital_objects_data = []
     ga_access_token = Impl::DataSet.get_access_token
     europeana_base_url = ENV['EUROPEANA_API_URL']

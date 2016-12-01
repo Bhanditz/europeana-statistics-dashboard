@@ -5,7 +5,6 @@
 #
 #  id                  :integer          not null, primary key
 #  datacast_identifier :string           not null
-#  core_datacast_id    :integer          not null
 #  output              :text
 #  fingerprint         :text
 #  created_at          :datetime         not null

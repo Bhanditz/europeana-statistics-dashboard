@@ -22,10 +22,9 @@ RSpec.describe Aggregations::Europeana::VizBuilder do
       allow(europeana_aggregation).to receive(:core_datacasts) { europeana_datacasts }
       allow(Impl::Aggregation).to receive(:europeana) { europeana_aggregation }
     end
-    context 'when things work' do
 
+    context 'when things work' do
       it 'should create Core::Vizs for each core_datacast' do
-#=begin
         expect(Core::Viz).to receive(:find_or_create).with(2,
                                                            'Europeana - Line Chart',
                                                            ref_charts(:multi_series_line).combination_code,
@@ -36,13 +35,9 @@ RSpec.describe Aggregations::Europeana::VizBuilder do
                                                            false,
                                                            true
         )
-#=end
-        #expect(Core::Viz).to receive(:find_or_create).exactly(1).times {true}
         expect(Aggregations::Europeana::ReportBuilder).to receive(:perform_async)
         subject.perform
-
       end
-
     end
 
     context 'when things do not work' do

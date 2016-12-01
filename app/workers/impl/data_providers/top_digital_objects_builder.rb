@@ -18,7 +18,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     data_provider.update_attributes(status: 'Building top digital objects', error_messages: nil)
     begin
 
-      top_digital_objects = Impl::DataProviders::TopDigitalObjectsBuilder.fetch_data_for_all_quarters_between(data_provider.last_updated_at.present? ? (data_provider.last_updated_at + 1).strftime('%Y-%m-%d') : '2014-01-01', (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d'), data_provider)
+      top_digital_objects = Impl::DataProviders::TopDigitalObjectsBuilder.fetch_data_for_all_items_between(data_provider.last_updated_at.present? ? (data_provider.last_updated_at + 1).strftime('%Y-%m-%d') : '2014-01-01', (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d'), data_provider)
       Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects, 'monthly', data_provider_id)
       data_provider.update_attributes(status: 'Processed top 10 digital objects')
       Impl::DataProviders::DatacastsBuilder.perform_async(data_provider_id)
@@ -29,13 +29,13 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     end
   end
 
-  # Returns data of pageviews for all top digital objects from Google Analytics, fecting the details of digital objects from Europeana API's
+  # Returns data of pageviews for all top digital objects from Google Analytics, fetching the details of digital objects from Europeana API's
   #
   # @param start_date [String] valid start date to fetch Google Analytics data from.
   # @param end_date [String] a valid date till which Google Analytics data is to be fetched.
   # @param data_provider [Object] an instance of Impl::Aggregation.
   # @return [Array] an array of Hash that is formatted output of Google Analytics and Europeana API's.
-  def self.fetch_data_for_all_quarters_between(start_date, end_date, data_provider)
+  def self.fetch_data_for_all_items_between(start_date, end_date, data_provider)
     top_digital_objects_data = []
     europeana_base_url = ENV['EUROPEANA_API_URL']
     base_title_url = 'http://www.europeana.eu/portal/record/'
