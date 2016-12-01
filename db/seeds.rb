@@ -82,6 +82,15 @@ CSV.read(Dir[File.join(Rails.root, 'db', 'seeds', 'ref','country_code.csv')].fir
   Ref::CountryCode.find_or_create(code, country)
 end
 
+puts '----> Loading Impl::BlacklistDatasets'
+Impl::BlacklistDataset.destroy_all
+# headers name,slug,description,img_small,img_data_mapping,api,sort_order,genre,combination_code,source,file_path,map
+CSV.read(Dir[File.join(Rails.root, 'db', 'seeds', 'impl','blacklist_datasets.csv')].first).each_with_index do |line, index|
+  next if index == 0 # skipping header
+  dataset = line[0]
+  Impl::BlacklistDataset.create!(dataset: dataset)
+end
+
 puts '----> Creating Default Template for data providers'
 name = 'Default Europeana Template'
 genre = 'europeana'
