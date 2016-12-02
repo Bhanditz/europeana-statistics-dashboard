@@ -10,18 +10,23 @@ class Aggregations::Europeana::PageviewsBuilder
     aggregation = Impl::Aggregation.europeana
     aggregation_id = aggregation.id
     if aggregation.europeana?
+      ga_start_date   = aggregation.last_updated_at.present? ? (aggregation.last_updated_at + 1).strftime('%Y-%m-%d') : '2013-01-01'
+      ga_end_date     = (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d')
+      return unless ga_start_date < ga_end_date
       aggregation.update_attributes(status: 'Fetching pageviews', error_messages: nil)
       aggregation_output = Impl::Output.find_or_create(aggregation_id, 'Impl::Aggregation', 'pageviews')
       aggregation_output.update_attributes(status: 'Fetching pageviews', error_messages: nil)
+
+
+      ga_access_token = Impl::DataSet.get_access_token
+      ga_base_url     =  "#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}"
       begin
-        ga_start_date   = aggregation.last_updated_at.present? ? (aggregation.last_updated_at + 1).strftime('%Y-%m-%d') : '2013-01-01'
-        ga_end_date     = (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d')
         ga_dimensions   = 'ga:month,ga:year'
         ga_metrics      = 'ga:pageviews'
         ga_filters      = 'ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/'
-        ga_access_token = Impl::DataSet.get_access_token
 
-        page_views = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read)['rows']
+
+        page_views = self.class.parsed_json_for("#{ga_base_url}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}")['rows']
         page_views_data = page_views.map { |a| { 'month' => a[0], 'year' => a[1], 'pageviews' => a[2].to_i } }
         page_views_data = page_views_data.sort_by { |d| [d['year'], d['month']] }
         Core::TimeAggregation.create_time_aggregations('Impl::Output', aggregation_output.id, page_views_data, 'pageviews', 'monthly')
@@ -34,7 +39,7 @@ class Aggregations::Europeana::PageviewsBuilder
         ga_filters      = 'ga:hostname=~europeana.eu'
         ga_access_token = Impl::DataSet.get_access_token
 
-        mediums = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read)['rows']
+        mediums = self.class.parsed_json_for("#{ga_base_url}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}")['rows']
         mediums_data = mediums.map { |a| { 'month' => a[0], 'year' => a[1], 'medium' => a[2], 'visits' => a[3] } }
         mediums_data = mediums_data.sort_by { |d| [d['year'], d['month']] }
 
@@ -47,9 +52,7 @@ class Aggregations::Europeana::PageviewsBuilder
         click_metrics = 'ga:totalEvents'
         ga_filter = 'ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/;ga:eventCategory==Europeana Redirect,ga:eventCategory==Redirect'
         # click Through
-        ga_access_token = Impl::DataSet.get_access_token
-
-        click_through = JSON.parse(open("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{click_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filter}", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read)['rows']
+        click_through = self.class.parsed_json_for("#{ga_base_url}&metrics=#{click_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filter}")['rows']
         click_through_data = click_through.map { |a| { 'year' => a[0], 'clickThrough' => a[1].to_i } }
         click_through_data = click_through_data.sort_by { |d| [d['year']] }
 
@@ -89,17 +92,19 @@ class Aggregations::Europeana::PageviewsBuilder
     ga_start_date = start_date
     ga_end_date = end_date
     ga_max_results = 50
-    top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read)['rows']
-    if top_digital_objects_per_quarter.present?
-      top_digital_objects_per_quarter.each do |digital_object|
+    top_digital_objects = parsed_json_for("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}")['rows']
+    if top_digital_objects.present?
+      top_digital_objects.each do |digital_object|
         page_path = digital_object[0].split('/')
-        if page_path.count == 5 && page_path[3] == 'record'
+        if page_path.count == 6 && page_path[3] == 'record'
           page_path.delete_at(2)
         end
+
         next if page_path[2].downcase != 'record'
+
         size = digital_object[3].to_i
         begin
-          digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}/#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full").read)
+          digital_object_europeana_data = parsed_json_for("#{europeana_base_url}/#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full")
         rescue => e
           #puts "TODO log this error #{e.inspect}"
           #puts "URL was: #{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full"
@@ -118,5 +123,13 @@ class Aggregations::Europeana::PageviewsBuilder
       end
     end
     top_digital_objects_data
+  end
+
+  ##
+  # Open a url and parse the json from it.
+  #
+  # @param url [String] the string for the url to read json from.
+  def self.parsed_json_for(url)
+    JSON.parse(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read)
   end
 end
