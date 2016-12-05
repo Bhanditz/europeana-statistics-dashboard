@@ -1,5 +1,5 @@
 rijksmuseum_providers_count:
-  core_project_id: 1
+  core_project: europeana_project
   name: "PROVIDER Rijksmuseum - Providers Count"
   identifier: "9d35a217e92ee36ce54ec37ea51d360148b59bddd98a0aa9b85f31352e60b2738a"
   properties:

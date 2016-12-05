@@ -35,6 +35,7 @@ class Core::Datacast < ActiveRecord::Base
   store_accessor :properties, :query, :method, :refresh_frequency, :error, :fingerprint, :format, :number_of_rows, :number_of_columns
 
   # ASSOCIATIONS
+  belongs_to :core_project, class_name: 'Core::Project', foreign_key: 'core_project_id'
   has_one :core_datacast_output, class_name: 'Core::DatacastOutput', foreign_key: 'datacast_identifier', primary_key: 'identifier', dependent: :destroy
   has_many :core_vizs, class_name: 'Core::Viz', foreign_key: 'core_datacast_identifier', primary_key: 'identifier'
   has_one :impl_aggregation_datacast, class_name: 'Impl::AggregationDatacast', foreign_key: 'core_datacast_identifier', primary_key: 'identifier'
