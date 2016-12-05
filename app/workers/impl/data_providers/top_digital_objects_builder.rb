@@ -55,10 +55,12 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
       if top_digital_objects_per_quarter.present?
         top_digital_objects_per_quarter.each do |digital_object|
           page_path = digital_object[0].split('/')
-          if page_path.count == 5 && page_path[3] == 'record'
+          if page_path.count == 6 && page_path[3] == 'record'
             page_path.delete_at(2)
           end
+
           next if page_path[2].downcase != 'record'
+
           size = digital_object[3].to_i
           begin
             digital_object_europeana_data = JSON.parse(open("#{europeana_base_url}/#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full").read)
