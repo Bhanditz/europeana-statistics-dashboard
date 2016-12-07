@@ -189,7 +189,7 @@ class Impl::Aggregation < ActiveRecord::Base
   # Retruns and caches the JSON for data providers that is used in views to display data.
   def self.get_data_providers_json
     json = []
-    if Rails.cache.fetch('data_providers_json').present? and false
+    if Rails.cache.fetch('data_providers_json').present?
       json = JSON.parse(Rails.cache.fetch('data_providers_json'))
     else
       data_providers.order(:name).each do |data_provider|

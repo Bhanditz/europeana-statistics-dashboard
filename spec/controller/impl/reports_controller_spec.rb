@@ -14,10 +14,10 @@ RSpec.describe Impl::ReportsController, type: :controller do
     end
     context 'when it is a data_provider report' do
       it 'should respond with a succesful response' do
-        # TODO: SETUP DATACAST FIXTURE FOR DANS_KNAW
-        #get :show, genre: 'data_provider', impl_report_id: impl_aggregations(:dansknaw_aggregation).impl_report.id
-        #expect(response).to be_success
-        #expect(response).to have_http_status(200)
+        
+        get :show, genre: 'data_provider', impl_report_id: impl_aggregations(:dansknaw_aggregation).impl_report.id
+        expect(response).to be_success
+        expect(response).to have_http_status(200)
       end
     end
   end
