@@ -16,8 +16,6 @@ class Aggregations::Europeana::PageviewsBuilder
       aggregation.update_attributes(status: 'Fetching pageviews', error_messages: nil)
       aggregation_output = Impl::Output.find_or_create(aggregation_id, 'Impl::Aggregation', 'pageviews')
       aggregation_output.update_attributes(status: 'Fetching pageviews', error_messages: nil)
-
-
       ga_access_token = Impl::DataSet.get_access_token
       ga_base_url     =  "#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}"
       begin
@@ -89,38 +87,54 @@ class Aggregations::Europeana::PageviewsBuilder
     ga_dimensions = 'ga:pagePath,ga:month,ga:year'
     ga_sort = '-ga:pageviews'
     ga_filters = 'ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/'
-    ga_start_date = start_date
-    ga_end_date = end_date
-    ga_max_results = 50
-    top_digital_objects = parsed_json_for("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}")['rows']
-    if top_digital_objects.present?
-      top_digital_objects.each do |digital_object|
-        page_path = digital_object[0].split('/')
-        if page_path.count == 6 && page_path[3] == 'record'
-          page_path.delete_at(2)
-        end
 
-        next if page_path[2].downcase != 'record'
+    # setup dates
+    start_date = Date.parse(start_date)
+    end_date = Date.parse(end_date)
+    period_end_date = (start_date + 1.month).at_beginning_of_month - 1
+    # Go through each month and gather statisitcs
+    while period_end_date <= end_date do
+      # Format dates as strings for google
+      ga_start_date = start_date.strftime('%Y-%m-%d')
+      ga_end_date = period_end_date.strftime('%Y-%m-%d')
 
-        size = digital_object[3].to_i
-        begin
-          digital_object_europeana_data = parsed_json_for("#{europeana_base_url}/#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full")
-        rescue => e
-          #puts "TODO log this error #{e.inspect}"
-          #puts "URL was: #{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full"
-          next
+      ga_max_results = 50
+      top_digital_objects = parsed_json_for("#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}")['rows']
+      if top_digital_objects.present?
+        top_digital_objects.each do |digital_object|
+          page_path = digital_object[0].split('/')
+
+          # checking if the url contains a language code and if so, removing it
+          if page_path.count == 6 && page_path[3] == 'record'
+            page_path.delete_at(2)
+          end
+
+          next if page_path[2].downcase != 'record'
+
+          size = digital_object[3].to_i
+          begin
+            digital_object_europeana_data = parsed_json_for("#{europeana_base_url}/#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full")
+          rescue => e
+            #puts "TODO log this error #{e.inspect}"
+            #puts "URL was: #{europeana_base_url}#{page_path[2]}/#{page_path[3]}/#{page_path[4].split('.')[0]}.json?wskey=#{ENV['WSKEY']}&profile=full"
+            next
+          end
+          next if digital_object_europeana_data.nil? || (digital_object_europeana_data['success'] == false)
+          image_url = digital_object_europeana_data['object']['europeanaAggregation']['edmPreview'].present? ? digital_object_europeana_data['object']['europeanaAggregation']['edmPreview'] : 'http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO'
+          begin
+            title = digital_object_europeana_data['object']['proxies'][0]['dcTitle'].first[1].first
+          rescue
+            title = 'No Title Found'
+          end
+          title_middle_url = digital_object_europeana_data['object']['europeanaAggregation']['about'].split('/')
+          title_url = "#{base_title_url}#{title_middle_url[3]}/#{title_middle_url[4]}.html"
+          top_digital_objects_data << { 'image_url' => image_url, 'title' => title, 'title_url' => title_url, 'size' => size, 'year' => digital_object[2], 'month' => digital_object[1] }
         end
-        next if digital_object_europeana_data.nil? || (digital_object_europeana_data['success'] == false)
-        image_url = digital_object_europeana_data['object']['europeanaAggregation']['edmPreview'].present? ? digital_object_europeana_data['object']['europeanaAggregation']['edmPreview'] : 'http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO'
-        begin
-          title = digital_object_europeana_data['object']['proxies'][0]['dcTitle'].first[1].first
-        rescue
-          title = 'No Title Found'
-        end
-        title_middle_url = digital_object_europeana_data['object']['europeanaAggregation']['about'].split('/')
-        title_url = "#{base_title_url}#{title_middle_url[3]}/#{title_middle_url[4]}.html"
-        top_digital_objects_data << { 'image_url' => image_url, 'title' => title, 'title_url' => title_url, 'size' => size, 'year' => digital_object[2], 'month' => digital_object[1] }
       end
+
+
+      start_date = (start_date + 1.month).at_beginning_of_month
+      period_end_date = (start_date + 1.month).at_beginning_of_month - 1
     end
     top_digital_objects_data
   end

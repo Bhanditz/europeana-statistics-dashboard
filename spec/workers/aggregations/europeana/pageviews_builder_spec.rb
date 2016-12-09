@@ -7,7 +7,7 @@ RSpec.describe Aggregations::Europeana::PageviewsBuilder do
   let(:ga_pageviews_url) { "#{ga_base_url}&metrics=ga:pageviews&dimensions=ga:month,ga:year&filters=ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/" }
   let(:ga_visits_url) {"#{ga_base_url}&metrics=ga:visits&dimensions=ga:month,ga:year,ga:medium&filters=ga:hostname=~europeana.eu"}
   let(:ga_clickthrough_url) {"#{ga_base_url}&metrics=ga:totalEvents&dimensions=ga:year&filters=ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/;ga:eventCategory==Europeana Redirect,ga:eventCategory==Redirect" }
-  let(:ga_top_objects_url) {"#{ga_base_url}&metrics=ga:pageviews&dimensions=ga:pagePath,ga:month,ga:year&filters=ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/&sort=-ga:pageviews&max-results=50"}
+
 
   let(:all_objects_data) { [
       { 'image_url' => 'image_url', 'title' => 'title', 'title_url' => 'http://www.europeana.eu/portal/record/provider_id/item_id.html', 'size' => 55984, 'year' => '2015', 'month' => '10' },
@@ -128,20 +128,34 @@ RSpec.describe Aggregations::Europeana::PageviewsBuilder do
   }
 
   describe 'Aggregations::Europeana::PageviewsBuilder#fetch_data_for_all_items_between' do
-    # this function should actually ensure it gets the top 50 items for each month in the selected period
-    # at the moment however it only gets the top 50 items for the selected period overall.
     # TODO: investigate if it's possible to get the top 50 for each month in one request!
-
-    let(:expected_result) { all_objects_data_one_month}
     context 'when getting all data since the beggining' do
       let(:expected_start_date) { '2013-01-01' }
-      let(:expected_results) { all_objects_data }
+      let(:ga_base_url) { "#{GA_ENDPOINT}?access_token=fake_token&start-date=#!!!SUB_START_DATE!!!#&end-date=#!!!SUB_END_DATE!!!#&ids=ga:#{GA_IDS}" }
+      let(:ga_top_objects_url) {"#{ga_base_url}&metrics=ga:pageviews&dimensions=ga:pagePath,ga:month,ga:year&filters=ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/&sort=-ga:pageviews&max-results=50"}
       it 'should get pageviews for digital objects from Google Analytics and details for them from the Europeana API' do
-        expect(described_class).to receive(:parsed_json_for).with(ga_top_objects_url) { all_objects_response }
-        expect(described_class).to receive(:parsed_json_for).with("#{ENV['EUROPEANA_API_URL']}/record/09003/745EB6AEE653A9218911BB5902EC3F832BC43E87.json?wskey=#{ENV['WSKEY']}&profile=full") { europeana_response }
-        expect(described_class).to receive(:parsed_json_for).with("#{ENV['EUROPEANA_API_URL']}/record/9200105/wellcomeimages_org_record_L0024849.json?wskey=#{ENV['WSKEY']}&profile=full") { europeana_response }
-        expect(described_class).to receive(:parsed_json_for).with("#{ENV['EUROPEANA_API_URL']}/record/2023701/ANS68ccd66e6d1211e1ae16bc305bd461d9.json?wskey=#{ENV['WSKEY']}&profile=full") { europeana_response }
-        expect(described_class).to receive(:parsed_json_for).with("#{ENV['EUROPEANA_API_URL']}/record/92002/BibliographicResource_1000093325497_source.json?wskey=#{ENV['WSKEY']}&profile=full") { europeana_response }
+        expected_results = []
+        number_of_months = 0
+        # setup dates
+        start_date = Date.parse(expected_start_date)
+        end_date = Date.parse(expected_end_date)
+        period_end_date = (start_date + 1.month).at_beginning_of_month - 1
+        # Go through each month and gather statisitcs
+        while period_end_date <= end_date do
+          number_of_months += 1
+          # Format dates as strings for google
+          ga_start_date = start_date.strftime('%Y-%m-%d')
+          ga_end_date = period_end_date.strftime('%Y-%m-%d')
+          expected_url = ga_top_objects_url.gsub('#!!!SUB_START_DATE!!!#', ga_start_date).gsub('#!!!SUB_END_DATE!!!#',ga_end_date)
+          expect(described_class).to receive(:parsed_json_for).with(expected_url) { all_objects_response }
+          expected_results = expected_results + all_objects_data
+          start_date = (start_date + 1.month).at_beginning_of_month
+          period_end_date = (start_date + 1.month).at_beginning_of_month - 1
+        end
+        expect(described_class).to receive(:parsed_json_for).with("#{ENV['EUROPEANA_API_URL']}/record/09003/745EB6AEE653A9218911BB5902EC3F832BC43E87.json?wskey=#{ENV['WSKEY']}&profile=full").exactly(number_of_months).times { europeana_response }
+        expect(described_class).to receive(:parsed_json_for).with("#{ENV['EUROPEANA_API_URL']}/record/9200105/wellcomeimages_org_record_L0024849.json?wskey=#{ENV['WSKEY']}&profile=full").exactly(number_of_months).times { europeana_response }
+        expect(described_class).to receive(:parsed_json_for).with("#{ENV['EUROPEANA_API_URL']}/record/2023701/ANS68ccd66e6d1211e1ae16bc305bd461d9.json?wskey=#{ENV['WSKEY']}&profile=full").exactly(number_of_months).times { europeana_response }
+        expect(described_class).to receive(:parsed_json_for).with("#{ENV['EUROPEANA_API_URL']}/record/92002/BibliographicResource_1000093325497_source.json?wskey=#{ENV['WSKEY']}&profile=full").exactly(number_of_months).times { europeana_response }
         expect(described_class.fetch_data_for_all_items_between(expected_start_date, expected_end_date)).to eq(expected_results)
       end
     end

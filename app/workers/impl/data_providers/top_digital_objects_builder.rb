@@ -18,7 +18,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     data_provider.update_attributes(status: 'Building top digital objects', error_messages: nil)
     begin
 
-      top_digital_objects = Impl::DataProviders::TopDigitalObjectsBuilder.fetch_data_for_all_items_between(data_provider.last_updated_at.present? ? (data_provider.last_updated_at + 1).strftime('%Y-%m-%d') : '2014-01-01', (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d'), data_provider)
+      top_digital_objects = Impl::DataProviders::TopDigitalObjectsBuilder.fetch_data_for_all_items_between(data_provider.last_updated_at.present? ? (data_provider.last_updated_at + 1).strftime('%Y-%m-%d') : '2013-01-01', (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d'), data_provider)
       Core::TimeAggregation.create_digital_objects_aggregation(top_digital_objects, 'monthly', data_provider_id)
       data_provider.update_attributes(status: 'Processed top 10 digital objects')
       Impl::DataProviders::DatacastsBuilder.perform_async(data_provider_id)
@@ -43,14 +43,19 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     ga_dimensions = 'ga:pagePath,ga:month,ga:year'
     ga_sort = '-ga:pageviews'
     ga_filters = data_provider.get_aggregated_filters
-    looper = Date.parse(start_date)
-    end_date = Date.parse(end_date)
     ga_max_results = 50
-    while looper < end_date
-      ga_access_token = Impl::DataSet.get_access_token
-      ga_start_date = looper.strftime('%Y-%m-%d')
-      looper = (looper.at_end_of_year > end_date) ? end_date : looper.at_end_of_year
-      ga_end_date = looper.strftime('%Y-%m-%d')
+    ga_access_token = Impl::DataSet.get_access_token
+
+    # setup dates
+    start_date = Date.parse(start_date)
+    end_date = Date.parse(end_date)
+    period_end_date = (start_date + 1.month).at_beginning_of_month - 1
+    # Go through each month and gather statisitcs
+    while period_end_date <= end_date do
+      # Format dates as strings for google
+      ga_start_date = start_date.strftime('%Y-%m-%d')
+      ga_end_date = period_end_date.strftime('%Y-%m-%d')
+
       top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read)['rows']
       if top_digital_objects_per_quarter.present?
         top_digital_objects_per_quarter.each do |digital_object|
@@ -81,7 +86,9 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
           top_digital_objects_data << { 'image_url' => image_url, 'title' => title, 'title_url' => title_url, 'size' => size, 'year' => digital_object[2], 'month' => digital_object[1] }
         end
       end
-      looper += 1
+
+      start_date = (start_date + 1.month).at_beginning_of_month
+      period_end_date = (start_date + 1.month).at_beginning_of_month - 1
     end
     top_digital_objects_data
   end
