@@ -14,7 +14,6 @@ gem 'stache', github: 'europeana/stache', branch: 'europeana-styleguide'
 gem 'activerecord-session_store'
 gem 'clockwork'
 gem 'devise'
-gem 'europeana-logging', '~> 0.0.4'
 gem 'friendly_id', '~> 5.0.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 gem 'gon'
 gem 'haml'
@@ -35,6 +34,7 @@ gem 'susy'
 group :production do
   gem 'rails_serve_static_assets'
   gem 'uglifier', '~> 2.7'
+  gem 'europeana-logging', '~> 0.1.0'
 end
 
 group :development, :test do
