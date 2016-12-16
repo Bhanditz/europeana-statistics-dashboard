@@ -11,7 +11,8 @@ class Impl::DataProviders::DataSetBuilder
     unless aggregation.genre == 'europeana'
       aggregation.update_attributes(status: 'Building Data Sets', error_messages: nil)
       begin
-        all_data_sets = JSON.parse(Nestful.get("#{ENV['EUROPEANA_API_URL']}/search.json?wskey=#{ENV['WSKEY']}&query=#{CGI.escape(aggregation.genre.upcase + ':"' + aggregation.name + '"')}&rows=0&profile=facets,params&facet=europeana_collectionName").body)['facets'].first
+        parsed_json = JSON.parse(Nestful.get("#{ENV['EUROPEANA_API_URL']}/search.json?wskey=#{ENV['WSKEY']}&query=#{CGI.escape(aggregation.genre.upcase + ':"' + aggregation.name + '"')}&rows=0&profile=facets,params&facet=europeana_collectionName").body)
+        all_data_sets = parsed_json['facets'] ? parsed_json['facets'].first : nil
         if all_data_sets.present? && all_data_sets['fields'].present?
           all_data_sets['fields'].each do |data_set|
             d_set = Impl::DataSet.find_or_create(data_set['label'])
