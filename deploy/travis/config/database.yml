@@ -1,0 +1,11 @@
+pg: &pg
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+test:
+  port: 5432
+  database: europeana_stats_test
+  host: localhost
+  username: postgres
+  password: super_secret

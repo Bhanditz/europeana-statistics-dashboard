@@ -11,8 +11,8 @@ rvm:
 addons:
   postgresql: "9.4"
 before_install:
-  - "cp deploy/development/config/database.yml config/database.yml"
-  - "cp deploy/development/config/redis.yml config/redis.yml"
+  - "cp deploy/travis/config/database.yml config/database.yml"
+  - "cp deploy/travis/config/redis.yml config/redis.yml"
 before_script:
   - psql --version
   - RAILS_ENV=test bundle exec rake db:create
