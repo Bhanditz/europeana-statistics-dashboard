@@ -58,7 +58,7 @@ namespace :scheduled_jobs do
   task requeue_uncompleted_aggregations: :environment do
     cnt = 0
     limit = ENV['AGGREGATOR_QUEUE_LIMIT'] ||= 1250
-    Impl::Aggregation.where.not(genre: 'europeana', status: ['Report built'], error_messages: ['Blacklist data set', 'No data set', 'No media type detected']).limit(limit).each do |d|
+    Impl::Aggregation.where.not(genre: 'europeana', status: ['Report built'], error_messages: ['Blacklist data set', 'No data set%', 'No media type detected']).limit(limit).each do |d|
       Impl::Country::ProviderBuilder.perform_async(d.id) if d.genre == 'country'
       Impl::DataProviders::MediaTypesBuilder.perform_async(d.id)
       Impl::DataProviders::DataSetBuilder.perform_at(cnt.seconds.from_now, d.id)
