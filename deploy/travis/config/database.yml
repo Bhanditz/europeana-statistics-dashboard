@@ -4,6 +4,7 @@ pg: &pg
   pool: 5
 
 test:
+  <<: *pg
   port: 5432
   database: europeana_stats_test
   host: localhost
