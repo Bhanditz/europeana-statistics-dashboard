@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: core_themes
@@ -15,45 +16,43 @@
 #
 
 class Core::Theme < ActiveRecord::Base
-
-  #GEMS
-  self.table_name = "core_themes"
-  #CONSTANTS
-  #ATTRIBUTES
-  #ACCESSORS
-  #ASSOCIATIONS
+  # GEMS
+  self.table_name = 'core_themes'
+  # CONSTANTS
+  # ATTRIBUTES
+  # ACCESSORS
+  # ASSOCIATIONS
   belongs_to :account
 
-  #VALIDATIONS
-  validates :name, presence: true, uniqueness: {scope: :account_id}
+  # VALIDATIONS
+  validates :name, presence: true, uniqueness: { scope: :account_id }
   validates :config, presence: true
-  #ideally we should write a validation that if user creates a theme then account_id is mandatory
+  # ideally we should write a validation that if user creates a theme then account_id is mandatory
 
-  #CALLBACKS
+  # CALLBACKS
   before_create :before_create_set
 
-  #SCOPES
-  scope :admin, -> {where("account_id IS NULL")}
-  default_scope {order('sort_order ASC')}
-  scope :default_theme, -> {where(name: "Default").first}
+  # SCOPES
+  scope :admin, -> { where('account_id IS NULL') }
+  default_scope { order('sort_order ASC') }
+  scope :default_theme, -> { where(name: 'Default').first }
 
-  #CUSTOM SCOPES
-  #FUNCTIONS
+  # CUSTOM SCOPES
+  # FUNCTIONS
 
   # Returns the name of the theme.
   def to_s
-    self.name
+    name
   end
 
-  #PRIVATE
+  # PRIVATE
   private
 
   def before_create_set
-    if self.account_id.present?
+    if account_id.present?
       self.sort_order = 0
-      self.image_url = "https://s3-ap-southeast-1.amazonaws.com/charts.pykih.com/themes/custom-theme-icon.png"
+      self.image_url = 'https://s3-ap-southeast-1.amazonaws.com/charts.pykih.com/themes/custom-theme-icon.png'
     end
     true
   end
-
 end

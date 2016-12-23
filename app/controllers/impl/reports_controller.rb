@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: impl_reports
@@ -21,9 +22,9 @@ class Impl::ReportsController < ApplicationController
 
   layout :styleguide_aware_layout
 
-  before_action :authenticate_account!, only: [:index, :manual_report]
-  before_action :set_impl_report, only: [:show,:edit, :update, :destroy,:manual_report]
-  before_action :set_gon_config_objects,only: [:show,:edit, :update,:new, :create]
+  before_action :authenticate_account!, only: [:index]
+  before_action :set_impl_report, only: [:show, :edit, :update, :destroy, :manual_report]
+  before_action :set_gon_config_objects, only: [:show, :edit, :update, :new, :create]
 
   # Overview of all manual Impl::Reports
   def index
@@ -39,7 +40,7 @@ class Impl::ReportsController < ApplicationController
   def create
     @impl_report = Impl::Report.new(impl_report_params)
     if @impl_report.save
-      redirect_to account_project_impl_reports_path(@account,@core_project), notice: t("c.s")
+      redirect_to account_project_impl_reports_path(@account, @core_project), notice: t('c.s')
     else
       render :new
     end
@@ -47,7 +48,7 @@ class Impl::ReportsController < ApplicationController
 
   # Displays details of Impl::Report with a particular ID.
   def show
-  	@selected_date = Date.today.at_beginning_of_month - 1
+    @selected_date = Date.today.at_beginning_of_month - 1
     @current_month = Date::MONTHNAMES[@selected_date.month]
     gon.selected_year = @selected_date.year.to_s
     gon.prev_month = Date::MONTHNAMES[@selected_date.month - 1]
@@ -71,7 +72,7 @@ class Impl::ReportsController < ApplicationController
   # Update details of Impl::Report with a particular ID.
   def update
     if @impl_report.update_attributes(impl_report_params)
-      redirect_to account_project_impl_reports_path(@account,@core_project), notice: t("u.s")
+      redirect_to account_project_impl_reports_path(@account, @core_project), notice: t('u.s')
     else
       render :edit
     end
@@ -89,7 +90,7 @@ class Impl::ReportsController < ApplicationController
     @core_vizs = Core::Viz.manual
     gon.chart_config_objects = {}
     @core_vizs.each do |viz|
-      gon.chart_config_objects[viz.name.parameterize("_")] = viz.config
+      gon.chart_config_objects[viz.name.parameterize('_')] = viz.config
     end
   end
 
@@ -98,6 +99,7 @@ class Impl::ReportsController < ApplicationController
       genre = params[:genre]
       @impl_report = Impl::Report.where(impl_aggregation_genre: genre).friendly.find(params[:impl_report_id])
     elsif params[:manual_report_id].present?
+      authenticate_account! unless params[:manual_report_id] == 'about'
       @impl_report = Impl::Report.friendly.find(params[:manual_report_id])
     else
       @impl_report = Impl::Report.friendly.find(params[:id])
@@ -106,10 +108,10 @@ class Impl::ReportsController < ApplicationController
   end
 
   def impl_report_params
-    params.require(:impl_report).permit(:name, :html_content,:core_project_id,:variable_object)
+    params.require(:impl_report).permit(:name, :html_content, :core_project_id, :variable_object)
   end
 
   def styleguide_aware_layout
-    ['show','manual_report'].include?(params[:action]) ? false : 'application'
+    %w(show manual_report).include?(params[:action]) ? false : 'application'
   end
 end

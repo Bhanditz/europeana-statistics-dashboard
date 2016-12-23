@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateImplBlacklistDatasets < ActiveRecord::Migration
   def change
     create_table :impl_blacklist_datasets do |t|

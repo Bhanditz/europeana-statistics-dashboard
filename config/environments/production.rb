@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -21,7 +22,7 @@ Rails.application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  #config.serve_static_assets = false
+  # config.serve_static_assets = false
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -61,7 +62,7 @@ Rails.application.configure do
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   config.assets.precompile += [
-    "reports.js", "europeana.css", "new_report.js", "homepage.js"
+    'reports.js', 'europeana.css', 'new_report.js', 'homepage.js'
   ]
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -90,30 +91,26 @@ Rails.application.configure do
 
   # Logo Bucket
 
-  #GA IDS
-  GA_CLIENT_ID=ENV["GA_CLIENT_ID"]
-  GA_CLIENT_SECRET=ENV["GA_CLIENT_SECRET"]
-  GA_SCOPE=ENV["GA_SCOPE"]
-  GA_REFRESH_TOKEN=ENV["GA_REFRESH_TOKEN"]
-  GA_IDS=ENV["GA_IDS"]
-  GA_ENDPOINT = "https://www.googleapis.com/analytics/v3/data/ga"
+  # GA IDS
+  GA_CLIENT_ID = ENV['GA_CLIENT_ID']
+  GA_CLIENT_SECRET = ENV['GA_CLIENT_SECRET']
+  GA_SCOPE = ENV['GA_SCOPE']
+  GA_REFRESH_TOKEN = ENV['GA_REFRESH_TOKEN']
+  GA_IDS = ENV['GA_IDS']
+  GA_ENDPOINT = 'https://www.googleapis.com/analytics/v3/data/ga'
 
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
-    :user_name => ENV['MAIL_USERNAME'],
-    :password => ENV['MAIL_PASSWORD'],
-    :domain => ENV['MAIL_DOMAIN'],
-    :address => ENV['MAIL_ADDRESS'],
-    :port => ENV['MAIL_PORT'],
-    :authentication =>:plain,
-    :enable_starttls_auto => true
+    user_name: ENV['MAIL_USERNAME'],
+    password: ENV['MAIL_PASSWORD'],
+    domain: ENV['MAIL_DOMAIN'],
+    address: ENV['MAIL_ADDRESS'],
+    port: ENV['MAIL_PORT'],
+    authentication: :plain,
+    enable_starttls_auto: true
   }
 
   ActionMailer::Base.default_options = {
-    :from => ENV['MAIL_FROM']
+    from: ENV['MAIL_FROM']
   }
-
-
-
-
 end

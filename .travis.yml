@@ -7,17 +7,16 @@ branches:
     - develop
 language: ruby
 rvm:
-  - 2.2.2
+  - 2.3.1
 addons:
   postgresql: "9.4"
 before_install:
-  - "cp deploy/development/config/database.yml config/database.yml"
-  - "cp deploy/development/config/redis.yml config/redis.yml"
+  - "cp deploy/travis/config/database.yml config/database.yml"
+  - "cp deploy/travis/config/redis.yml config/redis.yml"
 before_script:
   - psql --version
   - RAILS_ENV=test bundle exec rake db:create
   - RAILS_ENV=test bundle exec rake db:migrate
-  - RAILS_ENV=test bundle exec rake seed:test_db
 script: bundle exec rspec
 env:
   - RAILS_ENV=test

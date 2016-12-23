@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: core_session_impls
@@ -15,22 +16,21 @@
 #
 
 class Core::SessionImpl < ActiveRecord::Base
+  # GEMS
+  self.table_name = 'core_session_impls'
 
-  #GEMS
-  self.table_name = "core_session_impls"
-
-  #CONSTANTS
-  #ATTRIBUTES
-  #ACCESSORS
-  #ASSOCIATIONS
+  # CONSTANTS
+  # ATTRIBUTES
+  # ACCESSORS
+  # ASSOCIATIONS
   belongs_to :account
-  has_one :core, class_name: "Core::Session", foreign_key: "session_id", primary_key: "session_id"
+  has_one :core, class_name: 'Core::Session', foreign_key: 'session_id', primary_key: 'session_id'
 
-  #VALIDATIONS
-  #CALLBACKS
-  #SCOPES
-  #CUSTOM SCOPES
-  #FUNCTIONS
+  # VALIDATIONS
+  # CALLBACKS
+  # SCOPES
+  # CUSTOM SCOPES
+  # FUNCTIONS
 
   # Updates or Creates a new Session for the user currently logged in.
   #
@@ -48,8 +48,8 @@ class Core::SessionImpl < ActiveRecord::Base
     a.ip         = ip
     a.blurb      = blu
     a.save
-    return a.id
+    a.id
   end
 
-  #PRIVATE
+  # PRIVATE
 end

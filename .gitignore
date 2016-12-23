@@ -14,7 +14,6 @@
 # Ignore all logfiles and tempfiles.
 .rvmrc
 .ruby-gemset
-.ruby-version
 /log/*.log
 /public/uploads/tmp
 /tmp
@@ -28,6 +27,7 @@ dump.rdb
 /config/database.yml
 /config/redis.yml
 /.env
+/.env.*
 coverage
 rails_best_practices_output.html
 doc/

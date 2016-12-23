@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: core_projects
@@ -15,7 +16,6 @@
 #
 
 class Core::ProjectsController < ApplicationController
-
   before_action :authenticate_account!, only: [:show]
   before_action :set_project, only: [:show]
 

@@ -1,0 +1,70 @@
+rijksmuseum_aggregation:
+  core_project: europeana_project
+  genre: "provider"
+  name: "Rijksmuseum"
+  created_by: ~
+  updated_by: ~
+  status: "Failed"
+  error_messages: "error_message"
+  properties: {}
+  last_updated_at: <%= (Date.today.at_beginning_of_month - (1).month - 1).strftime('%Y-%m-%d') %>
+diputaciodebarcelona_aggregation:
+  core_project: europeana_project
+  genre: "data_provider"
+  name: "Diputació de Barcelona"
+  created_by: ~
+  updated_by: ~
+  status: "In Queue"
+  error_messages: ~
+  properties: {}
+  last_updated_at: <%= (Date.today.at_beginning_of_month - (1).month - 1).strftime('%Y-%m-%d') %>
+france_aggregation:
+  core_project: europeana_project
+  genre: "country"
+  name: "france"
+  created_by: 1
+  updated_by: 1
+  status: "Report built"
+  error_messages: ~
+  properties: {}
+  last_updated_at: <%= (Date.today.at_beginning_of_month - (1).month - 1).strftime('%Y-%m-%d') %>
+locloud_aggregation:
+  core_project: europeana_project
+  genre: "provider"
+  name: "LoCloud"
+  created_by: ~
+  updated_by: ~
+  status: "Report built"
+  error_messages: ~
+  properties: {}
+  last_updated_at: <%= (Date.today.at_beginning_of_month - (1).month - 1).strftime('%Y-%m-%d') %>
+dansknaw_aggregation:
+  core_project: europeana_project
+  genre: "data_provider"
+  name: "DANS-KNAW"
+  created_by: ~
+  updated_by: ~
+  status: "Report built"
+  error_messages: ~
+  properties: {}
+  last_updated_at: <%= (Date.today.at_beginning_of_month - (1).month - 1).strftime('%Y-%m-%d') %>
+spain:
+  core_project: europeana_project
+  genre: "country"
+  name: "spain"
+  created_by: 1
+  updated_by: 1
+  status: "Report built"
+  error_messages: ~
+  properties: {}
+  last_updated_at: <%= (Date.today.at_beginning_of_month - (1).month  - 1).strftime('%Y-%m-%d') %>
+europeana_aggregation:
+  core_project: europeana_project
+  genre: "europeana"
+  name: "Europeana"
+  created_by: ~
+  updated_by: ~
+  status: "Report built"
+  error_messages: ~
+  properties: {}
+  last_updated_at: <%= (Date.today.at_beginning_of_month - (1).month - 1).strftime('%Y-%m-%d') %>

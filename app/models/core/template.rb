@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: core_templates
@@ -12,22 +13,22 @@
 #
 
 class Core::Template < ActiveRecord::Base
-  #GEMS
-  self.table_name = "core_templates"
+  # GEMS
+  self.table_name = 'core_templates'
 
-  #CONSTANTS
-  #ATTRIBUTES
-  #ACCESSORS
-  #ASSOCIATIONS
-  has_many :impl_reports, class_name: "Impl::Report", foreign_key: "core_template_id", dependent: :destroy
-  #VALIDATIONS
+  # CONSTANTS
+  # ATTRIBUTES
+  # ACCESSORS
+  # ASSOCIATIONS
+  has_many :impl_reports, class_name: 'Impl::Report', foreign_key: 'core_template_id', dependent: :destroy
+  # VALIDATIONS
   validates :name, presence: true
-  validates :genre, presence: true, uniqueness: {scope: :name}
-  #CALLBACKS
-  #SCOPES
-  scope :default_europeana_template, -> {where(genre: 'europeana').first}
-  #CUSTOM SCOPES
-  #FUNCTIONS
+  validates :genre, presence: true, uniqueness: { scope: :name }
+  # CALLBACKS
+  # SCOPES
+  scope :default_europeana_template, -> { where(genre: 'europeana').first }
+  # CUSTOM SCOPES
+  # FUNCTIONS
 
   # Either creates a new Core::Template or updates an existing Core::Template object in the database.
   #
@@ -39,12 +40,12 @@ class Core::Template < ActiveRecord::Base
   def self.create_or_update(name, html_content, genre, required_variables)
     a = where(name: name, genre: genre).first
     if a.blank?
-      a = create({name: name, html_content: html_content,genre: genre, required_variables: required_variables })
+      a = create(name: name, html_content: html_content, genre: genre, required_variables: required_variables)
     else
       a.update_attributes(html_content: html_content, required_variables: required_variables)
     end
     a
   end
 
-  #PRIVATE
+  # PRIVATE
 end

@@ -1,0 +1,84 @@
+rijksmuseum_providers_count:
+  core_project: europeana_project
+  name: 'PROVIDER Rijksmuseum - Providers Count'
+  identifier: '9d35a217e92ee36ce54ec37ea51d360148b59bddd98a0aa9b85f31352e60b2738a'
+  properties:
+    error: ''
+    query: "Select count(*) as value, '' as key, '' as content, 'Total Institutions' as title, '' as diff_in_value from impl_aggregation_relations where impl_parent_genre='provider' and impl_child_genre='data_provider' and impl_parent_id = '631'"
+    format: 'json'
+    method: 'get'
+    number_of_rows: '1'
+    number_of_columns: '5'
+    refresh_frequency: '0'
+  created_by: nil
+  updated_by: nil
+  params_object: {}
+  column_properties:
+    value:
+      data_type: 'integer'
+      d_or_m: 'm'
+      data_distribution:
+        string: 0
+        boolean: 0
+        float: 0
+        integer: 1
+        date: 0
+        blank: 0
+    key:
+      data_type: 'string'
+      d_or_m: 'd'
+      data_distribution:
+        string: 0
+        boolean: 0
+        float: 0
+        integer: 0
+        date: 0
+        blank: 1
+    content:
+      data_type: 'string'
+      d_or_m: 'd'
+      data_distribution:
+        string: 0
+        boolean: 0
+        float: 0
+        integer: 0
+        date: 0
+        blank: 1
+    title:
+      data_type: 'string'
+      d_or_m: 'd'
+      data_distribution:
+        string: 1
+        boolean: 0
+        float: 0
+        integer: 0
+        date: 0
+        blank: 0
+    diff_in_value:
+      data_type: 'string'
+      d_or_m: 'd'
+      data_distribution:
+        string: 0
+        boolean: 0
+        float: 0
+        integer: 0
+        date: 0
+        blank: 1
+  last_run_at: '2016-03-09 08:19:05'
+  last_data_changed_at: '2015-12-09 14:35:27'
+  count_of_queries: 4
+  average_execution_time: 0.005986304
+  size: 85.0
+  slug: 'rijksmuseum-providers-count'
+  table_name: ''
+dans_knaw_top_digital_objects_datacast:
+  core_project: europeana_project
+  name: 'DATA PROVIDER DANS-KNAW - Top Digital Objects'
+  identifier: '41f99d386bf4b56e5df59b92afc99727cb0b77c8c064c63fbfc774dd94cb296b40'
+  last_run_at: '2016-03-09 08:19:05'
+  last_data_changed_at: '2015-12-09 14:35:27'
+  count_of_queries: 1
+  average_execution_time: 0.620121205
+  size: 85.0
+  slug: 'data-provider-dans-knaw-top-digital-objects'
+  table_name: ''

@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 class FinalMigrationForImplAggregation < ActiveRecord::Migration
   def change
     Impl::Aggregation.destroy_all
     Core::Datacast.destroy_all
     Impl::Output.destroy_all
     Core::TimeAggregation.destroy_all
-    execute " Drop view impl_aggregation_ranks; Drop view impl_aggregation_rank_of_pageviews; Drop view impl_aggregation_rank_of_collections;"
+    execute ' Drop view impl_aggregation_ranks; Drop view impl_aggregation_rank_of_pageviews; Drop view impl_aggregation_rank_of_collections;'
 
     drop_table :impl_aggregation_providers
     remove_column :impl_aggregations, :wikiname
@@ -24,6 +25,5 @@ class FinalMigrationForImplAggregation < ActiveRecord::Migration
     rename_column :impl_datasets, :provider_id, :data_set_id
     add_column :impl_datasets, :impl_aggregation_id, :integer
     add_column :impl_datasets, :name, :string
-
   end
 end

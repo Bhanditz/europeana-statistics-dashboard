@@ -17,8 +17,6 @@
       %tr
         %td= signal_datacast_status(core_datacast)
         %td
-          %span.gray= core_datacast.core_db_connection.db_name
-          = " / "
           %b= core_datacast.name
           .hint= link_to truncate("#{REST_API_ENDPOINT}datacast/#{core_datacast.identifier}", length: 60, omission: "..."),  "#{REST_API_ENDPOINT}datacast/#{core_datacast.identifier}", target: "_blank"
           - if core_datacast.error.present?
