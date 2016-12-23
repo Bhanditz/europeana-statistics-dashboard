@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Impl
   module Reports
     class ManualReport < Europeana::Styleguide::View
@@ -6,7 +7,7 @@ module Impl
       end
 
       def bodyclass
-        "europeana_statsdashboard page_static"
+        'europeana_statsdashboard page_static'
       end
 
       def version
@@ -18,59 +19,59 @@ module Impl
       def navigation
         {
           global: {
-              logo: {
-                url: root_path,
-                text: "Europeana statistics"
-              },
-              primary_nav: {
-                menu_id: "main-menu",
-                items: [
-                  {
-                    text: "Europeana Stats",
-                    url: europeana_report_path
-                  },
-                  {
-                    text: "Find a dashboard",
-                    submenu: {
-                      items: [
-                          {
-                            url: false,
-                            text: "Browse Statistics:",
-                            subtitle: true
-                          },
-                          {
-                            url: countries_path,
-                            text: "By Country"
-                          },
-                          {
-                              is_divider: true
-                          },
-                          {
-                            url: false,
-                            text: "Find statistics for an organisation:",
-                            subtitle: true
-                          },
-                          {
-                            url: providers_path,
-                            text: "Find an Aggregator"
-                          },
-                          {
-                            url: data_providers_path,
-                            text: "Find an Institution"
-                          }
-                      ]
-                    }
-                  },
-                  {
-                    url: @about_report.present? ? manual_report_path(@about_report) : false,
-                    text: @about_report.present? ? "About" : "",
-                    is_current: @about_report.slug == @impl_report.slug
+            logo: {
+              url: root_path,
+              text: 'Europeana statistics'
+            },
+            primary_nav: {
+              menu_id: 'main-menu',
+              items: [
+                {
+                  text: 'Europeana Stats',
+                  url: europeana_report_path
+                },
+                {
+                  text: 'Find a dashboard',
+                  submenu: {
+                    items: [
+                      {
+                        url: false,
+                        text: 'Browse Statistics:',
+                        subtitle: true
+                      },
+                      {
+                        url: countries_path,
+                        text: 'By Country'
+                      },
+                      {
+                        is_divider: true
+                      },
+                      {
+                        url: false,
+                        text: 'Find statistics for an organisation:',
+                        subtitle: true
+                      },
+                      {
+                        url: providers_path,
+                        text: 'Find an Aggregator'
+                      },
+                      {
+                        url: data_providers_path,
+                        text: 'Find an Institution'
+                      }
+                    ]
                   }
+                },
+                {
+                  url: @about_report.present? ? manual_report_path(@about_report) : false,
+                  text: @about_report.present? ? 'About' : '',
+                  is_current: @about_report.slug == @impl_report.slug
+                }
 
-                ]
-              }
+              ]
             }
-         }
+          }
+        }
       end
 
       def css_files
@@ -97,9 +98,8 @@ module Impl
       end
 
       def title
-        ""
+        ''
       end
-
     end
   end
 end

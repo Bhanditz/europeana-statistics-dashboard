@@ -1,6 +1,4 @@
-:concurrency: 20
+:concurrency: <%= ENV['SIDEKIQ_CONCURRENCY'] || 5 %>
 :verbose: true
-production:
-  :concurrency: 30
 :queues:
   - default

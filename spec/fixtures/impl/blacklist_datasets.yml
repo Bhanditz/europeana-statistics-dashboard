@@ -1,0 +1,10 @@
+ag_de_dismarc:
+  dataset: "2023601_Ag_DE_DISMARC"
+ag_no_elocal_dimu:
+  dataset: "2022608_Ag_NO_ELocal_DiMu"
+ag_be_elocal_erfgoedregister:
+  dataset: "2023003_Ag_BE_Elocal_Erfgoedregister"
+ag_no_elocal_difo:
+  dataset: "2022611_Ag_NO_ELocal_difo"
+ag_eu_bhl:
+  dataset: "08701_Ag_EU_BHL"

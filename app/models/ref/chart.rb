@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: ref_charts
@@ -20,20 +21,19 @@
 #
 
 class Ref::Chart < ActiveRecord::Base
+  # GEMS
+  self.table_name = 'ref_charts'
 
-  #GEMS
-  self.table_name = "ref_charts"
+  # CONSTANTS
+  # ATTRIBUTES
+  # ACCESSORS
+  # ASSOCIATIONS
+  # VALIDATIONS
+  # validates :name, presence: true
 
-  #CONSTANTS
-  #ATTRIBUTES
-  #ACCESSORS
-  #ASSOCIATIONS
-  #VALIDATIONS
-  #validates :name, presence: true
-
-  #CALLBACKS
-  #SCOPES
-  #CUSTOM SCOPES
-  #FUNCTIONS
-  #PRIVATE
+  # CALLBACKS
+  # SCOPES
+  # CUSTOM SCOPES
+  # FUNCTIONS
+  # PRIVATE
 end

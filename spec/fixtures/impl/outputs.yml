@@ -1,0 +1,74 @@
+visits:
+  genre: "visits"
+  impl_parent_type: "Impl::Aggregation"
+  impl_parent_id: 1
+  status: "Built visits"
+  error_messages: ""
+  key: ""
+  value: ""
+  properties: {}
+pageviews:
+  genre: "pageviews"
+  impl_parent_type: "Impl::Aggregation"
+  impl_parent_id: 2
+  status: "Built pageviews"
+  error_messages: ""
+  key: ""
+  value: ""
+  properties: {}
+item_views:
+  genre: "item_views"
+  impl_parent_type: "Impl::Aggregation"
+  impl_parent_id: 3
+  status: "Processed item views"
+  error_messages: ""
+  key: ""
+  value: ""
+  properties: {}
+click_throughs:
+  genre: "click_throughs"
+  impl_parent_type: "Impl::Aggregation"
+  impl_parent_id: 4
+  status: "Processed click throughs"
+  error_messages: ""
+  key: ""
+  value: ""
+  properties: {}
+top_media_types:
+  genre: "top_media_types"
+  impl_parent_type: "Impl::Aggregation"
+  impl_parent_id: 5
+  status: ""
+  error_messages: ""
+  key: "media_type"
+  value: "IMAGE"
+  properties: {}
+top_reusables:
+  genre: "top_reusables"
+  impl_parent_type: "Impl::Aggregation"
+  impl_parent_id: 6
+  status: ""
+  error_messages: ""
+  key: "reusable"
+  value: "permission"
+  properties: {}
+top_countries:
+  genre: "top_countries"
+  impl_parent_type: "Impl::Aggregation"
+  impl_parent_id: 7
+  status: ""
+  error_messages: ""
+  key: "country"
+  value: "Spain"
+  properties: {}
+top_digital_objects:
+  genre: "top_digital_objects"
+  impl_parent_type: "Impl::Aggregation"
+  impl_parent_id: 8
+  status: ""
+  error_messages: ""
+  key: "title"
+  value: "MAROC XIX E 313"
+  properties:
+    image_url: "http://europeanastatic.eu/api/image?size=FULL_DOC&type=VIDEO"
+    title_url: "http://www.europeana.eu/portal/record/09328/2CAB9DDED28F8369CC89575706430F94D66D80C4.html"

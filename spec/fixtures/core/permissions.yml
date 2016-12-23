@@ -1,0 +1,6 @@
+europeana_permission:
+  account: europeana_account
+  role: 'Owner'
+  email: 'europeana_user@europeana.eu'
+  status: 'Accepted'
+  core_project: europeana_project

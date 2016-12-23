@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CleaningUpUnwantedTables < ActiveRecord::Migration
   def change
     drop_table :core_articles

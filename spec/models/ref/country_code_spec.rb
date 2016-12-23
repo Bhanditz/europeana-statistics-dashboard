@@ -1,4 +1,5 @@
-require "rails_helper"
+# frozen_string_literal: true
+require 'rails_helper'
 
 RSpec.describe Ref::CountryCode, type: :model do
   context 'Ref::CountryCode#find_or_create' do
@@ -16,8 +17,5 @@ RSpec.describe Ref::CountryCode, type: :model do
       expect(previous_row.id).to eq(new_row.id)
       previous_row.delete
     end
-
   end
-
-
 end

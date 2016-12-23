@@ -27,6 +27,7 @@ dump.rdb
 /config/database.yml
 /config/redis.yml
 /.env
+/.env.*
 coverage
 rails_best_practices_output.html
 doc/

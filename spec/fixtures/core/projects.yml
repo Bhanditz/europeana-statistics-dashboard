@@ -1,0 +1,8 @@
+europeana_project:
+  account: europeana_account
+  name: "Europeana"
+  slug: "europeana"
+  properties: {}
+  is_public: true
+  created_by: nil
+  updated_by: nil

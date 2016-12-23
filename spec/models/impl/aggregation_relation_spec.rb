@@ -1,12 +1,13 @@
-require "rails_helper"
+# frozen_string_literal: true
+require 'rails_helper'
 
 RSpec.describe Impl::AggregationRelation, type: :model do
   context '#create_or_find' do
-    it "should return a new AggregationRelation" do
+    it 'should return a new AggregationRelation' do
       parent_id = -1
-      parent_genre = "provider"
+      parent_genre = 'provider'
       child_id = -1
-      child_genre = "data_provider"
+      child_genre = 'data_provider'
 
       impl_relation = Impl::AggregationRelation.where(impl_parent_id: parent_id, impl_child_id: child_id).first
       expect(impl_relation).to eq(nil)
@@ -20,9 +21,9 @@ RSpec.describe Impl::AggregationRelation, type: :model do
 
     it 'should find and return the AggregationRelation row' do
       parent_id = -1
-      parent_genre = "provider"
+      parent_genre = 'provider'
       child_id = -1
-      child_genre = "data_provider"
+      child_genre = 'data_provider'
 
       impl_relation = Impl::AggregationRelation.where(impl_parent_id: parent_id, impl_child_id: child_id).first
       expect(impl_relation).to eq(nil)

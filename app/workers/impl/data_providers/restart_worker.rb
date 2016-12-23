@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Impl::DataProviders::RestartWorker
   include Sidekiq::Worker
   sidekiq_options backtrace: true
@@ -11,6 +12,6 @@ class Impl::DataProviders::RestartWorker
     aggregation.impl_outputs.destroy_all
     Impl::DataProviders::DataSetBuilder.perform_async(aggregation.id)
     Impl::DataProviders::MediaTypesBuilder.perform_async(aggregation_id)
-    Impl::Country::ProviderBuilder.perform_async(aggregation.id) if aggregation.genre == "country"
+    Impl::Country::ProviderBuilder.perform_async(aggregation.id) if aggregation.genre == 'country'
   end
 end

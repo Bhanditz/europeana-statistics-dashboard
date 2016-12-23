@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: accounts
@@ -21,48 +22,48 @@
 #
 
 class Account < ActiveRecord::Base
-
-  #GEMS
+  # GEMS
   devise :database_authenticatable, :recoverable, :validatable, :registerable
 
   extend FriendlyId
   friendly_id :username, use: :slugged
 
-  #CONSTANTS
+  # CONSTANTS
+  # CALLBACKS
   before_create :before_create_set
-  after_create :after_create_set
+  after_commit :after_create_set, on: :create
 
-  #ATTRIBUTES
-  #ACCESSORS
+  # ATTRIBUTES
+  # ACCESSORS
   store_accessor :properties, :bio, :gravatar_email_id, :url, :is_pseudo_account, :name, :location, :company, :image_url
   store_accessor :devis, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :confirmed_at, :current_sign_in_at, :remember_created_at
 
-  #ASSOCIATIONS
-  has_many :permissions, class_name: "Core::Permission", foreign_key: :account_id, dependent: :destroy
+  # ASSOCIATIONS
+  has_many :permissions, class_name: 'Core::Permission', foreign_key: :account_id, dependent: :destroy
 
   # Returns the projects associated with the user's account.
   def core_projects
-    Core::Project.where(id: self.permissions.where(role: [Constants::ROLE_C, Constants::ROLE_O]).pluck(:core_project_id).uniq)
+    Core::Project.where(id: permissions.where(role: [Constants::ROLE_C, Constants::ROLE_O]).pluck(:core_project_id).uniq)
   end
 
-  #VALIDATIONS
-  validates :username, presence: true, :uniqueness => { :case_sensitive => false }, length: { minimum: 5 }
-  validates :username, exclusion: {in: Constants::STUPID_USERNAMES, message: "%{value} is reversed."}
-  validates :password, exclusion: {in: Constants::STUPID_PASSWORDS, message: "that's a stupid password. Choose a new one."}
-  validates :email, presence: true, format: {with: Constants::EMAIL}
-  validates :url, format: {with: Constants::URL}, allow_blank: true
-  validates :gravatar_email_id, format: {with: Constants::EMAIL}, presence: true, on: :update
+  # VALIDATIONS
+  validates :username, presence: true, uniqueness: { case_sensitive: false }, length: { minimum: 5 }
+  validates :username, exclusion: { in: Constants::STUPID_USERNAMES, message: '%{value} is reversed.' }
+  validates :password, exclusion: { in: Constants::STUPID_PASSWORDS, message: "that's a stupid password. Choose a new one." }
+  validates :email, presence: true, format: { with: Constants::EMAIL }
+  validates :url, format: { with: Constants::URL }, allow_blank: true
+  validates :gravatar_email_id, format: { with: Constants::EMAIL }, presence: true, on: :update
   validates_confirmation_of :password
-  #SCOPES
-  #CUSTOM SCOPES
-  #FUNCTIONS
+  # SCOPES
+  # CUSTOM SCOPES
+  # FUNCTIONS
 
   # Returns the username of the user.
   def to_s
-    self.username
+    username
   end
 
-  #PRIVATE
+  # PRIVATE
   private
 
   def should_generate_new_friendly_id?
@@ -70,15 +71,15 @@ class Account < ActiveRecord::Base
   end
 
   def before_create_set
-    self.properties                       = {} if self.properties.blank?
-    self.properties["gravatar_email_id"]  = self.email
+    self.properties = {} if properties.blank?
+    properties['gravatar_email_id'] = email
     self.authentication_token = SecureRandom.hex(24)
     true
   end
 
   def after_create_set
-    if self.sign_in_count == 0 or self.sign_in_count.blank?
-      Core::Permission.create!(account_id: self.id, role: Constants::ROLE_O, email: self.email, status: Constants::STATUS_A, is_owner_team: true)
+    if sign_in_count == 0 || sign_in_count.blank?
+      Core::Permission.create!(account_id: id, role: Constants::ROLE_O, email: email, status: Constants::STATUS_A, is_owner_team: true)
     end
     true
   end
@@ -89,11 +90,10 @@ class Account < ActiveRecord::Base
       conditions = warden_conditions.dup
       uzername = conditions.delete(:username)
       if uzername.present?
-        where(conditions).where(["lower(username) = :value", { :value => uzername.downcase }]).first
+        where(conditions).where(['lower(username) = :value', { value: uzername.downcase }]).first
       else
         where(conditions).first
       end
     end
   end
-
 end

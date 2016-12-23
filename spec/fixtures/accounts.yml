@@ -1,0 +1,7 @@
+europeana_account:
+  email: europeana_user@europeana.eu
+  username: europeana_user
+  encrypted_password: '$2a$10$oKxA7V4iIRREzlipy0qdS.Ghn4VCheHTYojJnDJQ3UnJiFSfXdeoW' #
+  confirmation_sent_at: <%= Date.today.strftime("%Y-%m-%d") %>
+  properties:
+    gravatar_email_id: europeana_user@europeana.eu
