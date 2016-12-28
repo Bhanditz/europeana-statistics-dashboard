@@ -44,7 +44,6 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
     ga_sort = '-ga:pageviews'
     ga_filters = data_provider.get_aggregated_filters
     ga_max_results = 50
-    ga_access_token = Impl::DataSet.get_access_token
 
     # setup dates
     start_date = Date.parse(start_date)
@@ -56,6 +55,7 @@ class Impl::DataProviders::TopDigitalObjectsBuilder
       ga_start_date = start_date.strftime('%Y-%m-%d')
       ga_end_date = period_end_date.strftime('%Y-%m-%d')
 
+      ga_access_token = Impl::DataSet.get_access_token
       top_digital_objects_per_quarter = JSON.parse(open("https://www.googleapis.com/analytics/v3/data/ga?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}&sort=#{ga_sort}&max-results=#{ga_max_results}", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read)['rows']
       if top_digital_objects_per_quarter.present?
         top_digital_objects_per_quarter.each do |digital_object|

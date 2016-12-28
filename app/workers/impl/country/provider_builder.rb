@@ -17,7 +17,7 @@ class Impl::Country::ProviderBuilder
             provider = Impl::Aggregation.create_or_find_aggregation(provider['label'], 'provider', country.core_project_id)
             Impl::AggregationRelation.create_or_find(country_id, 'country', provider.id, 'provider')
             query = CGI.escape("COUNTRY:\"#{country.name.downcase}\"  PROVIDER:\"#{provider.name}\"")
-            data_providers = JSON.parse(Nestful.get("#{ENV['EUROPEANA_API_URL']}/v2/search.json?wskey=#{ENV['WSKEY']}&query=#{query}&rows=0&profile=facets,params&facet=DATA_PROVIDER").body)
+            data_providers = JSON.parse(Nestful.get("#{ENV['EUROPEANA_API_URL']}/search.json?wskey=#{ENV['WSKEY']}&query=#{query}&rows=0&profile=facets,params&facet=DATA_PROVIDER").body)
             if data_providers['facets'].present?
               data_providers = data_providers['facets'].first
             else
