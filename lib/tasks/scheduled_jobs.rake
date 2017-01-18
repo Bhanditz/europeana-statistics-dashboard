@@ -10,7 +10,7 @@ namespace :scheduled_jobs do
     end
 
     cnt = 0
-    current_end_date   = (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d')
+    current_end_date = (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d')
     repeat_errors = ['Blacklist data set', 'No data set', 'No data set found', 'No media type detected']
     where_statement = "((genre != 'europeana') AND (error_messages NOT IN ('#{repeat_errors.join("', '")}') OR (error_messages IS NULL)) AND (last_updated_at != '#{current_end_date}'))"
     Impl::Aggregation.where(where_statement).each do |d|
