@@ -17,10 +17,9 @@ class Impl::DataProviders::TrafficBuilder
       data_provider.impl_report.delete if data_provider.impl_report.present?
       return nil
     end
+
     ga_start_date = data_provider.last_updated_at.present? ? (data_provider.last_updated_at + 1).strftime('%Y-%m-%d') : '2012-01-01'
     ga_end_date   = (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d')
-
-    return unless ga_start_date < ga_end_date
 
     data_provider.update_attributes(status: 'Building Pageviews', error_messages: nil)
     data_provider_pageviews_output = Impl::Output.find_or_create(data_provider_id, 'Impl::Aggregation', 'pageviews')

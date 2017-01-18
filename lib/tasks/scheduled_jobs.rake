@@ -10,7 +10,10 @@ namespace :scheduled_jobs do
     end
 
     cnt = 0
-    Impl::Aggregation.where.not(genre: 'europeana', error_messages: ['Blacklist data set', 'No data set', 'No data set found', 'No media type detected']).each do |d|
+    current_end_date   = (Date.today.at_beginning_of_month - 1).strftime('%Y-%m-%d')
+    repeat_errors = ['Blacklist data set', 'No data set', 'No data set found', 'No media type detected']
+    where_statement = "((genre != 'europeana') AND (error_messages NOT IN ('#{repeat_errors.join("', '")}') OR (error_messages IS NULL)) AND (last_updated_at != '#{current_end_date}'))"
+    Impl::Aggregation.where(where_statement).each do |d|
       Impl::Country::ProviderBuilder.perform_async(d.id) if d.genre == 'country'
       Impl::DataProviders::MediaTypesBuilder.perform_async(d.id)
       Impl::DataProviders::DataSetBuilder.perform_at(cnt.seconds.from_now, d.id)
