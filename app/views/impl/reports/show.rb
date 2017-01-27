@@ -172,45 +172,47 @@ module Impl
       end
 
       def get_stats_bar
-        pg_views_2013 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2013'").sum('value').to_i
-        pg_views_2014 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2014'").sum('value').to_i
+        #pg_views_2013 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2013'").sum('value').to_i
+        #pg_views_2014 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2014'").sum('value').to_i
         pg_views_2015 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2015'").sum('value').to_i
         pg_views_2016 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2016'").sum('value').to_i
+        pg_views_2017 = @impl_aggregation.impl_outputs.where(genre: 'pageviews').first.core_time_aggregations.where("split_part(aggregation_level_value,'_',1) = '2017'").sum('value').to_i
 
-        ct_2013 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2013'").sum('value').to_i
-        ct_2014 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2014'").sum('value').to_i
+        #ct_2013 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2013'").sum('value').to_i
+        #ct_2014 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2014'").sum('value').to_i
         ct_2015 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2015'").sum('value').to_i
         ct_2016 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2016'").sum('value').to_i
+        ct_2017 = @impl_aggregation.impl_outputs.where(genre: 'clickThrough').first.core_time_aggregations.where("aggregation_level_value = '2017'").sum('value').to_i
 
         {
           items: [{
-            title: 'Total views in 2014',
-            value: helpers.number_with_delimiter(pg_views_2014)
-          }, {
             title: 'Total views in 2015',
-            value: helpers.number_with_delimiter(pg_views_2015),
-            trend: pg_views_2014 == 0 ? {} : {
-              value: (((pg_views_2015 - pg_views_2014).abs.to_f / pg_views_2014) * 100).round(2).to_s + '%',
-              positive: pg_views_2015 > pg_views_2014 ? true : false,
-              negative: pg_views_2015 < pg_views_2014 ? true : false
+            value: helpers.number_with_delimiter(pg_views_2015)
+          }, {
+            title: 'Total views in 2016',
+            value: helpers.number_with_delimiter(pg_views_2016),
+            trend: pg_views_2015 == 0 ? {} : {
+              value: (((pg_views_2016 - pg_views_2015).abs.to_f / pg_views_2015) * 100).round(2).to_s + '%',
+              positive: pg_views_2016 > pg_views_2015 ? true : false,
+              negative: pg_views_2016 < pg_views_2015 ? true : false
             }
           }, {
-            title: 'Total views in 2016 (till now)',
-            value: helpers.number_with_delimiter(pg_views_2016),
-          }, {
-            title: 'Total click-throughs in 2014',
-            value: helpers.number_with_delimiter(ct_2014)
+            title: 'Total views in 2017 (till now)',
+            value: helpers.number_with_delimiter(pg_views_2017),
           }, {
             title: 'Total click-throughs in 2015',
-            value: helpers.number_with_delimiter(ct_2015),
-            trend: ct_2014 == 0 ? {} : {
-              value: (((ct_2015 - ct_2014).abs.to_f / ct_2014) * 100).round(2).to_s + '%',
-              positive: ct_2015 > ct_2014 ? true : false,
-              negative: ct_2015 < ct_2014 ? true : false
+            value: helpers.number_with_delimiter(ct_2015)
+          }, {
+            title: 'Total click-throughs in 2016',
+            value: helpers.number_with_delimiter(ct_2016),
+            trend: ct_2015 == 0 ? {} : {
+              value: (((ct_2016 - ct_2015.abs.to_f / ct_2015) * 100).round(2).to_s + '%',
+              positive: ct_2016 > ct_2015 ? true : false,
+              negative: ct_2016 < ct_2015 ? true : false
             }
           }, {
-            title: 'Total click-throughs in 2016 (till now)',
-            value: helpers.number_with_delimiter(ct_2016)
+            title: 'Total click-throughs in 2017 (till now)',
+            value: helpers.number_with_delimiter(ct_2017)
           }]
         }
       end
