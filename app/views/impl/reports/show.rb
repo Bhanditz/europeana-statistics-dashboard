@@ -206,7 +206,7 @@ module Impl
             title: 'Total click-throughs in 2016',
             value: helpers.number_with_delimiter(ct_2016),
             trend: ct_2015 == 0 ? {} : {
-              value: (((ct_2016 - ct_2015.abs.to_f / ct_2015) * 100).round(2).to_s + '%',
+              value: (((ct_2016 - ct_2015.abs.to_f / ct_2015) * 100).round(2).to_s + '%'),
               positive: ct_2016 > ct_2015 ? true : false,
               negative: ct_2016 < ct_2015 ? true : false
             }
