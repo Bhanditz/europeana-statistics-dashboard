@@ -36,6 +36,7 @@ class Aggregations::Europeana::PageviewsBuilder
         ga_metrics      = 'ga:visits'
         ga_filters      = 'ga:hostname=~europeana.eu'
         ga_access_token = Impl::DataSet.get_access_token
+        ga_base_url     =  "#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}"
 
         mediums = self.class.parsed_json_for("#{ga_base_url}&metrics=#{ga_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filters}")['rows']
         mediums_data = mediums.map { |a| { 'month' => a[0], 'year' => a[1], 'medium' => a[2], 'visits' => a[3] } }
@@ -49,6 +50,9 @@ class Aggregations::Europeana::PageviewsBuilder
         ga_dimensions = 'ga:year'
         click_metrics = 'ga:totalEvents'
         ga_filter = 'ga:hostname=~europeana.eu;ga:pagePath=~/portal/(../)?record/;ga:eventCategory==Europeana Redirect,ga:eventCategory==Redirect'
+        ga_access_token = Impl::DataSet.get_access_token
+        ga_base_url     =  "#{GA_ENDPOINT}?access_token=#{ga_access_token}&start-date=#{ga_start_date}&end-date=#{ga_end_date}&ids=ga:#{GA_IDS}"
+
         # click Through
         click_through = self.class.parsed_json_for("#{ga_base_url}&metrics=#{click_metrics}&dimensions=#{ga_dimensions}&filters=#{ga_filter}")['rows']
         click_through_data = click_through.map { |a| { 'year' => a[0], 'clickThrough' => a[1].to_i } }
@@ -80,7 +84,6 @@ class Aggregations::Europeana::PageviewsBuilder
   # @return [Array] an array of Hash that is formatted output of Google Analytics and Europeana API's.
   def self.fetch_data_for_all_items_between(start_date, end_date)
     top_digital_objects_data = []
-    ga_access_token = Impl::DataSet.get_access_token
     europeana_base_url = ENV['EUROPEANA_API_URL']
     base_title_url = 'http://www.europeana.eu/portal/record/'
     ga_metrics = 'ga:pageviews'
@@ -94,6 +97,8 @@ class Aggregations::Europeana::PageviewsBuilder
     period_end_date = (start_date + 1.month).at_beginning_of_month - 1
     # Go through each month and gather statisitcs
     while period_end_date <= end_date do
+      ga_access_token = Impl::DataSet.get_access_token
+
       # Format dates as strings for google
       ga_start_date = start_date.strftime('%Y-%m-%d')
       ga_end_date = period_end_date.strftime('%Y-%m-%d')
