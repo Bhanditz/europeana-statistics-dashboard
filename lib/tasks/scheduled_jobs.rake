@@ -30,7 +30,7 @@ namespace :scheduled_jobs do
     all_facets = facets_for facet_name
     all_countries = all_facets.select {|facet_set| facet_set["name"] == facet_name}.first
     all_countries["fields"].each do |facet_field|
-      name = facet_field["label"]
+      name = facet_field["label"].strip
       genre = 'country'
       Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
     end
@@ -41,7 +41,7 @@ namespace :scheduled_jobs do
     all_facets = facets_for facet_name
     all_countries = all_facets.select {|facet_set| facet_set["name"] == facet_name}.first
     all_countries["fields"].each do |facet_field|
-      name = facet_field["label"]
+      name = facet_field["label"].strip
       genre = 'provider'
       Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
     end
@@ -52,7 +52,7 @@ namespace :scheduled_jobs do
     all_facets = facets_for facet_name
     all_countries = all_facets.select {|facet_set| facet_set["name"] == facet_name}.first
     all_countries["fields"].each do |facet_field|
-      name = facet_field["label"]
+      name = facet_field["label"].strip
       genre = 'data_provider'
       Impl::Aggregation.create_or_find_aggregation(name, genre, core_project_id)
     end
